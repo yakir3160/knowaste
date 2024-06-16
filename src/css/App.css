@@ -66,11 +66,11 @@ footer {
   font-size: 40px;
   color: #2a522a;
   align-self: flex-start;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .input{
   width: 70%;
-  height: 35px;
+  height: fit-content;
   padding: 20px;
   border-radius: 35px;
   box-shadow: rgba(130, 130, 130, 0.28) 1px 1px 1px;
@@ -79,6 +79,16 @@ footer {
   font-family: inherit;
   font-weight: 500;
   font-size: inherit;
+
+}
+.input-half{
+  flex-direction: column;
+  width: 80%;
+  height: fit-content;
+  font-weight: 400;
+  font-size: inherit;
+  margin: 5px;
+
 
 }
 .input:focus-visible{

@@ -1,0 +1,30 @@
+.form{
+    width: 50%;
+}
+.form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.form-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+label {
+    display: block;
+    width: fit-content;
+    font-weight: bold;
+}
+.input-register{
+    width: 90%;
+    margin-top: 5px;
+}
+.select{
+    padding: 10px;
+}
