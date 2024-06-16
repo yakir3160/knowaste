@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/Login.css";
-import featuredImage from "../img/signupformimg@2x.png";
+import featuredImage from "../img/sign-up-formIMG.png";
 
 const Login = () => {
     return (
