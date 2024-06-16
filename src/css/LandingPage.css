@@ -1,0 +1,79 @@
+.landing-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.head {
+    width: fit-content;
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 1.8s;
+}
+
+.welcome-to-knowaste {
+    font-size: 50px;
+    color: #2a522a;
+    font-family: inherit;
+    margin-bottom: 20px;
+}
+
+.opening-text {
+    font-size: 26px;
+    line-height: 150%;
+    font-family: inherit;
+}
+
+.lets-sign-up {
+    font-size: 20px;
+    font-weight: 500;
+    font-family: Jost, sans-serif;
+    color: #bfff00;
+}
+
+.button {
+    cursor: pointer;
+    background-color: #3b763b;
+    border: none;
+    padding: 20px 39px;
+    width: fit-content;
+    height: 72px;
+    border-radius: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button:hover {
+    background-color: #619c61;
+    transform: scale(0.98);
+    border: 1px solid var(--lime-color);
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    animation: fadeIn 1.9s;
+
+}
+.food-waste-img {
+    border-radius: 25px;
+    width: 100%;
+    height: auto;
+    transition: scale  0.5s ease, transform 0.3s ease;
+}
+.food-waste-img:hover{
+    scale: 1.01;
+}

@@ -1,0 +1,85 @@
+.contact-form,
+.contact-form-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+}
+.contact-form-inner {
+    flex-direction: row;
+    max-width: 100%;
+    animation: fadeIn 1.6s;
+
+}
+.contact-form {
+    width: 100%;
+    height: fit-content;
+    align-self: flex-start;
+    overflow: hidden;
+    flex-direction: column;
+
+}
+.submit{
+    cursor: pointer;
+    background-color:var(--buttons-color);
+    border: none;
+    color: var(--lime-color);
+    padding: 20px 39px;
+    width: 77%;
+    height: 72px;
+    border-radius: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: inherit;
+
+}
+.submit:hover {
+    background-color: #619c61;
+    transform: scale(0.98);
+    border: 1px solid var(--lime-color);
+}
+.input-message{
+    width: 70%;
+    height: 35px;
+    padding: 20px;
+    border-radius: 35px;
+    box-shadow: rgba(130, 130, 130, 0.28) 1px 1px 1px;
+    border: none;
+    margin: 10px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: inherit;
+
+}
+.input-message:focus-visible{
+    outline: none;
+    border:  1px solid var(--lime-color);
+}
+.input-message {
+    height: 100px;
+    resize: none;
+}
+.card-img-contact{
+    width: 100%;
+    height: auto;
+    margin-left: 80px;
+
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

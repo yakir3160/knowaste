@@ -1,0 +1,93 @@
+:root {
+    --base-color: #f8fbef;
+    --buttons-color: #3B763B;
+    --titles-color: #2A522A;
+    --secondary-color: #E4EBCF;
+    --lime-color: #BFFF00;
+}
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    align-items: center;
+    background: linear-gradient(-90deg, var(--buttons-color) 41.71%, var(--buttons-color) 60%, var(--titles-color) 79.72%);
+    border-radius: 0 0 25px 25px;
+    width: 100%;
+    max-width: 90%;
+    height: 120px;
+    font-size: 18px; /* Adjusted font size */
+    color: var(--lime-color);
+    font-family: Jost, sans-serif;
+    animation: fadeInDown 1.4s;
+
+}
+
+.logo {
+    align-self: stretch;
+    position: relative;
+    line-height: 150%;
+    font-family: Antonio, serif;
+    font-size: 34px;
+    padding-left: 70px;
+
+}
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+.logo-link:hover {
+    color: var(--base-color);
+}
+
+.w_in_logo {
+    color: var(--base-color);
+}
+
+.right-nav-buttons {
+    display: flex;
+    gap: 30px;
+    padding-left: 20px;
+    padding-right: 70px;
+    align-items: center;
+}
+
+.contact-us-link {
+    text-decoration: none;
+    color: var(--base-color);
+    font-family: inherit;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.contact-us-link:hover {
+    color: var(--lime-color);
+    transform: scale(0.99); /* Smooth scaling effect */
+}
+
+.login-btn {
+    background-color: var(--base-color);
+    border: none;
+    color: var(--buttons-color);
+    padding: 14px 18px;
+    border-radius: 25px;
+    width: fit-content;
+    height: fit-content;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: var(--lime-color);
+    color: #000000;
+    transform: scale(0.98); /* Smooth scaling effect */
+}
+
+.mid-brand {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}

@@ -1,0 +1,38 @@
+.sign-up,.login{
+    cursor: pointer;
+    background-color:var(--buttons-color);
+    border: none;
+    color: #bfff00;
+    width: 100%;
+    padding: 20px 39px;
+    border-radius:35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 18px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+
+}
+.login{
+    background-color: var(--lime-color);
+    color: black;
+}
+.sign-up:hover {
+    background-color: #619c61;
+    transform: scale(0.98);
+}
+
+.login:hover {
+    background-color: rgb(92, 122, 8);
+    transform: scale(0.98);
+    color: var(--lime-color);
+}
+.terms-container{
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+}

@@ -1,0 +1,42 @@
+:root {
+    --base-color: #FAFFEB;
+    --buttons-color: #3B763B;
+    --titles-color: #2A522A;
+    --secondary-color: #E4EBCF;
+    --lime-color: #BFFF00;
+}
+
+.footer {
+    background: linear-gradient(-90deg, var(--buttons-color) 41.71%, var(--buttons-color) 60%, var(--titles-color) 79.72%);
+    padding: 20px 40px; /* Padding for the footer */
+    text-align: center;
+    border-radius: 25px 25px 0 0;
+    color: var(--lime-color);
+    width: 90%;
+    height: 100px;
+    animation: fadeIn 1.4s;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+.logo-link:hover {
+    color: var(--base-color);
+}
+
+.logo {
+    line-height: 150%;
+}
+
+.w_in_logo {
+    color: var(--base-color);
+}
