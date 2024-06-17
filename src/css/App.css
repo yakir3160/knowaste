@@ -19,6 +19,7 @@ html, body {
   font-family: 'Jost', serif;
   scroll-behavior: smooth;
   flex: 1;
+  padding: 0 40px 0 40px;
 }
 
 .app {
@@ -31,8 +32,9 @@ html, body {
 }
 
 .app-container {
-  width: fit-content;
+  width: 100%;
   margin: 40px;
+  padding-inline: 10px;
   height: fit-content;
   border-radius: 25px;
   background-color: var(--secondary-color);
@@ -83,12 +85,10 @@ footer {
 }
 .input-half{
   flex-direction: column;
-  width: 80%;
+  width: 75%;
   height: fit-content;
   font-weight: 400;
-  font-size: inherit;
-  margin: 5px;
-
+  font-size: inherit
 
 }
 .input:focus-visible{

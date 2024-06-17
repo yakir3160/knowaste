@@ -4,8 +4,8 @@ import Register from "../components/Register";
 
 const Auth = () => {
     return (
-       <Login/>
-        // <Register/>
+       // <Login/>
+        <Register/>
     );
 };
 

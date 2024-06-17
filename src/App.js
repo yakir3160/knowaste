@@ -11,9 +11,9 @@ const App = () => {
       <div className="app">
         <NavigationBar/>
           <div className="app-container">
-              <ContactForm />
+              {/*<ContactForm />*/}
               {/*<LandingPage/>*/}
-              {/*<Auth/>*/}
+              <Auth/>
           </div>
         <Footer/>
       </div>
