@@ -90,7 +90,7 @@ const Register = () => {
                     <input id="repeat-password" className="input input-register" type="password" placeholder="Repeat Password" />
                 </div>
             </div>
-            <div className="card" style={{ width: '35%' }}>
+            <div className="card" style={{ width: '40%' }}>
                 <img className="card-img-contact" src={featuredImage} alt="" />
                 <button className="submit">Submit</button>
             </div>

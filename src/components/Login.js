@@ -6,7 +6,7 @@ const Login = () => {
     return (
         <section className="contact-form-inner">
 
-            <div className="card" style={{width: '40vh', height: "fit-content", margin: "40px", marginLeft: "8%"}}>
+            <div className="card" style={{width: '40vh', height: "fit-content", margin: "", marginLeft: "8%"}}>
                 <h3 className="title" style={{alignSelf: "center", fontSize: "35px"}}>Login to your account</h3>
                 <p>Enter your email to login</p>
                 <input id="email" className="input" type="email" placeholder="email@domain.com"
@@ -24,7 +24,7 @@ const Login = () => {
                     <a href="/privacy" className="privacy-policy">Privacy Policy</a>
                 </div>
             </div>
-            <div className="card" style={{width: '45%', height: "60vh", marginRight: "5%"}}>
+            <div className="card" style={{width: '45%', height: "60vh"}}>
                 <img className="card-img-contact" src={featuredImage} alt=""/>
             </div>
 
