@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import "../css/Register.css";
 import featuredImage from "../img/Mobile login-pana 2.png";
 import { countries } from 'countries-list';
-import Select from "react-select";
 
 const Register = () => {
     const [selectedCountry, setSelectedCountry] = useState(null);
