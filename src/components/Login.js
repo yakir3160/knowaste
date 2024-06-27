@@ -25,7 +25,7 @@ const Login = () => {
                 />
                 <button className="login">Login</button>
                 <p className="already-have-an">don’t have an account?</p>
-                <Link to="/auth" state={{ showRegister: true }} className="sign-up" style={{width:"80%"}}>Sign up</Link>
+                <Link to="/auth" state={{ showRegister: true }} className="sign-up" style={{width:"85%"}}>Sign up</Link>
                 <div className="terms-container">
                     <span>By clicking continue, you agree to our </span>
                     <a href="/terms" className="terms-of-service">Terms of Service</a>
@@ -33,7 +33,7 @@ const Login = () => {
                     <a href="/privacy" className="privacy-policy">Privacy Policy</a>
                 </div>
             </div>
-            <div className="card" style={{ width: '45%', height: "60vh" }}>
+            <div className="card" style={{ width: '40%', height: "60vh" }}>
                 <img className="card-img-contact" src={featuredImage} alt="" />
             </div>
         </section>

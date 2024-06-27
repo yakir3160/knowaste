@@ -34,13 +34,14 @@ html, body {
 .app-container {
   width: 100%;
   margin: 40px;
-  padding-inline: 10px;
+  padding-inline: 20px;
   height: fit-content;
   border-radius: 25px;
   background-color: var(--secondary-color);
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .card {
@@ -85,7 +86,8 @@ footer {
 }
 .input-half{
   flex-direction: column;
-  width: 75%;
+  padding: 50px;
+  width: 50%;
   height: fit-content;
   font-weight: 400;
   font-size: inherit
@@ -94,6 +96,15 @@ footer {
 .input:focus-visible{
   outline: none;
   border:  1px solid  var(--lime-color) ;
+}
+.input-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 @keyframes fadeIn {
   0% {

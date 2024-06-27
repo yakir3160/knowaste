@@ -3,30 +3,29 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-
 }
+
 .contact-form-inner {
     flex-direction: row;
     max-width: 100%;
     animation: fadeIn 1.6s;
-
 }
+
 .contact-form {
-    width: 100%;
+    width: 90%;
     height: fit-content;
     align-self: flex-start;
     overflow: hidden;
     flex-direction: column;
-
 }
-.submit{
+
+.submit {
     cursor: pointer;
-    background-color:var(--buttons-color);
+    background-color: var(--buttons-color);
     border: none;
     color: var(--lime-color);
     padding: 20px 39px;
-    width: 77%;
+    width: 100%;
     height: 72px;
     border-radius: 35px;
     display: flex;
@@ -37,16 +36,16 @@
     font-family: inherit;
     font-weight: 500;
     font-size: inherit;
-
 }
+
 .submit:hover {
     background-color: #619c61;
     transform: scale(0.98);
     border: 1px solid var(--lime-color);
 }
-.input-message{
-    width: 70%;
-    height: 35px;
+
+.input, .input-message {
+    width: 90%;
     padding: 20px;
     border-radius: 35px;
     box-shadow: rgba(130, 130, 130, 0.28) 1px 1px 1px;
@@ -55,21 +54,27 @@
     font-family: inherit;
     font-weight: 500;
     font-size: inherit;
+}
 
-}
-.input-message:focus-visible{
+.input:focus-visible, .input-message:focus-visible {
     outline: none;
-    border:  1px solid var(--lime-color);
+    border: 1px solid var(--lime-color);
 }
+
 .input-message {
     height: 100px;
     resize: none;
 }
-.card-img-contact{
+
+.input.error, .input-message.error {
+    border: 1px solid #ff7b7b;
+    box-shadow: inset 0 0 0 1px #ff7b7b;
+    background-color: #fbefef;
+}
+
+.card-img-contact {
     width: 100%;
     height: auto;
-    margin-left: 80px;
-
 }
 
 @keyframes fadeIn {
@@ -83,3 +88,22 @@
     }
 }
 
+.error {
+    color: red;
+    font-size: 16px;
+    text-align: left;
+    width: 90%;
+    top: -20px;
+}
+
+.card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+}
