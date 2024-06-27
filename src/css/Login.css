@@ -4,6 +4,7 @@
     border: none;
     color: #bfff00;
     width: 100%;
+    height: fit-content;
     padding: 20px 39px;
     border-radius:35px;
     display: flex;
@@ -13,6 +14,7 @@
     font-family: inherit;
     font-weight: 500;
     font-size: 18px;
+    text-decoration: none;
     transition: background-color 0.3s ease, transform 0.3s ease;
 
 

@@ -1,21 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../css/NavigationBar.css';
 
 const NavigationBar = ({ className = "" }) => {
     return (
         <div className={`navigation ${className}`}>
             <div className="mid-brand">
-                <a href="/" className="logo-link">
+                <Link to="/" className="logo-link">
                     <b className="logo">
                         <span>KNO</span>
                         <span className="w_in_logo">W</span>
                         <span>ASTE</span>
                     </b>
-                </a>
+                </Link>
             </div>
             <div className="right-nav-buttons">
-                <a href="/contact" className="contact-us-link">Contact Us</a>
-                <button className="login-btn">Login</button>
+                <Link to="/contact" className="contact-us-link">Contact Us</Link>
+                <Link to="/auth" state={{ showRegister: false }} className="login-btn" style={{ textDecoration: 'none', height: "fit-content" }}>Login</Link>
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
-import '../css/LandingPage.css';
+import { Link } from 'react-router-dom';
+import '../css/LandingPage.css'; // Ensure this path is correct
 import LandingPageText from '../components/LandingPageText';
 import featuredImage from '../img/featured34-1@2x.png';
 
@@ -9,21 +10,19 @@ const LandingPage = () => {
             <div className="head">
                 <h1 className="welcome-to-knowaste">Welcome To KNOWASTE</h1>
                 <div className="opening-text">And a subheading describing your site, too</div>
-                <button className="button">
+                <Link to="/auth" state={{ showRegister: true }} className="button" style={{textDecoration: 'none',height:"fit-content"}}>
                     <div className="lets-sign-up">Let's Sign Up!</div>
-                </button>
+                </Link>
             </div>
-
             <div className="content">
                 <LandingPageText />
                 <div className="food-waste-img-container">
                     <img
                         className="food-waste-img"
-                        src={featuredImage} // Updated image import
+                        src={featuredImage}
                         alt="Food Waste"
                     />
                 </div>
-
             </div>
         </div>
     );
