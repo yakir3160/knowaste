@@ -17,7 +17,7 @@
     flex-direction: row;
     justify-content: space-around;
     align-items: stretch;
-    margin-bottom: 20px; /* Add space between form rows */
+    margin-bottom: 10px; /* Add space between form rows */
 }
 
 label {

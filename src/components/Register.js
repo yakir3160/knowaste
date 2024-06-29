@@ -29,31 +29,38 @@ const Register = () => {
             <div className="card form">
                 <h3 className="title">Let's create an account</h3>
                 <div className="card-half" style={{ width: "100%" }}>
-                    <form onSubmit={handleSubmit} style={{ width: '100%',display:"flex",flexDirection:"column",alignItems:"center" ,justifyContent:"center"}} noValidate>
+                    <form onSubmit={handleSubmit} style={{
+                        width: '100%',
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center"
+                    }} noValidate>
                         <div className="form-row">
                             <div className="input-container">
                                 <label htmlFor="name">Business Name</label>
-                                <input className="input input-half" id="name" placeholder="Business name" />
+                                <input className="input input-half" id="name" placeholder="Business name"/>
                             </div>
                             <div className="input-container">
                                 <label htmlFor="contact-name">Contact Representative</label>
-                                <input className="input input-half" id="contact-name" placeholder="Contact representative" />
+                                <input className="input input-half" id="contact-name"
+                                       placeholder="Contact representative"/>
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="input-container">
                                 <label htmlFor="phone">Phone</label>
-                                <input className="input input-half"  id="phone" placeholder="05x-xxxxxxx" />
+                                <input className="input input-half" id="phone" placeholder="05x-xxxxxxx"/>
                             </div>
                             <div className="input-container">
                                 <label htmlFor="address">Address</label>
-                                <input className="input input-half" id="address" placeholder="Address" />
+                                <input className="input input-half" id="address" placeholder="Address"/>
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="input-container">
                                 <label htmlFor="city">City</label>
-                                <input className="input input-half" id="city" placeholder="City" />
+                                <input className="input input-half" id="city" placeholder="City"/>
                             </div>
                             <div className="input-container">
                                 <label htmlFor="country">Country</label>
@@ -61,7 +68,7 @@ const Register = () => {
                                     id="country"
                                     className="input input-half"
                                     placeholder="Select a Country"
-                                    style={{ width: "101%" }}
+                                    style={{width: "101%"}}
                                     value={selectedCountry}
                                     onChange={(e) => handleCountryChange(e.target.value)}
                                 >
@@ -74,25 +81,32 @@ const Register = () => {
                                 </select>
                             </div>
                         </div>
-                        <div className="input-container">
-                            <label htmlFor="account-type">Account Type</label>
-                            <select id="account-type" className="input input-register" style={{ width: "98%" }}>
-                                <option value="">Select Account Type</option>
-                                <option value="restaurant-manager">Restaurant Manager</option>
-                                <option value="supplier">Supplier</option>
-                            </select>
+                        <div className="form-row">
+                            <div className="input-container">
+                                <label htmlFor="account-type">Account Type</label>
+                                <select id="account-type" className="input input-half" style={{width: "101%"}}>
+                                    <option value="">Select Account Type</option>
+                                    <option value="restaurant-manager">Restaurant Manager</option>
+                                    <option value="supplier">Supplier</option>
+                                </select>
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="email">Email</label>
+                                <input id="email" className="input input-half" type="email"
+                                       placeholder="email@domain.com"/>
+                            </div>
                         </div>
-                        <div className="input-container">
-                            <label htmlFor="email">Email</label>
-                            <input id="email" className="input input-register" type="email" placeholder="email@domain.com" />
-                        </div>
-                        <div className="input-container">
-                            <label htmlFor="password">Password</label>
-                            <input id="password" className="input input-register" type="password" placeholder="Password" />
-                        </div>
-                        <div className="input-container">
-                            <label htmlFor="repeat-password">Repeat Password</label>
-                            <input id="repeat-password" className="input input-register" type="password" placeholder="Repeat Password" />
+                        <div className="form-row">
+                            <div className="input-container">
+                                <label htmlFor="password">Password</label>
+                                <input id="password" className="input input-half" type="password"
+                                       placeholder="Password"/>
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="repeat-password">Repeat Password</label>
+                                <input id="repeat-password" className="input input-half" type="password"
+                                       placeholder="Repeat Password"/>
+                            </div>
                         </div>
 
                     </form>
