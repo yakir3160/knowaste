@@ -73,7 +73,7 @@
 }
 
 .card-img-contact {
-    width:80%;
+    width:100%;
     height: auto;
 }
 
@@ -105,4 +105,10 @@
 .title {
     text-align: center;
     margin-bottom: 20px;
+}
+.thank-you-message{
+    animation: fadeIn 1.2s ease-in;
+    background: #f1f6e2;
+    border-radius: 25px;
+    padding: 20px;
 }
