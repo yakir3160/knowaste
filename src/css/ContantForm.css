@@ -8,6 +8,7 @@
 .contact-form-inner {
     flex-direction: row;
     max-width: 100%;
+
     animation: fadeIn 1.6s;
 }
 
@@ -17,6 +18,7 @@
     align-self: flex-start;
     overflow: hidden;
     flex-direction: column;
+
 }
 
 .submit {

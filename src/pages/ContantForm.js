@@ -47,7 +47,9 @@ const ContactForm = () => {
                                             name="firstName"
                                             placeholder="First name"
                                         />
-                                        <ErrorMessage name="firstName" component="div" className="error" />
+                                        <div className="error-container">
+                                            <ErrorMessage name="firstName" component="div" className="error" />
+                                        </div>
                                     </div>
                                     <div className="input-container">
                                         <Field
@@ -55,7 +57,9 @@ const ContactForm = () => {
                                             name="lastName"
                                             placeholder="Last name"
                                         />
-                                        <ErrorMessage name="lastName" component="div" className="error" />
+                                        <div className="error-container">
+                                            <ErrorMessage name="lastName" component="div" className="error" />
+                                        </div>
                                     </div>
                                     <div className="input-container">
                                         <Field
@@ -64,7 +68,9 @@ const ContactForm = () => {
                                             type="email"
                                             placeholder="Email"
                                         />
-                                        <ErrorMessage name="email" component="div" className="error" />
+                                        <div className="error-container">
+                                            <ErrorMessage name="email" component="div" className="error" />
+                                        </div>
                                     </div>
                                     <div className="input-container">
                                         <Field
@@ -73,7 +79,9 @@ const ContactForm = () => {
                                             name="message"
                                             placeholder="Enter your question or message"
                                         />
-                                        <ErrorMessage name="message" component="div" className="error" />
+                                        <div className="error-container">
+                                            <ErrorMessage name="message" component="div" className="error" />
+                                        </div>
                                     </div>
                                     <button className="submit" type="submit">Submit</button>
                                 </Form>
