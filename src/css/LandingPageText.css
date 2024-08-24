@@ -2,7 +2,7 @@
 .placeholder-icon,
 .placeholder-icon1,
 .placeholder-icon2 {
-    width: 39px;
+    width: 20%;
     height: 39px;
     position: relative;
     overflow: hidden;
@@ -25,7 +25,7 @@
     flex-shrink: 0;
 }
 
-/* Specific styles for each placeholder group */
+
 .placeholder-parent,
 .placeholder-group,
 .placeholder-container {
@@ -35,7 +35,6 @@
     align-items: flex-start;
     justify-content: flex-start;
     gap: 8px;
-    padding-bottom: 19px; /* Adjusted padding for consistency */
 }
 
 /* Frame parents and wrappers */
@@ -67,14 +66,14 @@
     gap: 46px;
 }
 
-.frame-wrapper2,
-.frame-wrapper3,
-.frame-wrapper4 {
-    align-self: stretch;
-    flex-direction: row;
-    padding-left: 1px;
-    box-sizing: border-box;
-}
+/*.frame-wrapper2,*/
+/*.frame-wrapper3,*/
+/*.frame-wrapper4 {*/
+/*    align-self: stretch;*/
+/*    flex-direction: row;*/
+/*    padding-left: 1px;*/
+/*    box-sizing: border-box;*/
+/*}*/
 .text-content,
 .content-inner {
     display: flex;

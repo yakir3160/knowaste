@@ -6,7 +6,7 @@ import featuredImage from '../img/sign-up-formIMG.png';
 const Login = () => {
     return (
         <section className="contact-form-inner">
-            <div className="card" style={{ width: '40vh', height: "fit-content", margin: "", marginLeft: "8%" }}>
+            <div className="card" style={{ minWidth: '40vh',width : "50vh", height: "fit-content", margin: "", marginLeft: "8%" }}>
                 <h3 className="title" style={{ alignSelf: "center", fontSize: "35px" }}>Login to your account</h3>
                 <p>Enter your email to login</p>
                 <input
@@ -25,7 +25,7 @@ const Login = () => {
                 />
                 <button className="login">Login</button>
                 <p className="already-have-an">don’t have an account?</p>
-                <Link to="/auth" state={{ showRegister: true }} className="sign-up" style={{width:"85%"}}>Sign up</Link>
+                <Link to="/auth" state={{ showRegister: true }} className="sign-up">Sign up</Link>
                 <div className="terms-container">
                     <span>By clicking continue, you agree to our </span>
                     <a href="/terms" className="terms-of-service">Terms of Service</a>

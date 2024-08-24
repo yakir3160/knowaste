@@ -40,7 +40,7 @@ const ContactForm = () => {
                             }}
                         >
                             {({ errors, touched }) => (
-                                <Form style={{ width: '100%', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} noValidate>
+                                <Form style={{ width: '100%', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}} noValidate>
                                     <div className="input-container">
                                         <Field
                                             className={`input ${errors.firstName && touched.firstName ? 'error' : ''}`}
