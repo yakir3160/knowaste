@@ -191,8 +191,8 @@ const Register = () => {
                     </Formik>
                 </div>
             </div>
-            <div className="card" style={{width: '40%'}}>
-                <img className="card-img-contact" src={featuredImage} alt=""/>
+            <div style={{maxWidth: "40vh"}}>
+                <img className="card-img" src={featuredImage} alt=""/>
             </div>
         </section>
     );

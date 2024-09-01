@@ -1,13 +1,13 @@
 :root {
-    --base-color: #FAFFEB;
-    --buttons-color: #3B763B;
+    --base-color: #eff4e1;
+    --buttons-color: #307a30;
     --titles-color: #2A522A;
     --secondary-color: #E4EBCF;
     --lime-color: #BFFF00;
 }
 
 .footer {
-    background: linear-gradient(-90deg, var(--buttons-color) 41.71%, var(--buttons-color) 60%, var(--titles-color) 79.72%);
+    background: transparent;
     padding: 20px 40px; /* Padding for the footer */
     text-align: center;
     border-radius: 25px 25px 0 0;

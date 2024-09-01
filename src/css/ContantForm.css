@@ -1,25 +1,16 @@
-.contact-form,
-.contact-form-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
 
 .contact-form-inner {
-    flex-direction: row;
-    max-width: 100%;
-
-    animation: fadeIn 1.6s;
-}
-
-.contact-form {
     width: 100%;
     height: fit-content;
-    align-self: flex-start;
-    overflow: hidden;
-    flex-direction: column;
+    animation: fadeIn 1.6s;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 
 }
+
 
 .submit {
     cursor: pointer;
@@ -74,10 +65,6 @@
     background-color: #fbefef;
 }
 
-.card-img-contact {
-    width:100%;
-    height: auto;
-}
 
 @keyframes fadeIn {
     0% {

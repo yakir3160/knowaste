@@ -24,9 +24,8 @@ const ContactForm = () => {
     });
 
     return (
-        <div className="contact-form">
-            <section className="contact-form-inner" style={{ width: "80%" }}>
-                <div className="card">
+            <section className="contact-form-inner" >
+                <div className="card" style={{maxWidth:"40vh"}}>
                     <h3 className="title">Contact us</h3>
                     {!submitted ? (
                         <Formik
@@ -40,7 +39,7 @@ const ContactForm = () => {
                             }}
                         >
                             {({ errors, touched }) => (
-                                <Form style={{ width: '100%', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}} noValidate>
+                                <Form style={{ width: '100%', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} noValidate>
                                     <div className="input-container">
                                         <Field
                                             className={`input ${errors.firstName && touched.firstName ? 'error' : ''}`}
@@ -94,12 +93,12 @@ const ContactForm = () => {
                         </div>
                     )}
                 </div>
-                <div className="card">
-                    <img className="card-img-contact" src={featuredImage} alt="Contact" />
+                <div style={{maxWidth: "40vh", marginRight: "-8%"}}>
+                    <img className="card-img" src={featuredImage} alt="Contact"/>
                 </div>
+                <ToastContainer/>
             </section>
-            <ToastContainer />
-        </div>
+
     );
 };
 

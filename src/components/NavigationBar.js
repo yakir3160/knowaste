@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../css/NavigationBar.css';
+import '../css/App.css';
 
 const NavigationBar = ({ className = "" }) => {
     return (
@@ -9,7 +10,7 @@ const NavigationBar = ({ className = "" }) => {
                 <Link to="/" className="logo-link">
                     <b className="logo">
                         <span>KNO</span>
-                        <span className="w_in_logo">W</span>
+                        <span style={{color: "var(--lime-color)"}}>W</span>
                         <span>ASTE</span>
                     </b>
                 </Link>

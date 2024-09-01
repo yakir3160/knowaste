@@ -20,6 +20,7 @@
 .login{
     background-color: var(--lime-color);
     color: black;
+
 }
 .sign-up:hover {
     background-color: #619c61;
@@ -35,4 +36,25 @@
     text-align: center;
     margin-top: 20px;
     padding: 10px;
+}
+
+.fields {
+    width: 100%;
+    padding: 75px 5px 5px 5px;
+}
+.fields input {
+    width: 100%;
+    border: none;
+    outline:none;
+    background: none;
+    font-size: 18px;
+    color: #555;
+    padding:20px 10px 20px 5px;
+
+}
+.username, .password {
+    margin-bottom: 30px;
+    border-radius: 25px;
+    box-shadow: inset 8px 8px 8px #cbced1,
+    inset -8px -8px 8px #ffffff;
 }
