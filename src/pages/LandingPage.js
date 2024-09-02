@@ -2,21 +2,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../css/LandingPage.css';
 import LandingPageText from '../components/LandingPageText';
-import featuredImage from '../img/featured34-1@2x.png';
+import featuredImage1 from '../img/food-waste_1.jpg';
+import featuredImage2 from '../img/featured34-1@2x.png';
 import "../css/App.css"
 
 const LandingPage = () => {
     return (
         <div className="w-full flex flex-col items-center justify-center gap-12 p-5 box-border ">
             <div
-                className="min-h-screen  w-full p-8 text-center flex flex-col items-center justify-start mt-20 animate-fadeIn">
+                className="min-h-screen  w-full p-8 text-center flex flex-col items-center justify-start mt-20 animate-fadeIn"
+                style={{
+                    // background: `linear-gradient(rgba(42, 82, 42, 0.8), rgba(255, 255, 255, 0.5)), url(${featuredImage1})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center"
+                    }}
+            >
                 <h1 className="text-5xl text-[#2a522a] font-inherit mb-5">
                     Welcome To
                 </h1>
                 <h1 className="text-9xl text-[#2a522a] font-semibold mb-5">
                     KNOWASTE
                 </h1>
-                <div className="text-2xl leading-[150%] font-inherit animate-fadeIn" style={{ animationDuration: "2s" }}>
+                <div className="text-2xl leading-[150%] font-inherit animate-fadeIn" style={{ animationDuration: "1.8s" }}>
                     And a subheading describing your site, too
                 </div>
             </div>
@@ -26,7 +33,7 @@ const LandingPage = () => {
                 <div className="w-full">
                     <img
                         className="rounded-[25px] mr-12 w-full h-auto transition-transform duration-500 ease-in-out hover:scale-101"
-                        src={featuredImage}
+                        src={featuredImage2}
                         alt="Food Waste"
                     />
                 </div>

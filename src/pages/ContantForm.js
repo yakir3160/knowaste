@@ -25,7 +25,7 @@ const ContactForm = () => {
 
     return (
             <section className="contact-form-inner" >
-                <div className="card" style={{maxWidth:"40vh"}}>
+                <div className="card" style={{maxWidth:"50vh"}}>
                     <h3 className="title">Contact us</h3>
                     {!submitted ? (
                         <Formik
@@ -93,8 +93,8 @@ const ContactForm = () => {
                         </div>
                     )}
                 </div>
-                <div style={{maxWidth: "40vh", marginRight: "-8%"}}>
-                    <img className="card-img" src={featuredImage} alt="Contact"/>
+                <div style={{maxWidth: "60vh", marginRight: "-8%",marginLeft:"20%"}}>
+                    <img  src={featuredImage} alt="Contact"/>
                 </div>
                 <ToastContainer/>
             </section>

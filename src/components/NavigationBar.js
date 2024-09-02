@@ -9,7 +9,7 @@ const NavigationBar = ({ className = "" }) => {
             <div className="mid-brand">
                 <Link to="/" className="logo-link">
                     <b className="logo">
-                        <span>KNO</span>
+                        <span className="logo-text">KNO</span>
                         <span style={{color: "var(--lime-color)"}}>W</span>
                         <span>ASTE</span>
                     </b>

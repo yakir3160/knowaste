@@ -21,6 +21,7 @@
     background-color: var(--lime-color);
     color: black;
 
+
 }
 .sign-up:hover {
     background-color: #619c61;
@@ -34,8 +35,7 @@
 }
 .terms-container{
     text-align: center;
-    margin-top: 20px;
-    padding: 10px;
+    margin-top: 10px;
 }
 
 .fields {

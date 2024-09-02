@@ -8,11 +8,11 @@ const Login = () => {
         <section className="contact-form-inner">
                 <div className="card"
                      style={{
-                         minWidth: '40vh',
+                         minWidth: '35vh',
                          maxWidth:'40vh',
                          height: "fit-content",
                          margin: "",
-                         marginLeft: "8%"
+
                      }}>
                     <h3 className="title" style={{alignSelf: "center", fontSize: "35px"}}>Login to your account</h3>
                     <p>Enter your email to login</p>
@@ -46,8 +46,8 @@ const Login = () => {
                     {/*    </div>*/}
                     {/*</div>*/}
                 </div>
-            <div style={{maxWidth:"40vh"}}>
-                <img className="card-img" src={featuredImage} alt=""/>
+            <div style={{maxWidth: "60vh", marginRight: "-8%", marginLeft: "15%"}}>
+                <img src={featuredImage} alt=""/>
             </div>
         </section>
     );

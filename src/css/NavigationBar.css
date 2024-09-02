@@ -21,17 +21,35 @@
     line-height: 150%;
     font-family: Antonio, serif;
     font-size: 3.5rem;
-    padding-left: 70px;
-    transition: color 0.1s ease, transform 0.1s ease;
+    padding: 10px 30px ;
+    border-radius: 35px;
+    transition: color 0.1s ease-in-out;
 
 }
+.logo {
+    background: linear-gradient(
+            to right,
+            var(--titles-color) 50%,
+            var(--lime-color) 50%
+    );
+    background-size: 200% 100%;
+    background-position: -100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: color-sweep 2s forwards;
+}
+
 .logo-link {
     text-decoration: none;
     transition: color 0.3s ease;
+    animation: color-sweep 2s forwards;
 }
 
 .logo:hover {
     color: var(--lime-color);
+    transition: color 0.1s ease-in-out;
+    animation: color-sweep 1s forwards;
 }
 
 .right-nav-buttons {
@@ -43,25 +61,34 @@
     justify-content: flex-end;
 }
 
+@keyframes color-sweep {
+    to {
+        background-position: 0 0;
+    }
+}
+
+
 .contact-us-link {
     text-decoration: none;
     color: var(--titles-color);
     font-family: inherit;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    border: var(--titles-color) solid 1px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
     padding: 13px 17px;
     border-radius: 25px;
+    box-shadow: 8px 8px 22px rgba(203, 209, 184, 0.60),
+    -8px -8px 22px rgb(253, 255, 244);
 }
 
 .contact-us-link:hover {
-    color: var(--base-color);
-    background-color: var(--titles-color);
-    border: transparent;
+    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
+    inset -6px -6px 12px #feffef;
 }
 
 .login-btn {
     background-color: var(--lime-color);
     border: none;
+    box-shadow: 8px 8px 22px rgba(203, 209, 184, 0.60),
+    -8px -8px 22px rgb(253, 255, 244);
     color: var(--titles-color);
     padding: 14px 18px;
     border-radius: 25px;
@@ -71,13 +98,15 @@
     font-weight: 500;
     font-size: inherit;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+
 }
 
 .login-btn:hover {
-    background-color: rgb(92, 122, 8);
-    transform: scale(0.98);
-    color: var(--lime-color);
+    transform: scale(0.99);
+    background-color: var(--lime-color);
+    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
+    inset -6px -6px 12px #feffef;
 }
 
 .mid-brand {
