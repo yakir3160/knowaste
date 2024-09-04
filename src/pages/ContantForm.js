@@ -5,6 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../css/ContantForm.css";
 import featuredImage from '../img/contact.png';
+import Card from "../components/Card";
+import Button from "../components/Button";
 
 const ContactForm = () => {
     const [submitted, setSubmitted] = useState(false);
@@ -25,7 +27,7 @@ const ContactForm = () => {
 
     return (
             <section className="contact-form-inner" >
-                <div className="card" style={{minWidth:"50vh",maxWidth:"50vh"}}>
+                <Card style={{minWidth:"50vh",maxWidth:"50vh"}}>
                     <h3 className="title">Contact us</h3>
                     {!submitted ? (
                         <Formik
@@ -82,7 +84,9 @@ const ContactForm = () => {
                                             <ErrorMessage name="message" component="div" className="error" />
                                         </div>
                                     </div>
-                                    <button className="submit" type="submit">Submit</button>
+                                    <div className="input-container m-5">
+                                        <Button style={{ width: '90%',height:"7vh"}} className="w-7/10 bg-buttons text-lime " type="submit">Submit</Button>
+                                    </div>
                                 </Form>
                             )}
                         </Formik>
@@ -92,7 +96,7 @@ const ContactForm = () => {
                             <p className="title" style={{ fontSize: "28px" }}>We appreciate you contacting us. We will get back to you soon!</p>
                         </div>
                     )}
-                </div>
+                </Card>
                 <div style={{maxWidth: "60vh", marginRight: "-8%",marginLeft:"20%"}}>
                     <img  src={featuredImage} alt="Contact"/>
                 </div>

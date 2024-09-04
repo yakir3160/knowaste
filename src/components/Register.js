@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import "../css/Register.css";
 import featuredImage from "../img/Mobile login-pana 2.png";
 import { countries } from 'countries-list';
+import Card from "./Card";
 
 const Register = () => {
     const [countryOptions, setCountryOptions] = useState([]);
@@ -65,7 +66,7 @@ const Register = () => {
     return (
         <section className="contact-form-inner">
             <ToastContainer />
-            <div className="card form" style={{minWidth:'50vh'}} >
+            <Card style={{minWidth:'50vh'}} >
                 <h3 className="title">Let's create an account</h3>
                     <Formik
                         initialValues={{
@@ -203,7 +204,7 @@ const Register = () => {
                             </Form>
                         )}
                     </Formik>
-            </div>
+            </Card>
             <div style={{width: "50%"}}>
                 <img src={featuredImage} alt=""/>
             </div>

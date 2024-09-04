@@ -1,0 +1,23 @@
+.button {
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+    transition: all 0.3s ease, transform 0.3s ease;
+    padding: 13px 17px;
+    border-radius: 25px;
+    box-shadow: 13px 13px 20px #dbdfcc,
+    -13px -13px 20px #faffeb;
+    min-width: fit-content;
+}
+
+.button:hover {
+    transform: scale(0.99);
+    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
+    inset -6px -6px 12px #feffef;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    background-color: #d3d3d3;
+    color: #a9a9a9;
+}

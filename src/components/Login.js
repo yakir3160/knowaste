@@ -2,14 +2,15 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import '../css/Login.css';
 import featuredImage from '../img/sign-up-formIMG.png';
+import Card from "./Card";
 
 const Login = () => {
     return (
         <section className="contact-form-inner sm:flex-row">
-                <div className="card"
+                <Card
                      style={{
-                         minWidth: '40vh',
-                         maxWidth:'40vh',
+                         minWidth: '50vh',
+                         maxWidth:'50vh',
                          height: "fit-content",
                          margin: "",
 
@@ -21,14 +22,27 @@ const Login = () => {
                         className="input"
                         type="email"
                         placeholder="email@domain.com"
-                        style={{width: '92%', height: "fit-content", fontWeight: "400", fontSize: "20px"}}
+                        style={{
+                            width: '92%',
+                            height: "fit-content",
+                            fontWeight: "400",
+                            fontSize: "20px",
+                            boxShadow: 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef'
+                        }}
                     />
                     <input
                         id="password"
                         className="input"
                         type="password"
                         placeholder="Password"
-                        style={{width: '92%', height: "fit-content", fontWeight: "400", fontSize: "20px"}}
+                        style={{
+                            width: '92%',
+                            height: 'fit-content',
+                            fontWeight: '400',
+                            fontSize: '20px',
+                            boxShadow: 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef'
+                        }}
+
                     />
                     <button className="login">Login</button>
                     <p className="already-have-an">don’t have an account?</p>
@@ -39,13 +53,7 @@ const Login = () => {
                         <span> and </span>
                         <a href="/privacy" className="privacy-policy">Privacy Policy</a>
                     </div>
-                    {/*<div className="fields">*/}
-                    {/*    <div className="username"><input type="email" className="user-input" placeholder="username"/>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="password"><input type="password" className="pass-input" placeholder="password"/>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                </div>
+                </Card>
             <div style={{maxWidth: "60vh", marginRight: "-8%", marginLeft: "15%"}}>
                 <img src={featuredImage} alt=""/>
             </div>
