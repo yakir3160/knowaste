@@ -39,12 +39,13 @@
     width: 90%;
     padding: 20px;
     border-radius: 35px;
-    box-shadow: rgba(130, 130, 130, 0.28) 1px 1px 1px;
     border: none;
     margin: 10px;
     font-family: inherit;
     font-weight: 500;
     font-size: inherit;
+    background-color: #f9ffed;
+
 }
 
 .input:focus-visible, .input-message:focus-visible {

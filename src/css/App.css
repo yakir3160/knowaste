@@ -5,7 +5,7 @@
 @tailwind components;
 @tailwind utilities;
 :root {
-  --base-color: #fbfbfb;
+  --base-color: #F0F6E1FF;
   --buttons-color: rgba(59, 118, 59, 0.15);
   --titles-color: #2A522A;
   --secondary-color: #E4EBCF;

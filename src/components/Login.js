@@ -9,8 +9,8 @@ const Login = () => {
         <section className="contact-form-inner sm:flex-row">
                 <Card
                      style={{
-                         minWidth: '50vh',
-                         maxWidth:'50vh',
+                         minWidth: '40vh',
+                         maxWidth:'50px',
                          height: "fit-content",
                          margin: "",
 
