@@ -45,7 +45,8 @@ html, body {
   justify-content: center;
 }
 .card {
-  width: 50%;
+  width: 50vh;
+  width: 50svh;
   padding: 50px;
   display: flex;
   flex-direction: column;

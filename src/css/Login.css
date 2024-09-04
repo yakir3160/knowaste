@@ -20,8 +20,6 @@
 .login{
     background-color: var(--lime-color);
     color: black;
-
-
 }
 .sign-up:hover {
     background-color: #619c61;
