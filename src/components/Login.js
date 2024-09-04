@@ -5,10 +5,10 @@ import featuredImage from '../img/sign-up-formIMG.png';
 
 const Login = () => {
     return (
-        <section className="contact-form-inner">
+        <section className="contact-form-inner sm:flex-row">
                 <div className="card"
                      style={{
-                         minWidth: '35vh',
+                         minWidth: '40vh',
                          maxWidth:'40vh',
                          height: "fit-content",
                          margin: "",

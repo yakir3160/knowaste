@@ -65,9 +65,8 @@ const Register = () => {
     return (
         <section className="contact-form-inner">
             <ToastContainer />
-            <div className="card form">
+            <div className="card form" style={{minWidth:'50vh'}} >
                 <h3 className="title">Let's create an account</h3>
-                <div className="card-half" style={{ width: "100%" }}>
                     <Formik
                         initialValues={{
                             businessName: '',
@@ -84,57 +83,62 @@ const Register = () => {
                         validationSchema={validationSchema}
                         onSubmit={handleSubmit}
                     >
-                        {({ errors, touched, isSubmitting }) => (
-                            <Form style={{
-                                width: '100%',
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                justifyContent: "center"
-                            }} noValidate>
-                                <div className="form-row">
+                        {({errors, touched, isSubmitting}) => (
+                            <Form className="flex flex-col gap-6" noValidate>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 auto-cols-max">
                                     <div className="input-container">
-                                        <label htmlFor="businessName">Business Name</label>
-                                        <Field className={`input input-half ${errors.businessName && touched.businessName ? 'error-reg' : ''}`} id="businessName" name="businessName" placeholder="Business name"/>
+                                        <label htmlFor="businessName" className="block text-sm font-medium">Business
+                                            Name</label>
+                                        <Field
+                                            className={`input ${errors.businessName && touched.businessName ? 'error-reg' : ''}`}
+                                            id="businessName" name="businessName" placeholder="Business name"/>
                                         <div className="error-container">
-                                            <ErrorMessage name="businessName" component="div" className="error-reg" />
+                                            <ErrorMessage name="businessName" component="div" className="error-reg"/>
                                         </div>
                                     </div>
                                     <div className="input-container">
-                                        <label htmlFor="contactName">Contact Representative</label>
-                                        <Field className={`input input-half ${errors.contactName && touched.contactName ? 'error-reg' : ''}`} id="contactName" name="contactName" placeholder="Contact representative"/>
+                                        <label htmlFor="contactName" className="block text-sm font-medium">Contact
+                                            Representative</label>
+                                        <Field
+                                            className={`input ${errors.contactName && touched.contactName ? 'error-reg' : ''}`}
+                                            id="contactName" name="contactName" placeholder="Contact representative"/>
                                         <div className="error-container">
-                                            <ErrorMessage name="contactName" component="div" className="error-reg" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-row">
-                                    <div className="input-container">
-                                        <label htmlFor="phone">Phone</label>
-                                        <Field className={`input input-half ${errors.phone && touched.phone ? 'error-reg' : ''}`} id="phone" name="phone" placeholder="05x-xxxxxxx"/>
-                                        <div className="error-container">
-                                            <ErrorMessage name="phone" component="div" className="error-reg" />
-                                        </div>
-                                    </div>
-                                    <div className="input-container">
-                                        <label htmlFor="address">Address</label>
-                                        <Field className={`input input-half ${errors.address && touched.address ? 'error-reg' : ''}`} id="address" name="address" placeholder="Address"/>
-                                        <div className="error-container">
-                                            <ErrorMessage name="address" component="div" className="error-reg" />
+                                            <ErrorMessage name="contactName" component="div" className="error-reg"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="form-row">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div className="input-container">
-                                        <label htmlFor="city">City</label>
-                                        <Field className={`input input-half ${errors.city && touched.city ? 'error-reg' : ''}`} id="city" name="city" placeholder="City"/>
+                                        <label htmlFor="phone" className="block text-sm font-medium">Phone</label>
+                                        <Field className={`input ${errors.phone && touched.phone ? 'error-reg' : ''}`}
+                                               id="phone" name="phone" placeholder="05x-xxxxxxx"/>
                                         <div className="error-container">
-                                            <ErrorMessage name="city" component="div" className="error-reg" />
+                                            <ErrorMessage name="phone" component="div" className="error-reg"/>
                                         </div>
                                     </div>
                                     <div className="input-container">
-                                        <label htmlFor="country">Country</label>
-                                        <Field as="select" id="country" name="country" className={`input input-half ${errors.country && touched.country ? 'error-reg' : ''}`} style={{width: "101%"}}>
+                                        <label htmlFor="address" className="block text-sm font-medium">Address</label>
+                                        <Field
+                                            className={`input ${errors.address && touched.address ? 'error-reg' : ''}`}
+                                            id="address" name="address" placeholder="Address"/>
+                                        <div className="error-container">
+                                            <ErrorMessage name="address" component="div" className="error-reg"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div className="input-container">
+                                        <label htmlFor="city" className="block text-sm font-medium">City</label>
+                                        <Field className={`input ${errors.city && touched.city ? 'error-reg' : ''}`}
+                                               id="city" name="city" placeholder="City"/>
+                                        <div className="error-container">
+                                            <ErrorMessage name="city" component="div" className="error-reg"/>
+                                        </div>
+                                    </div>
+                                    <div className="input-container">
+                                        <label htmlFor="country" className="block text-sm font-medium">Country</label>
+                                        <Field as="select" id="country" name="country"
+                                               className={`input ${errors.country && touched.country ? 'error-reg' : ''}`}>
                                             <option value="">Select a Country</option>
                                             {countryOptions.map((country) => (
                                                 <option key={country.value} value={country.value}>
@@ -143,56 +147,65 @@ const Register = () => {
                                             ))}
                                         </Field>
                                         <div className="error-container">
-                                            <ErrorMessage name="country" component="div" className="error-reg" />
+                                            <ErrorMessage name="country" component="div" className="error-reg"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="form-row">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div className="input-container">
-                                        <label htmlFor="accountType">Account Type</label>
-                                        <Field as="select" id="accountType" name="accountType" className={`input input-half ${errors.accountType && touched.accountType ? 'error-reg' : ''}`} style={{width: "101%"}}>
+                                        <label htmlFor="accountType" className="block text-sm font-medium">Account
+                                            Type</label>
+                                        <Field as="select" id="accountType" name="accountType"
+                                               className={`input ${errors.accountType && touched.accountType ? 'error-reg' : ''}`}>
                                             <option value="">Select Account Type</option>
                                             <option value="restaurant-manager">Restaurant Manager</option>
                                             <option value="supplier">Supplier</option>
                                         </Field>
                                         <div className="error-container">
-                                            <ErrorMessage name="accountType" component="div" className="error-reg" />
+                                            <ErrorMessage name="accountType" component="div" className="error-reg"/>
                                         </div>
                                     </div>
                                     <div className="input-container">
-                                        <label htmlFor="email">Email</label>
-                                        <Field id="email" name="email" className={`input input-half ${errors.email && touched.email ? 'error-reg' : ''}`} type="email" placeholder="email@domain.com"/>
+                                        <label htmlFor="email" className="block text-sm font-medium">Email</label>
+                                        <Field id="email" name="email"
+                                               className={`input ${errors.email && touched.email ? 'error-reg' : ''}`}
+                                               type="email" placeholder="email@domain.com"/>
                                         <div className="error-container">
-                                            <ErrorMessage name="email" component="div" className="error-reg" />
+                                            <ErrorMessage name="email" component="div" className="error-reg"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="form-row">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div className="input-container">
-                                        <label htmlFor="password">Password</label>
-                                        <Field id="password" name="password" className={`input input-half ${errors.password && touched.password ? 'error-reg' : ''}`} type="password" placeholder="Password"/>
+                                        <label htmlFor="password" className="block text-sm font-medium">Password</label>
+                                        <Field id="password" name="password"
+                                               className={`input ${errors.password && touched.password ? 'error-reg' : ''}`}
+                                               type="password" placeholder="Password"/>
                                         <div className="error-container">
-                                            <ErrorMessage name="password" component="div" className="error-reg" />
+                                            <ErrorMessage name="password" component="div" className="error-reg"/>
                                         </div>
                                     </div>
                                     <div className="input-container">
-                                        <label htmlFor="repeatPassword">Repeat Password</label>
-                                        <Field id="repeatPassword" name="repeatPassword" className={`input input-half ${errors.repeatPassword && touched.repeatPassword ? 'error-reg' : ''}`} type="password" placeholder="Repeat Password"/>
+                                        <label htmlFor="repeatPassword" className="block text-sm font-medium">Repeat
+                                            Password</label>
+                                        <Field id="repeatPassword" name="repeatPassword"
+                                               className={`input ${errors.repeatPassword && touched.repeatPassword ? 'error-reg' : ''}`}
+                                               type="password" placeholder="Repeat Password"/>
                                         <div className="error-container">
-                                            <ErrorMessage name="repeatPassword" component="div" className="error-reg" />
+                                            <ErrorMessage name="repeatPassword" component="div" className="error-reg"/>
                                         </div>
                                     </div>
                                 </div>
-                                <button className="submit" type="submit" disabled={isSubmitting}>
+                                <button className="submit bg-blue-500 text-white p-3 rounded hover:bg-blue-600"
+                                        type="submit" disabled={isSubmitting}>
                                     {isSubmitting ? 'Submitting...' : 'Submit'}
                                 </button>
                             </Form>
                         )}
                     </Formik>
-                </div>
             </div>
-            <div style={{width:"50%"}}>
-                <img  src={featuredImage} alt=""/>
+            <div style={{width: "50%"}}>
+                <img src={featuredImage} alt=""/>
             </div>
         </section>
     );

@@ -21,10 +21,10 @@
 }
 
 .welcome-to-knowaste {
-    font-size: 50px;
     color: #2a522a;
     font-family: inherit;
     margin-bottom: 20px;
+    font-size: clamp(2rem, 5vw, 5rem);
 }
 
 .opening-text {

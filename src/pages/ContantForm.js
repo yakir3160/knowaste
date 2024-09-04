@@ -25,7 +25,7 @@ const ContactForm = () => {
 
     return (
             <section className="contact-form-inner" >
-                <div className="card" style={{maxWidth:"50vh"}}>
+                <div className="card" style={{minWidth:"50vh",maxWidth:"50vh"}}>
                     <h3 className="title">Contact us</h3>
                     {!submitted ? (
                         <Formik

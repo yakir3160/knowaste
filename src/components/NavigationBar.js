@@ -24,11 +24,11 @@ const NavigationBar = ({className = ""}) => {
     }, [])
 
     return (
-        <div className={`navigation ${isScrolling ? 'glassy' : ''} ${className}`}>
-            <div className="mid-brand">
+        <div className={`navigation ${isScrolling ? 'glassy' : ''} ${className} min-w-fit`}>
+            <div className="mid-brand ">
                 <Link to="/" className="logo-link">
                     <b className="logo">
-                        <span className="logo-text">KNO</span>
+                        <span className="logo-text ">KNO</span>
                         <span style={{color: "var(--lime-color)"}}>W</span>
                         <span>ASTE</span>
                     </b>
