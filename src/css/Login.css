@@ -13,24 +13,12 @@
     font-weight: 500;
     font-size: 18px;
     text-decoration: none;
-    transition: opacity 0.2s ease-in-out;
 }
 .login{
     background-color: var(--lime-color);
     color: black;
 }
-.sign-up:hover {
-    background-color: var(--base-color);
-    color: var(--titles-color);
-    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
-    inset -6px -6px 12px #feffef;
-}
 
-.login:hover {
-    background-color: var(--lime-color);
-    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
-    inset -6px -6px 12px #f2fbd5;
-}
 .terms-container{
     text-align: center;
     margin-top: 10px;

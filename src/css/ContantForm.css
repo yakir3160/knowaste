@@ -50,6 +50,7 @@
 .input:focus-visible, .input-message:focus-visible {
     outline: none;
     border: 1px solid var(--lime-color);
+
 }
 
 .input-message {

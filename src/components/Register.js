@@ -198,10 +198,10 @@ const Register = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <Button className="text-titles"
-                                        type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Submitting...' : 'Submit'}
-                                </Button>
+
+                                    <Button style={{width: '100%', height: "5vh"}} className="text-titles "
+                                            type="submit">Submit</Button>
+
                             </Form>
                         )}
                     </Formik>

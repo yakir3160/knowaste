@@ -2,17 +2,17 @@
     cursor: pointer;
     text-decoration: none;
     font-family: inherit;
-    transition: all 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease; /* Smoother transition */
     padding: 13px 17px;
     border-radius: 25px;
-    box-shadow: 13px 13px 20px #dbdfcc,
-    -13px -13px 20px #faffeb;
+    box-shadow: 13px 13px 20px #dbdfcc, -13px -13px 20px #faffeb;
     min-width: fit-content;
 }
 
 .button:hover {
-    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
-    inset -6px -6px 12px #faffeb;
+    box-shadow: 5px 5px 12px rgba(203, 209, 184, 0.60), -5px -5px 12px #faffeb;
+    color: #619c61;
+
 }
 
 .button:disabled {
