@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import '../css/Login.css';
 import featuredImage from '../img/sign-up-formIMG.png';
 import Card from "./Card";
+import Button from "./Button";
 
 const Login = () => {
     return (
@@ -27,7 +28,8 @@ const Login = () => {
                             height: "fit-content",
                             fontWeight: "400",
                             fontSize: "20px",
-                            boxShadow: 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef'
+                            boxShadow: 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef',
+                            background:"#fefff8"
                         }}
                     />
                     <input
@@ -36,17 +38,21 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         style={{
+
                             width: '92%',
                             height: 'fit-content',
                             fontWeight: '400',
                             fontSize: '20px',
-                            boxShadow: 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef'
+                            boxShadow: 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef',
+                            background:"#fefff8"
                         }}
 
                     />
-                    <button className="login">Login</button>
+                    <Button className="login">Login</Button>
                     <p className="already-have-an">don’t have an account?</p>
-                    <Link to="/auth" state={{showRegister: true}} className="sign-up">Sign up</Link>
+                    <Button className="sign-up" to="/auth" state={{ showRegister: true }}>
+                        Sign up
+                    </Button>
                     <div className="terms-container">
                         <span>By clicking continue, you agree to our </span>
                         <a href="/terms" className="terms-of-service">Terms of Service</a>

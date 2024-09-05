@@ -11,9 +11,8 @@
 }
 
 .button:hover {
-    transform: scale(0.99);
     box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
-    inset -6px -6px 12px #feffef;
+    inset -6px -6px 12px #faffeb;
 }
 
 .button:disabled {

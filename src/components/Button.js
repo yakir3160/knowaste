@@ -1,10 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../css/Button.css';
 
-const Button = ({ onClick, children, className,style, disabled }) => {
-    return (
+const Button = ({ children, className, style, disabled, to, state }) => {
+    return to ? (
+        <Link
+            to={to}
+            state={state}
+            className={`button ${className}`}
+        >
+            <button
+                style={style}
+                disabled={disabled}
+            >
+                {children}
+            </button>
+        </Link>
+    ) : (
         <button
-            onClick={onClick}
             style={style}
             className={`button ${className}`}
             disabled={disabled}
@@ -13,7 +26,5 @@ const Button = ({ onClick, children, className,style, disabled }) => {
         </button>
     );
 };
-
-
 
 export default Button;

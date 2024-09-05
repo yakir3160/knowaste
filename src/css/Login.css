@@ -1,11 +1,9 @@
 .sign-up,.login{
     cursor: pointer;
-    background-color:var(--buttons-color);
     border: none;
-    color: #bfff00;
-    width: 95%;
+    width: 93%;
     height: fit-content;
-    padding: 20px 39px;
+    color: var(--titles-color);
     border-radius:35px;
     display: flex;
     align-items: center;
@@ -15,21 +13,23 @@
     font-weight: 500;
     font-size: 18px;
     text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.2s ease-in-out;
 }
 .login{
     background-color: var(--lime-color);
     color: black;
 }
 .sign-up:hover {
-    background-color: #619c61;
-    transform: scale(0.98);
+    background-color: var(--base-color);
+    color: var(--titles-color);
+    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
+    inset -6px -6px 12px #feffef;
 }
 
 .login:hover {
-    background-color: rgb(92, 122, 8);
-    transform: scale(0.98);
-    color: var(--lime-color);
+    background-color: var(--lime-color);
+    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
+    inset -6px -6px 12px #f2fbd5;
 }
 .terms-container{
     text-align: center;

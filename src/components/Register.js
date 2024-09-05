@@ -7,6 +7,7 @@ import "../css/Register.css";
 import featuredImage from "../img/Mobile login-pana 2.png";
 import { countries } from 'countries-list';
 import Card from "./Card";
+import Button from "./Button";
 
 const Register = () => {
     const [countryOptions, setCountryOptions] = useState([]);
@@ -197,10 +198,10 @@ const Register = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <button className="submit bg-blue-500 text-white p-3 rounded hover:bg-blue-600"
+                                <Button className="text-titles"
                                         type="submit" disabled={isSubmitting}>
                                     {isSubmitting ? 'Submitting...' : 'Submit'}
-                                </button>
+                                </Button>
                             </Form>
                         )}
                     </Formik>

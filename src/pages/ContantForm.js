@@ -76,7 +76,7 @@ const ContactForm = () => {
                                     <div className="input-container">
                                         <Field
                                             as="textarea"
-                                            className={`input-message ${errors.message && touched.message ? 'error' : ''}`}
+                                            className={`p-5 input-message ${errors.message && touched.message ? 'error' : ''}`}
                                             name="message"
                                             placeholder="Enter your question or message"
                                         />
@@ -85,7 +85,7 @@ const ContactForm = () => {
                                         </div>
                                     </div>
                                     <div className="input-container m-5">
-                                        <Button style={{ width: '90%',height:"7vh"}} className="w-7/10 bg-buttons text-lime " type="submit">Submit</Button>
+                                        <Button style={{ width: '90%',height:"5vh"}} className="text-titles " type="submit">Submit</Button>
                                     </div>
                                 </Form>
                             )}

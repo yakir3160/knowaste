@@ -106,7 +106,7 @@ padding: 1rem 1rem;
     transform: scale(0.99);
     background-color: var(--lime-color);
     box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
-    inset -6px -6px 12px #feffef;
+    inset -6px -6px 12px #f2fbd5;
 }
 
 .mid-brand {
