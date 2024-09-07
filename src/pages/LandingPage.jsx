@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../css/LandingPage.css';
+
 import LandingPageText from '../components/LandingPageText';
 import featuredImage1 from '../img/food-waste_1.jpg';
 import featuredImage2 from '../img/featured34-1@2x.png';
@@ -31,7 +31,7 @@ const LandingPage = () => {
                 </div>
             </div>
 
-            <div className="w-full flex flex-row items-start justify-center   ">
+            <div className="w-full flex flex-row items-start justify-center  ">
                 <LandingPageText/>
                 <div className="w-full">
                     <img

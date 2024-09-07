@@ -9,7 +9,7 @@ const NavigationBar = ({className = ""}) => {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY >10) {
+            if (window.scrollY >15) {
                 setScrolling(true);
             } else {
                 setScrolling(false);
