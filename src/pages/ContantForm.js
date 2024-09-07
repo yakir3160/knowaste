@@ -84,8 +84,8 @@ const ContactForm = () => {
                                             <ErrorMessage name="message" component="div" className="error" />
                                         </div>
                                     </div>
-                                    <div className="input-container m-5">
-                                        <Button style={{ width: '90%',height:"5vh"}} className="text-titles " type="submit">Submit</Button>
+                                    <div className="input-container m-4">
+                                        <Button style={{ width: '90%',height:"7vh"}} className="text-titles " type="submit">Submit</Button>
                                     </div>
                                 </Form>
                             )}

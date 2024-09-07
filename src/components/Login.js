@@ -16,7 +16,7 @@ const Login = () => {
                          margin: "",
 
                      }}>
-                    <h3 className="title" style={{alignSelf: "center", fontSize: "35px"}}>Login to your account</h3>
+                    <h3 className="title" style={{alignSelf: "center", fontSize: "30px"}}>Login to your account</h3>
                     <p>Enter your email to login</p>
                     <input
                         id="email"
@@ -25,7 +25,7 @@ const Login = () => {
                         placeholder="email@domain.com"
                         style={{
                             width: '92%',
-                            height: "fit-content",
+                            height: "6vh",
                             fontWeight: "400",
                             fontSize: "20px",
                             boxShadow: 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef',
@@ -40,7 +40,7 @@ const Login = () => {
                         style={{
 
                             width: '92%',
-                            height: 'fit-content',
+                            height: '6vh',
                             fontWeight: '400',
                             fontSize: '20px',
                             boxShadow: 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef',

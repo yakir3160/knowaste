@@ -27,7 +27,7 @@ const NavigationBar = ({className = ""}) => {
         <div className={`navigation ${isScrolling ? 'glassy' : ''} ${className} min-w-fit`}>
             <div className="mid-brand ">
                 <Link to="/" className="logo-link">
-                    <b className="logo">
+                    <b className="logo font-jaro">
                         <span className="logo-text ">KNO</span>
                         <span style={{color: "var(--lime-color)"}}>W</span>
                         <span>ASTE</span>

@@ -18,7 +18,7 @@ html, body {
   display: flex;
   flex-direction: column;
   background-color: var(--base-color);
-  font-family: 'Jost', serif;
+  font-family: Jost, serif;
   scroll-behavior: smooth;
   flex: 1;
   padding: 0 40px 0 40px;

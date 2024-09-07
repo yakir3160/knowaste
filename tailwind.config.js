@@ -3,6 +3,12 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
+      fontFamily: {
+        jaro: ['"Jaro"', 'sans-serif'],
+        jost: ['"Jost"', 'sans-serif'],
+        tac: ['"Tac One"', 'sans-serif'],
+        openSans: ['Open Sans', 'sans-serif'],
+      },
       colors: {
         'base': '#F0F6E1FF',
         'buttons': '#3B763B',
