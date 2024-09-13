@@ -93,11 +93,10 @@ const ContactForm = () => {
                     ) : (
                         <div className="thank-you-message">
                             <h2 className="title">Thank you!</h2>
-                            <p className="title" style={{ fontSize: "28px" }}>We appreciate you contacting us. We will get back to you soon!</p>
+                            <p className="title" style={{ fontSize: "26px" }}>We appreciate you contacting us. We will get back to you soon!</p>
                         </div>
                     )}
                 </Card>
-
                 <ToastContainer/>
             </section>
 
