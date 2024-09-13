@@ -32,7 +32,7 @@ const LandingPageText = () => {
                         <div className="text-lg leading-[150%] font-medium text-[#828282]">
                             Subheading 3
                         </div>
-                        <div className="text-lg leading-[150%] font-medium text-[#828282]">
+                        <div className="text-lg leading-[150%]  font-medium text-[#828282]">
                             Body text for whatever you’d like to suggest. Add main takeaway points, quotes, anecdotes, or even a very very short story.
                         </div>
                     </div>

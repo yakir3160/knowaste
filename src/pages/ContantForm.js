@@ -97,9 +97,7 @@ const ContactForm = () => {
                         </div>
                     )}
                 </Card>
-                <div style={{maxWidth: "60vh", marginRight: "-8%",marginLeft:"20%"}}>
-                    <img  src={featuredImage} alt="Contact"/>
-                </div>
+
                 <ToastContainer/>
             </section>
 

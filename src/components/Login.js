@@ -60,9 +60,6 @@ const Login = () => {
                         <a href="/privacy" className="privacy-policy">Privacy Policy</a>
                     </div>
                 </Card>
-            <div style={{maxWidth: "60vh", marginRight: "-8%", marginLeft: "15%"}}>
-                <img src={featuredImage} alt=""/>
-            </div>
         </section>
     );
 }

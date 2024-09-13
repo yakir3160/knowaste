@@ -42,6 +42,7 @@ padding: 1rem 1rem;
     color: transparent;
     text-shadow: var(--titles-color) 1px 1px 0;
     animation: color-sweep 2s forwards;
+
 }
 
 .logo-link {

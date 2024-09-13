@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <div className="footer">
             <div className="logo-container">
-                <Link to="/" className="logo-link ">
+                <Link to="/" className="logo-link font-jaro ">
                     <b className="logo">
                         <span>KNO</span>
                         <span className="w_in_logo">W</span>
