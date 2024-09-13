@@ -67,7 +67,7 @@ const Register = () => {
     return (
         <section className="contact-form-inner">
             <ToastContainer />
-            <Card style={{minWidth:'50vh'}} >
+            <Card style={{minWidth:'50vh',width:"80%",height:"fit-content"}} >
                 <h3 className="title">Let's create an account</h3>
                     <Formik
                         initialValues={{
@@ -104,7 +104,7 @@ const Register = () => {
                                         <Field
                                             className={`input ${errors.contactName && touched.contactName ? 'error-reg' : ''}`}
                                             id="contactName" name="contactName" placeholder="Contact representative"/>
-                                        <div className="error-container">
+                                        <div className="error-contain8484er">
                                             <ErrorMessage name="contactName" component="div" className="error-reg"/>
                                         </div>
                                     </div>
@@ -206,9 +206,6 @@ const Register = () => {
                         )}
                     </Formik>
             </Card>
-            <div style={{width: "50%"}}>
-                <img src={featuredImage} alt=""/>
-            </div>
         </section>
     );
 }
