@@ -7,6 +7,7 @@ import "../css/ContantForm.css";
 import featuredImage from '../img/contact.png';
 import Card from "../components/Card";
 import Button from "../components/Button";
+import GlobalField from "../components/GlobalField";
 
 const ContactForm = () => {
     const [submitted, setSubmitted] = useState(false);
@@ -42,51 +43,31 @@ const ContactForm = () => {
                         >
                             {({ errors, touched }) => (
                                 <Form style={{ width: '100%', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} noValidate>
-                                    <div className="input-container">
-                                        <Field
-                                            className={`input ${errors.firstName && touched.firstName ? 'error' : ''}`}
-                                            name="firstName"
-                                            placeholder="First name"
-                                        />
-                                        <div className="error-container">
-                                            <ErrorMessage name="firstName" component="div" className="error" />
-                                        </div>
-                                    </div>
-                                    <div className="input-container">
-                                        <Field
-                                            className={`input ${errors.lastName && touched.lastName ? 'error' : ''}`}
-                                            name="lastName"
-                                            placeholder="Last name"
-                                        />
-                                        <div className="error-container">
-                                            <ErrorMessage name="lastName" component="div" className="error" />
-                                        </div>
-                                    </div>
-                                    <div className="input-container">
-                                        <Field
-                                            className={`input ${errors.email && touched.email ? 'error' : ''}`}
-                                            name="email"
-                                            type="email"
-                                            placeholder="Email"
-                                        />
-                                        <div className="error-container">
-                                            <ErrorMessage name="email" component="div" className="error" />
-                                        </div>
-                                    </div>
-                                    <div className="input-container">
-                                        <Field
-                                            as="textarea"
-                                            className={`p-5 input-message ${errors.message && touched.message ? 'error' : ''}`}
-                                            name="message"
-                                            placeholder="Enter your question or message"
-                                        />
-                                        <div className="error-container">
-                                            <ErrorMessage name="message" component="div" className="error" />
-                                        </div>
-                                    </div>
-                                    <div className="input-container m-4">
-                                        <Button style={{ width: '90%',height:"7vh"}} className="text-titles " type="submit">Submit</Button>
-                                    </div>
+                                    <GlobalField
+                                        name="firstName"
+                                        legend="First Name"
+                                        placeholder="First name"
+                                    />
+                                    <GlobalField
+                                        name="lastName"
+                                        legend="Last Name"
+                                        placeholder="Last name"
+                                    />
+                                    <GlobalField
+                                        name="email"
+                                        type="email"
+                                        legend="Email Address"
+                                        placeholder="Email"
+                                    />
+                                    <GlobalField
+                                        name="message"
+                                        as="textarea"
+                                        legend="Message"
+                                        placeholder="Enter your question or message"
+                                        style={{justifyContent:'start' }}
+                                    />
+                                    <Button style={{ width: '90%',height:"7vh"}} className="text-titles " type="submit">Submit</Button>
+
                                 </Form>
                             )}
                         </Formik>
