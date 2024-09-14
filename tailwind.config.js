@@ -25,11 +25,16 @@ module.exports = {
         '3xl': '1600px',
         '2xl': '1536px'
       },
-      gridAutoColumns:{
-        '2fr':'minmax(0,2fr'
-      }
+      gridAutoColumns: {
+        '2fr': 'minmax(0, 2fr)',
+        '3fr': 'minmax(0, 3fr)',
+        '1fr': 'minmax(0, 1fr)',
+        'max-content': 'max-content',
+        'min-content': 'min-content',
+        'auto': 'auto',
+      },
     },
-    animation:{
+    animation: {
       fadeIn: 'fadeIn 0.9s ease-in-out forwards',
     },
   },

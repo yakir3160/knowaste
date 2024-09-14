@@ -66,7 +66,7 @@ const ContactForm = () => {
                                         placeholder="Enter your question or message"
                                         style={{justifyContent:'start' }}
                                     />
-                                    <Button style={{ width: '90%',height:"7vh"}} className="text-titles " type="submit">Submit</Button>
+                                    <Button style={{ width: '100%',height:"7vh"}} className="text-titles " type="submit">Submit</Button>
 
                                 </Form>
                             )}
