@@ -2,7 +2,7 @@
 .navigation {
     display: flex;
     justify-content: space-between;
-padding: 1rem 1rem;
+    padding: 1rem 1rem;
     align-items: center;
     background: transparent;
     width: 100%;
@@ -64,48 +64,6 @@ padding: 1rem 1rem;
     align-items: center;
     justify-content: flex-end;
 }
-
-.contact-us-link {
-    text-decoration: none;
-    color: var(--titles-color);
-    font-family: inherit;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    padding: 13px 17px;
-    border-radius: 25px;
-    box-shadow: 8px 8px 22px rgba(203, 209, 184, 0.60),
-    -8px -8px 22px rgb(253, 255, 244);
-    min-width: fit-content;
-}
-
-.contact-us-link:hover {
-    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
-    inset -6px -6px 12px #feffef;
-}
-
-.login-btn {
-    background-color: var(--lime-color);
-    border: none;
-    box-shadow: 8px 8px 22px rgba(203, 209, 184, 0.60),
-    -8px -8px 22px rgb(253, 255, 244);
-    color: var(--titles-color);
-    padding: 14px 18px;
-    border-radius: 25px;
-    width: fit-content;
-    height: fit-content;
-    font-family: inherit;
-    font-weight: 500;
-    font-size: inherit;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.login-btn:hover {
-    transform: scale(0.99);
-    background-color: var(--lime-color);
-    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60),
-    inset -6px -6px 12px #f2fbd5;
-}
-
 .mid-brand {
     display: flex;
     justify-content: flex-start;

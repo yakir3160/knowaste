@@ -1,7 +1,5 @@
 .card {
-    width: 50vh;
-    width: 50svh;
-    padding: 40px;
+    padding: 30px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
