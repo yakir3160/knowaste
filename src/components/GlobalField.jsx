@@ -3,7 +3,7 @@ import { Field, useField } from 'formik';
 import { REQUIRED_MSG } from '../constants';
 
 const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [], ...props }) => {
-    const fieldHeight = as === 'textarea' ? 'h-[100px]' : 'h-[55px]';
+    const fieldHeight = as === 'textarea' ? 'min-h-[100px]' : 'h-[55px]';
     const [field, meta] = useField(name);
     const hasError = meta.touched && meta.error;
 
@@ -18,49 +18,45 @@ const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [
         }
     };
 
-    const baseFieldClasses = `
-        m-1 ${fieldHeight} p-3 block w-full
+    const fieldClasses = `
+        ${fieldHeight} p-3 w-full 
+       
         shadow-inset-custom outline-none box-border
-        focus:border-lime focus-visible:border-2 focus-visible:border rounded-3xl
+        focus:border-lime focus-visible:border-2 rounded-3xl
         placeholder:top-0 placeholder:pt-1
         transition-all duration-200
-    `;
-
-    const fieldClasses = `
-        ${baseFieldClasses}
-        ${hasError
-        ? 'bg-pink-100 border-2 border-red-500'
-        : 'bg-baseLight border-2 border-base'
-    }
+        ${hasError ? 'bg-pink-100 border-2 border-red-500' : 'bg-baseLight border-2 border-base'}
     `;
 
     return (
-        <div className="flex flex-col p-2">
+        <div className="flex flex-col  min-w-[100px]  ">
             {legend && (
-                <legend className="ml-2 text-sm font-medium min-w-fit whitespace-nowrap text-titles">
+                <label className="text-sm font-medium text-titles mb-2">
                     {legend}
-                </legend>
+                </label>
             )}
-            {as === "select" ? (
-                <Field as="select" name={name} {...props} className={fieldClasses}>
-                    {options.map((option, index) => (
-                        <option key={index} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </Field>
-            ) : (
-                <Field
-                    name={name}
-                    type={type}
-                    as={as}
-                    placeholder={getPlaceholder()}
-                    {...props}
-                    className={`${fieldClasses} ${as === 'textarea' ? 'resize-none' : ''}`}
-                />
-            )}
-            <div className="text-red-600 text-center min-h-[24px] text-sm w-full">
-                {hasError && <div className="text-red-600 text-sm">{meta.error || REQUIRED_MSG}</div>}
+            <div className="flex justify-center">
+                {as === "select" ? (
+                    <Field as="select" name={name} {...props} className={fieldClasses}>
+                        {options.map((option, index) => (
+                            <option key={index} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </Field>
+                ) : (
+                    <Field
+                        name={name}
+                        type={type}
+                        as={as}
+                        placeholder={getPlaceholder()}
+                        {...props}
+                        className={`${fieldClasses} ${as === 'textarea' ? 'resize-none' : ''}`}
+                    />
+                )}
+            </div>
+            <div className="text-red-600 text-center min-h-[24px] text-sm w-full mt-2">
+                {hasError && <div>{meta.error || REQUIRED_MSG}</div>}
             </div>
         </div>
     );

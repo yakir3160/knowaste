@@ -60,7 +60,7 @@ const Register = () => {
     return (
         <>
             <ToastContainer />
-            <Card className="w-full max-w-2xl mx-auto py-8 px-4">
+            <Card className="max-w-2xl min-w-xl mx-auto py-8 px-4">
                 <h3 className="title text-4xl text-titles mb-8">Let's create an account</h3>
                 <Formik
                     initialValues={{
@@ -79,7 +79,7 @@ const Register = () => {
                 >
                     {({ errors, touched, isSubmitting }) => (
                         <Form className="w-full" noValidate>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 <GlobalField
                                     name="businessName"
                                     legend="Business Name"
@@ -114,9 +114,9 @@ const Register = () => {
                                     legend="City"
                                     placeholder="City"
                                     options={[
-                                        { value: '', label: 'Select City' },
-                                        { value: 'restaurant-manager', label: 'Restaurant Manager' },
-                                        { value: 'supplier', label: 'Supplier' }
+                                        {value: '', label: 'Select City'},
+                                        {value: 'restaurant-manager', label: 'Restaurant Manager'},
+                                        {value: 'supplier', label: 'Supplier'}
                                     ]}
                                     as="select"
                                 />
@@ -132,9 +132,9 @@ const Register = () => {
                                     placeholder="Account Type"
                                     as="select"
                                     options={[
-                                        { value: '', label: 'Select Account Type' },
-                                        { value: 'restaurant-manager', label: 'Restaurant Manager' },
-                                        { value: 'supplier', label: 'Supplier' }
+                                        {value: '', label: 'Select Account Type'},
+                                        {value: 'restaurant-manager', label: 'Restaurant Manager'},
+                                        {value: 'supplier', label: 'Supplier'}
                                     ]}
                                 />
                                 <GlobalField
@@ -149,7 +149,8 @@ const Register = () => {
                                     placeholder="Repeat Password"
                                     type="password"
                                 />
-                                <div className="col-span-2 flex justify-center items-center h-full">
+                                <div
+                                    className="col-span-1 sm:col-span-2 lg:col-span-2 flex justify-center items-center h-full">
                                     <Button className="text-titles w-full h-16" type="submit">Submit</Button>
                                 </div>
                             </div>

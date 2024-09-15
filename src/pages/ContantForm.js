@@ -30,7 +30,7 @@ const ContactForm = () => {
 
     return (
             <>
-                <Card style={{minWidth:"40vh",maxWidth:"50vh"}}>
+                <Card className="min-w-[40vh] max-w-[100rem]  mx-auto ">
                     <h3 className="title">Contact us</h3>
                     {!submitted ? (
                         <Formik
