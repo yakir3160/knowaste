@@ -8,7 +8,7 @@ import GlobalField from "./GlobalField";
 
 const Login = () => {
     return (
-        <section className="contact-form-inner sm:flex-row">
+        <section className="wrapper sm:flex-row">
             <Card
                 style={{
                     minWidth: '40vh',

@@ -7,7 +7,7 @@ import {Outlet} from "react-router-dom";
 const Layout = ({ children }) => (
     <div className="app">
         <NavigationBar/>
-        <div className="app-container">
+        <div className="wrapper">
             {children}
             <Outlet/>
         </div>

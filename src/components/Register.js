@@ -1,38 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import React, { useEffect } from 'react';
+import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../css/Register.css";
-import featuredImage from "../img/Mobile login-pana 2.png";
-import { countries } from 'countries-list';
 import Card from "./Card";
 import Button from "./Button";
 import GlobalField from "./GlobalField";
+import { REQUIRED_MSG } from "../constants";
 
 const Register = () => {
 
     useEffect(() => {
-
+        // You might want to add some side-effects here if needed.
     }, []);
 
     const validationSchema = Yup.object().shape({
-        businessName: Yup.string().required('Business name is required'),
-        contactName: Yup.string().required('Contact representative is required'),
+        businessName: Yup.string().required(REQUIRED_MSG),
+        contactName: Yup.string().required(REQUIRED_MSG),
         phone: Yup.string()
             .matches(/^\d{10}$/, 'Phone number is not valid')
-            .required('Phone is required'),
-        address: Yup.string().required('Address is required'),
-        city: Yup.string().required('City is required'),
-        country: Yup.string().required('Country is required'),
-        accountType: Yup.string().required('Account type is required'),
+            .required(REQUIRED_MSG),
+        address: Yup.string().required(REQUIRED_MSG),
+        city: Yup.string().required(REQUIRED_MSG),
+        accountType: Yup.string().required(REQUIRED_MSG),
         email: Yup.string()
             .email('Invalid email address')
-            .required('Email is required'),
-        password: Yup.string().required('Password is required'),
+            .required(REQUIRED_MSG),
+        password: Yup.string().required(REQUIRED_MSG),
         repeatPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
-            .required('Repeat password is required'),
+            .required(REQUIRED_MSG),
     });
 
     const handleSubmit = (values, { setSubmitting, resetForm }) => {
@@ -61,10 +59,10 @@ const Register = () => {
     };
 
     return (
-        <section className="contact-form-inner">
+        <>
             <ToastContainer />
-            <Card style={{minWidth:'50vh',width:"80%",height:"fit-content"}} >
-                <h3 className="title">Let's create an account</h3>
+            <Card className="w-full max-w-2xl mx-auto py-8 px-4">
+                <h3 className="title text-4xl text-titles mb-8">Let's create an account</h3>
                 <Formik
                     initialValues={{
                         businessName: '',
@@ -72,7 +70,6 @@ const Register = () => {
                         phone: '',
                         address: '',
                         city: '',
-                        country: '',
                         accountType: '',
                         email: '',
                         password: '',
@@ -81,9 +78,9 @@ const Register = () => {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({errors, touched, isSubmitting}) => (
-                        <Form className="flex flex-col gap-6 w-full" noValidate>
-                            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {({ errors, touched, isSubmitting }) => (
+                        <Form className="w-full" noValidate>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 <GlobalField
                                     name="businessName"
                                     legend="Business Name"
@@ -118,9 +115,9 @@ const Register = () => {
                                     legend="City"
                                     placeholder="City"
                                     options={[
-                                        {value: '', label: 'Select City'},
-                                        {value: 'restaurant-manager', label: 'Restaurant Manager'},
-                                        {value: 'supplier', label: 'Supplier'}
+                                        { value: '', label: 'Select City' },
+                                        { value: 'restaurant-manager', label: 'Restaurant Manager' },
+                                        { value: 'supplier', label: 'Supplier' }
                                     ]}
                                     as="select"
                                 />
@@ -136,9 +133,9 @@ const Register = () => {
                                     placeholder="Account Type"
                                     as="select"
                                     options={[
-                                        {value: '', label: 'Select Account Type'},
-                                        {value: 'restaurant-manager', label: 'Restaurant Manager'},
-                                        {value: 'supplier', label: 'Supplier'}
+                                        { value: '', label: 'Select Account Type' },
+                                        { value: 'restaurant-manager', label: 'Restaurant Manager' },
+                                        { value: 'supplier', label: 'Supplier' }
                                     ]}
                                 />
                                 <GlobalField
@@ -153,17 +150,15 @@ const Register = () => {
                                     placeholder="Repeat Password"
                                     type="password"
                                 />
-                                <div className="col-span-2 flex justify-center items-center h-full ">
+                                <div className="col-span-2 flex justify-center items-center h-full">
                                     <Button className="text-titles w-full h-16" type="submit">Submit</Button>
                                 </div>
                             </div>
-
-
                         </Form>
                     )}
                 </Formik>
             </Card>
-        </section>
+        </>
     );
 }
 

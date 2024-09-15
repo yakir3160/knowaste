@@ -2,6 +2,7 @@
     cursor: pointer;
     text-decoration: none;
     font-family: inherit;
+    font-weight: 500;
     transition: all 0.3s ease; /* Smoother transition */
     padding: 13px 17px;
     border-radius: 25px;
@@ -11,10 +12,9 @@
 
 .button:hover {
     box-shadow: 5px 5px 12px rgba(203, 209, 184, 0.60), -5px -5px 12px #faffeb;
-    color: #619c61;
+    color: #497549;
 
 }
-
 .button:disabled {
     cursor: not-allowed;
     background-color: #d3d3d3;

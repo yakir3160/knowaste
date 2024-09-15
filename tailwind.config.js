@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js,jsx}"],
+  content: ["./src/**/*.{html,js,jsx,css,ts,tsx}"],
   theme: {
     extend: {
       fontFamily: {
@@ -22,8 +22,10 @@ module.exports = {
         'baseLight': '#fbfdf6',
       },
       screens: {
+        'iphone': '375px',
+        'ipad': '768px',
+        '2xl': '1536px',
         '3xl': '1600px',
-        '2xl': '1536px'
       },
       gridAutoColumns: {
         '2fr': 'minmax(0, 2fr)',
@@ -33,9 +35,15 @@ module.exports = {
         'min-content': 'min-content',
         'auto': 'auto',
       },
-    },
-    animation: {
-      fadeIn: 'fadeIn 0.9s ease-in-out forwards',
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.9s ease-in-out forwards',
+      },
     },
   },
   plugins: [],

@@ -8,27 +8,29 @@ import featuredImage from '../img/contact.png';
 import Card from "../components/Card";
 import Button from "../components/Button";
 import GlobalField from "../components/GlobalField";
+import {REQUIRED_MSG} from "../constants";
 
 const ContactForm = () => {
     const [submitted, setSubmitted] = useState(false);
 
+
     const validationSchema = Yup.object().shape({
         firstName: Yup.string()
             .matches(/^[\u0590-\u05FFa-zA-Z\s]+$/, 'First name should contain only English or Hebrew characters and spaces')
-            .required('First name is required'),
+            .required(REQUIRED_MSG),
         lastName: Yup.string()
             .matches(/^[\u0590-\u05FFa-zA-Z\s]+$/, 'Last name should contain only English or Hebrew characters and spaces')
-            .required('Last name is required'),
+            .required(REQUIRED_MSG),
         email: Yup.string()
             .email('Invalid email address')
-            .required('Email is required'),
+            .required(REQUIRED_MSG),
         message: Yup.string()
-            .required('Message is required'),
+            .required(REQUIRED_MSG),
     });
 
     return (
-            <section className="contact-form-inner" >
-                <Card style={{minWidth:"50vh",maxWidth:"50vh"}}>
+            <>
+                <Card style={{minWidth:"40vh",maxWidth:"50vh"}}>
                     <h3 className="title">Contact us</h3>
                     {!submitted ? (
                         <Formik
@@ -42,7 +44,7 @@ const ContactForm = () => {
                             }}
                         >
                             {({ errors, touched }) => (
-                                <Form style={{ width: '100%', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} noValidate>
+                                <Form  noValidate>
                                     <GlobalField
                                         name="firstName"
                                         legend="First Name"
@@ -66,7 +68,7 @@ const ContactForm = () => {
                                         placeholder="Enter your question or message"
                                         style={{justifyContent:'start' }}
                                     />
-                                    <Button style={{ width: '100%',height:"7vh"}} className="text-titles " type="submit">Submit</Button>
+                                    <Button style={{ width: '100%',height:"7vh" }} className="text-titles mt-2 " type="submit">Submit</Button>
 
                                 </Form>
                             )}
@@ -79,7 +81,7 @@ const ContactForm = () => {
                     )}
                 </Card>
                 <ToastContainer/>
-            </section>
+            </>
 
     );
 };

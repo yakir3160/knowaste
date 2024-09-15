@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import '../css/NavigationBar.css';
 import '../css/App.css';
+import Button from "./Button";
 
 const NavigationBar = ({className = ""}) => {
     const [isScrolling, setScrolling] = useState(false);
@@ -35,9 +36,9 @@ const NavigationBar = ({className = ""}) => {
                 </Link>
             </div>
             <div className="right-nav-buttons">
-                <Link to="/contact" className="contact-us-link">Contact Us</Link>
-                <Link to="/auth" state={{showRegister: false}} className="login-btn"
-                      style={{textDecoration: 'none', height: "fit-content"}}>Login</Link>
+                <Button to="/contact" >Contact Us</Button>
+                <Button to="/auth" state={{showRegister: false}} className="bg-lime "
+                      style={{textDecoration: 'none', height: "fit-content"}}>Login</Button>
             </div>
         </div>
     );
