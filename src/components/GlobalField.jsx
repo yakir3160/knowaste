@@ -21,7 +21,7 @@ const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [
     const baseFieldClasses = `
         m-1 ${fieldHeight} p-3 block w-full
         shadow-inset-custom outline-none box-border
-        focus:border-lime focus-visible:border-1 focus-visible:border rounded-3xl
+        focus:border-lime focus-visible:border-2 focus-visible:border rounded-3xl
         placeholder:top-0 placeholder:pt-1
         transition-all duration-200
     `;
