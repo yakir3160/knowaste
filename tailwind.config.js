@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import fluid from 'fluid-tailwind'
+
 module.exports = {
   content: ["./src/**/*.{html,js,jsx,css,ts,tsx}"],
   theme: {
@@ -8,6 +10,11 @@ module.exports = {
         jost: ['"Jost"', 'sans-serif'],
         tac: ['"Tac One"', 'sans-serif'],
         openSans: ['Open Sans', 'sans-serif'],
+      },
+      fontSize: {
+        'logo-sm': '2.5rem',
+        'logo-md': '3rem',
+        'logo-lg': '3.5rem',
       },
       boxShadow: {
         'inset-custom': 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef',
@@ -40,11 +47,16 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        fadeInDown: {
+          '0%': { opacity: '0', transform: 'translateY(-20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        }
       },
       animation: {
         fadeIn: 'fadeIn 0.9s ease-in-out forwards',
+        fadeInDown: 'fadeInDown 0.8s'
       },
     },
   },
-  plugins: [],
-}
+  plugins: [fluid],
+};

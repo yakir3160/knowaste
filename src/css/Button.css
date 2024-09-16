@@ -2,12 +2,13 @@
     cursor: pointer;
     text-decoration: none;
     font-family: inherit;
-    font-weight: 500;
+    font-weight: 600;
     transition: all 0.3s ease; /* Smoother transition */
     padding: 13px 17px;
     border-radius: 25px;
     box-shadow: 13px 13px 20px #dbdfcc, -13px -13px 20px #faffeb;
     min-width: fit-content;
+
 }
 
 .button:hover {
@@ -15,8 +16,20 @@
     color: #497549;
 
 }
+.navigation.scrolling .button {
+    opacity: 100%;
+}
+
 .button:disabled {
     cursor: not-allowed;
     background-color: #d3d3d3;
     color: #a9a9a9;
+}
+@media (max-width: 640px) {
+    .button {
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 20px;
+
+    }
 }

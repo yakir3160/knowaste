@@ -19,7 +19,7 @@ const Button = ({ children, className, style, disabled, to, state }) => {
     ) : (
         <button
             style={style}
-            className={`button ${className}`}
+            className={`button ${className} `}
             disabled={disabled}
         >
             {children}

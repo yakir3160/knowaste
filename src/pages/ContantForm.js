@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../css/ContantForm.css";
-import featuredImage from '../img/contact.png';
 import Card from "../components/Card";
 import Button from "../components/Button";
 import GlobalField from "../components/GlobalField";
@@ -30,7 +29,7 @@ const ContactForm = () => {
 
     return (
             <>
-                <Card className="min-w-[40vh] max-w-[100rem]  mx-auto ">
+                <Card className="max-w-[100rem]  mx-auto ">
                     <h3 className="title">Contact us</h3>
                     {!submitted ? (
                         <Formik

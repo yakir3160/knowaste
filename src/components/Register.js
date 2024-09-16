@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,7 +11,7 @@ import { REQUIRED_MSG } from "../constants";
 const Register = () => {
 
     useEffect(() => {
-        // You might want to add some side-effects here if needed.
+
     }, []);
 
     const validationSchema = Yup.object().shape({
@@ -60,7 +60,7 @@ const Register = () => {
     return (
         <>
             <ToastContainer />
-            <Card className="max-w-2xl min-w-xl mx-auto py-8 px-4">
+            <Card className="max-w-2xl min-w-[360px] mx-auto py-8 px-4">
                 <h3 className="title text-4xl text-titles mb-8">Let's create an account</h3>
                 <Formik
                     initialValues={{

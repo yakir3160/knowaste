@@ -1,7 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import '../css/Login.css';
-import featuredImage from '../img/sign-up-formIMG.png';
 import Card from "./Card";
 import Button from "./Button";
 import GlobalField from "./GlobalField";
@@ -9,14 +7,7 @@ import GlobalField from "./GlobalField";
 const Login = () => {
     return (
         <section className="wrapper sm:flex-row">
-            <Card
-                style={{
-                    minWidth: '40vh',
-                    maxWidth:'50px',
-                    height: "fit-content",
-                    margin: "",
-
-                }}>
+            <Card>
                 <h3 className="title" style={{alignSelf: "center", fontSize: "30px"}}>Login to your account</h3>
                 <p>Enter your email to login</p>
                 <GlobalField

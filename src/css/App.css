@@ -12,17 +12,14 @@
   --lime-color: #aae800;
 }
 
-html, body {
+body {
   margin: 0;
   height: 100%;
-  flex-direction: column;
   background-color: var(--base-color);
   font-family: Jost, serif;
   scroll-behavior: smooth;
-  flex: 1;
-  padding: 0 30px 0 30px;
-}
 
+}
 .app {
   min-width: 100%;
   flex: 1 ;
@@ -33,7 +30,7 @@ html, body {
   width: 100vw;
   height:fit-content;
   min-height: 100vh;
-  max-width:100%
+
 }
 
 .wrapper {

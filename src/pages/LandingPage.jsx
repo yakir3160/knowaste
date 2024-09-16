@@ -5,6 +5,7 @@ import LandingPageText from '../components/LandingPageText';
 import featuredImage1 from '../img/food-waste_1.jpg';
 import featuredImage2 from '../img/featured34-1@2x.png';
 import "../css/App.css"
+import Button from "../components/Button";
 
 const LandingPage = () => {
     return (
@@ -41,13 +42,10 @@ const LandingPage = () => {
                     />
                 </div>
             </div>
-            <Link to="/auth" state={{showRegister: true}}
-                  className="button bg-[#3b763b] border-none py-3 px-6 sm:py-5 sm:px-10 w-fit h-[72px] rounded-[35px] flex items-center justify-center mt-7 transition-all duration-300 ease-in-out hover:bg-[#619c61] hover:scale-[.98] hover:border-[1px] hover:border-lime-500"
-                  style={{textDecoration: 'none', height: "fit-content"}}>
-                <div className="text-lg font-medium text-lime-400">
+            <Button to="/auth" state={{showRegister: true}}
+                    className="border-1 border-lime p-10 text-lime bg-buttons">
                     Let's Sign Up!
-                </div>
-            </Link>
+            </Button>
         </div>
 
     );
