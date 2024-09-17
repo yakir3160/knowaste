@@ -16,6 +16,11 @@
     color: #497549;
 
 }
+.custom-hover-button:hover {
+    background-color: #aae800 !important;
+    color: var(--titles-color) !important; 
+  }
+  
 .navigation.scrolling .button {
     opacity: 100%;
 }

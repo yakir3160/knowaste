@@ -6,7 +6,7 @@ import icon2 from '../img/00-2.svg';
 const LandingPageText = () => {
     return (
         <div className="w-full self-stretch flex flex-row items-start justify-start text-left text-xl text-[#2a522a] font-inherit p-5 ml-4">
-            <div className="max-w-1/3 w-full sm:w-1/2 flex flex-col items-start justify-end box-border">
+            <div className="max-w-1/3 w-full  flex flex-col items-start justify-end box-border">
                 <h3>OUR VISION</h3>
                 <div className="flex flex-col gap-12">
                     <div className="flex flex-col items-start gap-2">

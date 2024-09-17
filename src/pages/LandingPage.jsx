@@ -10,40 +10,41 @@ import Button from "../components/Button";
 const LandingPage = () => {
     return (
         <div
-            className="w-full flex flex-col items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 p-4 sm:p-5 md:p-6 lg:p-8 xl:p-10 box-border">
+            className="box-border flex flex-col justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 p-4 sm:p-5 md:p-6 lg:p-8 xl:p-10 w-full">
             <div
-                className="min-h-screen  w-full p-8 text-center flex flex-col items-center justify-start mt-20 animate-fadeIn"
+                className="flex flex-col justify-start items-center mt-20 p-8 w-full min-h-screen text-center animate-fadeIn"
                 style={{
                     // background: `linear-gradient(rgba(42, 82, 42, 0.8), rgba(255, 255, 255, 0.5)), url(${featuredImage1})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center"
                 }}
             >
-                <h1 className="text-6xl  sm:text 5xl md:text-6xl lg:text-7xl text-[#2a522a] font-inherit mb-5">
+                <h1 className="mb-5 font-inherit text-[#2a522a] text-6xl sm:text- md:text-6xl lg:text-7xl 5xl">
                     Welcome To
                 </h1>
-                <h1 className="text-7xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl text-[#2a522a] font-semibold mb-5">
+                <h1 className="mb-5 font-semibold text-[#2a522a] text-7xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl">
                     KNOWASTE
                 </h1>
 
-                <div className="text-2xl leading-[150%] font-inherit animate-fadeIn"
+                <div className="font-inherit text-2xl leading-[150%] animate-fadeIn"
                      style={{animationDuration: "1.8s"}}>
                     And a subheading describing your site, too
                 </div>
             </div>
 
-            <div className="w-full flex flex-row items-start justify-center  ">
+            <div className="flex flex-row justify-center items-start w-full">
                 <LandingPageText/>
                 <div className="w-full">
                     <img
-                        className="rounded-[25px] mr-12 w-full h-auto transition-transform duration-500 ease-in-out hover:scale-101"
+                        className="mr-12 rounded-[25px] w-full h-auto transition-transform duration-500 ease-in-out hover:scale-101"
                         src={featuredImage2}
                         alt="Food Waste"
                     />
                 </div>
             </div>
-            <Button to="/auth" state={{showRegister: true}}
-                    className="border-1 border-lime p-10 text-lime bg-buttons">
+            <Button to="/auth" state={{showRegister: true} }
+                    className="bg-buttons p-4 border border-lime text-lime custom-hover-button {
+">
                     Let's Sign Up!
             </Button>
         </div>

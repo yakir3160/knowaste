@@ -19,6 +19,7 @@
     color: var(--lime-color);
 }
 
+
 @keyframes color-sweep {
     0% {
         background-position: 0% center;

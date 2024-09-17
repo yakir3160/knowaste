@@ -24,11 +24,38 @@
     box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef;
     transition: all 0.3s ease-in-out;
 }
+.menu-button {
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+    font-weight: 600;
+    transition: all 0.9s ease; /* Smoother transition */
+    padding: 0.7rem;
+    margin: 5px;
+    border-radius: 15px;
+    box-shadow: 13px 13px 20px #dbdfcc, -13px -13px 20px #faffeb;
+    min-width: fit-content;
+
+
+}
+
+.menu-button:hover {
+    box-shadow: 5px 5px 12px rgba(203, 209, 184, 0.60), -5px -5px 12px #faffeb;
+    color: #497549;
+
+}
+
+
+
 @media screen and (max-width: 550px) {
     .navigation {
         padding: 0;
         margin: 0;
-
+        justify-content: center;
+        height:auto;
 
     }
+
 }
+
+  
