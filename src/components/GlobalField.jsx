@@ -30,7 +30,7 @@ const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [
         <div className="relative flex flex-col min-w-[100px]">
             <legend
                 className={`absolute left-4 top-8 mt-1 transition-all duration-200 text-gray-400  text-md font-medium
-                ${hasValue ? 'text-titles -top-1 left-1 mt-0 ' : ''}`}
+                ${hasValue ? 'text-titles -top-2 left-1 mt-0 ' : ''}`}
             >
                 { legend }
             </legend>
