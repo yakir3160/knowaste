@@ -9,7 +9,6 @@ const Button = ({ children, className, style, disabled, to, state, onClick }) =>
                 to={to}
                 state={state}
                 onClick={!disabled ? onClick : undefined}
-                
                 className={`button ${className}`}
                 style={style}
             >

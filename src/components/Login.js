@@ -18,7 +18,8 @@ const Login = () => {
         email: Yup.string()
             .email('Invalid email address')
             .required(REQUIRED_MSG),
-        password: Yup.string().required(REQUIRED_MSG),
+        password: Yup.string()
+            .required(REQUIRED_MSG),
     });
     const handleSubmit = (values, { setSubmitting, resetForm }) => {
         setTimeout(() => {
@@ -55,13 +56,13 @@ const Login = () => {
                             <div className="mb-3">
                                 <GlobalField
                                     type="email"
-                                    placeholder="Enter your email"
                                     name="email"
+                                    legend="Email"
                                 />
                                 <GlobalField
                                     type="password"
-                                    placeholder="Password"
                                     name="password"
+                                    legend="Password"
                                 />
                             </div>
                             <div

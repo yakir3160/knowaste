@@ -12,7 +12,7 @@ const LandingPage = () => {
         <div
             className="box-border flex flex-col justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 p-4 sm:p-5 md:p-6 lg:p-8 xl:p-10 w-full">
             <div
-                className="flex flex-col justify-start items-center mt-20 p-8 w-full min-h-screen text-center animate-fadeIn"
+                className="flex flex-col justify-start items-center mt-20 p-8 w-full min-h-screen text-center animate-fadeIn ]"
                 style={{
                     // background: `linear-gradient(rgba(42, 82, 42, 0.8), rgba(255, 255, 255, 0.5)), url(${featuredImage1})`,
                     backgroundSize: "cover",
@@ -22,7 +22,7 @@ const LandingPage = () => {
                 <h1 className="mb-5 font-inherit text-[#2a522a] text-6xl sm:text- md:text-6xl lg:text-7xl 5xl">
                     Welcome To
                 </h1>
-                <h1 className="mb-5 font-semibold text-[#2a522a] text-7xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl">
+                <h1 className="mb-5 font-semibold text-[#2a522a] text-6xl sm:text-xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-10xl">
                     KNOWASTE
                 </h1>
 

@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import fluid from 'fluid-tailwind'
+
 import tailwindHamburgers from 'tailwind-hamburgers';
 
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
       },
       screens: {
         'iphone': '375px',
-        'ipad': '768px',
+        'ipad': '790px',
         '2xl': '1536px',
         '3xl': '1600px',
       },
@@ -67,7 +67,8 @@ module.exports = {
         slideIn: 'slideIn 0.5s forwards',
         slideOut: ' slideOut 0.5s forwards',
       },
+
     },
   },
-  plugins: [fluid,tailwindHamburgers],
+  plugins: [tailwindHamburgers],
 };

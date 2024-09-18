@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
@@ -9,10 +9,16 @@ import GlobalField from "./GlobalField";
 import { REQUIRED_MSG } from "../constants";
 
 const Register = () => {
+    const [passwordStatus, setPasswordStatus] = useState({
+        length: false,
+        uppercase: false,
+        lowercase: false,
+        number: false,
+        specialChar: false
+    });
 
-    useEffect(() => {
+    const PASSWORD_MSG = 'The password must meet the conditions';
 
-    }, []);
 
     const validationSchema = Yup.object().shape({
         businessName: Yup.string().required(REQUIRED_MSG),
@@ -26,7 +32,13 @@ const Register = () => {
         email: Yup.string()
             .email('Invalid email address')
             .required(REQUIRED_MSG),
-        password: Yup.string().required(REQUIRED_MSG),
+        password: Yup.string()
+            .min(8, PASSWORD_MSG)
+            .matches(/[A-Z]/, PASSWORD_MSG)
+            .matches(/[a-z]/, PASSWORD_MSG)
+            .matches(/[0-9]/, PASSWORD_MSG)
+            .matches(/[@$!%*?&]/, PASSWORD_MSG)
+            .required(REQUIRED_MSG),
         repeatPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .required(REQUIRED_MSG),
@@ -57,10 +69,28 @@ const Register = () => {
         }, 1000);
     };
 
+    const validatePassword = (value) => {
+        const lengthValid = value.length >= 8;
+        const uppercaseValid = /[A-Z]/.test(value);
+        const lowercaseValid = /[a-z]/.test(value);
+        const numberValid = /[0-9]/.test(value);
+        const specialCharValid = /[@$!%*?&]/.test(value);
+
+        setPasswordStatus({
+            length: lengthValid,
+            uppercase: uppercaseValid,
+            lowercase: lowercaseValid,
+            number: numberValid,
+            specialChar: specialCharValid
+        });
+
+        return value;
+    };
+
     return (
         <>
             <ToastContainer />
-            <Card className="max-w-2xl min-w-[360px] mx-auto py-8 px-4">
+            <Card className="max-w-7xl min-w-[360px] mx-auto py-8 px-4">
                 <h3 className="title text-4xl text-titles mb-8">Let's create an account</h3>
                 <Formik
                     initialValues={{
@@ -77,19 +107,17 @@ const Register = () => {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({ errors, touched, isSubmitting }) => (
+                    {({ errors, touched, isSubmitting, values, handleChange }) => (
                         <Form className="w-full" noValidate>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 <GlobalField
                                     name="businessName"
                                     legend="Business Name"
-                                    placeholder="Business Name"
                                     type="text"
                                 />
                                 <GlobalField
                                     name="contactName"
                                     legend="Contact Name"
-                                    placeholder="Contact Name"
                                     type="text"
                                 />
                                 <GlobalField
@@ -100,53 +128,48 @@ const Register = () => {
                                 <GlobalField
                                     name="email"
                                     legend="Email"
-                                    placeholder="Email"
                                     type="email"
                                 />
                                 <GlobalField
                                     name="address"
                                     legend="Address"
-                                    placeholder="Address"
                                     type="text"
                                 />
                                 <GlobalField
                                     name="city"
-                                    legend="City"
-                                    placeholder="City"
                                     options={[
-                                        {value: '', label: 'Select City'},
-                                        {value: 'restaurant-manager', label: 'Restaurant Manager'},
-                                        {value: 'supplier', label: 'Supplier'}
+                                        { value: '', label: 'Select City' },
+                                        { value: 'restaurant-manager', label: 'Restaurant Manager' },
+                                        { value: 'supplier', label: 'Supplier' }
                                     ]}
                                     as="select"
                                 />
                                 <GlobalField
                                     name="zipCode"
                                     legend="Zip"
-                                    placeholder="Zip Code"
                                     type="text"
                                 />
                                 <GlobalField
                                     name="accountType"
-                                    legend="Account Type"
-                                    placeholder="Account Type"
                                     as="select"
                                     options={[
-                                        {value: '', label: 'Select Account Type'},
-                                        {value: 'restaurant-manager', label: 'Restaurant Manager'},
-                                        {value: 'supplier', label: 'Supplier'}
+                                        { value: '', label: 'Account Type' },
+                                        { value: 'restaurant-manager', label: 'Restaurant Manager' },
+                                        { value: 'supplier', label: 'Supplier' }
                                     ]}
                                 />
                                 <GlobalField
                                     name="password"
                                     legend="Password"
-                                    placeholder="Password"
                                     type="password"
+                                    onChange={(e) => {
+                                        handleChange(e);
+                                        validatePassword(e.target.value);
+                                    }}
                                 />
                                 <GlobalField
                                     name="repeatPassword"
                                     legend="Repeat Password"
-                                    placeholder="Repeat Password"
                                     type="password"
                                 />
                                 <div
@@ -158,8 +181,28 @@ const Register = () => {
                     )}
                 </Formik>
             </Card>
+            <div className="max-w-lg mx-auto mt-8">
+                <p className="text-lg font-semibold">Password Requirements:</p>
+                <ul className="list-disc list-inside mt-2 space-y-1 text-sm lg:text-lg">
+                    <li className={passwordStatus.length ? 'text-green-600' : ''}>
+                        Password must be at least 8 characters long
+                    </li>
+                    <li className={passwordStatus.uppercase ? 'text-green-600' : ''}>
+                        Contains at least one uppercase letter
+                    </li>
+                    <li className={passwordStatus.lowercase ? 'text-green-600' : ''}>
+                        Contains at least one lowercase letter
+                    </li>
+                    <li className={passwordStatus.number ? 'text-green-600' : ''}>
+                        Contains at least one number
+                    </li>
+                    <li className={passwordStatus.specialChar ? 'text-green-600' : ''}>
+                        Contains at least one special character (@$!%*?&)
+                    </li>
+                </ul>
+            </div>
         </>
     );
-}
+};
 
 export default Register;

@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Inter:wght@500&family=Jost:wght@300;400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --base-color: #F0F6E1FF;
   --buttons-color: rgba(59, 118, 59, 0.15);
@@ -11,68 +11,51 @@
   --secondary-color: #E4EBCF;
   --lime-color: #aae800;
 }
+.dark {
+  --base-color: #2A522A;
+  --buttons-color: #E4EBCF;
+  --titles-color: #F0F6E1FF;
+  --secondary-color: #E4EBCF;
+  --lime-color: #aae800;
+}
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 body {
-  margin: 0;
-  height: 100%;
   background-color: var(--base-color);
-  font-family: Jost, serif;
+  font-family: Jost, sans-serif;
   scroll-behavior: smooth;
-
-
+  position: relative;
+  width: 100%;
 }
-.app {
-  min-width: 100%;
-  flex: 1 ;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height:fit-content;
-  min-height: 100vh;
-
-
-}
-
-.wrapper {
-  width: 80%;
-  height: 100vh;
-  margin: 40px;
-  padding-inline: 20px;
-  border-radius: 25px;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
 footer {
+  flex-shrink: 0;
   width: 100%;
   background-color: var(--titles-color);
   text-align: center;
-
-  padding: 10px 0;
+  padding: 0.5rem 0;
   color: white;
 }
-.title
-{
-  padding: 10px;
-  font-size: 30px;
+
+.title {
+  font-size: 1.875rem;
   font-weight: bold;
-  color: #2a522a;
-  align-self: center;
-  margin-bottom: 10px;
+  color: var(--titles-color);
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 @keyframes fadeInDown {
   0% {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
+

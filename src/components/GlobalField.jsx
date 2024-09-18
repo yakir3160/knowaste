@@ -6,7 +6,7 @@ const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [
     const fieldHeight = as === 'textarea' ? 'min-h-[100px]' : 'h-[55px]';
     const [field, meta] = useField(name);
     const hasError = meta.touched && meta.error;
-
+    const hasValue = field.value || (type === 'password' && field.value.length > 0);
     const getPlaceholder = () => {
         switch (type) {
             case 'email':
@@ -20,22 +20,22 @@ const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [
 
     const fieldClasses = `
         ${fieldHeight} p-3 w-full 
-       
         shadow-inset-custom outline-none box-border
         focus:border-lime focus-visible:border-2 rounded-3xl
-        placeholder:top-0 placeholder:pt-1
         transition-all duration-200
         ${hasError ? 'bg-pink-100 border-2 border-red-500' : 'bg-baseLight border-2 border-base'}
     `;
 
     return (
-        <div className="flex flex-col  min-w-[100px]  ">
-            {legend && (
-                <label className="text-sm font-medium text-titles mb-2">
-                    {legend}
-                </label>
-            )}
-            <div className="flex justify-center">
+        <div className="relative flex flex-col min-w-[100px]">
+            <legend
+                className={`absolute left-4 top-8 mt-1 transition-all duration-200 text-gray-400  text-md font-medium
+                ${hasValue ? 'text-titles -top-1 left-1 mt-0 ' : ''}`}
+            >
+                { legend }
+            </legend>
+
+            <div className="flex justify-center mt-5">
                 {as === "select" ? (
                     <Field as="select" name={name} {...props} className={fieldClasses}>
                         {options.map((option, index) => (
@@ -49,7 +49,6 @@ const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [
                         name={name}
                         type={type}
                         as={as}
-                        placeholder={getPlaceholder()}
                         {...props}
                         className={`${fieldClasses} ${as === 'textarea' ? 'resize-none' : ''}`}
                     />

@@ -22,7 +22,7 @@
   }
   
 .navigation.scrolling .button {
-    opacity: 100%;
+    opacity: 1;
 }
 
 .button:disabled {

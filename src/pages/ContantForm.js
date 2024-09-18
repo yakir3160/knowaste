@@ -3,7 +3,6 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import "../css/ContantForm.css";
 import Card from "../components/Card";
 import Button from "../components/Button";
 import GlobalField from "../components/GlobalField";
@@ -29,7 +28,7 @@ const ContactForm = () => {
 
     return (
             <>
-                <Card className="max-w-[100rem]  mx-auto ">
+                <Card className="max-w-[120rem]  ">
                     <h3 className="title">Contact us</h3>
                     {!submitted ? (
                         <Formik
@@ -43,39 +42,41 @@ const ContactForm = () => {
                             }}
                         >
                             {({ errors, touched }) => (
-                                <Form  noValidate>
+                                <Form noValidate>
                                     <GlobalField
                                         name="firstName"
                                         legend="First Name"
-                                        placeholder="First name"
                                     />
                                     <GlobalField
                                         name="lastName"
                                         legend="Last Name"
-                                        placeholder="Last name"
                                     />
                                     <GlobalField
                                         name="email"
                                         type="email"
                                         legend="Email Address"
-                                        placeholder="Email"
                                     />
                                     <GlobalField
                                         name="message"
                                         as="textarea"
                                         legend="Message"
-                                        placeholder="Enter your question or message"
-                                        style={{justifyContent:'start' }}
+                                        style={{justifyContent: 'start'}}
                                     />
-                                    <Button style={{ width: '100%',height:"7vh" }} className="text-titles mt-2 " type="submit">Submit</Button>
+                                    <div
+                                        className="flex justify-center items-center h-full">
+                                        <Button className="text-titles  w-full h-16" type="submit ">
+                                            Submit
+                                        </Button>
+
+                                    </div>
 
                                 </Form>
                             )}
                         </Formik>
                     ) : (
-                        <div className="thank-you-message">
+                        <div className="animate-fadeIn">
                             <h2 className="title">Thank you!</h2>
-                            <p className="title" style={{ fontSize: "26px" }}>We appreciate you contacting us. We will get back to you soon!</p>
+                            <p className="title" style={{fontSize: "26px" }}>We appreciate you contacting us. We will get back to you soon!</p>
                         </div>
                     )}
                 </Card>
