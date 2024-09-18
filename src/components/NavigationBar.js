@@ -39,7 +39,7 @@ const NavigationBar = () => {
                 </button>
 
                 <div
-                    className={`absolute top-[100%] right-0 w-fit h-screen bg-white shadow-lg z-50 p-10 ${
+                    className={`absolute top-[100%] right-0 w-fit h-screen bg-baseLight shadow-lg z-50 p-10 ${
                         isMenuOpen ? 'animate-slideIn' : 'animate-slideOut'
                     }`}
                 >
