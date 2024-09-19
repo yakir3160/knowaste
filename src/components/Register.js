@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
@@ -9,6 +9,34 @@ import GlobalField from "./GlobalField";
 import { REQUIRED_MSG } from "../constants";
 
 const Register = () => {
+    const [cities, setCities] = useState([]);
+
+
+    useEffect(() =>{
+        const fetchCities = async () => {
+            try {
+                const response = await fetch("https://raw.githubusercontent.com/royts/israel-cities/master/israel-cities.json");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                const cityNames = data.map(city => city.english_name)
+                    .filter(name => name && name.trim() !== " ")
+                    .map(name => name
+                        .split(' ')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(' ')
+                    )
+                    .sort();
+                setCities(['Select a city', ...cityNames]);
+                cities.forEach(city => {
+                    console.log(city)})
+            } catch (err) {
+                console.error('Error fetching cities:', err);
+            }
+        };
+        fetchCities().then(r => {});
+    },[])
     const [passwordStatus, setPasswordStatus] = useState({
         length: false,
         uppercase: false,
@@ -52,7 +80,6 @@ const Register = () => {
                 Phone: ${values.phone}
                 Address: ${values.address}
                 City: ${values.city}
-                Country: ${values.country}
                 Account Type: ${values.accountType}
                 Email: ${values.email}
             `;
@@ -88,7 +115,9 @@ const Register = () => {
     };
 
     return (
+
         <>
+
             <ToastContainer />
             <Card className="max-w-7xl min-w-[360px] mx-auto py-8 px-4">
                 <h3 className="title text-4xl text-titles mb-8">Let's create an account</h3>
@@ -137,11 +166,8 @@ const Register = () => {
                                 />
                                 <GlobalField
                                     name="city"
-                                    options={[
-                                        { value: '', label: 'Select City' },
-                                        { value: 'restaurant-manager', label: 'Restaurant Manager' },
-                                        { value: 'supplier', label: 'Supplier' }
-                                    ]}
+                                    options={cities.map((city) => ({ value: city, label: city}))}
+
                                     as="select"
                                 />
                                 <GlobalField
@@ -185,6 +211,7 @@ const Register = () => {
                 <p className="text-lg font-semibold">Password Requirements:</p>
                 <ul className="list-disc list-inside mt-2 space-y-1 text-sm lg:text-lg">
                     <li className={passwordStatus.length ? 'text-green-600' : ''}>
+
                         Password must be at least 8 characters long
                     </li>
                     <li className={passwordStatus.uppercase ? 'text-green-600' : ''}>
@@ -196,7 +223,7 @@ const Register = () => {
                     <li className={passwordStatus.number ? 'text-green-600' : ''}>
                         Contains at least one number
                     </li>
-                    <li className={passwordStatus.specialChar ? 'text-green-600' : ''}>
+                    <li className={passwordStatus.specialChar ? 'text-green-600 ' : ''}>
                         Contains at least one special character (@$!%*?&)
                     </li>
                 </ul>

@@ -26,20 +26,20 @@ const NavigationBar = () => {
     };
 
     return (
-        <div className={`navigation ${isScrolling ? 'glassy scrolling' : ''}`}>
-            <Logo className="pl-[50px] lg:pl-10" onClick={() => setIsMenuOpen(false)} />
+        <div className={`navigation ${isScrolling ? 'glassy scrolling' : ''} flex justify-center  lg:justify-between`}>
+            <Logo className={""} onClick={() => setIsMenuOpen(false)}/>
             {/*Mobile Menu*/}
-            <div className=" sm:hidden">
+            <div className=" sm:hidden -mr-16 ml-4">
                 <button onClick={toggleMenu} className="menu-button">
-                    <div className={classNames(`tham tham-e-squeeze tham-w-6`, { 'tham-active': isMenuOpen })}>
+                    <div className={classNames(`tham tham-e-squeeze tham-w-7`, {'tham-active': isMenuOpen})}>
                         <div className="tham-box">
-                            <div className="tham-inner text-titles" />
+                            <div className="tham-inner text-titles"/>
                         </div>
                     </div>
                 </button>
 
                 <div
-                    className={`absolute top-[100%] right-0 w-fit h-screen bg-baseLight shadow-lg z-50 p-10 ${
+                    className={`absolute top-[100%] right-0  w-fit h-screen bg-baseLight shadow-lg z-50 p-10 ${
                         isMenuOpen ? 'animate-slideIn' : 'animate-slideOut'
                     }`}
                 >
@@ -52,7 +52,7 @@ const NavigationBar = () => {
                     </Button>
                     <Button
                         to="/auth"
-                        state={{ showRegister: false }}
+                        state={{showRegister: false}}
                         className="bg-lime block text-center"
                         onClick={toggleMenu}
                     >
@@ -61,9 +61,10 @@ const NavigationBar = () => {
                 </div>
             </div>
             {/*Normal Menu*/}
-            <div className="hidden sm:flex flex-row gap-2 lg:gap-5 items-center justify-between pr-5 lg:pr-20 sm:items-end ">
+            <div
+                className="hidden sm:flex flex-row gap-2 lg:gap-5 items-center justify-between pr-5 lg:pr-20 sm:items-end ">
                 <Button to="/contact">Contact Us</Button>
-                <Button to="/auth" state={{ showRegister: false }} className="bg-lime">Login</Button>
+                <Button to="/auth" state={{showRegister: false}} className="bg-lime">Login</Button>
             </div>
         </div>
     );
