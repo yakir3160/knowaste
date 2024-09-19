@@ -3,10 +3,12 @@ import NavigationBar from "./NavigationBar";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 
-const Layout = ({ children }) => (
+const Layout = ({ children, pageType }) => (
     <div className="min-h-screen flex flex-col">
         <NavigationBar />
-        <main className="flex-1 flex flex-col items-center max-w-7xl w-full mx-auto pt-[150px] px-4 sm:px-6 lg:px-8">
+        <main
+            className={` flex-1 flex flex-col items-center max-w-7xl w-full mx-auto ${pageType !== 'dashboard' ? 'pt-[150px] px-4 sm:px-6 lg:px-8' : 'pt-[150px] px-10  max-w-none'}`}
+        >
             {children}
             <Outlet />
         </main>

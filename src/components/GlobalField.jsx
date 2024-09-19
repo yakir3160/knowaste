@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, useField } from 'formik';
-import { REQUIRED_MSG } from '../constants';
+import {REQUIRED_MSG} from "../constants/constants";
 
 const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [], ...props }) => {
     const fieldHeight = as === 'textarea' ? 'min-h-[100px]' : 'h-[55px]';
@@ -23,14 +23,14 @@ const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [
         shadow-inset-custom outline-none box-border
         focus:border-lime focus-visible:border-2 rounded-3xl
         transition-all duration-200
-        ${hasError ? 'bg-pink-100 border-2 border-red-500' : 'bg-baseLight border-2 border-base'}
+        ${hasError ? 'bg-pink-100 border-2 border-red-500' : 'bg-inputs border-2 border-base'}
     `;
 
     return (
         <div className="relative flex flex-col min-w-[100px]">
             <legend
-                className={`absolute left-4 top-8 mt-1 transition-all duration-200 text-gray-400  text-md font-medium
-                ${hasValue ? 'text-titles -top-2 left-1 mt-0 ' : ''}`}
+                className={`absolute left-2 mb-1 transition-all duration-200 text-gray-400  text-md font-medium
+                ${hasValue ? 'text-titles  mt-0 ' : ''}`}
             >
                 { legend }
             </legend>

@@ -13,12 +13,12 @@
 
 .button:hover {
     box-shadow: 5px 5px 12px rgba(203, 209, 184, 0.60), -5px -5px 12px #faffeb;
-    color: #497549;
+    color: var(--buttons-color);
 
 }
 .custom-hover-button:hover {
     background-color: #aae800 !important;
-    color: var(--titles-color) !important; 
+    color: var(--titles-color) !important;
   }
   
 .navigation.scrolling .button {

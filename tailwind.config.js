@@ -12,6 +12,11 @@ module.exports = {
         tac: ['"Tac One"', 'sans-serif'],
         openSans: ['Open Sans', 'sans-serif'],
       },
+      borderRadius: {
+        sm:'25px',
+        md:'30px',
+        lg:'35px',
+      },
       fontSize: {
         'logo-sm': '2.5rem',
         'logo-md': '3rem',
@@ -27,7 +32,8 @@ module.exports = {
         'titles': '#2A522A',
         'secondary': '#E4EBCF',
         'lime': '#aae800',
-        'baseLight': '#fbfdf6',
+        'baseLight': '#f4f8ea',
+        'inputs': '#fafcf6',
       },
       screens: {
         'iphone': '375px',

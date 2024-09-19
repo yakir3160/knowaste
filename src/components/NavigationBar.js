@@ -26,8 +26,8 @@ const NavigationBar = () => {
     };
 
     return (
-        <div className={`navigation ${isScrolling ? 'glassy scrolling' : ''} flex justify-center  lg:justify-between`}>
-            <Logo className={""} onClick={() => setIsMenuOpen(false)}/>
+        <nav className={`navigation ${isScrolling ? 'glassy scrolling' : ''} flex justify-center  lg:justify-between`}>
+            <Logo  onClick={() => setIsMenuOpen(false)}/>
             {/*Mobile Menu*/}
             <div className=" sm:hidden -mr-16 ml-4">
                 <button onClick={toggleMenu} className="menu-button">
@@ -66,7 +66,7 @@ const NavigationBar = () => {
                 <Button to="/contact">Contact Us</Button>
                 <Button to="/auth" state={{showRegister: false}} className="bg-lime">Login</Button>
             </div>
-        </div>
+        </nav>
     );
 };
 

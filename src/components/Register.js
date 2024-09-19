@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Card from "./Card";
 import Button from "./Button";
 import GlobalField from "./GlobalField";
-import { REQUIRED_MSG } from "../constants";
+import { REQUIRED_MSG } from "../constants/constants";
 
 const Register = () => {
     const [cities, setCities] = useState([]);
@@ -45,7 +45,7 @@ const Register = () => {
         specialChar: false
     });
 
-    const PASSWORD_MSG = 'The password must meet the conditions';
+    const PASSWORD_MSG = 'Password must meet the conditions';
 
 
     const validationSchema = Yup.object().shape({
@@ -56,6 +56,7 @@ const Register = () => {
             .required(REQUIRED_MSG),
         address: Yup.string().required(REQUIRED_MSG),
         city: Yup.string().required(REQUIRED_MSG),
+        zipCode: Yup.string().optional(),
         accountType: Yup.string().required(REQUIRED_MSG),
         email: Yup.string()
             .email('Invalid email address')
@@ -79,6 +80,7 @@ const Register = () => {
                 Contact Name: ${values.contactName}
                 Phone: ${values.phone}
                 Address: ${values.address}
+                ZIP: ${values.zipCode}
                 City: ${values.city}
                 Account Type: ${values.accountType}
                 Email: ${values.email}
@@ -128,6 +130,7 @@ const Register = () => {
                         phone: '',
                         address: '',
                         city: '',
+                        zipCode:'',
                         accountType: '',
                         email: '',
                         password: '',
@@ -207,23 +210,23 @@ const Register = () => {
                     )}
                 </Formik>
             </Card>
-            <div className="max-w-lg mx-auto mt-8">
+            <div className="max-w-lg mx-auto mt-8 ">
                 <p className="text-lg font-semibold">Password Requirements:</p>
-                <ul className="list-disc list-inside mt-2 space-y-1 text-sm lg:text-lg">
-                    <li className={passwordStatus.length ? 'text-green-600' : ''}>
+                <ul className="list-disc list-inside mt-2 space-y-1 text-sm lg:text-lg font-semibold">
+                    <li className={passwordStatus.length ? 'text-green-600 ' : ''}>
 
                         Password must be at least 8 characters long
                     </li>
-                    <li className={passwordStatus.uppercase ? 'text-green-600' : ''}>
+                    <li className={passwordStatus.uppercase ? 'text-green-600 font-semibold' : ''}>
                         Contains at least one uppercase letter
                     </li>
-                    <li className={passwordStatus.lowercase ? 'text-green-600' : ''}>
+                    <li className={passwordStatus.lowercase ? 'text-green-600 font-semibold' : ''}>
                         Contains at least one lowercase letter
                     </li>
-                    <li className={passwordStatus.number ? 'text-green-600' : ''}>
+                    <li className={passwordStatus.number ? 'text-green-600 font-semibold' : ''}>
                         Contains at least one number
                     </li>
-                    <li className={passwordStatus.specialChar ? 'text-green-600 ' : ''}>
+                    <li className={passwordStatus.specialChar ? 'text-green-600 font-semibold ' : ''}>
                         Contains at least one special character (@$!%*?&)
                     </li>
                 </ul>

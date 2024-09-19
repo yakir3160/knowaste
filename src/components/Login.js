@@ -4,7 +4,7 @@ import Card from "./Card";
 import Button from "./Button";
 import GlobalField from "./GlobalField";
 import * as Yup from "yup";
-import {REQUIRED_MSG} from "../constants";
+import {REQUIRED_MSG} from "../constants/constants";
 import {toast, ToastContainer} from "react-toastify";
 import {Formik} from "formik";
 
@@ -43,7 +43,7 @@ const Login = () => {
 
         <>
             <ToastContainer />
-            <Card className="w-[250px] max-w-[250px] flex flex-col">
+                <Card className="flex flex-col max-w-[360px]">
                 <h3 className="title">Login to your account</h3>
                 <p className={`text-titles text-[1rem] font-semibold`}>Enter your email and password to login</p>
                 <Formik

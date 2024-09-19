@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Card from "../components/Card";
 import Button from "../components/Button";
 import GlobalField from "../components/GlobalField";
-import {REQUIRED_MSG} from "../constants";
+import {REQUIRED_MSG} from "../constants/constants";
 
 const ContactForm = () => {
     const [submitted, setSubmitted] = useState(false);
@@ -28,7 +28,7 @@ const ContactForm = () => {
 
     return (
             <>
-                <Card className="max-w-[120rem]  ">
+                <Card className="min-w-[360px]">
                     <h3 className="title">Contact us</h3>
                     {!submitted ? (
                         <Formik

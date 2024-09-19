@@ -2,14 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../css/Button.css';
 
-const Button = ({ children, className, style, disabled, to, state, onClick }) => {
+const Button = ({ children, className = '', style = {}, disabled, to, state, onClick }) => {
+    // Check if text color is already set in className or style
+    const hasTextColor = className.includes('text-') || style.color;
+
+    const combinedClassName = `button ${className} ${!hasTextColor ? 'text-titles' : ''}`;
+
     if (to) {
         return (
             <Link
                 to={to}
                 state={state}
                 onClick={!disabled ? onClick : undefined}
-                className={`button ${className}`}
+                className={combinedClassName}
                 style={style}
             >
                 {children}
@@ -19,8 +24,8 @@ const Button = ({ children, className, style, disabled, to, state, onClick }) =>
 
     return (
         <button
+            className={combinedClassName}
             style={style}
-            className={`button ${className}`}
             disabled={disabled}
             onClick={onClick}
         >
