@@ -6,7 +6,7 @@ const Button = ({ children, className = '', style = {}, disabled, to, state, onC
     // Check if text color is already set in className or style
     const hasTextColor = className.includes('text-') || style.color;
 
-    const combinedClassName = `button ${className} ${!hasTextColor ? 'text-titles' : ''}`;
+    const combinedClassName = `button ${className} hover:text-buttons ${!hasTextColor ? 'text-titles' : ''}`;
 
     if (to) {
         return (

@@ -1,30 +1,18 @@
 .logo {
     color: var(--titles-color);
-    background-image: linear-gradient(to right, var(--titles-color), var(--lime-color), var(--titles-color));
-    background-size: 0 auto;
     background-clip: text;
     -webkit-background-clip: text;
-    transition: color 0.5s ease, background-size 0.5s ease;
+    transition: all  0.2s ease-in-out;
 }
 .w {
     text-shadow: var(--titles-color) 1px 1px 0;
 }
 .logo:hover {
-    color: transparent;
-    background-size: 200% auto;
-    animation: color-sweep 3s linear infinite;
+    color: var(--lime-color);
+    text-shadow: var(--titles-color) 1px 1px 0;
 }
 
 .logo .highlight {
     color: var(--lime-color);
 }
 
-
-@keyframes color-sweep {
-    0% {
-        background-position: 0% center;
-    }
-    100% {
-        background-position: -200% center;
-    }
-}

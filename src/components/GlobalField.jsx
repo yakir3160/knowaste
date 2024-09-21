@@ -23,13 +23,13 @@ const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [
         shadow-inset-custom outline-none box-border
         focus:border-lime focus-visible:border-2 rounded-3xl
         transition-all duration-200
-        ${hasError ? 'bg-pink-100 border-2 border-red-500' : 'bg-inputs border-2 border-base'}
+        ${hasError ? 'border-2 border-errorRed' : 'bg-inputs border-2 border-base'}
     `;
 
     return (
         <div className="relative flex flex-col min-w-[100px]">
             <legend
-                className={`absolute left-2 mb-1 transition-all duration-200 text-gray-400  text-md font-medium
+                className={`absolute left-2 mb-2 transition-all duration-200 text-gray  text-md font-medium
                 ${hasValue ? 'text-titles  mt-0 ' : ''}`}
             >
                 { legend }
@@ -54,7 +54,7 @@ const GlobalField = ({ legend, name, as, type = 'text', placeholder, options = [
                     />
                 )}
             </div>
-            <div className="text-red-600 text-center min-h-[24px] text-sm w-full mt-2">
+            <div className="text-errorRed text-center min-h-[24px] text-sm w-full mt-2">
                 {hasError && <div>{meta.error || REQUIRED_MSG}</div>}
             </div>
         </div>

@@ -6,18 +6,24 @@
 
 :root {
   --base-color: #F0F6E1FF;
-  --buttons-color: rgba(59, 118, 59, 0.15);
+  --buttons-color: #3B763B;
   --titles-color: #2A522A;
   --secondary-color: #E4EBCF;
-  --lime-color: #aae800;
+  --lime-color: #b5f517;
+  --errorRed: #e30b0b;
+  --errorLightRed: #FF7A7A;
+  --bs-gray:  #9CA3AF;
+  --bs-black: black;
+
 }
-.dark {
-  --base-color: #2A522A;
-  --buttons-color: #E4EBCF;
-  --titles-color: #F0F6E1FF;
-  --secondary-color: #E4EBCF;
-  --lime-color: #aae800;
-}
+
+/*.dark {*/
+/*  --base-color: #2A522A;*/
+/*  --buttons-color: #E4EBCF;*/
+/*  --titles-color: #F0F6E1FF;*/
+/*  --secondary-color: #E4EBCF;*/
+/*  --lime-color: #aae800;*/
+/*}*/
 html, body, #root {
   height: 100%;
   margin: 0;
