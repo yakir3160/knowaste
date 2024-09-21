@@ -26,7 +26,7 @@ const NavigationBar = () => {
     };
 
     return (
-        <nav className={`navigation ${isScrolling ? 'glassy scrolling' : ''} flex justify-center  lg:justify-between`}>
+        <nav className={`navigation ${isScrolling ? 'glassy scrolling' : ''} flex justify-center  lg:justify-between animate-fadeInDown`}>
             <Logo  onClick={() => setIsMenuOpen(false)}/>
             {/*Mobile Menu*/}
             <div className=" sm:hidden -mr-16 ml-4">

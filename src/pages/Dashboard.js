@@ -24,11 +24,11 @@ const PlaceholderList = () => (
 const sidebarButtonClass = 'w-full text-left font-semibold hover:bg-secondary transition-all p-3 rounded-[15px] shadow-outer-custom'
 const Dashboard = () => {
     return (
-        <div className="flex flex-col gap-5 w-full p-6 rounded-lg border-2 border-secondary sm:rounded-lg  ">
+        <div className="flex flex-col gap-5 w-full  p-6 rounded-lg border-2 border-secondary sm:rounded-lg  ">
             <div className="flex flex-col md:flex-row gap-5">
-                <aside className="w-full md:w-64 rounded-lg h-screen"> {/* Adjusted for full height */}
+                <aside className="w-full md:w-64 rounded-lg h-screen " > {/* Adjusted for full height */}
                     <h2 className="text-2xl font-semibold text-titles p-3">Hello user</h2>
-                    <ul className="list-inside text-titles py-5 px-1 flex flex-col gap-5">
+                    <ul className="list-inside text-titles py-5 flex flex-col gap-5">
                         <li>
                             <button className={sidebarButtonClass}>Dashboard</button>
                         </li>

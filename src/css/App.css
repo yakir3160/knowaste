@@ -1,29 +1,35 @@
+/* Font imports */
 @import url("https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Inter:wght@500&family=Jost:wght@300;400;500;600;700&display=swap");
 
+/* Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Custom properties */
 :root {
-  --base-color: #F0F6E1FF;
+  --base-color: #F0F6E1;
   --buttons-color: #3B763B;
   --titles-color: #2A522A;
   --secondary-color: #E4EBCF;
   --lime-color: #b5f517;
   --errorRed: #e30b0b;
   --errorLightRed: #FF7A7A;
-  --bs-gray:  #9CA3AF;
+  --bs-gray: #9CA3AF;
   --bs-black: black;
-
 }
 
-/*.dark {*/
-/*  --base-color: #2A522A;*/
-/*  --buttons-color: #E4EBCF;*/
-/*  --titles-color: #F0F6E1FF;*/
-/*  --secondary-color: #E4EBCF;*/
-/*  --lime-color: #aae800;*/
-/*}*/
+/* Commented out dark mode styles for future use
+.dark {
+  --base-color: #2A522A;
+  --buttons-color: #E4EBCF;
+  --titles-color: #F0F6E1;
+  --secondary-color: #E4EBCF;
+  --lime-color: #aae800;
+}
+*/
+
+/* Global styles */
 html, body, #root {
   height: 100%;
   margin: 0;
@@ -37,6 +43,8 @@ body {
   position: relative;
   width: 100%;
 }
+
+
 footer {
   flex-shrink: 0;
   width: 100%;
@@ -52,16 +60,5 @@ footer {
   color: var(--titles-color);
   text-align: center;
   margin-bottom: 1rem;
-}
-
-@keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-1.25rem);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
