@@ -19,7 +19,7 @@ const Sidebar = ({ setSidebarOpen }) => {
     ];
 
     return (
-        <div className={`fixed animate-fadeIn m-4 ${isOpen ? 'pr-[300px]' : 'pr-[50px]'}`}>
+        <div className={`fixed animate-fadeIn mx-5  my-6 ${isOpen ? 'pr-[300px]' : 'pr-[50px]'}`}>
             <aside className={`rounded-lg h-screen bg-secondary shadow-outer-custom transition-all duration-300 ease-in-out ${isOpen ? "w-64" : "w-14"}`}>
                 <div className="flex justify-between items-center p-2">
                     <div className="overflow-hidden transition-all duration-300 ease-in-out" style={{ width: isOpen ? 'auto' : '0' }}>
