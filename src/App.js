@@ -6,7 +6,7 @@ import ContactForm from './pages/ContactForm';
 import Auth from './pages/Auth';
 import Layout from "./components/Layout";
 import ScrollToTop from './components/ScrollToTop';
-import Dashboard from "./pages/Dashboard";
+import AdminPanel from "./pages/AdminPanel";
 
 const App = () => {
     return (
@@ -19,8 +19,12 @@ const App = () => {
                         <Route path="contact" element={<ContactForm />} />
                         <Route path="auth" element={<Auth />} />
                     </Route>
-                    <Route path="dashboard" element={<Layout pageType="dashboard" />}>
-                        <Route index element={<Dashboard />} />
+                    <Route path="admin-panel" element={<Layout pageType="admin-panel" />}>
+                        <Route index element={<AdminPanel />} />
+                        {/* You can add sub-routes for dashboard, reports, and orders here */}
+                        {/* <Route path="dashboard" element={<Dashboard />} /> */}
+                        {/* <Route path="reports" element={<Reports />} /> */}
+                        {/* <Route path="orders" element={<Orders />} /> */}
                     </Route>
                 </Routes>
             </BrowserRouter>

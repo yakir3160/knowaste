@@ -1,24 +1,22 @@
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Menus/Navbar/Navbar";
 import Footer from "./Footer";
-
+import Sidebar from "./Menus/Sidebar/Sidebar";
 
 const Layout = ({ children, pageType }) => {
-
-    const mainContentClass = pageType === 'dashboard'
-        ? 'sticky pt-[150px] px-10 max-w-none'
-        : 'pt-[150px] px-4 sm:px-6 lg:px-8';
+    const [isOpen, setIsOpen] = useState(true);
+    const isAdminPanel = pageType === 'admin-panel';
+    const mainContentClass = isAdminPanel ? '' : 'pt-[150px] px-4 sm:px-6 lg:px-8';
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Navbar />
-
-            <main className={`flex-1 flex flex-col items-center max-w-7xl w-full mx-auto ${mainContentClass}`}>
+            {isAdminPanel ? <Sidebar setSidebarOpen={setIsOpen} /> : <Navbar />}
+            <main className={`flex-1 flex flex-col items-center  w-full  ${mainContentClass} ${isOpen ? 'pl-72' : 'pl-20'}`}>
                 {children}
                 <Outlet />
             </main>
-
-            <Footer />
+            {isAdminPanel ? '' : <Footer />}
         </div>
     );
 };

@@ -3,9 +3,13 @@ import Button from "../../Button";
 import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2, DollarSign, LogOut } from "lucide-react";
 import Logo from "../../Logo/Logo";
 
-const Sidebar = () => {
+const Sidebar = ({ setSidebarOpen }) => {
     const [isOpen, setIsOpen] = useState(true);
-    const toggleSidebar = () => setIsOpen(!isOpen);
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+        setSidebarOpen(!isOpen);
+    };
+
     const menuItems = [
         { name: "Dashboard", icon: <LayoutDashboard className="h-5 w-5" />, href: "/dashboard" },
         { name: "Orders Report", icon: <FileText className="h-5 w-5" />, href: "/orders-report" },
@@ -15,8 +19,8 @@ const Sidebar = () => {
     ];
 
     return (
-        <div className="relative">
-            <aside className={`rounded-lg h-screen bg-base shadow-outer-custom transition-all duration-300 ease-in-out ${isOpen ? "w-64" : "w-14"} overflow-hidden`}>
+        <div className={`fixed animate-fadeIn m-4 ${isOpen ? 'pr-[300px]' : 'pr-[50px]'}`}>
+            <aside className={`rounded-lg h-screen bg-secondary shadow-outer-custom transition-all duration-300 ease-in-out ${isOpen ? "w-64" : "w-14"}`}>
                 <div className="flex justify-between items-center p-2">
                     <div className="overflow-hidden transition-all duration-300 ease-in-out" style={{ width: isOpen ? 'auto' : '0' }}>
                         <Logo className="text-logo-sm font-semibold text-titles p-3">
@@ -36,7 +40,7 @@ const Sidebar = () => {
                         <Button
                             key={index}
                             to={item.href}
-                            className={`flex items-center gap-2 p-2 transition-all duration-300 shadow-none hover:bg-secondary ${!isOpen && "justify-center"}`}
+                            className={`flex items-center gap-2 p-2 transition-all duration-300 shadow-none hover:bg-base ${!isOpen && "justify-center"}`}
                         >
                             {isOpen ? (
                                 <>
