@@ -15,7 +15,7 @@ const Sidebar = ({ setSidebarOpen }) => {
         { name: "Orders Report", icon: <FileText className="h-5 w-5" />, href: "/orders-report" },
         { name: "Waste Report", icon: <Trash2 className="h-5 w-5" />, href: "/waste-report" },
         { name: "New Price Quote", icon: <DollarSign className="h-5 w-5" />, href: "/new-price-quote" },
-        { name: "Log Out", icon: <LogOut className="h-5 w-5" />, href: "/logout" },
+        { name: "Log Out", icon: <LogOut className="h-5 w-5 text-errorRed" />, href: "/logout" },
     ];
 
     return (
@@ -40,7 +40,7 @@ const Sidebar = ({ setSidebarOpen }) => {
                         <Button
                             key={index}
                             to={item.href}
-                            className={`flex items-center gap-2 p-2 transition-all duration-300 shadow-none hover:bg-base ${!isOpen && "justify-center"}`}
+                            className={`flex items-center gap-2 p-2 transition-all duration-300 shadow-none hover:bg-base ${!isOpen && "justify-center"}  ${item.name === "Log Out" && "text-errorRed hover:text-errorRed"}`}
                         >
                             {isOpen ? (
                                 <>
