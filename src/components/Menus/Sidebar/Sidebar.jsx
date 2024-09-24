@@ -22,7 +22,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
         logoContainer: `overflow-hidden ${sideBarTransition} ${isOpen ? 'w-auto' : 'w-0'}`,
         button: "z-10 p-2",
         menuList: "list-inside text-titles py-5 flex flex-col gap-5 mt-10",
-        menuItem: `flex items-center gap-2 p-2 w-fit shadow-none hover:bg-base ${isOpen ? "" : "justify-center"}`,
+        menuItem: `flex items-center gap-2 p-2 w-full shadow-none hover:bg-base ${isOpen ? "" : "justify-center"}`,
         logout: "text-errorRed hover:text-errorRed",
         itemText: `whitespace-nowrap ${sideBarTransition} ${isOpen ? '' : 'hidden'}`,
     };
