@@ -11,8 +11,8 @@ const Layout = ({ children, pageType }) => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            {isAdminPanel ? <Sidebar setSidebarOpen={setIsOpen} /> : <Navbar />}
-            <main className={`flex-1 flex flex-col items-center  w-full  ${mainContentClass} ${isOpen ? 'pl-72' : 'pl-20'}`}>
+            {isAdminPanel ? <Sidebar isOpen={isOpen} setSidebarOpen={setIsOpen} /> : <Navbar />}
+            <main className={`flex-1 flex flex-col items-center w-full ${mainContentClass} ${isOpen ? 'pl-72' : 'pl-20'}`}>
                 {children}
                 <Outlet />
             </main>

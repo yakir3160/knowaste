@@ -1,12 +1,9 @@
-import React, { useState } from "react";
 import Button from "../../Button";
 import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2, DollarSign, LogOut } from "lucide-react";
 import Logo from "../../Logo/Logo";
 
-const Sidebar = ({ setSidebarOpen }) => {
-    const [isOpen, setIsOpen] = useState(true);
+const Sidebar = ({ isOpen, setSidebarOpen }) => {
     const toggleSidebar = () => {
-        setIsOpen(!isOpen);
         setSidebarOpen(!isOpen);
     };
 
@@ -18,38 +15,42 @@ const Sidebar = ({ setSidebarOpen }) => {
         { name: "Log Out", icon: <LogOut className="h-5 w-5 text-errorRed" />, href: "/logout" },
     ];
 
+    const sideBarTransition = "transition-all duration-200 ease-in-out";
+    const sidebarClasses = {
+        container: "fixed mx-5 my-6",
+        aside: `rounded-lg h-screen bg-secondary shadow-outer-custom ${sideBarTransition} ${isOpen ? "w-64" : "w-14"}`,
+        logoContainer: `overflow-hidden ${sideBarTransition} ${isOpen ? 'w-auto' : 'w-0'}`,
+        button: "z-10 p-2",
+        menuList: "list-inside text-titles py-5 flex flex-col gap-5 mt-10",
+        menuItem: `flex items-center gap-2 p-2 w-fit shadow-none hover:bg-base ${isOpen ? "" : "justify-center"}`,
+        logout: "text-errorRed hover:text-errorRed",
+        itemText: `whitespace-nowrap ${sideBarTransition} ${isOpen ? '' : 'hidden'}`,
+    };
+
     return (
-        <div className={`fixed animate-fadeIn mx-5  my-6 ${isOpen ? 'pr-[300px]' : 'pr-[50px]'}`}>
-            <aside className={`rounded-lg h-screen bg-secondary shadow-outer-custom transition-all duration-300 ease-in-out ${isOpen ? "w-64" : "w-14"}`}>
+        <div className={`${sidebarClasses.container} ${isOpen ? 'pr-[300px]' : 'pr-[50px]'}`}>
+            <aside className={sidebarClasses.aside}>
                 <div className="flex justify-between items-center p-2">
-                    <div className="overflow-hidden transition-all duration-300 ease-in-out" style={{ width: isOpen ? 'auto' : '0' }}>
-                        <Logo className="text-logo-sm font-semibold text-titles p-3">
-                            Hello user
-                        </Logo>
+                    <div className={sidebarClasses.logoContainer}>
+                        <Logo className="text-logo-sm font-semibold text-titles p-3" />
                     </div>
                     <button
                         onClick={toggleSidebar}
                         aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
-                        className="z-10 p-2"
+                        className={sidebarClasses.button}
                     >
                         {isOpen ? <ChevronLeft className="h-6 w-6" /> : <ChevronRight className="h-6 w-6" />}
                     </button>
                 </div>
-                <ul className="list-inside text-titles py-5 flex flex-col gap-5 mt-10">
+                <ul className={sidebarClasses.menuList}>
                     {menuItems.map((item, index) => (
                         <Button
                             key={index}
                             to={item.href}
-                            className={`flex items-center gap-2 p-2 transition-all duration-300 shadow-none hover:bg-base ${!isOpen && "justify-center"}  ${item.name === "Log Out" && "text-errorRed hover:text-errorRed"}`}
+                            className={`${sidebarClasses.menuItem} ${item.name === "Log Out" && sidebarClasses.logout}`}
                         >
-                            {isOpen ? (
-                                <>
-                                    {item.icon}
-                                    <span className="transition-opacity duration-300">{item.name}</span>
-                                </>
-                            ) : (
-                                item.icon
-                            )}
+                            {item.icon}
+                            <span className={sidebarClasses.itemText}>{item.name}</span>
                         </Button>
                     ))}
                 </ul>

@@ -3,6 +3,7 @@
     top: 0;
     left: 0;
     right: 0;
+    width: 100%; /* Ensure full width */
     display: flex;
     align-items: center;
     padding: 1rem;
@@ -36,8 +37,8 @@
     top: 0;
     right: 0;
     bottom: 0;
-    width: 80%;
-    max-width: 300px;
+    width: 80%; /* Adjust this as needed */
+    max-width: 300px; /* This can be removed for full screen */
     background-color: white;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
@@ -46,4 +47,14 @@
     z-index: 999;
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navigation {
+        padding: 0.5rem; /* Adjust padding for smaller screens */
+    }
 
+    .mobile-menu {
+        width: 100%; /* Full width on mobile */
+        max-width: none; /* Remove max-width for full-screen effect */
+    }
+}
