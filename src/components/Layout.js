@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import NavigationBar from "./NavigationBar";
+import Navbar from "./Menus/Navbar/Navbar";
 import Footer from "./Footer";
 
 
@@ -11,7 +11,7 @@ const Layout = ({ children, pageType }) => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <NavigationBar />
+            <Navbar />
 
             <main className={`flex-1 flex flex-col items-center max-w-7xl w-full mx-auto ${mainContentClass}`}>
                 {children}

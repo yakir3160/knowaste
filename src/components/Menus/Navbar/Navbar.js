@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import '../css/NavigationBar.css';
-import Button from './Button';
-import Logo from './Logo/Logo';
+import './Navbar.css';
+import Button from '../../Button';
+import Logo from '../../Logo/Logo';
 import classNames from 'classnames';
 
-const NavigationBar = () => {
+const Navbar = () => {
     const [isScrolling, setScrolling] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -27,7 +27,7 @@ const NavigationBar = () => {
 
     return (
         <nav className={`navigation ${isScrolling ? 'glassy scrolling' : ''} flex justify-center  lg:justify-between animate-fadeInDown`}>
-            <Logo  onClick={() => setIsMenuOpen(false)}/>
+            <Logo className={`text-logo-md sm:text-logo-sm md:text-logo-md lg:text-logo-lg lg:pl-10`} onClick={() => setIsMenuOpen(false)}/>
             {/*Mobile Menu*/}
             <div className=" sm:hidden -mr-16 ml-4">
                 <button onClick={toggleMenu} className="menu-button">
@@ -70,4 +70,4 @@ const NavigationBar = () => {
     );
 };
 
-export default NavigationBar;
+export default Navbar;

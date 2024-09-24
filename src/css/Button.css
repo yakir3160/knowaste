@@ -3,24 +3,19 @@
     text-decoration: none;
     font-family: inherit;
     font-weight: 600;
-    transition: all 0.3s ease; /* Smoother transition */
+    transition: all 0.3s ease;
     padding: 13px 17px;
     border-radius: 25px;
-    box-shadow: 13px 13px 20px #dbdfcc, -13px -13px 20px #faffeb;
     min-width: fit-content;
 
 }
 
-.button:hover {
-    box-shadow: 5px 5px 12px rgba(203, 209, 184, 0.60), -5px -5px 12px #faffeb;
-    scale: 0.98;
 
-}
 .custom-hover-button:hover {
     background-color: #aae800 !important;
     color: var(--titles-color) !important;
   }
-  
+
 .navigation.scrolling .button {
     opacity: 1;
 }

@@ -25,6 +25,7 @@ module.exports = {
       boxShadow: {
         'inset-custom': 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef',
         'outer-custom': '13px 13px 20px #dbdfcc, -13px -13px 20px #faffeb',
+        'button-hover': '5px 5px 12px rgba(203, 209, 184, 0.60), -5px -5px 12px #faffeb',
       },
       colors: {
         'base': '#F0F6E1FF',
