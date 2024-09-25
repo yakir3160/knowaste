@@ -86,6 +86,7 @@ module.exports = {
       errorLightRed: 'var(--errorLightRed)',
       gray:'var(--bs-gray)',
       black : 'var(--bs-black)',
+      green: 'var(--bs-green)',
     },
   },
   plugins: [tailwindHamburgers],
