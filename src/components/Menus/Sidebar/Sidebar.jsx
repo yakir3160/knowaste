@@ -19,7 +19,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
     const sideBarTransition = "transition-all duration-200 ease-in-out";
     const sidebarClasses = {
         container: "fixed mx-6 my-5",
-        aside: ` flex flex-col rounded-lg h-[95vh] bg-secondary shadow-outer-custom ${sideBarTransition} ${isOpen ? "w-64" : "w-14"}`,
+        aside: ` flex flex-col rounded-lg h-[95vh] bg-secondary shadow-outer-custom ${sideBarTransition} ${isOpen ? "w-64" : "w-14"} animate-fadeIn`,
         logoContainer: `overflow-hidden ${sideBarTransition} ${isOpen ? 'w-auto' : 'w-0'}`,
         button: "z-10 p-2 ",
         menuList: " flex-grow list-inside text-titles py-5 flex flex-col gap-5 mt-10",
