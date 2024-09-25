@@ -1,12 +1,12 @@
 import './css/App.css';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import ContactForm from './pages/ContactForm';
-import Auth from './pages/Auth';
-import Layout from "./components/Layout";
-import ScrollToTop from './components/ScrollToTop';
-import AdminPanel from "./pages/AdminPanel";
+import LandingPage from './components/Pages/LandingPage';
+import ContactForm from './components/Forms/ContactForm';
+import Auth from './components/Pages/Auth';
+import Layout from "./components/Layouts/Layout";
+import ScrollToTop from './components/functions/UI/ScrollToTop';
+import AdminPanel from "./components/Pages/AdminPanel";
 
 const App = () => {
     return (
@@ -21,8 +21,7 @@ const App = () => {
                     </Route>
                     <Route path="admin-panel" element={<Layout pageType="admin-panel" />}>
                         <Route index element={<AdminPanel />} />
-                        {/* You can add sub-routes for dashboard, reports, and orders here */}
-                        {/* <Route path="dashboard" element={<Dashboard />} /> */}
+
                         {/* <Route path="reports" element={<Reports />} /> */}
                         {/* <Route path="orders" element={<Orders />} /> */}
                     </Route>

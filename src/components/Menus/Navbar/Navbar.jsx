@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Navbar.css';
-import Button from '../../Button';
-import Logo from '../../Logo/Logo';
+import Button from '../../Common/Button/Button';
+import Logo from '../../Common/Logo/Logo';
 import classNames from 'classnames';
 
 const Navbar = () => {

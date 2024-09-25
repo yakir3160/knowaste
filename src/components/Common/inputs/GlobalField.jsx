@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, useField } from 'formik';
-import { REQUIRED_MSG } from "../constants/constants";
+import { REQUIRED_MSG } from "../../../constants/Constants";
 
 const GlobalField = ({
                          legend,

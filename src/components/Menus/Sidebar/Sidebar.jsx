@@ -1,6 +1,6 @@
-import Button from "../../Button";
+import Button from "../../Common/Button/Button";
 import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2, DollarSign, LogOut } from "lucide-react";
-import Logo from "../../Logo/Logo";
+import Logo from "../../Common/Logo/Logo";
 
 const Sidebar = ({ isOpen, setSidebarOpen }) => {
     const toggleSidebar = () => {

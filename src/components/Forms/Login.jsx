@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import Card from "./Card";
-import Button from "./Button";
-import GlobalField from "./GlobalField";
+import Card from "../Common/Card/Card";
+import Button from "../Common/Button/Button";
+import GlobalField from "../Common/inputs/GlobalField";
 import * as Yup from "yup";
-import {REQUIRED_MSG} from "../constants/constants";
+import {REQUIRED_MSG} from "../../constants/Constants";
 import {toast, ToastContainer} from "react-toastify";
 import {Formik} from "formik";
 

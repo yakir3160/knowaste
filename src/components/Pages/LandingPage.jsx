@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import LandingPageText from '../components/LandingPageText';
-import featuredImage1 from '../img/food-waste_1.jpg';
-import featuredImage2 from '../img/featured34-1@2x.png';
-import "../css/App.css"
-import Button from "../components/Button";
+import LandingPageText from '../../constants/LandingPageText';
+
+import featuredImage2 from '../../img/featured34-1@2x.png';
+import "../../css/App.css"
+import Button from "../Common/Button/Button";
 
 const LandingPage = () => {
     return (

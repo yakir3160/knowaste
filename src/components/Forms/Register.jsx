@@ -3,10 +3,10 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Card from "./Card";
-import Button from "./Button";
-import GlobalField from "./GlobalField";
-import { REQUIRED_MSG } from "../constants/constants";
+import Card from "../Common/Card/Card";
+import Button from "../Common/Button/Button";
+import GlobalField from "../Common/inputs/GlobalField";
+import { REQUIRED_MSG } from "../../constants/Constants";
 
 const Register = () => {
     const [cities, setCities] = useState([]);

@@ -3,10 +3,10 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Card from "../components/Card";
-import Button from "../components/Button";
-import GlobalField from "../components/GlobalField";
-import {REQUIRED_MSG} from "../constants/constants";
+import Card from "../Common/Card/Card";
+import Button from "../Common/Button/Button";
+import GlobalField from "../Common/inputs/GlobalField";
+import {REQUIRED_MSG} from "../../constants/Constants";
 
 const ContactForm = () => {
     const [submitted, setSubmitted] = useState(false);
