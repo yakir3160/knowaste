@@ -14,7 +14,7 @@
   --secondary-color: #E4EBCF;
   --lime-color: #b5f517;
   --errorRed: #e30b0b;
-  --errorLightRed: #FF7A7A;
+  --errorLightRed: #fde8e8;
   --bs-gray: #9CA3AF;
   --bs-black: black;
 }
@@ -44,21 +44,4 @@ body {
   width: 100%;
 }
 
-
-footer {
-  flex-shrink: 0;
-  width: 100%;
-  background-color: var(--titles-color);
-  text-align: center;
-  padding: 0.5rem 0;
-  color: white;
-}
-
-.title {
-  font-size: 1.875rem;
-  font-weight: bold;
-  color: var(--titles-color);
-  text-align: center;
-  margin-bottom: 1rem;
-}
 
