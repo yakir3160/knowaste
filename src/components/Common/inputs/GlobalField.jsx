@@ -34,7 +34,7 @@ const GlobalField = ({
   `;
 
     const legendClasses = `
-    absolute left-2 mb-2 transition-all duration-200 text-gray text-md font-medium
+     h-[0.5vh] pl-2 transition-all duration-200 text-gray text-md font-medium
     ${hasValue ? 'text-titles mt-0' : ''}
   `;
 

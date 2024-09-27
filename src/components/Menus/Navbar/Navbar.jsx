@@ -46,7 +46,7 @@ const Navbar = () => {
                     <Button
                         to="/contact"
                         onClick={toggleMenu}
-                        className="block mb-4"
+                        className={`block mb-4`}
                     >
                         Contact Us
                     </Button>

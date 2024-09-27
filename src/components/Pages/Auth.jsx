@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Login from '../Forms/Login';
-import Register from '../Forms/Register';
+import Register from '../Forms/Register/Register';
 
 const Auth = () => {
     const location = useLocation();
