@@ -6,7 +6,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom properties */
+/* Custom styles */
 :root {
   --base-color: #F0F6E1;
   --buttons-color: #3B763B;
@@ -18,10 +18,9 @@
   --bs-gray: #9CA3AF;
   --bs-black: black;
   --bs-green: #16A34A;
-
 }
 
-/* Commented out dark mode styles for future use
+
 .dark {
   --base-color: #2A522A;
   --buttons-color: #E4EBCF;
@@ -29,7 +28,6 @@
   --secondary-color: #E4EBCF;
   --lime-color: #aae800;
 }
-*/
 
 /* Global styles */
 html, body, #root {
@@ -44,6 +42,16 @@ body {
   scroll-behavior: smooth;
   position: relative;
   width: 100%;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, p, button {
+  color: var(--titles-color);
 }
 
 
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--base-color);
+  }
+}

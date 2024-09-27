@@ -44,7 +44,7 @@ const Login = () => {
         <>
             <ToastContainer />
                 <Card className="flex flex-col max-w-[360px]">
-                <h3 className="title">Login to your account</h3>
+                <h3 className="text-titles text-4xl p-5 text-center text-nowrap">Login to your account</h3>
                 <p className={`text-titles text-[1rem] font-semibold`}>Enter your email and password to login</p>
                 <Formik
                     initialValues={{email: '', password: ''}}

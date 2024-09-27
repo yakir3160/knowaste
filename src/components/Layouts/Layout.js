@@ -7,16 +7,24 @@ import Sidebar from "../Menus/Sidebar/Sidebar";
 const Layout = ({ children, pageType }) => {
     const [isOpen, setIsOpen] = useState(true);
     const isAdminPanel = pageType === 'admin-panel';
+
+    // Define main content class based on the admin panel state
     const mainContentClass = isAdminPanel ? '' : 'pt-[150px] px-4 sm:px-6 lg:px-8';
+
+    const sidebarPadding = isAdminPanel && isOpen ? 'pl-72' : 'pl-20';
 
     return (
         <div className="min-h-screen flex flex-col">
-            {isAdminPanel ? <Sidebar isOpen={isOpen} setSidebarOpen={setIsOpen} /> : <Navbar />}
-            <main className={`flex-1 flex flex-col items-center w-full ${mainContentClass} ${isOpen ? 'pl-72' : 'pl-20'}`}>
+            {isAdminPanel ? (
+                <Sidebar isOpen={isOpen}  setSidebarOpen={setIsOpen} />
+            ) : (
+                <Navbar />
+            )}
+            <main className={`flex-1 flex flex-col items-center w-full ${mainContentClass} ${isAdminPanel ? sidebarPadding : ''}`}>
                 {children}
                 <Outlet />
             </main>
-            {isAdminPanel ? '' : <Footer />}
+            {!isAdminPanel && <Footer />}
         </div>
     );
 };

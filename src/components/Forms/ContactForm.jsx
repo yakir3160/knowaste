@@ -29,7 +29,7 @@ const ContactForm = () => {
     return (
             <>
                 <Card className="min-w-[360px]">
-                    <h3 className="title">Contact us</h3>
+                    <h3 className="text-titles text-4xl p-4 text-center">Contact us</h3>
                     {!submitted ? (
                         <Formik
                             initialValues={{ firstName: '', lastName: '', email: '', message: '' }}
