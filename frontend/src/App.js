@@ -7,9 +7,10 @@ import Auth from './components/Pages/Auth';
 import Layout from "./components/Layouts/Layout";
 import ScrollToTop from './components/functions/UI/ScrollToTop';
 import Dashboard from "./components/AdminPanel/Dashboard/Dashboard";
-import OrdersReport from "./components/AdminPanel/OrdersReport/OrdersReport";
-import WasteReport from "./components/AdminPanel/WasteReport/WasteReport";
+import DailySalesReport from "./components/AdminPanel/dailySalesReport/dailySalesReport";
+import LeftoverReport from "./components/AdminPanel/LeftoverReport/LeftoverReport";
 import PriceQuote from "./components/AdminPanel/PriceQuote/PriceQuote";
+import InventoryManagement from "./components/AdminPanel/InventoryManagement/InventoryManagement";
 
 const App = () => {
     return (
@@ -27,9 +28,10 @@ const App = () => {
                         <Route index element={<Dashboard />} />
 
                         {/* Other routes inside admin panel */}
-                        <Route path="orders-report" element={<OrdersReport />} />
-                        <Route path="waste-report" element={<WasteReport />} />
-                        <Route path="price-quote" element={<PriceQuote />} />
+                        <Route path="sales-report" element={<DailySalesReport />} />
+                        <Route path="leftover-report" element={<LeftoverReport />} />
+                        <Route path="inventory-management" element={<InventoryManagement />} />
+                        <Route path="request-quote" element={<PriceQuote />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

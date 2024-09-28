@@ -23,6 +23,9 @@ const PlaceholderList = () => (
 const Dashboard = () => {
     return (
         <div className="flex flex-col gap-5 w-full p-6 rounded-lg sm:rounded-lg">
+            <Card>
+                <h1 className={`text-titles text-4xl text-center`}>Dashboard</h1>
+            </Card>
             <section className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 rounded-md border-2 border-secondary p-6 shadow-inset-custom bg-[#ffffff]">
                 <Card className="w-full h-[20rem] bg-base p-4">
                     <PlaceholderChart />

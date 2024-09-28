@@ -9,11 +9,43 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
     };
     const location = useLocation();
     const menuItems = [
-        { name: "Dashboard", icon: <LayoutDashboard className="h-5 w-5" />, href: "/admin-panel" },
-        { name: "Orders Report", icon: <FileText className="h-5 w-5" />, href: "/admin-panel/orders-report" },
-        { name: "Waste Report", icon: <Trash2 className="h-5 w-5" />, href: "/admin-panel/waste-report" },
-        { name: "New Price Quote", icon: <DollarSign className="h-5 w-5" />, href: "/admin-panel/price-quote" },
-        { name: "Log Out", icon: <LogOut className="h-5 w-5 text-errorRed" />, href: "/" },
+        {
+            id: "home",
+            name: "Home",
+            icon: <LayoutDashboard className="h-5 w-5" />,
+            href: "/admin-panel",
+        },
+        {
+            id: "dailySalesReport",
+            name: " Daily Sales Report",
+            icon: <FileText className="h-5 w-5" />,
+            href: "/admin-panel/sales-report",
+        },
+        {
+            id: "leftoverReport",
+            name: "Leftover Report",
+            icon: <Trash2 className="h-5 w-5" />,
+            href: "/admin-panel/leftover-report",
+        },
+        {
+            id: "inventory",
+            name: "Inventory Management",
+            icon: <Trash2 className="h-5 w-5" />,
+            href: "/admin-panel/inventory-management",
+        },
+        {
+            id: "priceRequest",
+            name: "Request Price Quote",
+            icon: <DollarSign className="h-5 w-5" />,
+            href: "/admin-panel/request-quote",
+        },
+        {
+            id: "signOut",
+            name: "Sign Out",
+            icon: <LogOut className="h-5 w-5 text-errorRed" />,
+            href: "/",
+            action: "logout", // Optional action field for handling specific logic
+        },
     ];
 
     const sideBarTransition = "transition-all duration-200 ease-in-out";
@@ -49,7 +81,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
                         <Button
                             key={index}
                             to={item.href}
-                            className={`p-2  ${sidebarClasses.menuItem} ${item.name === "Log Out" && sidebarClasses.logout}
+                            className={`p-2  ${sidebarClasses.menuItem} ${item.name === "Sign Out" && sidebarClasses.logout}
                             ${location.pathname === item.href ? "bg-base border-2 border-lime text-buttons pl-2" : "border-2 border-[transparent]"}`}
                         >
                             {item.icon}
