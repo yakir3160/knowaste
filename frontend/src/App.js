@@ -6,7 +6,6 @@ import ContactForm from './components/Forms/ContactForm';
 import Auth from './components/Pages/Auth';
 import Layout from "./components/Layouts/Layout";
 import ScrollToTop from './components/functions/UI/ScrollToTop';
-import AdminPanel from "./components/Pages/AdminPanel";
 import Dashboard from "./components/AdminPanel/Dashboard/Dashboard";
 import OrdersReport from "./components/AdminPanel/OrdersReport/OrdersReport";
 import WasteReport from "./components/AdminPanel/WasteReport/WasteReport";
