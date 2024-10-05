@@ -2,15 +2,7 @@ import React from 'react';
 import { Field, useField } from 'formik';
 import { REQUIRED_MSG } from "../../../constants/Constants";
 
-const GlobalField = ({
-                         legend,
-                         name,
-                         as = 'input',
-                         type = 'text',
-                         placeholder,
-                         options = [],
-                         ...props
-                     }) => {
+const GlobalField = ({legend, name, as = 'input', type = 'text', placeholder, options = [], ...props}) => {
     const [field, meta] = useField(name);
     const hasError = meta.touched && meta.error;
     const hasValue = field.value || (type === 'password' && field.value.length > 0);
@@ -25,11 +17,12 @@ const GlobalField = ({
 
     const fieldHeight = as === 'textarea' ? 'min-h-[100px]' : 'h-[55px]';
     const fieldClasses = `
-    ${fieldHeight} p-3 w-full 
+    ${fieldHeight} p-3 w-full
+    bg-white
     shadow-inset-custom outline-none box-border
     focus:border-lime focus-visible:border-2 rounded-3xl
     transition-all duration-200
-    ${hasError ? 'border-2 border-errorRed' : 'bg-inputs border-2 border-base'}
+    ${hasError ? 'border-2 border-errorRed' : 'border-2 border-base'}
     ${as === 'textarea' ? 'resize-none' : ''}
   `;
 

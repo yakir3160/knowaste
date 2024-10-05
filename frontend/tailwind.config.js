@@ -23,7 +23,7 @@ module.exports = {
         'logo-lg': '3.5rem',
       },
       boxShadow: {
-        'inset-custom': 'inset 6px 6px 10px #e6e8de, inset -9px -9px 10px #ffffff',
+        'inset-custom': 'inset 4px 4px 8px rgba(230, 232, 222, 0.7), inset -6px -6px 8px #ffffff',
         'outer-custom': '10px 10px 20px #e6e8de, -10px -10px 20px #ffffff',
         'button-hover': '5px 5px 10px rgba(203, 209, 184, 0.60), -5px -5px 10px #fdfffa',
       },
@@ -77,6 +77,7 @@ module.exports = {
       errorLightRed: 'var(--errorLightRed)',
       gray:'var(--bs-gray)',
       black : 'var(--bs-black)',
+      white: 'var(--bs-white)',
       green: 'var(--bs-green)',
     },
   },
