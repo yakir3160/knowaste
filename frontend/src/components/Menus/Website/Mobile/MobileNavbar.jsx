@@ -5,7 +5,7 @@ import Logo from "../../../Common/Logo/Logo";
 
 const MobileNavbar = ({ isMenuOpen, toggleMenu }) => {
     return (
-        <div className="sm:hidden flex justify-center items-center gap-x-5 pl-16">
+        <div className="flex justify-center items-center gap-x-5 pl-16">
             <Logo className={` flex-grow text-logo-md sm:text-logo-sm md:text-logo-md lg:text-logo-lg`}/>
             <button onClick={toggleMenu} className="menu-button">
                 <div className={classNames(`tham tham-e-squeeze tham-w-7`, { 'tham-active': isMenuOpen })}>

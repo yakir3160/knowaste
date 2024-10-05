@@ -3,9 +3,9 @@ import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2,Warehouse,
 import Logo from "../../../Common/Logo/Logo";
 import {useLocation} from "react-router-dom";
 
-const DesktopSidebar = ({ isOpen, setSidebarOpen }) => {
+const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     const toggleSidebar = () => {
-        setSidebarOpen(!isOpen);
+        setIsOpen(!isOpen);
     };
     const location = useLocation();
     const menuItems = [
@@ -44,7 +44,7 @@ const DesktopSidebar = ({ isOpen, setSidebarOpen }) => {
             name: "Sign Out",
             icon: <LogOut className="h-5 w-5 text-errorRed" />,
             href: "/",
-            action: "logout", // Optional action field for handling specific logic
+            action: "logout",
         },
     ];
 

@@ -2,16 +2,8 @@ import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './Button.css';
 
-const Button = ({
-                    children,
-                    className = '',
-                    style = {},
-                    disabled,
-                    to,
-                    state,
-                    onClick,
-                    type = 'button'
-                }) => {
+const Button = ({children, className = '', style = {}, disabled, to, state, onClick, type = 'button'}) => {
+
     const combinedClassName = useMemo(() => {
         const hasTextColor = className.includes('text-') || style.color;
         const hasShadow = className.includes('shadow-') || style.boxShadow;

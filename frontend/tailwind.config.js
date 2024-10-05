@@ -69,6 +69,7 @@ module.exports = {
     },
     colors: {
       base: 'var(--base-color)',
+      cards: 'var(--bs-card-bg)',
       buttons: 'var(--buttons-color)',
       titles: 'var(--titles-color)',
       secondary: 'var(--secondary-color)',

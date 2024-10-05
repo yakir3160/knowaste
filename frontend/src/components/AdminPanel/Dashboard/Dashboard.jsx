@@ -22,7 +22,7 @@ const PlaceholderList = () => (
 
 const Dashboard = () => {
     return (
-        <div className="flex flex-col gap-5 w-full p-6 rounded-lg sm:rounded-lg">
+        <div className="flex flex-col pb-24 gap-5 w-full p-6 rounded-lg sm:rounded-lg">
             <Card>
                 <h1 className={`text-titles text-4xl text-center`}>Dashboard</h1>
             </Card>

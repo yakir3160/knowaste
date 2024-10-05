@@ -22,7 +22,7 @@ const GlobalField = ({legend, name, as = 'input', type = 'text', placeholder, op
     shadow-inset-custom outline-none box-border
     focus:border-lime focus-visible:border-2 rounded-3xl
     transition-all duration-200
-    ${hasError ? 'border-2 border-errorRed' : 'border-2 border-base'}
+    ${hasError ? 'border-2 border-errorRed' : 'border-2 border-cards'}
     ${as === 'textarea' ? 'resize-none' : ''}
   `;
 
