@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "../Menus/Navbar/Navbar";
+import Navbar from "../Menus/Website/Navbar";
 import Footer from "./Footer";
-import Sidebar from "../Menus/Sidebar/Sidebar";
+import DesktopSidebar from "../Menus/Admin/Desktop/DesktopSidebar";
 
 const Layout = ({ children, pageType }) => {
     const [isOpen, setIsOpen] = useState(true);
@@ -16,7 +16,7 @@ const Layout = ({ children, pageType }) => {
     return (
         <div className="min-h-screen flex flex-col">
             {isAdminPanel ? (
-                <Sidebar isOpen={isOpen}  setSidebarOpen={setIsOpen} />
+                <DesktopSidebar isOpen={isOpen} setSidebarOpen={setIsOpen} />
             ) : (
                 <Navbar />
             )}

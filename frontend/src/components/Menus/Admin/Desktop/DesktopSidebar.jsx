@@ -1,9 +1,9 @@
-import Button from "../../Common/Button/Button";
+import Button from "../../../Common/Button/Button";
 import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2,Warehouse, DollarSign, LogOut } from "lucide-react";
-import Logo from "../../Common/Logo/Logo";
+import Logo from "../../../Common/Logo/Logo";
 import {useLocation} from "react-router-dom";
 
-const Sidebar = ({ isOpen, setSidebarOpen }) => {
+const DesktopSidebar = ({ isOpen, setSidebarOpen }) => {
     const toggleSidebar = () => {
         setSidebarOpen(!isOpen);
     };
@@ -98,4 +98,4 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
     );
 };
 
-export default Sidebar;
+export default DesktopSidebar;
