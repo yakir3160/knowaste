@@ -4,7 +4,7 @@ import Button from "../Common/Button/Button";
 import GlobalField from "../Common/inputs/GlobalField";
 import * as Yup from "yup";
 import {REQUIRED_MSG} from "../../constants/Constants";
-import {toast, ToastContainer} from "react-toastify";
+
 import {Formik} from "formik";
 
 const Login = () => {
@@ -20,28 +20,24 @@ const Login = () => {
         password: Yup.string()
             .required(REQUIRED_MSG),
     });
-    const handleSubmit = (values, { setSubmitting, resetForm }) => {
-        setTimeout(() => {
-            const userInfo = `          
-                Email: ${values.email}
-                Password: ${values.password}
-            `;
-            toast.success('Successfully logged in!', {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            resetForm();
-            setSubmitting(false);
-        }, 1000);
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        const { toast } = await import('react-toastify');
+        toast.success('Successfully logged in!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
+
+        resetForm();
+        setSubmitting(false);
     };
+
     return (
 
         <>
-            <ToastContainer />
                 <Card className="flex flex-col max-w-[360px]">
                 <h3 className="text-titles text-4xl p-5 text-center t">Login to your account</h3>
                 <p className={`text-titles text-[1rem] font-semibold`}>Enter your email and password to login</p>

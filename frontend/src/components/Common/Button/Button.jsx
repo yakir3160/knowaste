@@ -20,7 +20,7 @@ const Button = ({
           button
           ${className}
           hover:text-buttons
-          ${!hasHover ? 'hover:text-buttons hover:shadow-button-hover hover:scale-98' : ''}
+          ${!hasHover ? 'hover:text-buttons hover:shadow-button-hover hover:scale-[0.99]' : ''}
           ${!hasTextColor ? 'text-titles' : ''}
           ${!hasShadow ? 'shadow-outer-custom' : ''}
         `.trim();

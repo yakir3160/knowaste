@@ -8,10 +8,10 @@
 
 /* Custom styles */
 :root {
-  --base-color: #F0F6E1;
+  --base-color: #f9fcf3;
   --buttons-color: #3B763B;
   --titles-color: #2A522A;
-  --secondary-color: #E4EBCF;
+  --secondary-color: #eff5de;
   --lime-color: #b5f517;
   --errorRed: #e30b0b;
   --errorLightRed: #fde8e8;

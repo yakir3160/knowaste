@@ -7,7 +7,7 @@ import Auth from './components/Pages/Auth';
 import Layout from "./components/Layouts/Layout";
 import ScrollToTop from './components/functions/UI/ScrollToTop';
 import Dashboard from "./components/AdminPanel/Dashboard/Dashboard";
-import DailySalesReport from "./components/AdminPanel/dailySalesReport/dailySalesReport";
+import DailySalesReport from "./components/AdminPanel/DailySalesReport/dailySalesReport";
 import LeftoverReport from "./components/AdminPanel/LeftoverReport/LeftoverReport";
 import PriceQuote from "./components/AdminPanel/PriceQuote/PriceQuote";
 import InventoryManagement from "./components/AdminPanel/InventoryManagement/InventoryManagement";

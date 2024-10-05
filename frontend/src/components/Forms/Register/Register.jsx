@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { Formik, Form } from 'formik';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,6 +11,8 @@ import Button from "../../Common/Button/Button";
 
 const Register = () => {
     const [cities, setCities] = useState(['Select a city']);
+    const [isLoading, setIsLoading] = useState(true);
+    const requestInProgress = useRef(false);
     const [passwordStatus, setPasswordStatus] = useState({
         length: false,
         uppercase: false,
@@ -19,8 +21,28 @@ const Register = () => {
         specialChar: false,
     });
 
+    useEffect(() => {
+        const loadCities = async () => {
+            if (requestInProgress.current) return;
+            try {
+                requestInProgress.current = true;
+                setIsLoading(true);
+                await fetchCities(setCities);
+            } catch (error) {
+                toast.error('Failed to load cities. Please try again later.');
+                console.error('Error loading cities:', error);
+            } finally {
+                setIsLoading(false);
+                requestInProgress.current = false;
+            }
+        };
 
-    fetchCities(setCities);
+        loadCities();
+        
+        return () => {
+            requestInProgress.current = false;
+        };
+    }, []);
 
     const handleSubmit = (values, { setSubmitting, resetForm }) => {
         setTimeout(() => {
@@ -46,6 +68,16 @@ const Register = () => {
             setSubmitting(false);
         }, 1000);
     };
+
+    if (isLoading) {
+        return (
+            <Card className="max-w-7xl min-w-[360px] mx-auto py-8 px-4">
+                <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+            </Card>
+        );
+    }
 
     return (
         <>

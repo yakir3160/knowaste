@@ -23,18 +23,9 @@ module.exports = {
         'logo-lg': '3.5rem',
       },
       boxShadow: {
-        'inset-custom': 'inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #feffef',
-        'outer-custom': '13px 13px 20px #dbdfcc, -13px -13px 20px #faffeb',
-        'button-hover': '5px 5px 12px rgba(203, 209, 184, 0.60), -5px -5px 12px #faffeb',
-      },
-      colors: {
-        'base': '#F0F6E1FF',
-        'buttons': '#3B763B',
-        'titles': '#2A522A',
-        'secondary': '#E4EBCF',
-        'lime': '#b5f517',
-        'baseLight': '#f4f8ea',
-        'inputs': '#fafcf6',
+        'inset-custom': 'inset 6px 6px 10px #e6e8de, inset -9px -9px 10px #ffffff',
+        'outer-custom': '10px 10px 20px #e6e8de, -10px -10px 20px #ffffff',
+        'button-hover': '5px 5px 10px rgba(203, 209, 184, 0.60), -5px -5px 10px #fdfffa',
       },
       screens: {
         'iphone': '375px',

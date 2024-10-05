@@ -1,5 +1,5 @@
 import Button from "../../Common/Button/Button";
-import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2, DollarSign, LogOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2,Warehouse, DollarSign, LogOut } from "lucide-react";
 import Logo from "../../Common/Logo/Logo";
 import {useLocation} from "react-router-dom";
 
@@ -16,7 +16,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
             href: "/admin-panel",
         },
         {
-            id: "dailySalesReport",
+            id: "DailySalesReport",
             name: " Daily Sales Report",
             icon: <FileText className="h-5 w-5" />,
             href: "/admin-panel/sales-report",
@@ -30,7 +30,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
         {
             id: "inventory",
             name: "Inventory Management",
-            icon: <Trash2 className="h-5 w-5" />,
+            icon: <Warehouse className="h-5 w-5" />,
             href: "/admin-panel/inventory-management",
         },
         {
@@ -66,7 +66,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
             <aside className={sidebarClasses.aside}>
                 <div className="flex justify-between items-center p-2">
                     <div className={sidebarClasses.logoContainer}>
-                        <Logo className="text-logo-sm font-semibold text-titles p-3"/>
+                        <Logo className="text-logo-sm font-semibold text-titles p-5"/>
                     </div>
                     <button
                         onClick={toggleSidebar}
