@@ -4,9 +4,7 @@ import Logo from "../../../Common/Logo/Logo";
 import {useLocation} from "react-router-dom";
 
 const DesktopSidebar = ({ isOpen, setIsOpen }) => {
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
+    const toggleSidebar = () => setIsOpen(!isOpen);
     const location = useLocation();
     const menuItems = [
         {
