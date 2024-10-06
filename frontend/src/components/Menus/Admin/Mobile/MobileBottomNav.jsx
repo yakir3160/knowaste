@@ -25,10 +25,10 @@ const MobileBottomNav = () => {
     }, [location]);
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 bg-secondary z-50">
-            <div className="flex flex-col bg-white items-center justify-center p-2 text-titles">
+        <div className="fixed bottom-0 left-0 right-0 bg-[transparent] z-50">
+            <div className="flex flex-col  items-center justify-center text-titles">
                 <button
-                    className="flex  items-center justify-center px-4 py-2 w-full"
+                    className="flex  items-center bg-secondary rounded-t-2xl  justify-center px-4 py-2 w-fit"
                     onClick={toggleBottomMenu}
                     aria-expanded={isVisible}
                     aria-controls="mobile-menu"
@@ -43,7 +43,7 @@ const MobileBottomNav = () => {
                     isVisible ? 'max-h-[500px]' : 'max-h-0'
                 }`}
             >
-                <div className="flex flex-col gap-2 justify-center p-2">
+                <div className="flex flex-col gap-2  bg-base  justify-center p-2">
                     {menuItems.map((item, index) => (
                         <Button
                             key={index}
