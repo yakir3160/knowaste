@@ -39,17 +39,17 @@ const MobileBottomNav = () => {
             </div>
             <div
                 id="mobile-menu"
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`overflow-hidden transition-all duration-300 ease-in-out  ${
                     isVisible ? 'max-h-[500px]' : 'max-h-0'
                 }`}
             >
-                <div className="flex flex-col gap-2  bg-base  justify-center p-2">
+                <div className="flex flex-col bg-white justify-center ">
                     {menuItems.map((item, index) => (
                         <Button
                             key={index}
                             to={item.href}
-                            className={`flex flex-col items-center text-center shadow-none ${
-                                location.pathname === item.href ? "bg-base border-2 border-lime text-buttons" : "border-2 border-[transparent]"
+                            className={`flex flex-col items-center  text-center bg-[transparent]  shadow-none ${
+                                location.pathname === item.href ? " bg-secondary border-2 border-lime " : "border-2 border-[transparent]"
                             }`}
                         >
                             {item.icon}

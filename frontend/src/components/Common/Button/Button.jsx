@@ -8,10 +8,12 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
         const hasTextColor = className.includes('text-') || style.color;
         const hasShadow = className.includes('shadow-') || style.boxShadow;
         const hasHover = className.includes('hover:') || style.hover;
+        const hasBgColor = className.includes('bg-') || style.backgroundColor;
         return `
           button
           ${className}
           hover:text-buttons
+          ${!hasBgColor ? 'bg-secondary' : ''}
           ${!hasHover ? 'hover:text-buttons hover:shadow-button-hover hover:scale-[0.99]' : ''}
           ${!hasTextColor ? 'text-titles' : ''}
           ${!hasShadow ? 'shadow-outer-custom' : ''}
