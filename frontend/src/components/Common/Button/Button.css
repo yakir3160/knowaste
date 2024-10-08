@@ -23,8 +23,7 @@
 
 .button:disabled {
     cursor: not-allowed;
-    background-color: #d3d3d3;
-    color: #a9a9a9;
+opacity: 50;
 }
 @media (max-width: 640px) {
     .button {

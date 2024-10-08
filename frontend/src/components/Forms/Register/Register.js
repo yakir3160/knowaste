@@ -7,7 +7,6 @@ import PasswordRequirements from './PasswordRequirements';
 import { validationSchema } from './ValidationSchema';
 import { fetchCities } from './RegisterUtils';
 import Card from '../../Common/Card/Card';
-import Button from "../../Common/Button/Button";
 
 const Register = () => {
     const [cities, setCities] = useState(['Select a city']);
@@ -38,7 +37,7 @@ const Register = () => {
         };
 
         loadCities();
-        
+
         return () => {
             requestInProgress.current = false;
         };

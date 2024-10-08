@@ -67,10 +67,23 @@ const RegisterForm = ({ cities, handleChange, setPasswordStatus, isSubmitting })
                 type="password"
             />
             <div className="col-span-1 sm:col-span-2 lg:col-span-2 flex justify-center items-center h-full">
-                <Button className="text-titles w-full h-14" type="submit" disabled={isSubmitting}>
-                    Submit
+                <Button
+                    className="text-titles w-full h-14 flex justify-center items-center"
+                    type="submit"
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? (
+                        <>
+                            <div
+                                className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles mr-3"></div>
+                            Submitting...
+                        </>
+                    ) : (
+                        "Submit"
+                    )}
                 </Button>
             </div>
+
         </div>
     );
 };
