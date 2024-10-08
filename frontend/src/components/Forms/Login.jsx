@@ -38,8 +38,8 @@ const Login = () => {
     return (
 
         <>
-                <Card className="flex flex-col max-w-[360px]">
-                <h3 className="text-titles text-4xl p-5 text-center t">Login to your account</h3>
+            <Card className="flex flex-col max-w-[360px]">
+                <h3 className="text-titles text-3xl p-5 text-center t">Login to your account</h3>
                 <p className={`text-titles text-[1rem] font-semibold`}>Enter your email and password to login</p>
                 <Formik
                     initialValues={{email: '', password: ''}}
@@ -48,7 +48,7 @@ const Login = () => {
                 >
                     {({errors, touched, isSubmitting}) => (
                         <form className="p-4" noValidate>
-                            <div className="mb-3">
+                            <div className="">
                                 <GlobalField
                                     type="email"
                                     name="email"
@@ -60,19 +60,34 @@ const Login = () => {
                                     legend="Password"
                                 />
                             </div>
-                            <div
-                                className="flex flex-col">
-                                <Button className="bg-lime text-titles" type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Logging in...' : 'Login'}
-                                </Button>
+                            <div className="flex flex-col">
+                                <div className={` flex flex-col gap-4`}>
+                                    <Button className="bg-lime text-titles" type="submit" disabled={isSubmitting}>
+                                        {isSubmitting ? 'Logging in...' : 'Login'}
+                                    </Button>
+                                    <Button
+                                        className="relative bg-gradient-to-r from-[#4285F4] via-[#DB4437] to-[#F4B400]  rounded-md p-0.5 "
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                    >
+                                    <span className="  relative z-10 block bg-white rounded-[25px] px-[10px] py-[10px]">
+                                           Google
+                                    </span>
+                                    </Button>
 
-                                <p className="text-center my-4">don’t have an account?</p>
-                                <Button className="bg-buttons p-4 border border-lime text-lime custom-hover-button  text-center" to="/auth" state={{showRegister: true}}>
-                                    Sign up
-                                </Button>
+                                </div>
+                                <div className="flex flex-row items-center p-2 m-2 mt-2 gap-2 h-fit">
+                                    <p className="text-center my-4">Don’t have an account?</p>
+                                    <Button
+                                        className="bg-buttons  border border-lime text-lime custom-hover-button text-center"
+                                        to="/auth" state={{showRegister: true}}>
+                                        Sign up
+                                    </Button>
+                                </div>
+
                             </div>
 
-                            <div className="text-center my-2">
+                            <div className="text-center ">
                                 <span>By clicking continue, you agree to our </span>
                                 <a href="/terms" className="terms-of-service">Terms of Service</a>
                                 <span> and </span>

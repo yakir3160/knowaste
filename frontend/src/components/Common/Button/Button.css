@@ -4,10 +4,8 @@
     font-family: inherit;
     font-weight: 600;
     transition: all 0.3s ease;
-    padding: 13px 17px;
     border-radius: 25px;
     min-width: fit-content;
-
 
 }
 
@@ -27,9 +25,7 @@ opacity: 50;
 }
 @media (max-width: 640px) {
     .button {
-        padding: 10px 14px;
-        font-size: 14px;
-        border-radius: 20px;
+        font-size: 16px;
 
     }
 }

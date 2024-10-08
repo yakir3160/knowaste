@@ -9,6 +9,7 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
         const hasShadow = className.includes('shadow-') || style.boxShadow;
         const hasHover = className.includes('hover:') || style.hover;
         const hasBgColor = className.includes('bg-') || style.backgroundColor;
+        const hasPadding = className.includes('p-') || style.Padding;
         return `
           button
           ${className}
@@ -17,6 +18,8 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
           ${!hasHover ? 'hover:text-buttons hover:shadow-button-hover hover:scale-[0.99]' : ''}
           ${!hasTextColor ? 'text-titles' : ''}
           ${!hasShadow ? 'shadow-outer-custom' : ''}
+          ${!hasPadding ? 'px-[17px] py-[13px]' : ''}
+        \`.trim();
         `.trim();
     }, [className, style.color, style.boxShadow]);
 
