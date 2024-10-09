@@ -11,9 +11,13 @@ import DailySalesReport from "./components/AdminPanel/DailySalesReport/dailySale
 import LeftoverReport from "./components/AdminPanel/LeftoverReport/LeftoverReport";
 import PriceQuote from "./components/AdminPanel/PriceQuote/PriceQuote";
 import InventoryManagement from "./components/AdminPanel/InventoryManagement/InventoryManagement";
+import {auth} from "./firebaseConfig";
+import login from "./components/Forms/Login";
 
 const App = () => {
+    console.log("Auth: ", auth);
     return (
+
         <div className="App">
             <BrowserRouter>
                 <ScrollToTop />

@@ -4,17 +4,18 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-
+// Directly using your Firebase configuration
 const firebaseConfig = {
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_FIREBASE_APP_ID,
-    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+    apiKey: 'AIzaSyCvGGpbmVpf-jZTNsClUDgDMURcP4zxxB4',
+    authDomain: "knowwaste-f88b2.firebaseapp.com",
+    projectId: "knowwaste-f88b2",
+    storageBucket: "knowwaste-f88b2.appspot.com",
+    messagingSenderId: "347995591885",
+    appId: "1:347995591885:web:c9d2d38e6b4b374dc70584",
+    measurementId: "G-DGP0BW2Z0X"
 };
 
+console.log(firebaseConfig); // Log the configuration to ensure it's correctly set
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);

@@ -3,6 +3,7 @@ import GlobalField from "../../Common/inputs/GlobalField";
 import { validatePassword } from './RegisterUtils';
 import Button from "../../Common/Button/Button";
 
+
 const RegisterForm = ({ cities, handleChange, setPasswordStatus, isSubmitting }) => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -63,7 +64,7 @@ const RegisterForm = ({ cities, handleChange, setPasswordStatus, isSubmitting })
             />
             <GlobalField
                 name="repeatPassword"
-                legend="Repeat Password"
+                legend="Password confirmation"
                 type="password"
             />
             <div className="col-span-1 sm:col-span-2 lg:col-span-2 flex justify-center items-center h-full">

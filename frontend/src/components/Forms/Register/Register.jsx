@@ -2,13 +2,17 @@ import React, {useEffect, useState, useRef} from 'react';
 import { Formik, Form } from 'formik';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {useNavigate} from 'react-router-dom';
 import RegisterForm from './RegisterForm';
 import PasswordRequirements from './PasswordRequirements';
 import { validationSchema } from './ValidationSchema';
 import { fetchCities } from './RegisterUtils';
 import Card from '../../Common/Card/Card';
+import bcrypt from 'bcryptjs';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const Register = () => {
+    const navigate = useNavigate();
     const [cities, setCities] = useState(['Select a city']);
     const [isLoading, setIsLoading] = useState(true);
     const requestInProgress = useRef(false);
@@ -43,31 +47,52 @@ const Register = () => {
         };
     }, []);
 
-    const handleSubmit = (values, { setSubmitting, resetForm }) => {
-        setTimeout(() => {
-            const userInfo = `
-                Business Name: ${values.businessName}
-                Contact Name: ${values.contactName}
-                Phone: ${values.phone}
-                Address: ${values.address}
-                ZIP: ${values.zipCode}
-                City: ${values.city}
-                Account Type: ${values.accountType}
-                Email: ${values.email}
-            `;
-            toast.success(userInfo, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            resetForm();
-            setSubmitting(false);
-        }, 1000);
-    };
 
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        try {
+            // יצירת משתמש ב-Firebase Auth
+            const auth = getAuth();
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                values.email,
+                values.password
+            );
+
+            // הכנת אובייקט המידע למשתמש - ללא הסיסמה
+            const userData = {
+                businessName: values.businessName,
+                contactName: values.contactName,
+                phone: values.phone,
+                address: values.address,
+                city: values.city,
+                zipCode: values.zipCode,
+                accountType: values.accountType,
+                email: values.email,
+                uid: userCredential.user.uid  // שמירת ה-ID של המשתמש מ-Firebase Auth
+            };
+
+            console.log('Submitted Values:', userData);
+
+            toast.success('Registration successful!');
+            resetForm();
+
+        } catch (error) {
+            error.code === 'auth/email-already-in-use'
+                ? navigate('/auth', {
+                    state: {
+                        showRegister: false,
+                        email: values.email
+                    }
+                })
+                : (() => {
+                    toast.error('Registration failed. Please try again.');
+                    console.error('Error registering:', error);
+                })();
+
+        } finally {
+            setSubmitting(false);
+        }
+    };
     if (isLoading) {
         return (
             <Card className="max-w-7xl min-w-[360px] mx-auto py-8 px-4">

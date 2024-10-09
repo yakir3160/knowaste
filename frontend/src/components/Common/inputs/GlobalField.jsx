@@ -56,7 +56,7 @@ const GlobalField = ({legend, name, as = 'input', type = 'text', placeholder, op
                 )}
             </div>
 
-            <div className="text-errorRed text-center min-h-[24px] text-sm w-full mt-2">
+            <div className="text-errorRed text-center min-h-[20px] text-sm w-full">
                 {hasError && <div>{meta.error || REQUIRED_MSG}</div>}
             </div>
         </div>
