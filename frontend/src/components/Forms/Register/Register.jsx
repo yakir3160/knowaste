@@ -8,7 +8,6 @@ import PasswordRequirements from './PasswordRequirements';
 import { validationSchema } from './ValidationSchema';
 import { fetchCities } from './RegisterUtils';
 import Card from '../../Common/Card/Card';
-import bcrypt from 'bcryptjs';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const Register = () => {
@@ -57,7 +56,6 @@ const Register = () => {
                 values.email,
                 values.password
             );
-
             // הכנת אובייקט המידע למשתמש - ללא הסיסמה
             const userData = {
                 businessName: values.businessName,
@@ -71,9 +69,8 @@ const Register = () => {
                 uid: userCredential.user.uid  // שמירת ה-ID של המשתמש מ-Firebase Auth
             };
 
-            console.log('Submitted Values:', userData);
-
             toast.success('Registration successful!');
+            navigate('/admin-panel')
             resetForm();
 
         } catch (error) {

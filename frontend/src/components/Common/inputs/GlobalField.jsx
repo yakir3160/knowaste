@@ -1,12 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Field, useField } from 'formik';
 import { REQUIRED_MSG } from "../../../constants/Constants";
+import { Eye, EyeOff } from 'lucide-react';
 
 const GlobalField = ({legend, name, as = 'input', type = 'text', placeholder, options = [], ...props}) => {
     const [field, meta] = useField(name);
+    const [showPassword, setShowPassword] = useState(false);
     const hasError = meta.touched && meta.error;
     const hasValue = field.value || (type === 'password' && field.value.length > 0);
 
+    const togglePasswordVisibility = (e) => {
+        e.preventDefault();
+        setShowPassword(!showPassword);
+    };
     const getPlaceholder = () => {
         switch (type) {
             case 'email': return 'email@domain.com';
@@ -19,12 +25,13 @@ const GlobalField = ({legend, name, as = 'input', type = 'text', placeholder, op
     const fieldClasses = `
     ${fieldHeight} p-3 w-full
     bg-white
+    text-md
     shadow-inset-custom outline-none box-border
     focus:border-lime focus-visible:border-2 rounded-3xl
     transition-all duration-200
     ${hasError ? 'border-2 border-errorRed' : 'border-2 border-cards'}
     ${as === 'textarea' ? 'resize-none' : ''}
-  `;
+    ${type === 'password' && !showPassword ? 'text-xl font-bold' : ''}  `;
 
     const legendClasses = `
      h-[0.5vh] pl-2 transition-all duration-200 text-gray text-md font-medium
@@ -45,14 +52,24 @@ const GlobalField = ({legend, name, as = 'input', type = 'text', placeholder, op
                         ))}
                     </Field>
                 ) : (
-                    <Field
-                        name={name}
-                        type={type}
-                        as={as}
-                        placeholder={getPlaceholder()}
-                        {...props}
-                        className={fieldClasses}
-                    />
+                    <>
+                        <Field
+                            name={name}
+                            type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
+                            as={as}
+                            placeholder={getPlaceholder()}
+                            {...props}
+                            className={fieldClasses}
+                        />
+                        {type === 'password' && (
+                            <button
+                                onClick={togglePasswordVisibility}
+                                className={`absolute right-3 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md hover:shadow-lg transition-shadow duration-200`}
+                            >
+                                {showPassword ? <Eye size={24}/> : <EyeOff size={24}/>}
+                            </button>
+                        )}
+                    </>
                 )}
             </div>
 

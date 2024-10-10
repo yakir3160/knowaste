@@ -40,20 +40,24 @@ const Login = () => {
     return (
 
         <>
-            {emailFromRegister && (
-                <Card className="text-xl text-titles mb-4 ">
-                    This email is already registered. Please login to continue.
-                </Card>
-            )}
+
             <Card className="flex flex-col max-w-[360px]">
                 <h3 className="text-titles text-3xl p-5 text-center t">Login to your account</h3>
                 <Formik
-                    initialValues={{email:emailFromRegister, password: ''}}
+                    initialValues={{
+                        email:emailFromRegister,
+                        password: ''}}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({errors, touched, isSubmitting}) => (
+                    {({isSubmitting}) => (
+
                         <form className="p-4 " noValidate>
+                            {emailFromRegister && (
+                                <div className="text-md text-center text-titles mb-4 ">
+                                    This email is already registered. Please login to continue.
+                                </div>
+                            )}
                             <div className=" mb-3">
                                 <GlobalField
                                     type="email"
@@ -68,12 +72,23 @@ const Login = () => {
                             </div>
                             <div className="flex flex-col">
                                 <div className={` flex flex-col gap-4`}>
-                                    <Button className="bg-lime text-titles" type="submit" disabled={isSubmitting}>
-                                        {isSubmitting ? 'Logging in...' : 'Login'}
+                                    <Button
+                                        className="bg-lime text-titles"
+                                        type="submit"
+                                        disabled={isSubmitting}>
+                                        {isSubmitting ? (
+                                            <>
+                                                <div
+                                                    className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles mr-3"></div>
+                                                Logging in...
+                                            </>
+                                        ) : (
+                                            'Login'
+                                        )}
                                     </Button>
                                     <Button
                                         className="relative bg-gradient-to-r from-[#4285F4] via-[#DB4437] to-[#F4B400]  rounded-md p-0.5 "
-                                        type="submit"
+                                        type="button"
                                         disabled={isSubmitting}
                                     >
                                        <span className="relative z-10 flex justify-center items-center bg-white rounded-[25px] px-[10px] py-[10px] shadow-md hover:shadow-lg transition-shadow duration-200">
