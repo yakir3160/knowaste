@@ -8,93 +8,16 @@ import PasswordRequirements from './PasswordRequirements';
 import { validationSchema } from './ValidationSchema';
 import { fetchCities } from './RegisterUtils';
 import Card from '../../Common/Card/Card';
-import {auth,db} from '../../../firebaseConfig'
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import {useCities} from "./Hooks/useCities";
+import {useRegister} from "./Hooks/useRegister";
+import {usePasswordStatus} from "./Hooks/usePasswordStatus";
 
 
 const Register = () => {
-    const navigate = useNavigate();
-    const [cities, setCities] = useState(['Select a city']);
-    const [isLoading, setIsLoading] = useState(true);
-    const requestInProgress = useRef(false);
-    const [passwordStatus, setPasswordStatus] = useState({
-        length: false,
-        uppercase: false,
-        lowercase: false,
-        number: false,
-        specialChar: false,
-    });
+    const { cities, isLoading } = useCities();
+    const { handleSubmit } = useRegister();
+    const { passwordStatus, setPasswordStatus } = usePasswordStatus();
 
-    useEffect(() => {
-        const loadCities = async () => {
-            if (requestInProgress.current) return;
-            try {
-                requestInProgress.current = true;
-                setIsLoading(true);
-                await fetchCities(setCities);
-            } catch (error) {
-                toast.error('Failed to load cities. Please try again later.');
-                console.error('Error loading cities:', error);
-            } finally {
-                setIsLoading(false);
-                requestInProgress.current = false;
-            }
-        };
-        loadCities();
-
-        return () => {
-            requestInProgress.current = false;
-        };
-    }, []);
-
-
-    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-        try {
-
-            const userCredential = await createUserWithEmailAndPassword(
-                auth,
-                values.email,
-                values.password
-            );
-            // הכנת אובייקט המידע למשתמש - ללא הסיסמה
-            const userData = {
-                businessName: values.businessName,
-                contactName: values.contactName,
-                phone: values.phone,
-                address: values.address,
-                city: values.city,
-                zipCode: values.zipCode,
-                accountType: values.accountType,
-                email: values.email,
-                uid: userCredential.user.uid  // שמירת ה-ID של המשתמש מ-Firebase Auth
-            };
-            console.log('Attempting to create user document in Firestore');
-            await setDoc(doc(db, "users", userCredential.user.uid), userData);
-            console.log('User document created successfully');
-            toast.success('Registration successful!');
-            navigate('/admin-panel')
-            resetForm();
-
-        } catch (error) {
-            error.code === 'auth/email-already-in-use'
-                ? navigate('/auth', {
-                    state: {
-                        showRegister: false,
-                        email: values.email
-                    }
-                })
-                : (() => {
-                    toast.error('Registration failed. Please try again.');
-                    console.error('Error during registration:', error);
-                    console.error('Error code:', error.code);
-                    console.error('Error message:', error.message);
-                })();
-
-        } finally {
-            setSubmitting(false);
-        }
-    };
     if (isLoading) {
         return (
             <Card className="max-w-7xl min-w-[360px] mx-auto py-8 px-4">
