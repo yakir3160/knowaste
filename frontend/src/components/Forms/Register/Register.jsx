@@ -1,12 +1,11 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React from 'react';
 import { Formik, Form } from 'formik';
-import { toast, ToastContainer } from 'react-toastify';
+import {ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {useNavigate} from 'react-router-dom';
 import RegisterForm from './RegisterForm';
 import PasswordRequirements from './PasswordRequirements';
 import { validationSchema } from './ValidationSchema';
-import { fetchCities } from './RegisterUtils';
+
 import Card from '../../Common/Card/Card';
 import {useCities} from "./Hooks/useCities";
 import {useRegister} from "./Hooks/useRegister";
