@@ -11,13 +11,11 @@ import DailySalesReport from "./components/AdminPanel/DailySalesReport/dailySale
 import LeftoverReport from "./components/AdminPanel/LeftoverReport/LeftoverReport";
 import PriceQuote from "./components/AdminPanel/PriceQuote/PriceQuote";
 import InventoryManagement from "./components/AdminPanel/InventoryManagement/InventoryManagement";
-import {auth} from "./firebaseConfig";
-import login from "./components/Forms/Login";
+import ProtectedRoute from "./components/Routs/ProtectedRoute";
+import { auth } from './firebaseConfig';
 
 const App = () => {
-    console.log("Auth: ", auth);
     return (
-
         <div className="App">
             <BrowserRouter>
                 <ScrollToTop />
@@ -27,11 +25,12 @@ const App = () => {
                         <Route path="contact" element={<ContactForm />} />
                         <Route path="auth" element={<Auth />} />
                     </Route>
-                    <Route path="admin-panel" element={<Layout pageType="admin-panel" />}>
-                        {/* Default route (dashboard) */}
-                        <Route index element={<Dashboard />} />
 
-                        {/* Other routes inside admin panel */}
+                    {/* Protecting the admin panel route */}
+                    <Route path="admin-panel" element={
+                        <ProtectedRoute allowGuest={true} element={<Layout pageType="admin-panel" />} />
+                    }>
+                        <Route index element={<Dashboard />} />
                         <Route path="sales-report" element={<DailySalesReport />} />
                         <Route path="leftover-report" element={<LeftoverReport />} />
                         <Route path="inventory-management" element={<InventoryManagement />} />
