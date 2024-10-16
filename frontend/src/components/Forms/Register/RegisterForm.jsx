@@ -1,10 +1,9 @@
 import React, { Suspense } from 'react';
 import GlobalField from "../../Common/inputs/GlobalField";
-import { validatePassword } from './RegisterUtils';
 import Button from "../../Common/Button/Button";
 
 
-const RegisterForm = ({ cities, handleChange, setPasswordStatus, isSubmitting }) => {
+const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <GlobalField
@@ -59,7 +58,7 @@ const RegisterForm = ({ cities, handleChange, setPasswordStatus, isSubmitting })
                 type="password"
                 onChange={(e) => {
                     handleChange(e);
-                    validatePassword(e.target.value, setPasswordStatus);
+                    validatePassword(e.target.value);
                 }}
             />
             <GlobalField

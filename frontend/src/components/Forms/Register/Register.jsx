@@ -15,7 +15,7 @@ import {usePasswordStatus} from "./Hooks/usePasswordStatus";
 const Register = () => {
     const { cities, isLoading } = useCities();
     const { handleSubmit } = useRegister();
-    const { passwordStatus, setPasswordStatus } = usePasswordStatus();
+    const { passwordStatus, validatePassword } = usePasswordStatus();
 
     if (isLoading) {
         return (
@@ -53,7 +53,7 @@ const Register = () => {
                             <RegisterForm
                                 cities={cities}
                                 handleChange={handleChange}
-                                setPasswordStatus={setPasswordStatus}
+                                validatePassword={validatePassword}
                                 isSubmitting={isSubmitting}
                             />
                         </Form>

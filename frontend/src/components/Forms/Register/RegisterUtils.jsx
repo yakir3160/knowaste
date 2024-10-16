@@ -1,5 +1,4 @@
 
-
 export const fetchCities = async (setCities) => {
     try {
         const response = await fetch("https://raw.githubusercontent.com/royts/israel-cities/master/israel-cities.json");
@@ -27,21 +26,3 @@ export const fetchCities = async (setCities) => {
     }
 };
 
-
-export const validatePassword = (value, setPasswordStatus) => {
-    const lengthValid = value.length >= 8;
-    const uppercaseValid = /[A-Z]/.test(value);
-    const lowercaseValid = /[a-z]/.test(value);
-    const numberValid = /[0-9]/.test(value);
-    const specialCharValid = /[@$!%*?&]/.test(value);
-
-    setPasswordStatus({
-        length: lengthValid,
-        uppercase: uppercaseValid,
-        lowercase: lowercaseValid,
-        number: numberValid,
-        specialChar: specialCharValid,
-    });
-
-    return value;
-};
