@@ -8,7 +8,10 @@ import PasswordRequirements from './PasswordRequirements';
 import { validationSchema } from './ValidationSchema';
 import { fetchCities } from './RegisterUtils';
 import Card from '../../Common/Card/Card';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {auth,db} from '../../../firebaseConfig'
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+
 
 const Register = () => {
     const navigate = useNavigate();
@@ -38,7 +41,6 @@ const Register = () => {
                 requestInProgress.current = false;
             }
         };
-
         loadCities();
 
         return () => {
@@ -49,8 +51,7 @@ const Register = () => {
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
-            // יצירת משתמש ב-Firebase Auth
-            const auth = getAuth();
+
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
                 values.email,
@@ -68,7 +69,9 @@ const Register = () => {
                 email: values.email,
                 uid: userCredential.user.uid  // שמירת ה-ID של המשתמש מ-Firebase Auth
             };
-
+            console.log('Attempting to create user document in Firestore');
+            await setDoc(doc(db, "users", userCredential.user.uid), userData);
+            console.log('User document created successfully');
             toast.success('Registration successful!');
             navigate('/admin-panel')
             resetForm();
@@ -83,7 +86,9 @@ const Register = () => {
                 })
                 : (() => {
                     toast.error('Registration failed. Please try again.');
-                    console.error('Error registering:', error);
+                    console.error('Error during registration:', error);
+                    console.error('Error code:', error.code);
+                    console.error('Error message:', error.message);
                 })();
 
         } finally {

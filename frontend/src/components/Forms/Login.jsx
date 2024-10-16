@@ -32,7 +32,6 @@ const Login = () => {
             pauseOnHover: true,
             draggable: true,
         });
-
         resetForm();
         setSubmitting(false);
     };
@@ -40,7 +39,6 @@ const Login = () => {
     return (
 
         <>
-
             <Card className="flex flex-col max-w-[360px]">
                 <h3 className="text-titles text-3xl p-5 text-center t">Login to your account</h3>
                 <Formik
@@ -51,7 +49,6 @@ const Login = () => {
                     onSubmit={handleSubmit}
                 >
                     {({isSubmitting}) => (
-
                         <form className="p-4 " noValidate>
                             {emailFromRegister && (
                                 <div className="text-md text-center text-titles mb-4 ">

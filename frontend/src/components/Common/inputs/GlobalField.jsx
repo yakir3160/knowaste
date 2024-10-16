@@ -31,7 +31,7 @@ const GlobalField = ({legend, name, as = 'input', type = 'text', placeholder, op
     transition-all duration-200
     ${hasError ? 'border-2 border-errorRed' : 'border-2 border-cards'}
     ${as === 'textarea' ? 'resize-none' : ''}
-    ${type === 'password' && !showPassword ? 'text-xl font-bold' : ''}  `;
+    ${type === 'password' && 'font-semibold'}  `;
 
     const legendClasses = `
      h-[0.5vh] pl-2 transition-all duration-200 text-gray text-md font-medium

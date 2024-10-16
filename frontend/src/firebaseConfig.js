@@ -8,6 +8,7 @@ import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
     apiKey: 'AIzaSyCvGGpbmVpf-jZTNsClUDgDMURcP4zxxB4',
     authDomain: "knowwaste-f88b2.firebaseapp.com",
+    databaseURL: "https://knowwaste-f88b2-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "knowwaste-f88b2",
     storageBucket: "knowwaste-f88b2.appspot.com",
     messagingSenderId: "347995591885",
