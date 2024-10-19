@@ -28,7 +28,7 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
           ${!hasShadow ? 'shadow-outer-custom' : ''} 
           ${!hasPadding ? 'px-[17px] py-[13px]' : ''} 
         `.trim();
-        // השתמש ב-.trim() להסרת רווחים מיותרים
+        // .trim() להסרת רווחים מיותרים
     }, [className, style.color, style.boxShadow]);
     // הקשב לשינויים ב-className, צבע טקסט או צל לצורך מחשוב מחדש של ה-className המשולב
 
@@ -39,22 +39,22 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
         onClick: !disabled ? onClick : undefined, // מבטל onClick אם הכפתור מנוטרל (disabled)
         'aria-disabled': disabled // מאפשר תמיכה טובה יותר בנגישות עבור כפתורים מנוטרלים
     };
-
     // אם קיים 'to', זהו כפתור שנראה כמו קישור (<Link>)
-    if (to) {
-        return (
-            <Link to={to} state={state} {...commonProps}>
-                {children} {/* תוכן הכפתור */}
-            </Link>
-        );
-    }
-
-    // אחרת, מדובר בכפתור רגיל (<button>)
+    // אחרת, זהו כפתור רגיל (<button>)
     return (
-        <button {...commonProps} disabled={disabled} type={type}>
-            {children} {/* תוכן הכפתור */}
-        </button>
+        <>
+            {to ? (
+                <Link to={to} state={state} {...commonProps}>
+                    {children}
+                </Link>
+            ) : (
+                <button {...commonProps} disabled={disabled} type={type}>
+                    {children}
+                </button>
+            )}
+        </>
     );
+
 };
 
 export default Button;
