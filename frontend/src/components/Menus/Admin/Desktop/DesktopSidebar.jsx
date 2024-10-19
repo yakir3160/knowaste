@@ -64,7 +64,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
             <aside className={sidebarClasses.aside}>
                 <div className="flex justify-between items-center p-2">
                     <div className={sidebarClasses.logoContainer}>
-                        <Logo className="text-logo-sm font-semibold text-titles p-5"/>
+                        <Logo className="text-logo-sm font-semibold text-titles p-5" to ="/admin-panel"/>
                     </div>
                     <button
                         onClick={toggleSidebar}

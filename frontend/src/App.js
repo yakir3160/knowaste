@@ -12,11 +12,10 @@ import LeftoverReport from "./components/AdminPanel/LeftoverReport/LeftoverRepor
 import PriceQuote from "./components/AdminPanel/PriceQuote/PriceQuote";
 import InventoryManagement from "./components/AdminPanel/InventoryManagement/InventoryManagement";
 import ProtectedRoute from "./components/Routs/ProtectedRoute";
-import {UserProvider} from "./Contexts/UserContext";
+import {UserProvider, useUser} from "./Contexts/UserContext";
 
 const App = () => {
     return (
-
         <div className="App">
             <BrowserRouter>
                 <UserProvider>
