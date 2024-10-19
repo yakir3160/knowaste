@@ -74,9 +74,8 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                 >
                     {isSubmitting ? (
                         <>
-                            <div
-                                className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles mr-3"></div>
                             Submitting...
+                            <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles ml-3"></div>
                         </>
                     ) : (
                         "Submit"

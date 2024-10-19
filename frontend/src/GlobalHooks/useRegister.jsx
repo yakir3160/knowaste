@@ -1,4 +1,4 @@
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import {auth,db} from '../firebaseConfig'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -6,7 +6,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 export const useRegister = (navigate) => {
 
-    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    const handleRegister = async (values, { setSubmitting, resetForm }) => {
         try {
 
             const userCredential = await createUserWithEmailAndPassword(
@@ -52,5 +52,5 @@ export const useRegister = (navigate) => {
             setSubmitting(false);
         }
     }
-    return {handleSubmit}
+    return {handleRegister}
 };
