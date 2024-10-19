@@ -1,11 +1,11 @@
 import { toast, ToastContainer } from 'react-toastify';
-import {auth,db} from '../../../../firebaseConfig'
+import {auth,db} from '../firebaseConfig'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import {useNavigate} from "react-router-dom";
 
-export const useRegister = () => {
-    const navigate = useNavigate();
+
+export const useRegister = (navigate) => {
+
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
 

@@ -5,16 +5,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import RegisterForm from './RegisterForm';
 import PasswordRequirements from './PasswordRequirements';
 import { validationSchema } from './ValidationSchema';
-
 import Card from '../../Common/Card/Card';
 import {useCities} from "./Hooks/useCities";
-import {useRegister} from "./Hooks/useRegister";
 import {usePasswordStatus} from "./Hooks/usePasswordStatus";
+import {useUser} from "../../../Contexts/UserContext";
 
 
 const Register = () => {
     const { cities, isLoading } = useCities();
-    const { handleSubmit } = useRegister();
+    const { register } = useUser();
     const { passwordStatus, validatePassword } = usePasswordStatus();
 
     if (isLoading) {
@@ -46,7 +45,7 @@ const Register = () => {
                         repeatPassword: '',
                     }}
                     validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
+                    onSubmit={register}
                 >
                     {({isSubmitting, handleChange}) => (
                         <Form className="w-full" noValidate>

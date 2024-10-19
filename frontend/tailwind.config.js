@@ -58,12 +58,17 @@ module.exports = {
           '0%': { transform: 'translateX(0)', opacity: '1' },
           '100%': { transform: 'translateX(100%)', opacity: '0' }
         },
+        borderRotate: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 0.9s ease-in-out forwards',
         fadeInDown: 'fadeInDown 0.8s',
         slideIn: 'slideIn 0.5s forwards',
         slideOut: ' slideOut 0.5s forwards',
+        borderRotate: 'borderRotate 3s linear infinite',
       },
 
     },
