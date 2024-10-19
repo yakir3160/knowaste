@@ -2,13 +2,15 @@ import React from 'react';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../../../firebaseConfig';
 import Button from "../Button/Button";
+import {useNavigate} from "react-router-dom";
 
 const GoogleSignIn = ({ isSubmitting }) => {
+    const navigate = useNavigate();
     const signInWithGoogle = async () => {
         try {
             await signInWithPopup(auth, googleProvider);
-            // User is signed in.
-            // You can redirect or update your app state here.
+          //  TODO: // Add a check to see if the user is signed in ,create hook for this function,and handle token //
+            navigate('/admin-panel');
         } catch (error) {
             console.error("Error signing in with Google", error);
         }
