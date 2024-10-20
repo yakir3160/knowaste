@@ -19,7 +19,8 @@ import InventoryManagement from "./components/AdminPanel/InventoryManagement/Inv
 // קומפוננטת הגנה על נתיבים (Routes) הדורשים הרשאות מיוחדות
 import ProtectedRoute from "./components/Routs/ProtectedRoute";
 // ספק ההקשר של המשתמש, מנהל נתוני המשתמש ברחבי האפליקציה
-import {UserProvider, useUserContext} from "./Contexts/UserContext";
+import {UserProvider} from "./Contexts/UserContext";
+import {AuthProvider} from "./Contexts/AuthContext";
 
 const App = () => {
     return (
@@ -27,39 +28,41 @@ const App = () => {
             {/* עוטפים את כל האפליקציה ב-BrowserRouter כדי לנהל את הניווט בין הדפים */}
             <BrowserRouter>
                 {/* מספק את הקשר המשתמש לכל הקומפוננטות שדורשות אותו */}
-                <UserProvider>
-                    {/* גלילה אוטומטית לראש הדף כאשר הנתיב משתנה */}
-                    <ScrollToTop />
-                    {/* הגדרת הנתיבים של האפליקציה */}
-                    <Routes>
-                        {/* נתיב שורש, כולל פריסה כללית ודפים ראשיים */}
-                        <Route path="/" element={<Layout pageType="default" />}>
-                            {/* הדף הראשי (Landing Page) */}
-                            <Route index element={<LandingPage />} />
-                            {/* דף יצירת קשר */}
-                            <Route path="contact" element={<ContactForm />} />
-                            {/* דף ההתחברות / הרשמה */}
-                            <Route path="auth" element={<Auth />} />
-                        </Route>
+                <AuthProvider>
+                    <UserProvider>
+                        {/* גלילה אוטומטית לראש הדף כאשר הנתיב משתנה */}
+                        <ScrollToTop />
+                        {/* הגדרת הנתיבים של האפליקציה */}
+                        <Routes>
+                            {/* נתיב שורש, כולל פריסה כללית ודפים ראשיים */}
+                            <Route path="/" element={<Layout pageType="default" />}>
+                                {/* הדף הראשי (Landing Page) */}
+                                <Route index element={<LandingPage />} />
+                                {/* דף יצירת קשר */}
+                                <Route path="contact" element={<ContactForm />} />
+                                {/* דף ההתחברות / הרשמה */}
+                                <Route path="auth" element={<Auth />} />
+                            </Route>
 
-                        {/* ניהול פאנל המנהלים, מוגן על ידי ProtectedRoute */}
-                        <Route path="admin-panel" element={
-                            // הגנה על הגישה לפאנל המנהלים, מאשר גם גישת אורחים
-                            <ProtectedRoute allowGuest={false} element={<Layout pageType="admin-panel" />} />
-                        }>
-                            {/* דף דשבורד */}
-                            <Route index element={<Dashboard />} />
-                            {/* דוח מכירות יומי */}
-                            <Route path="sales-report" element={<DailySalesReport />} />
-                            {/* דוח שאריות */}
-                            <Route path="leftover-report" element={<LeftoverReport />} />
-                            {/* ניהול מלאי */}
-                            <Route path="inventory-management" element={<InventoryManagement />} />
-                            {/* בקשת הצעת מחיר */}
-                            <Route path="request-quote" element={<PriceQuote />} />
-                        </Route>
-                    </Routes>
-                </UserProvider>
+                            {/* ניהול פאנל המנהלים, מוגן על ידי ProtectedRoute */}
+                            <Route path="admin-panel" element={
+                                // הגנה על הגישה לפאנל המנהלים, מאשר גם גישת אורחים
+                                <ProtectedRoute allowGuest={false} element={<Layout pageType="admin-panel" />} />
+                            }>
+                                {/* דף דשבורד */}
+                                <Route index element={<Dashboard />} />
+                                {/* דוח מכירות יומי */}
+                                <Route path="sales-report" element={<DailySalesReport />} />
+                                {/* דוח שאריות */}
+                                <Route path="leftover-report" element={<LeftoverReport />} />
+                                {/* ניהול מלאי */}
+                                <Route path="inventory-management" element={<InventoryManagement />} />
+                                {/* בקשת הצעת מחיר */}
+                                <Route path="request-quote" element={<PriceQuote />} />
+                            </Route>
+                        </Routes>
+                    </UserProvider>
+                </AuthProvider>
             </BrowserRouter>
         </div>
     );

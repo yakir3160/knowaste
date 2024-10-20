@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import Card from "../../Common/Card/Card";
 import Button from "../../Common/Button/Button";
 import GlobalField from "../../Common/inputs/GlobalField";
@@ -7,10 +7,10 @@ import { REQUIRED_MSG } from "../../../Constants/Constants";
 import { useLocation } from "react-router-dom";
 import {Form, Formik} from "formik";
 import GoogleSignIn from "../../Common/GoogleSignIn/GoogleSignIn";
-import {useUserContext} from "../../../Contexts/UserContext";
+import {useAuthContext} from "../../../Contexts/AuthContext";
 
 const Login = () => {
-    const { login, error, clearError } = useUserContext();
+    const { login, error, clearError } = useAuthContext();
     const location = useLocation();
     const emailFromRegister = location.state?.email || '';
 

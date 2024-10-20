@@ -8,12 +8,12 @@ import { validationSchema } from './ValidationSchema';
 import Card from '../../Common/Card/Card';
 import {useCities} from "./Hooks/useCities";
 import {usePasswordStatus} from "./Hooks/usePasswordStatus";
-import {useUserContext} from "../../../Contexts/UserContext";
+import {useAuthContext} from "../../../Contexts/AuthContext";
 
 
 const Register = () => {
     const { cities, isLoading } = useCities();
-    const { register } = useUserContext();
+    const { register } = useAuthContext();
     const { passwordStatus, validatePassword } = usePasswordStatus();
 
     if (isLoading) {

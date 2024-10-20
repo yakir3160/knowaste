@@ -6,8 +6,10 @@ import featuredImage2 from '../../img/featured34-1@2x.png';
 import "../../css/App.css"
 import Button from "../Common/Button/Button";
 import {useUserContext} from "../../Contexts/UserContext";
+import {useAuthContext} from "../../Contexts/AuthContext";
+
 const UserDisplay = () => {
-    const {user} = useUserContext();
+    const {user} = useAuthContext();
     console.log('Current user state:', user);
     return (
         <div className="text-titles text-3xl">
