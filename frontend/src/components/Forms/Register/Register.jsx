@@ -9,6 +9,7 @@ import Card from '../../Common/Card/Card';
 import {useCities} from "./Hooks/useCities";
 import {usePasswordStatus} from "./Hooks/usePasswordStatus";
 import {useAuthContext} from "../../../Contexts/AuthContext";
+import {CircleUserRound} from 'lucide-react'
 
 
 const Register = () => {

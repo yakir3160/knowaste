@@ -2,7 +2,6 @@ import Button from "../../../Common/Button/Button";
 import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2, Warehouse, DollarSign, LogOut } from "lucide-react";
 import Logo from "../../../Common/Logo/Logo";
 import { useLocation } from "react-router-dom";
-import { useUserContext } from "../../../../Contexts/UserContext";
 import {useAuthContext} from "../../../../Contexts/AuthContext";
 
 const DesktopSidebar = ({ isOpen, setIsOpen }) => {
@@ -28,7 +27,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
             <aside className={sidebarClasses.aside}>
                 <div className="flex justify-between items-center p-2">
                     <div className={sidebarClasses.logoContainer}>
-                        <Logo className="text-logo-sm font-semibold text-titles p-5" to="/admin-panel"/>
+                        <Logo className="text-logo-sm font-semibold text-titles p-5" to="/"/>
                     </div>
                     <button
                         onClick={toggleSidebar}
