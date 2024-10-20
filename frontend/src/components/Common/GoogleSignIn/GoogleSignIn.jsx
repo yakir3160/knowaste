@@ -1,11 +1,10 @@
 import React from 'react';
 import Button from "../Button/Button";
-import {useGoogleSignIn, useSignInWithGoogle} from '../../../GlobalHooks/Auth/useGoogleSignIn';
+import { useAuthContext } from "../../../Contexts/AuthContext";
 
 
 const GoogleSignIn = ({ isSubmitting }) => {
-
-    const {signInWithGoogle} = useGoogleSignIn();
+    const { signInWithGoogle } = useAuthContext();
     return (
         <Button
             className="relative bg-gradient-to-r from-[#4285F4] via-[#DB4437] to-[#F4B400] p-0.5 rounded-md

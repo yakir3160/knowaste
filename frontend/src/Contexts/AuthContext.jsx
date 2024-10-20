@@ -1,76 +1,105 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'; // ייבוא רכיבי React
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { auth } from "../firebaseConfig";
+import { onAuthStateChanged } from 'firebase/auth';
+import { toast } from "react-toastify";
 import { useRegister } from "../GlobalHooks/Auth/useRegister";
 import { useLogin } from "../GlobalHooks/Auth/useLogin";
 import { useLogout } from "../GlobalHooks/Auth/useLogout";
-import { auth } from "../firebaseConfig";
-import { onAuthStateChanged } from 'firebase/auth'; // פונקציה למעקב אחרי שינויים במצב האותנטיקציה
+import { useGoogleSignIn } from "../GlobalHooks/Auth/useGoogleSignIn";
 
-const AuthContext = createContext(); // יצירת הקשר לאותנטיקציה
+// AuthProvider הוא רכיב שמספק את ההקשר לאותנטיקציה במערכת.
+// הוא מנהל את המצב של המשתמש (logged in / logged out),
+// ומספק פונקציות לרישום, התחברות ויציאה למשתמשים.
+
+// יצירת הקשר AuthContext
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null); // מצב למעקב אחרי המשתמש הנוכחי
-    const navigate = useNavigate(); // פונקציית הניווט
-    const { handleRegister } = useRegister(navigate); // הפונקציה להרשמה
-    const { handleLogin, error, clearError } = useLogin(navigate); // הפונקציה להתחברות
-    const { handleLogout } = useLogout(navigate); // הפונקציה ליציאה
+    const [user, setUser] = useState(null); // מצב המשתמש הנוכחי
+    const navigate = useNavigate(); // נווט לדפים שונים
+    const { handleRegister } = useRegister(); // הפונקציה לרישום משתמש
+    const { handleLogin, error: loginError } = useLogin(); // הפונקציה להתחברות
+    const { handleLogout } = useLogout(); // הפונקציה ליציאה
+    const { handleSignInWithGoogle } = useGoogleSignIn(); // הפונקציה להתחברות עם גוגל
 
+    // הקשבה לשינויים במצב ההזדהות של המשתמש
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
+            setUser(currentUser); // עדכון מצב המשתמש
         });
-        return () => unsubscribe(); // הפסקת המעקב על שינויים במצב האותנטיקציה
+        return () => unsubscribe(); // ניתוק ההאזנה כאשר הקומפוננטה לא בשימוש
     }, []);
 
-    // פונקציה לרישום משתמש חדש
+    // פונקציית רישום משתמש
     const register = async (values, { setSubmitting, resetForm }) => {
         try {
-            await handleRegister(values, { setSubmitting, resetForm }); // קריאה לפונקציית ההרשמה
-            const user = auth.currentUser; // קבלת המשתמש הנוכחי לאחר ההרשמה
-            setUser(user);
-            console.log('User registered:', user);
-            navigate('/admin-panel'); // מעבר לדף ניהול לאחר הרשמה
+            await handleRegister(values); // קריאה לפונקציית הרישום
+            setUser(auth.currentUser); // עדכון מצב המשתמש
+            navigate('/admin-panel'); // מעבר לדף הניהול
         } catch (error) {
-            console.error('Error during registration:', error);
+            handleAuthError(error, values.email); // טיפול בשגיאות
         } finally {
-            setSubmitting(false); // סיום ההגשה של הטופס
-            resetForm(); // איפוס הטופס לאחר ההגשה
+            setSubmitting(false); // ביטול מצב של "ממתין"
+            resetForm(); // איפוס הטופס
         }
     };
 
-    // פונקציה להתחברות של משתמש
-    const login = async (values, setSubmitting, resetForm) => {
+    // פונקציית התחברות משתמש
+    const login = async (values, { setSubmitting, resetForm }) => {
         try {
             await handleLogin(values.email, values.password); // קריאה לפונקציית ההתחברות
-            const user = auth.currentUser; // קבלת המשתמש הנוכחי לאחר ההתחברות
-            setUser(user);
-            navigate('/admin-panel'); // מעבר לדף ניהול לאחר התחברות
+            setUser(auth.currentUser); // עדכון מצב המשתמש
+            navigate('/admin-panel'); // מעבר לדף הניהול
         } catch (error) {
-            console.error('Error during login:', error);
+            console.error('Error during login:', error); // טיפול בשגיאות
         } finally {
-            setSubmitting(false); // סיום ההגשה של הטופס
-            resetForm(); // איפוס הטופס לאחר ההגשה
+            setSubmitting(false); // ביטול מצב של "ממתין"
+            resetForm(); // איפוס הטופס
         }
     };
 
-    // פונקציה ליציאה של המשתמש
+    // פונקציית התחברות עם גוגל
+    const signInWithGoogle = async () => {
+        try {
+            await handleSignInWithGoogle(); // הפעל את הפונקציה להתחברות עם גוגל
+            setUser(auth.currentUser); // עדכן את המשתמש
+            navigate('/admin-panel'); // הוביל לדף ניהול
+        } catch (error) {
+            console.error('Error during Google sign-in:', error); // טיפול בשגיאות
+        }
+    };
+
+    // פונקציית יציאה
     const logout = async () => {
         try {
             await handleLogout(); // קריאה לפונקציית היציאה
-            setUser(null); // עדכון המצב של המשתמש ל-null לאחר היציאה
-            navigate('/'); // חזרה לדף הבית לאחר היציאה
+            setUser(null); // עדכון מצב המשתמש
+            navigate('/'); // מעבר לדף הבית
         } catch (error) {
-            console.error('Error during logout:', error);
+            console.error('Error during logout:', error); // טיפול בשגיאות
         }
     };
 
-    // החזרת הקשר לאותנטיקציה עם המידע הנדרש
+    // פונקציית טיפול בשגיאות הזדהות
+    const handleAuthError = (error, email) => {
+        if (error.code === 'auth/email-already-in-use') {
+            navigate('/auth', {
+                state: { showRegister: false, email } // העברת מצב לדף ההתחברות
+            });
+        } else {
+            toast.error('An error occurred. Please try again.'); // הצגת הודעת שגיאה
+            console.error('Error:', error); // טיפול בשגיאות
+        }
+    };
+
+    // החזרת הקונטקסט עם הפונקציות הנחוצות
     return (
-        <AuthContext.Provider value={{ user, login, register, logout, setUser, error, clearError }}>
-            {children} {/* רכיבי הילדים שיועברו לתוך AuthProvider */}
+        <AuthContext.Provider value={{ user, login, register, logout, signInWithGoogle }}>
+            {children}
         </AuthContext.Provider>
     );
 };
 
-// פונקציה להחזיר את ההקשר הנוכחי לאותנטיקציה
+// הפונקציה להחזרת ההקשר
 export const useAuthContext = () => useContext(AuthContext);

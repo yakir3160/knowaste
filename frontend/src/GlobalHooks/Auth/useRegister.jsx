@@ -1,56 +1,23 @@
-import { toast } from 'react-toastify';
-import {auth,db} from '../../firebaseConfig'
+import { useState } from 'react';
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from '../../firebaseConfig';
 import { doc, setDoc } from "firebase/firestore";
+import { toast } from 'react-toastify';
 
+export const useRegister = () => {
+    const [error, setError] = useState(null);
 
-export const useRegister = (navigate) => {
-
-    const handleRegister = async (values, { setSubmitting, resetForm }) => {
+    const handleRegister = async (values) => {
         try {
-
-            const userCredential = await createUserWithEmailAndPassword(
-                auth,
-                values.email,
-                values.password
-            );
-            // הכנת אובייקט המידע למשתמש - ללא הסיסמה
-            const userData = {
-                businessName: values.businessName,
-                contactName: values.contactName,
-                phone: values.phone,
-                address: values.address,
-                city: values.city,
-                zipCode: values.zipCode,
-                accountType: values.accountType,
-                email: values.email,
-                uid: userCredential.user.uid  // שמירת ה-ID של המשתמש מ-Firebase Auth
-            };
-            console.log('Attempting to create user document in Firestore');
+            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+            const userData = { ...values, uid: userCredential.user.uid };
             await setDoc(doc(db, "users", userCredential.user.uid), userData);
-            console.log('User document created successfully');
             toast.success('Registration successful!');
-            navigate('/admin-panel')
-            resetForm();
-
         } catch (error) {
-            error.code === 'auth/email-already-in-use'
-                ? navigate('/auth', {
-                    state: {
-                        showRegister: false,
-                        email: values.email
-                    }
-                })
-                : (() => {
-                    toast.error('Registration failed. Please try again.');
-                    console.error('Error during registration:', error);
-                    console.error('Error code:', error.code);
-                    console.error('Error message:', error.message);
-                })();
-
-        } finally {
-            setSubmitting(false);
+            setError(error.message);
+            toast.error('Registration failed: ' + error.message);
         }
-    }
-    return {handleRegister}
+    };
+
+    return { handleRegister, error };
 };
