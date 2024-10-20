@@ -1,21 +1,11 @@
 import React from 'react';
-import { signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '../../../firebaseConfig';
 import Button from "../Button/Button";
-import {useNavigate} from "react-router-dom";
+import {useGoogleSignIn, useSignInWithGoogle} from '../../../GlobalHooks/Auth/useGoogleSignIn';
+
 
 const GoogleSignIn = ({ isSubmitting }) => {
-    const navigate = useNavigate();
-    const signInWithGoogle = async () => {
-        try {
-            await signInWithPopup(auth, googleProvider);
-          //  TODO: // Add a check to see if the user is signed in ,create hook for this function,and handle token //
-            navigate('/admin-panel');
-        } catch (error) {
-            console.error("Error signing in with Google", error);
-        }
-    };
 
+    const {signInWithGoogle} = useGoogleSignIn();
     return (
         <Button
             className="relative bg-gradient-to-r from-[#4285F4] via-[#DB4437] to-[#F4B400] p-0.5 rounded-md

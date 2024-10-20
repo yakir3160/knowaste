@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { REQUIRED_MSG } from "../../../constants/Constants";
+import { REQUIRED_MSG } from "../../../Constants/Constants";
 
 const PASSWORD_MSG = 'Password must meet the conditions';
 

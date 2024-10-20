@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebaseConfig';
+import { auth } from '../../firebaseConfig';
 
 export const useLogout = (navigate) => {
     const [error, setError] = useState(null);

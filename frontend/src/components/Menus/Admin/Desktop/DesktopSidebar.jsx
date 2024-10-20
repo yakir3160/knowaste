@@ -2,12 +2,12 @@ import Button from "../../../Common/Button/Button";
 import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2, Warehouse, DollarSign, LogOut } from "lucide-react";
 import Logo from "../../../Common/Logo/Logo";
 import { useLocation } from "react-router-dom";
-import { useUser } from "../../../../Contexts/UserContext";
+import { useUserContext } from "../../../../Contexts/UserContext";
 
 const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     const toggleSidebar = () => setIsOpen(!isOpen);
     const location = useLocation();
-    const { user,logout } = useUser(); // Ensure you're correctly destructuring logout from the context
+    const { user,logout } = useUserContext(); // Ensure you're correctly destructuring logout from the context
 
     const sideBarTransition = "transition-all duration-200 ease-in-out";
     const sidebarClasses = {

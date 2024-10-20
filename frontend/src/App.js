@@ -19,7 +19,7 @@ import InventoryManagement from "./components/AdminPanel/InventoryManagement/Inv
 // קומפוננטת הגנה על נתיבים (Routes) הדורשים הרשאות מיוחדות
 import ProtectedRoute from "./components/Routs/ProtectedRoute";
 // ספק ההקשר של המשתמש, מנהל נתוני המשתמש ברחבי האפליקציה
-import {UserProvider, useUser} from "./Contexts/UserContext";
+import {UserProvider, useUserContext} from "./Contexts/UserContext";
 
 const App = () => {
     return (

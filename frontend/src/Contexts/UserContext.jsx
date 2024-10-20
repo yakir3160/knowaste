@@ -1,9 +1,9 @@
 // UserContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useRegister } from "../GlobalHooks/useRegister"; // ייבוא פונקציית הרשמה
-import { useLogin } from "../GlobalHooks/useLogin";
-import {useLogout} from "../GlobalHooks/useLogout";
+import { useRegister } from "../GlobalHooks/Auth/useRegister"; // ייבוא פונקציית הרשמה
+import { useLogin } from "../GlobalHooks/Auth/useLogin";
+import {useLogout} from "../GlobalHooks/Auth/useLogout";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -14,7 +14,7 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const { handleRegister } = useRegister(navigate);
-    const { handleLogin } = useLogin(navigate);
+    const { handleLogin,error ,clearError} = useLogin(navigate);
     const { handleLogout } = useLogout(navigate);
 
 
@@ -51,6 +51,7 @@ export const UserProvider = ({ children }) => {
             navigate('/admin-panel');
         } catch (error) {
             console.error('Error during login:', error);
+
         } finally {
             setSubmitting(false);
             resetForm();
@@ -67,10 +68,10 @@ export const UserProvider = ({ children }) => {
         }
     }
     return (
-        <UserContext.Provider value={{ user, login, register,logout, setUser }}>
+        <UserContext.Provider value={{ user, login, register,logout, setUser,error ,clearError}}>
             {children}
         </UserContext.Provider>
     );
 };
 
-export const useUser = () => useContext(UserContext);
+export const useUserContext = () => useContext(UserContext);

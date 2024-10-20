@@ -1,16 +1,16 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import Card from "../../Common/Card/Card";
 import Button from "../../Common/Button/Button";
 import GlobalField from "../../Common/inputs/GlobalField";
 import * as Yup from "yup";
-import { REQUIRED_MSG } from "../../../constants/Constants";
+import { REQUIRED_MSG } from "../../../Constants/Constants";
 import { useLocation } from "react-router-dom";
 import {Form, Formik} from "formik";
 import GoogleSignIn from "../../Common/GoogleSignIn/GoogleSignIn";
-import {useUser} from "../../../Contexts/UserContext";
+import {useUserContext} from "../../../Contexts/UserContext";
 
 const Login = () => {
-    const { login } = useUser();
+    const { login, error, clearError } = useUserContext();
     const location = useLocation();
     const emailFromRegister = location.state?.email || '';
 
@@ -39,6 +39,12 @@ const Login = () => {
                         {emailFromRegister && (
                             <div className="text-md text-center text-titles mb-4 ">
                                 This email is already registered. Please login to continue.
+                            </div>
+                        )}
+                        {error && (
+                            <div className="text-md text-center text-errorRed mb-4 ">
+                                {error}
+
                             </div>
                         )}
                         <div className="mb-3">
