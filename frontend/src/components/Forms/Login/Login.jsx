@@ -3,11 +3,11 @@ import Card from "../../Common/Card/Card";
 import Button from "../../Common/Button/Button";
 import GlobalField from "../../Common/inputs/GlobalField";
 import * as Yup from "yup";
-import { REQUIRED_MSG } from "../../../Constants/Constants";
+import { REQUIRED_MSG } from "../../../constants/Constants";
 import { useLocation } from "react-router-dom";
 import {Form, Formik} from "formik";
 import GoogleSignIn from "../../Common/GoogleSignIn/GoogleSignIn";
-import {useAuthContext} from "../../../Contexts/AuthContext";
+import {useAuthContext} from "../../../contexts/AuthContext";
 
 const Login = () => {
     const { login, error, clearError } = useAuthContext();

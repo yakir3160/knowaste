@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Field, useField } from 'formik';
-import { REQUIRED_MSG } from "../../../Constants/Constants";
+import { REQUIRED_MSG } from "../../../constants/Constants";
 import { Eye, EyeOff } from 'lucide-react';
 
 const GlobalField = ({legend, name, as = 'input', type = 'text', placeholder, options = [], ...props}) => {

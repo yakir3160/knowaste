@@ -8,7 +8,7 @@ import { validationSchema } from './ValidationSchema';
 import Card from '../../Common/Card/Card';
 import {useCities} from "./Hooks/useCities";
 import {usePasswordStatus} from "./Hooks/usePasswordStatus";
-import {useAuthContext} from "../../../Contexts/AuthContext";
+import {useAuthContext} from "../../../contexts/AuthContext";
 import {CircleUserRound} from 'lucide-react'
 
 

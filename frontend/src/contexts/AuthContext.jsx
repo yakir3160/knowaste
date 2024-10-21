@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from 'firebase/auth';
 import { toast } from "react-toastify";
-import { useRegister } from "../GlobalHooks/Auth/useRegister";
-import { useLogin } from "../GlobalHooks/Auth/useLogin";
-import { useLogout } from "../GlobalHooks/Auth/useLogout";
-import { useGoogleSignIn } from "../GlobalHooks/Auth/useGoogleSignIn";
+import { useRegister } from "../globalHooks/Auth/useRegister";
+import { useLogin } from "../globalHooks/Auth/useLogin";
+import { useLogout } from "../globalHooks/Auth/useLogout";
+import { useGoogleSignIn } from "../globalHooks/Auth/useGoogleSignIn";
 
 // AuthProvider הוא רכיב שמספק את ההקשר לאותנטיקציה במערכת.
 // הוא מנהל את המצב של המשתמש (logged in / logged out),

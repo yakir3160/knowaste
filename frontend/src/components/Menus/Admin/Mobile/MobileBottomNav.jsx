@@ -1,12 +1,15 @@
 import { LayoutDashboard, FileText, Trash2, Warehouse, DollarSign, LogOut, CircleChevronDown, CircleChevronUp } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {useAuthContext} from "../../../../Contexts/AuthContext";
+import {useAuthContext} from "../../../../contexts/AuthContext";
+import {useUserContext} from "../../../../contexts/UserContext";
 
 const MobileBottomNav = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const {logout} = useAuthContext();
+    const {userBaseData: user} = useUserContext();
+    const accountType = user?.accountType;
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleBottomMenu = () => setIsVisible(!isVisible);
@@ -17,9 +20,7 @@ const MobileBottomNav = () => {
         handleRouteChange();
     }, [location]);
 
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
+
     const iconSize = "h-7 w-7";
     const buttonClass = (path) => `
         flex flex-col items-center text-center font-bold bg-[transparent] shadow-none
@@ -48,45 +49,60 @@ const MobileBottomNav = () => {
             >
                 <div className="flex flex-col bg-white justify-center">
                     <button
-                        onClick={() => handleNavigation("/admin-panel")}
+                        onClick={() => navigate("/admin-panel")}
                         className={buttonClass("/admin-panel")}
                     >
-                        <LayoutDashboard className={`${iconSize} text-titles`} />
+                        <LayoutDashboard className={`${iconSize} text-titles`}/>
                         <span className="text-sm text-titles ">Home</span>
                     </button>
                     <button
-                        onClick={() => handleNavigation("/admin-panel/sales-report")}
-                        className={buttonClass("/admin-panel/sales-report")}
-                    >
-                        <FileText className={`${iconSize} text-titles`} />
-                        <span className="text-sm text-titles">Daily Sales Report</span>
-                    </button>
-                    <button
-                        onClick={() => handleNavigation("/admin-panel/leftover-report")}
-                        className={buttonClass("/admin-panel/leftover-report")}
-                    >
-                        <Trash2 className={`${iconSize} text-titles`} />
-                        <span className="text-sm text-titles">Leftover Report</span>
-                    </button>
-                    <button
-                        onClick={() => handleNavigation("/admin-panel/inventory-management")}
+                        onClick={() => navigate("/admin-panel/inventory-management")}
                         className={buttonClass("/admin-panel/inventory-management")}
                     >
-                        <Warehouse className={`${iconSize} text-titles`} />
+                        <Warehouse className={`${iconSize} text-titles`}/>
                         <span className="text-sm text-titles">Inventory Management</span>
                     </button>
-                    <button
-                        onClick={() => handleNavigation("/admin-panel/request-quote")}
-                        className={buttonClass("/admin-panel/request-quote")}
-                    >
-                        <DollarSign className={`${iconSize} text-titles`} />
-                        <span className="text-sm text-titles">Request Price Quote</span>
-                    </button>
+                    {accountType === 'restaurant-manager' && (
+                        <>
+                            <button
+                                onClick={() => navigate("/admin-panel/sales-report")}
+                                className={buttonClass("/admin-panel/sales-report")}
+                            >
+                                <FileText className={`${iconSize} text-titles`}/>
+                                <span className="text-sm text-titles">Daily Sales Report</span>
+                            </button>
+                            <button
+                                onClick={() => navigate("/admin-panel/leftover-report")}
+                                className={buttonClass("/admin-panel/leftover-report")}
+                            >
+                                <Trash2 className={`${iconSize} text-titles`}/>
+                                <span className="text-sm text-titles">Leftover Report</span>
+                            </button>
+
+                            <button
+                                onClick={() => navigate("/admin-panel/request-quote")}
+                                className={buttonClass("/admin-panel/request-quote")}
+                            >
+                                <DollarSign className={`${iconSize} text-titles`}/>
+                                <span className="text-sm text-titles">Request Price Quote</span>
+                            </button>
+                        </>
+                    )}
+                    { accountType === 'supplier' && (
+                        <button
+                            onClick={() => navigate("/admin-panel/send-quote")}
+                            className={buttonClass("/admin-panel/send-quote")}
+                        >
+                            <DollarSign className={`${iconSize} text-titles`}/>
+                            <span className="text-sm text-titles">Send Price Quote</span>
+                        </button>
+                    )
+                    }
                     <button
                         onClick={logout}
                         className={buttonClass("/")}
                     >
-                        <LogOut className={`${iconSize} text-errorRed`} />
+                        <LogOut className={`${iconSize} text-errorRed`}/>
                         <span className="text-sm text-errorRed">Sign Out</span>
                     </button>
                 </div>

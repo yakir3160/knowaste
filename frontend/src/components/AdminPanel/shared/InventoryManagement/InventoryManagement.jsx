@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../../Common/Card/Card';
+import Card from '../../../Common/Card/Card';
 
 
 const InventoryManagement = () => {

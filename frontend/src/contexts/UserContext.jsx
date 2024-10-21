@@ -1,5 +1,5 @@
 import React, {createContext, useContext } from 'react'; // ייבוא רכיבי React
-import {useUserBaseData} from '../GlobalHooks/User/useUserBaseData'; // ייבוא פונקציה לקבלת נתוני המשתמש
+import {useUserBaseData} from '../globalHooks/User/useUserBaseData'; // ייבוא פונקציה לקבלת נתוני המשתמש
 
 const UserContext = createContext(); // יצירת הקשר לנתוני המשתמש
 

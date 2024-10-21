@@ -11,17 +11,20 @@ import Layout from "./components/Layouts/Layout";
 // פונקציה המאפשרת גלילה אוטומטית לראש הדף בעת שינוי דף
 import ScrollToTop from './components/functions/UI/ScrollToTop';
 // ייבוא קומפוננטות של דשבורד המנהל
-import Dashboard from "./components/AdminPanel/Dashboard/Dashboard";
-import DailySalesReport from "./components/AdminPanel/DailySalesReport/dailySalesReport";
-import LeftoverReport from "./components/AdminPanel/LeftoverReport/LeftoverReport";
-import PriceQuote from "./components/AdminPanel/PriceQuote/PriceQuote";
-import InventoryManagement from "./components/AdminPanel/InventoryManagement/InventoryManagement";
+import Dashboard from "./components/AdminPanel/shared/Dashboard/Dashboard";
+import DailySalesReport from "./components/AdminPanel/RestaurantManager/DailySalesReport/dailySalesReport";
+import LeftoverReport from "./components/AdminPanel/RestaurantManager/LeftoverReport/LeftoverReport";
+import RequestPriceQuote from "./components/AdminPanel/RestaurantManager/RequestPriceQuote/PriceQuote";
+import SendPriceQuote from "./components/AdminPanel/supplier/SendPriceQuote/SendPriceQuote";
+import InventoryManagement from "./components/AdminPanel/shared/InventoryManagement/InventoryManagement";
 // קומפוננטת הגנה על נתיבים (Routes) הדורשים הרשאות מיוחדות
 import ProtectedRoute from "./components/Routs/ProtectedRoute";
 // ספק ההקשר של המשתמש, מנהל נתוני המשתמש ברחבי האפליקציה
-import {UserProvider, useUserContext} from "./Contexts/UserContext";
-import {AuthProvider} from "./Contexts/AuthContext";
+import {UserProvider, useUserContext} from "./contexts/UserContext";
+import {AuthProvider} from "./contexts/AuthContext";
 import {GuestRoute} from "./components/Routs/GuestRoute";
+
+//TODO: block the url according to the type of account
 
 const UserDisplay = () => {
     const {userBaseData} = useUserContext();
@@ -75,7 +78,9 @@ const App = () => {
                                 {/* ניהול מלאי */}
                                 <Route path="inventory-management" element={<InventoryManagement />} />
                                 {/* בקשת הצעת מחיר */}
-                                <Route path="request-quote" element={<PriceQuote />} />
+                                <Route path="request-quote" element={<RequestPriceQuote />} />
+                                {/* שלח הצעת מחיר */}
+                                <Route path="send-quote" element={<SendPriceQuote />} />
                             </Route>
                         </Routes>
                     </UserProvider>

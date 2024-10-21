@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../../Common/Card/Card';
+import Card from '../../../Common/Card/Card';
 
 const PlaceholderChart = () => (
     <div className="w-full h-full flex items-center justify-center text-gray-500 rounded-md shadow-sm sm:rounded-lg">

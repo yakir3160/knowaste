@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from "../Button/Button";
-import { useAuthContext } from "../../../Contexts/AuthContext";
+import { useAuthContext } from "../../../contexts/AuthContext";
 
 
 const GoogleSignIn = ({ isSubmitting }) => {

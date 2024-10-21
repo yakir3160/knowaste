@@ -1,11 +1,11 @@
 import React from 'react';
 
-import LandingPageText from '../../Constants/LandingPageText';
+import LandingPageText from '../../constants/LandingPageText';
 
 import featuredImage2 from '../../img/featured34-1@2x.png';
 import "../../css/App.css"
 import Button from "../Common/Button/Button";
-import {useUserContext} from "../../Contexts/UserContext";
+import {useUserContext} from "../../contexts/UserContext";
 
 
 const LandingPage = () => {

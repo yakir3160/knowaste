@@ -1,8 +1,8 @@
 import React from 'react';
-import Card from '../../Common/Card/Card';
+import Card from '../../../Common/Card/Card';
 
 
-const PriceQuote = () => {
+const SendPriceQuote = () => {
     return (
         <div className="flex flex-col gap-5 w-full p-6 rounded-lg sm:rounded-lg">
             <Card>
@@ -12,4 +12,4 @@ const PriceQuote = () => {
     );
 };
 
-export default PriceQuote;
+export default SendPriceQuote;

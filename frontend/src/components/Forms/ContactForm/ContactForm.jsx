@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Card from "../../Common/Card/Card";
 import Button from "../../Common/Button/Button";
 import GlobalField from "../../Common/inputs/GlobalField";
-import {REQUIRED_MSG} from "../../../Constants/Constants";
+import {REQUIRED_MSG} from "../../../constants/Constants";
 
 const ContactForm = () => {
     const [submitted, setSubmitted] = useState(false);

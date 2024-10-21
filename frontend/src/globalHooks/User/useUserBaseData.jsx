@@ -1,7 +1,7 @@
 import {useState,useEffect } from 'react'; // ייבוא רכיבי React
 import {doc,getDoc } from 'firebase/firestore'; // ייבוא רכיבים מהספרייה של Firebase
 import {db} from '../../firebaseConfig'; // ייבוא קובץ firebase
-import {useAuthContext} from "../../Contexts/AuthContext";
+import {useAuthContext} from "../../contexts/AuthContext";
 
 export const useUserBaseData = () => {
     const  [userBaseData, setUserBaseData] = useState(null); // יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני המשתמש
