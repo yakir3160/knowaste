@@ -17,10 +17,11 @@ import LeftoverReport from "./components/AdminPanel/LeftoverReport/LeftoverRepor
 import PriceQuote from "./components/AdminPanel/PriceQuote/PriceQuote";
 import InventoryManagement from "./components/AdminPanel/InventoryManagement/InventoryManagement";
 // קומפוננטת הגנה על נתיבים (Routes) הדורשים הרשאות מיוחדות
-import ProtectedRoute from "./components/Routs/ProtectedRoute";
+import ProtectedRoute from "./Routs/ProtectedRoute";
 // ספק ההקשר של המשתמש, מנהל נתוני המשתמש ברחבי האפליקציה
 import {UserProvider} from "./Contexts/UserContext";
 import {AuthProvider} from "./Contexts/AuthContext";
+import {GuestRoute} from "./Routs/GuestRoute";
 
 const App = () => {
     return (
@@ -41,8 +42,11 @@ const App = () => {
                                 <Route index element={<LandingPage />} />
                                 {/* דף יצירת קשר */}
                                 <Route path="contact" element={<ContactForm />} />
-                                {/* דף ההתחברות / הרשמה */}
-                                <Route path="auth" element={<Auth />} />
+
+                                {/* נתיב ההתחברות / הרשמה שמוגבל למשתמשים לא מחוברים בלבד */}
+                                <Route element={<GuestRoute/>}>
+                                    <Route path="auth" element={<Auth />} />
+                                </Route>
                             </Route>
 
                             {/* ניהול פאנל המנהלים, מוגן על ידי ProtectedRoute */}
