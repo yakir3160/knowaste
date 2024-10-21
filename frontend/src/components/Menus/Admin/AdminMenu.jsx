@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import DesktopSidebar from './Desktop/DesktopSidebar';
 import MobileBottomNav from './Mobile/MobileBottomNav';
-import MobileNavbar from "../Website/Mobile/MobileNavbar";
+
 
 
 const AdminMenu = ({ isOpen, setIsOpen }) => {
@@ -10,7 +10,7 @@ const AdminMenu = ({ isOpen, setIsOpen }) => {
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 640);
+            setIsMobile(window.innerWidth < 770);
         };
         window.addEventListener('resize', handleResize);
         return () => {

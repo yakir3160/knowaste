@@ -6,17 +6,8 @@ import featuredImage2 from '../../img/featured34-1@2x.png';
 import "../../css/App.css"
 import Button from "../Common/Button/Button";
 import {useUserContext} from "../../Contexts/UserContext";
-import {useAuthContext} from "../../Contexts/AuthContext";
 
-const UserDisplay = () => {
-    const {user} = useAuthContext();
-    console.log('Current user state:', user);
-    return (
-        <div className="text-titles text-3xl">
-            {user ? `Current user: ${user.email}` : 'No user logged in'}
-        </div>
-    );
-};
+
 const LandingPage = () => {
     return (
         <div
@@ -25,7 +16,7 @@ const LandingPage = () => {
             <Button to="/admin-panel">
                 Admin Panel
             </Button>
-            <UserDisplay/>
+
             <div
 
                 className="flex flex-col justify-start items-center mt-20 p-8 w-full min-h-screen text-center animate-fadeIn ]"

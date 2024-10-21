@@ -17,11 +17,21 @@ import LeftoverReport from "./components/AdminPanel/LeftoverReport/LeftoverRepor
 import PriceQuote from "./components/AdminPanel/PriceQuote/PriceQuote";
 import InventoryManagement from "./components/AdminPanel/InventoryManagement/InventoryManagement";
 // קומפוננטת הגנה על נתיבים (Routes) הדורשים הרשאות מיוחדות
-import ProtectedRoute from "./Routs/ProtectedRoute";
+import ProtectedRoute from "./components/Routs/ProtectedRoute";
 // ספק ההקשר של המשתמש, מנהל נתוני המשתמש ברחבי האפליקציה
-import {UserProvider} from "./Contexts/UserContext";
+import {UserProvider, useUserContext} from "./Contexts/UserContext";
 import {AuthProvider} from "./Contexts/AuthContext";
-import {GuestRoute} from "./Routs/GuestRoute";
+import {GuestRoute} from "./components/Routs/GuestRoute";
+
+const UserDisplay = () => {
+    const {userBaseData} = useUserContext();
+    console.table( userBaseData);
+    return (
+        <div className="text-titles text-3xl">
+            {userBaseData ? `Current user: ${userBaseData.email}` : 'No user logged in'}
+        </div>
+    );
+};
 
 const App = () => {
     return (
@@ -34,10 +44,12 @@ const App = () => {
                     <UserProvider>
                         {/* גלילה אוטומטית לראש הדף כאשר הנתיב משתנה */}
                         <ScrollToTop />
+                        <UserDisplay />
+
                         {/* הגדרת הנתיבים של האפליקציה */}
                         <Routes>
                             {/* נתיב שורש, כולל פריסה כללית ודפים ראשיים */}
-                            <Route path="/" element={<Layout pageType="default" />}>
+                            <Route path="/" element={<Layout pageType="default" /> }>
                                 {/* הדף הראשי (Landing Page) */}
                                 <Route index element={<LandingPage />} />
                                 {/* דף יצירת קשר */}

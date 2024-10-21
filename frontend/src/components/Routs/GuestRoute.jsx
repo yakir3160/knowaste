@@ -1,5 +1,5 @@
 import {Navigate,Outlet} from "react-router-dom";
-import {useAuthContext} from "../Contexts/AuthContext";
+import {useAuthContext} from "../../Contexts/AuthContext";
 
 export const GuestRoute = () => {
     const {user} = useAuthContext();
