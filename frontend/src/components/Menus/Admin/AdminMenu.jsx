@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
 import DesktopSidebar from './Desktop/DesktopSidebar';
 import MobileBottomNav from './Mobile/MobileBottomNav';
-
 
 
 const AdminMenu = ({ isOpen, setIsOpen }) => {
@@ -10,7 +8,7 @@ const AdminMenu = ({ isOpen, setIsOpen }) => {
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 770);
+            setIsMobile(window.innerWidth < 750);
         };
         window.addEventListener('resize', handleResize);
         return () => {
@@ -19,7 +17,7 @@ const AdminMenu = ({ isOpen, setIsOpen }) => {
     }, []);
 
     return (
-        <nav className={``}>
+        <nav>
             {isMobile ? (
                 <MobileBottomNav/>
             ) : (

@@ -105,7 +105,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
             </aside>
         </div>
     );
-    return {sidebarClasses}
+
 };
 
-export default {DesktopSidebar};
+export default DesktopSidebar;
