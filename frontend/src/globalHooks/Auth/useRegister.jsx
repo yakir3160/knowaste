@@ -19,13 +19,13 @@ export const useRegister = () => {
                 zipCode: values.zipCode,
                 accountType: values.accountType,
                 email: values.email,
-                uid: userCredential.user.uid  // שמירת ה-ID של המשתמש מ-Firebase Auth
+                uid: userCredential.user.uid
             };
             await setDoc(doc(db, "users", userCredential.user.uid), userData);
             toast.success('Registration successful!');
         } catch (error) {
-            setError(error.message);
-            toast.error('Registration failed: ' + error.message);
+            setError(error.code);
+            throw error;
         }
     };
 

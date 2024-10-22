@@ -4,7 +4,7 @@ import { CheckCircle, CircleAlert } from 'lucide-react';
 const PasswordRequirements = ({ passwordStatus }) => {
     const requirementGood = 'text-green';
     return (
-        <div className="max-w-lg mx-auto mt-8 p-2">
+        <div className="max-w-lg mx-auto mt-8 p-2 border-2 border-secondary rounded-2xl p-4 w-fit">
             <p className="text-lg font-semibold">Password Requirements:</p>
             <ul className="list-inside mt-2 space-y-1 text-sm lg:text-lg px-3">
                 <li className={`flex items-center ${passwordStatus.length ? requirementGood : ''}`}>

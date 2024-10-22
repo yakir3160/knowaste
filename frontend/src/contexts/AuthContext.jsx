@@ -7,6 +7,7 @@ import { useRegister } from "../globalHooks/Auth/useRegister";
 import { useLogin } from "../globalHooks/Auth/useLogin";
 import { useLogout } from "../globalHooks/Auth/useLogout";
 import { useGoogleSignIn } from "../globalHooks/Auth/useGoogleSignIn";
+import {usePasswordReset} from "../globalHooks/Auth/usePasswordReset";
 
 // AuthProvider הוא רכיב שמספק את ההקשר לאותנטיקציה במערכת.
 // הוא מנהל את המצב של המשתמש (logged in / logged out),
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     const { handleLogin, error: loginError } = useLogin(); // הפונקציה להתחברות
     const { handleLogout } = useLogout(); // הפונקציה ליציאה
     const { handleSignInWithGoogle } = useGoogleSignIn(); // הפונקציה להתחברות עם גוגל
+    const {handlePasswordResetEmail,error,success} = usePasswordReset();
 
     // הקשבה לשינויים במצב ההזדהות של המשתמש
     useEffect(() => {
@@ -34,16 +36,30 @@ export const AuthProvider = ({ children }) => {
     // פונקציית רישום משתמש
     const register = async (values, { setSubmitting, resetForm }) => {
         try {
-            await handleRegister(values); // קריאה לפונקציית הרישום
-            setUser(auth.currentUser); // עדכון מצב המשתמש
-            navigate('/admin-panel'); // מעבר לדף הניהול
+            await handleRegister(values);
+            setUser(auth.currentUser);
+            navigate('/admin-panel');
         } catch (error) {
-            handleAuthError(error, values.email); // טיפול בשגיאות
+            console.log("Caught error in register:", error);
+            if (error.code === 'auth/email-already-in-use') {
+                console.log(error.code);
+                navigate('/auth', {
+                    state: {
+                        showRegister: false,
+                        email: values.email,
+                        message: "This email is already registered. Please login to continue."
+                    }
+                });
+            } else {
+                console.error('Error during registration:', error);
+            }
         } finally {
-            setSubmitting(false); // ביטול מצב של "ממתין"
-            resetForm(); // איפוס הטופס
+            setSubmitting(false);
+            resetForm();
         }
     };
+
+
 
     // פונקציית התחברות משתמש
     const login = async (values, { setSubmitting, resetForm }) => {
@@ -80,22 +96,21 @@ export const AuthProvider = ({ children }) => {
             console.error('Error during logout:', error); // טיפול בשגיאות
         }
     };
-
-    // פונקציית טיפול בשגיאות הזדהות
-    const handleAuthError = (error, email) => {
-        if (error.code === 'auth/email-already-in-use') {
-            navigate('/auth', {
-                state: { showRegister: false, email } // העברת מצב לדף ההתחברות
-            });
-        } else {
-            toast.error('An error occurred. Please try again.'); // הצגת הודעת שגיאה
-            console.error('Error:', error); // טיפול בשגיאות
+    // פונקצייה לשליחת מייל לאיפוס סיסמא
+    const passwordResetEmail = async (values, { setSubmitting }) => {
+        try {
+            await handlePasswordResetEmail(values, { setSubmitting });
+            toast.success('Password reset email sent');
+        } catch (error) {
+            console.log('Error sending password reset email:', error);
+        } finally {
+            setSubmitting(false);
         }
     };
 
     // החזרת הקונטקסט עם הפונקציות הנחוצות
     return (
-        <AuthContext.Provider value={{ user, login, register, logout, signInWithGoogle }}>
+        <AuthContext.Provider value={{ user, login, register, logout, signInWithGoogle,passwordResetEmail,error,success }}>
             {children}
         </AuthContext.Provider>
     );
