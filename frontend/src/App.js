@@ -1,15 +1,17 @@
 // ייבוא קובץ העיצוב הכללי של האפליקציה
 import './css/App.css';
-import React from 'react';
+import React , { useEffect}from 'react';
 // ייבוא ה-Router ו-Routes לניווט בין דפי האפליקציה
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // ייבוא קומפוננטות של דפי האפליקציה
 import LandingPage from './components/Pages/LandingPage';
 import ContactForm from './components/Forms/ContactForm/ContactForm';
 import Auth from './components/Pages/Auth';
+import PasswordResetPrompt from './components/Forms/Login/PasswordResetPrompt/PasswordResetPrompt';
+import PasswordResetForm from "./components/Forms/Login/PasswordResetForm/PasswordResetForm";
 import Layout from "./components/Layouts/Layout";
 // פונקציה המאפשרת גלילה אוטומטית לראש הדף בעת שינוי דף
-import ScrollToTop from './components/functions/UI/ScrollToTop';
+import {ScrollToTop} from './clientFunctions/UI/ScrollToTop';
 // ייבוא קומפוננטות של דשבורד המנהל
 import Dashboard from "./components/AdminPanel/shared/Dashboard/Dashboard";
 import DailySalesReport from "./components/AdminPanel/RestaurantManager/DailySalesReport/dailySalesReport";
@@ -38,6 +40,9 @@ const UserDisplay = () => {
 };
 
 const App = () => {
+    useEffect(() => {
+
+    }, []);
     return (
         <div className="App">
             {/* עוטפים את כל האפליקציה ב-BrowserRouter כדי לנהל את הניווט בין הדפים */}
@@ -49,7 +54,6 @@ const App = () => {
                         {/* גלילה אוטומטית לראש הדף כאשר הנתיב משתנה */}
                         <ScrollToTop />
                         <UserDisplay />
-
                         {/* הגדרת הנתיבים של האפליקציה */}
                         <Routes>
                             {/* נתיב שורש, כולל פריסה כללית ודפים ראשיים */}
@@ -62,6 +66,8 @@ const App = () => {
                                 {/* נתיב ההתחברות / הרשמה שמוגבל למשתמשים לא מחוברים בלבד */}
                                 <Route element={<GuestRoute/>}>
                                     <Route path="auth" element={<Auth />} />
+                                    <Route path={'/auth/password-reset'} element={<PasswordResetPrompt />} />
+                                    <Route path={'/auth/password-reset-form'} element={<PasswordResetForm />} />
                                 </Route>
                             </Route>
 

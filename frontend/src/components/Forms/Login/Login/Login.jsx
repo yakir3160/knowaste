@@ -1,18 +1,20 @@
-import React from 'react';
-import Card from "../../Common/Card/Card";
-import Button from "../../Common/Button/Button";
-import GlobalField from "../../Common/inputs/GlobalField";
+import React, {useState} from 'react';
+import Card from "../../../Common/Card/Card";
+import Button from "../../../Common/Button/Button";
+import GlobalField from "../../../Common/inputs/GlobalField";
 import * as Yup from "yup";
-import { REQUIRED_MSG } from "../../../constants/Constants";
-import { useLocation } from "react-router-dom";
+import { REQUIRED_MSG } from "../../../../constants/Constants";
+import { useLocation, useNavigate} from "react-router-dom";
 import {Form, Formik} from "formik";
-import GoogleSignIn from "../../Common/GoogleSignIn/GoogleSignIn";
-import {useAuthContext} from "../../../contexts/AuthContext";
+import GoogleSignIn from "../../../Common/GoogleSignIn/GoogleSignIn";
+import {useAuthContext} from "../../../../contexts/AuthContext";
 
 const Login = () => {
     const { login, error, clearError } = useAuthContext();
     const location = useLocation();
-    const emailFromRegister = location.state?.email || '';
+    const [email, setEmail] = useState(location.state?.email || '');
+    const messageFromRegister = location.state?.message || '';
+    const navigate = useNavigate();
 
     const validationSchema = Yup.object().shape({
         email: Yup.string()
@@ -25,20 +27,21 @@ const Login = () => {
 
     return (
         <Card className="flex flex-col max-w-[360px]">
-            <h3 className="text-titles text-3xl p-5 text-center">Login to your account</h3>
+            <h3 className="text-titles text-3xl p-3 text-center">Login to your account</h3>
             <Formik
                 initialValues={{
-                    email: emailFromRegister,
+                    email: email,
                     password: ''
                 }}
                 validationSchema={validationSchema}
                 onSubmit={login}
+                enableReinitialize={true}
             >
-                {({ isSubmitting }) => (
+                {({ isSubmitting ,setFieldValue}) => (
                     <Form className="p-4" noValidate>
-                        {emailFromRegister && (
+                        {messageFromRegister && (
                             <div className="text-md text-center text-titles mb-4 ">
-                                This email is already registered. Please login to continue.
+                                {messageFromRegister}
                             </div>
                         )}
                         {error && (
@@ -52,12 +55,29 @@ const Login = () => {
                                 type="email"
                                 name="email"
                                 legend="Email"
+                                onChange={(e) => {
+                                  setFieldValue("email", e.target.value);
+                                  setEmail(e.target.value);
+                                }}
                             />
                             <GlobalField
                                 type="password"
                                 name="password"
                                 legend="Password"
                             />
+                            <div className="flex flex-col items-center justify-content-center p-2  my-2 h-fit">
+                                <button
+                                    type={"button"}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        console.log("Email being sent:", email);
+                                        navigate("/auth/password-reset", { state: { email: email } });
+                                    }}
+                                    className="text-titles text-md"
+                                >
+                                    Forgot your password?
+                                </button>
+                            </div>
                         </div>
                         <div className="flex flex-col">
                             <div className={`flex flex-col gap-4`}>
