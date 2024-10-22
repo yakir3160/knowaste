@@ -1,10 +1,11 @@
-// This file is used to initialize the firebase app and export the auth and db objects to be used in other files.
-import { initializeApp } from "firebase/app";
+
+import {initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth,GoogleAuthProvider } from "firebase/auth";
+import { getAuth,GoogleAuthProvider ,sendPasswordResetEmail} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Directly using your Firebase configuration
+
+
 const firebaseConfig = {
     apiKey: 'AIzaSyCvGGpbmVpf-jZTNsClUDgDMURcP4zxxB4',
     authDomain: "knowwaste-f88b2.firebaseapp.com",
