@@ -42,7 +42,6 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             console.log("Caught error in register:", error);
             if (error.code === 'auth/email-already-in-use') {
-                console.log(error.code);
                 navigate('/auth', {
                     state: {
                         showRegister: false,

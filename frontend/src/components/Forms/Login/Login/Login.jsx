@@ -70,7 +70,6 @@ const Login = () => {
                                     type={"button"}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        console.log("Email being sent:", email);
                                         navigate("/auth/password-reset", { state: { email: email } });
                                     }}
                                     className="text-titles text-md"
