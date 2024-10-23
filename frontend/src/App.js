@@ -7,8 +7,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LandingPage from './components/Pages/LandingPage';
 import ContactForm from './components/Forms/ContactForm/ContactForm';
 import Auth from './components/Pages/Auth';
-import PasswordResetPrompt from './components/Forms/Login/PasswordResetPrompt/PasswordResetPrompt';
-import PasswordResetForm from "./components/Forms/Login/PasswordResetForm/PasswordResetForm";
+import PasswordResetPrompt from './components/Forms/PasswordResetPrompt/PasswordResetPrompt';
+import PasswordResetForm from "./components/Forms/PasswordResetForm/PasswordResetForm";
 import Layout from "./components/Layouts/Layout";
 // פונקציה המאפשרת גלילה אוטומטית לראש הדף בעת שינוי דף
 import {ScrollToTop} from './clientFunctions/UI/ScrollToTop';
@@ -25,6 +25,7 @@ import ProtectedRoute from "./components/Routs/ProtectedRoute";
 import {UserProvider, useUserContext} from "./contexts/UserContext";
 import {AuthProvider} from "./contexts/AuthContext";
 import {GuestRoute} from "./components/Routs/GuestRoute";
+import VerificationCodeInput from "./components/Common/inputs/VerificationCodeInput";
 
 
 //TODO: block the url according to the type of account
@@ -67,6 +68,7 @@ const App = () => {
                                 <Route element={<GuestRoute/>}>
                                     <Route path="auth" element={<Auth />} />
                                     <Route path={'/auth/password-reset'} element={<PasswordResetPrompt />} />
+                                    <Route path={'auth/verification-code'} element={<VerificationCodeInput/>} />
                                     <Route path={'/auth/password-reset-form'} element={<PasswordResetForm />} />
                                 </Route>
                             </Route>

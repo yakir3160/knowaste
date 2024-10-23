@@ -1,11 +1,12 @@
 import React, {useEffect} from "react";
-import  Card from "../../../Common/Card/Card";
-import {validationSchema} from "../../Register/ValidationSchema";
+import  Card from "../../Common/Card/Card";
+import {validationSchema} from "../Register/ValidationSchema";
 import {Formik, Form,} from 'formik';
-import GlobalField from "../../../Common/inputs/GlobalField";
-import Button from "../../../Common/Button/Button";
-import {usePasswordStatus} from "../../Register/Hooks/usePasswordStatus";
-import PasswordRequirements from "../../Register/PasswordRequirements";
+import GlobalField from "../../Common/inputs/GlobalField";
+import Button from "../../Common/Button/Button";
+import {usePasswordStatus} from "../Register/Hooks/usePasswordStatus";
+import PasswordRequirements from "../Register/PasswordRequirements";
+import VerificationCodeInput from "../../Common/inputs/VerificationCodeInput";
 
 
 

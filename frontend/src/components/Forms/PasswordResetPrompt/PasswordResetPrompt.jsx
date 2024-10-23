@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
-import  Card from "../../../Common/Card/Card";
-import {validationSchema} from "../../Register/ValidationSchema";
+import  Card from "../../Common/Card/Card";
+import {validationSchema} from "../Register/ValidationSchema";
 import {Formik, Form,} from 'formik';
-import GlobalField from "../../../Common/inputs/GlobalField";
-import Button from "../../../Common/Button/Button";
-import {useAuthContext} from "../../../../contexts/AuthContext";
+import GlobalField from "../../Common/inputs/GlobalField";
+import Button from "../../Common/Button/Button";
+import {useAuthContext} from "../../../contexts/AuthContext";
 import {useLocation, useNavigate} from "react-router-dom";
 
 
