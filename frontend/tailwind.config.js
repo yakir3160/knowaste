@@ -70,6 +70,10 @@ module.exports = {
         slideOut: ' slideOut 0.5s forwards',
         borderRotate: 'borderRotate 3s linear infinite',
       },
+      animationDelay: {
+        '1000': '1s',
+        '2000': '2s',
+      },
 
     },
     colors: {

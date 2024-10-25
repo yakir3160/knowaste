@@ -1,17 +1,22 @@
 import React, {useEffect} from "react";
 import  Card from "../../Common/Card/Card";
 import {validationSchema} from "../Register/ValidationSchema";
-import {Formik, Form,} from 'formik';
+import {Form,Formik} from 'formik';
 import GlobalField from "../../Common/inputs/GlobalField";
 import Button from "../../Common/Button/Button";
 import {usePasswordStatus} from "../Register/Hooks/usePasswordStatus";
-import PasswordRequirements from "../Register/PasswordRequirements";
-import VerificationCodeInput from "../../Common/inputs/VerificationCodeInput";
+import PasswordRequirements from "../Register/PasswordRequirements"
+import {useAuthContext} from "../../../contexts/AuthContext";
 
 
 
-const PasswordResetPrompt = ({handleChange}) => {
+const PasswordResetForm = () => {
     const { passwordStatus, validatePassword } = usePasswordStatus();
+    const {passwordReset ,authError, clearAuthError} = useAuthContext();
+
+    useEffect (() => {
+        clearAuthError();
+    },[])
 
     return(
         <>
@@ -22,11 +27,14 @@ const PasswordResetPrompt = ({handleChange}) => {
                         repeatPassword:'',
                     }}
                     validationSchema={validationSchema}
-
+                    onSubmit={passwordReset}
                 >
                     {({isSubmitting ,handleChange}) => (
                         <Form className={`p-4`} noValidate>
                             <h3 className={`text-titles text-3xl p-5 text-center`}>Password Reset</h3>
+                            {authError && (
+                                <div className={`text-errorRed text-center`}>{authError}</div>
+                            )}
                             <div className={`mb-3`}>
                                 <GlobalField
                                     name="password"
@@ -44,9 +52,10 @@ const PasswordResetPrompt = ({handleChange}) => {
                                 />
                             </div>
                             <Button
+
+                                className={`w-full text-titles border-2 border-lime flex justify-center items-center`}
                                 type="submit"
-                                disabled={isSubmitting}
-                                className={`w-full text-titles border-2 border-lime flex justify-center items-center`}>
+                            >
                                 {isSubmitting ? (
                                     <>
                                         Updating password...
@@ -65,4 +74,4 @@ const PasswordResetPrompt = ({handleChange}) => {
 
     )
 }
-export default PasswordResetPrompt;
+export default PasswordResetForm;

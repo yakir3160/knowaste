@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import Login from '../Forms/Login/Login/Login';
+import Login from '../Forms/Login/Login';
 import Register from '../Forms/Register/Register';
 
 const Auth = () => {

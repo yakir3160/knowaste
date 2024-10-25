@@ -7,7 +7,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LandingPage from './components/Pages/LandingPage';
 import ContactForm from './components/Forms/ContactForm/ContactForm';
 import Auth from './components/Pages/Auth';
-import PasswordResetPrompt from './components/Forms/PasswordResetPrompt/PasswordResetPrompt';
 import PasswordResetForm from "./components/Forms/PasswordResetForm/PasswordResetForm";
 import Layout from "./components/Layouts/Layout";
 // פונקציה המאפשרת גלילה אוטומטית לראש הדף בעת שינוי דף
@@ -67,7 +66,6 @@ const App = () => {
                                 {/* נתיב ההתחברות / הרשמה שמוגבל למשתמשים לא מחוברים בלבד */}
                                 <Route element={<GuestRoute/>}>
                                     <Route path="auth" element={<Auth />} />
-                                    <Route path={'/auth/password-reset'} element={<PasswordResetPrompt />} />
                                     <Route path={'auth/verification-code'} element={<VerificationCodeInput/>} />
                                     <Route path={'/auth/password-reset-form'} element={<PasswordResetForm />} />
                                 </Route>

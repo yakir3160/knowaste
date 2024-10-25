@@ -4,57 +4,32 @@ import {useState} from 'react';
 
 
 export const usePasswordReset = () => {
-    const [error, setError] = useState(null);
+
     const [success, setSuccess] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
 
 
-    const handlePasswordResetEmail = async (values, { setSubmitting }) => {
+    const handlePasswordResetEmail = async (email) => {
         try {
-            setError(null);
-            await sendPasswordResetEmail(auth, values.email);
+            await sendPasswordResetEmail(auth, email);
             setEmailSent(true);
-            setSuccess(true);
         } catch (error) {
-            switch (error.code) {
-                case 'auth/invalid-email':
-                    setError('Invalid email address');
-                    break;
-                case 'auth/user-not-found':
-                    setError('No user found with this email address');
-                    break;
-                case 'auth/too-many-requests':
-                    setError('Too many attempts. Please try again later');
-                    break;
-                default:
-                    setError('An error occurred. Please try again');
-            }
-        } finally {
-            setSubmitting(false);
+            throw error;
         }
     };
-    const handlePasswordReset = async (values, { setSubmitting }) => {
+    const handlePasswordReset = async (values) => {
         try {
-            setError(null);
-            await confirmPasswordReset(auth, values.oobCode, values.password);
+            const name = values.email;
+            await confirmPasswordReset(auth,name, values.oobCode, values.password);
             setSuccess(true);
             setEmailSent(false);
         }catch (error) {
-            switch (error.code) {
-                case 'auth/expired-action-code':
-                    setError('The action code has expired');
-                    break;
-                case 'auth/invalid-action-code':
-                    setError('The action code is invalid');
-                    break;
-                default:
-                    setError('An error occurred. Please try again');
-            }
+            throw error;
         }finally {
-            setSubmitting(false);
+
         }
 
     }
-    return {handlePasswordResetEmail,handlePasswordReset, error,success};
+    return {handlePasswordResetEmail,handlePasswordReset,success, emailSent};
 
 }

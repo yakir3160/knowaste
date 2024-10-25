@@ -27,7 +27,6 @@ const Register = () => {
 
     return (
         <>
-            <ToastContainer/>
             <Card className="max-w-7xl min-w-[360px] mx-auto py-8 px-4">
                 <h3 className="title text-4xl text-titles mb-8">Let's create an account</h3>
                 <Formik

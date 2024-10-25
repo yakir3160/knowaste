@@ -1,11 +1,10 @@
-import { useState } from 'react';
+
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../../firebaseConfig';
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
 
 export const useRegister = () => {
-    const [error, setError] = useState(null);
 
     const handleRegister = async (values) => {
         try {
@@ -24,10 +23,9 @@ export const useRegister = () => {
             await setDoc(doc(db, "users", userCredential.user.uid), userData);
             toast.success('Registration successful!');
         } catch (error) {
-            setError(error.code);
             throw error;
         }
     };
 
-    return { handleRegister, error };
+    return { handleRegister };
 };
