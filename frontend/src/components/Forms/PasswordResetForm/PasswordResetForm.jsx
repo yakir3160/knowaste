@@ -8,7 +8,7 @@ import {usePasswordStatus} from "../Register/Hooks/usePasswordStatus";
 import PasswordRequirements from "../Register/PasswordRequirements"
 import {useAuthContext} from "../../../contexts/AuthContext";
 
-
+//TODO: Address the bug that causes password reset from our custom file to not work
 
 const PasswordResetForm = () => {
     const { passwordStatus, validatePassword } = usePasswordStatus();
