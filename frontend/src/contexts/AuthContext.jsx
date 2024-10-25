@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
             await handleRegister(values);
             setUser(auth.currentUser);
             navigate('/admin-panel');
+            resetForm();
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 setAuthError('This email is already registered. Please login to continue.');
@@ -57,7 +58,6 @@ export const AuthProvider = ({ children }) => {
             }
         } finally {
             setSubmitting(false);
-            resetForm();
         }
     };
 
@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }) => {
             await handleLogin(values.email, values.password);
             setUser(auth.currentUser);
             navigate('/admin-panel');
+            resetForm();
         } catch (error) {
             console.log('Error during login:', error.code);
             switch (error.code) {
@@ -82,7 +83,6 @@ export const AuthProvider = ({ children }) => {
             }
         } finally {
             setSubmitting(false);
-            resetForm();
         }
     };
 

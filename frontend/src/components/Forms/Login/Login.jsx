@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { REQUIRED_MSG } from "../../../constants/Constants";
 import { useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
-import GoogleSignIn from "../../Common/GoogleSignIn/GoogleSignIn";
+import GoogleSignInBtn from "../../Common/GoogleSignInBtn/GoogleSignInBtn";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { MailCheck } from "lucide-react";
 
@@ -75,14 +75,15 @@ const Login = () => {
                                         name="email"
                                         legend="Email"
                                     />
-                                    <div className="text-md text-center text-errorRed py-3 h-fit">
-                                        {getDisplayError()}
-                                    </div>
+
                                     <GlobalField
                                         type="password"
                                         name="password"
                                         legend="Password"
                                     />
+                                    <div className="text-md text-center text-errorRed h-fit">
+                                        {getDisplayError()}
+                                    </div>
                                     <div className="flex flex-col items-center justify-content-center p-2 my-2 h-fit">
                                         <button
                                             type="button"
@@ -93,7 +94,8 @@ const Login = () => {
                                             {isResetting ? (
                                                 <>
                                                     Sending reset email...
-                                                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-titles"></div>
+                                                    <div
+                                                        className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-titles"></div>
                                                 </>
                                             ) : (
                                                 'Forgot your password?'
@@ -103,7 +105,7 @@ const Login = () => {
                                 </div>
                                 <div className="flex flex-col">
                                     <div className={`flex flex-col gap-4`}>
-                                        <Button
+                                    <Button
                                             className="bg-lime text-titles flex justify-center items-center"
                                             type="submit"
                                             disabled={isSubmitting}
@@ -117,7 +119,7 @@ const Login = () => {
                                                 'Login'
                                             )}
                                         </Button>
-                                        <GoogleSignIn isSubmitting={isSubmitting}/>
+                                        <GoogleSignInBtn isSubmitting={isSubmitting}/>
                                     </div>
                                     <div className="flex flex-row items-center p-2 m-2 mt-2 gap-2 h-fit">
                                         <p className="text-center my-4">Don't have an account?</p>

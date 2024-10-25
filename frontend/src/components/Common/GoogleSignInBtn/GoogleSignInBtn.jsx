@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import { useAuthContext } from "../../../contexts/AuthContext";
 
 
-const GoogleSignIn = ({ isSubmitting }) => {
+const GoogleSignInBtn = ({ isSubmitting }) => {
     const { signInWithGoogle } = useAuthContext();
     return (
         <Button
@@ -32,4 +32,4 @@ const GoogleSignIn = ({ isSubmitting }) => {
     );
 };
 
-export default GoogleSignIn;
+export default GoogleSignInBtn;
