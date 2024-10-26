@@ -132,30 +132,10 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     };
-    const passwordReset = async (values ,{ setSubmitting, resetForm }) => {
-        try {
-            await handlePasswordReset(values);
-            console.log('Password reset successful');
-        } catch (error) {
-            switch (error.code) {
-                case 'auth/expired-action-code':
-                    setAuthError('The action code has expired');
-                    break;
-                case 'auth/invalid-action-code':
-                    setAuthError('The action code is invalid');
-                    break;
-                default:
-                    setAuthError('An error occurred. Please try again');
-            }
-        } finally {
-            setSubmitting(false);
-            resetForm();
-        }
-    }
 
     // החזרת הקונטקסט עם הפונקציות הנחוצות
     return (
-        <AuthContext.Provider value={{ user, login, register, logout, signInWithGoogle,passwordResetEmail,passwordReset,authError,clearAuthError,success ,emailSent,}}>
+        <AuthContext.Provider value={{ user, login, register, logout, signInWithGoogle,passwordResetEmail,authError,setAuthError,clearAuthError,success ,emailSent,}}>
             {children}
         </AuthContext.Provider>
     );
