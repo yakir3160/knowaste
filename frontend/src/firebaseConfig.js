@@ -1,7 +1,7 @@
 
 import {initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth,GoogleAuthProvider ,sendPasswordResetEmail} from "firebase/auth";
+import { getAuth,GoogleAuthProvider} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 
