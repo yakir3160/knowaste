@@ -14,6 +14,7 @@ const Login = () => {
     const { login, authError, clearAuthError, passwordResetEmail, emailSent, } = useAuthContext();
     const location = useLocation();
     const emailFromRegister = location.state?.email || '';
+    const message = location.state?.message || '';
     const [isResetting, setIsResetting] = useState(false);
 
     useEffect(() => {
@@ -44,6 +45,7 @@ const Login = () => {
 
     const getDisplayError = () =>
         emailFromRegister ? "This email is already registered. Please login to continue." :
+            message || null ||
             authError || null;
 
     return (

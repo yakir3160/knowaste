@@ -11,24 +11,20 @@ export const usePasswordReset = () => {
 
     const handlePasswordResetEmail = async (email) => {
         try {
-            await sendPasswordResetEmail(auth, email);
+            await handlePasswordResetEmail(auth, email);
             setEmailSent(true);
         } catch (error) {
             throw error;
         }
     };
-    const handlePasswordReset = async (values) => {
+    const handlePasswordReset = async (values,actionCode) => {
         try {
-            const name = values.email;
-            await confirmPasswordReset(auth,name, values.oobCode, values.password);
+            await confirmPasswordReset(auth,actionCode ,values.password);
             setSuccess(true);
             setEmailSent(false);
         }catch (error) {
             throw error;
-        }finally {
-
         }
-
     }
     return {handlePasswordResetEmail,handlePasswordReset,success, emailSent};
 
