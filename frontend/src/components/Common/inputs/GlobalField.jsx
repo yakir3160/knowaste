@@ -10,6 +10,7 @@ const GlobalField = ({
                          type = 'text',
                          placeholder,
                          options = [],
+                         disabled = false,
                          ...props
                      }) => {
     const [field, meta] = useField(name);
@@ -44,22 +45,30 @@ const GlobalField = ({
         ${hasError ? 'border-2 border-errorRed' : 'border-2 border-cards'}
         ${as === 'textarea' ? 'resize-none' : ''}
         ${type === 'password' && 'font-semibold'}
+        ${disabled ? ' cursor-not-allowed opacity-50' : ''}
     `;
 
     const legendClasses = `
         h-[0.5vh] pl-2 transition-all duration-200 text-gray text-md font-medium
         ${hasValue ? 'text-titles mt-0' : ''}
+        ${disabled ? 'opacity-75' : ''}
     `;
 
     return (
-        <div className="relative flex flex-col min-w-[100px]">
+        <div className={`relative flex flex-col min-w-[100px] ${disabled ? 'opacity-75' : ''}`}>
             <legend className={legendClasses}>
                 {legend}
             </legend>
 
             <div className="flex justify-center mt-5">
                 {as === "select" ? (
-                    <Field as="select" name={name} {...props} className={fieldClasses}>
+                    <Field
+                        as="select"
+                        name={name}
+                        disabled={disabled}
+                        {...props}
+                        className={fieldClasses}
+                    >
                         {options.map(({ value, label }, index) => (
                             <option key={index} value={value}>{label}</option>
                         ))}
@@ -71,10 +80,11 @@ const GlobalField = ({
                             type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
                             as={as}
                             placeholder={getPlaceholder()}
+                            disabled={disabled}
                             {...props}
                             className={fieldClasses}
                         />
-                        {type === 'password' && (
+                        {type === 'password' && !disabled && (
                             <span
                                 onClick={togglePasswordVisibility}
                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md hover:shadow-lg transition-shadow duration-200"

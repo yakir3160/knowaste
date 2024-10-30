@@ -1,11 +1,12 @@
 import {useState,useEffect } from 'react'; // ייבוא רכיבי React
-import {doc,getDoc } from 'firebase/firestore'; // ייבוא רכיבים מהספרייה של Firebase
+import {doc,getDoc ,updateDoc} from 'firebase/firestore'; // ייבוא רכיבים מהספרייה של Firebase
 import {db} from '../../firebaseConfig'; // ייבוא קובץ firebase
 import {useAuthContext} from "../../contexts/AuthContext";
 
 export const useUserBaseData = () => {
-    const  [userBaseData, setUserBaseData] = useState(null); // יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני המשתמש
-    const[loading, setLoading] = useState(true); // יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני הטעינה
+    const [userBaseData, setUserBaseData] = useState(null); // יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני המשתמש
+    const[loading, setLoading] = useState(true);
+    const[success, setSuccess] = useState(true);// יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני הטעינה
     const [error,setError ] = useState(null);
     const {user} = useAuthContext(); // שימוש בהקשר לנתוני המשתמש
 
@@ -40,7 +41,31 @@ export const useUserBaseData = () => {
             }
         };
         getUserBaseData();
-    }, [user, db]);
+    }, [user]);
+    const updateUserDetails = async (newDetails) =>{
+        try {
+            setLoading(true)
+            const userDocRef = doc(db, 'users', user.uid);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists()) {
+                await updateDoc(userDocRef, newDetails);
+                setSuccess(true);
+                setUserBaseData((prevData) => ({ ...prevData, ...newDetails }));
+            } else {
+                console.log('User document does not exist');
+            }
+        }catch (error) {
+          switch (error.code) {
+                case 'permission-denied':
+                    setError('You do not have permission to update this document');
+                    break;
+                default:
+                    setError('Error updating document: ' + error);
+          }
+        }finally {
+            setLoading(false)
+        }
+    }
 
-    return {userBaseData, loading, error};
+    return {userBaseData,updateUserDetails, loading, error,success,setSuccess};
 }

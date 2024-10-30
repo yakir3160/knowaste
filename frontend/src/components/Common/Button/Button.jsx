@@ -23,7 +23,7 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
           ${className} 
           hover:text-buttons 
           ${!hasBgColor ? 'bg-secondary' : ''} 
-          ${!hasHover ? 'hover:text-buttons hover:shadow-button-hover hover:scale-[0.99]' : ''} 
+          ${!hasHover ? 'hover:text-buttons hover:shadow-button-hover hover:scale-[0.97]' : ''} 
           ${!hasTextColor ? 'text-titles' : ''} 
           ${!hasShadow ? 'shadow-outer-custom' : ''} 
           ${!hasPadding ? 'px-[17px] py-[13px]' : ''} 

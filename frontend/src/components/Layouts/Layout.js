@@ -10,7 +10,7 @@ const Layout = ({ children, pageType }) => {
 
     const mainContentClass = isAdminPanel ? '' : 'pt-[150px] px-4 sm:px-6 lg:px-8';
 
-    const sidebarPadding = isOpen ? 'pl-0 md:pl-72' : 'pl-0 md:pl-20';
+    const sidebarPadding = isOpen ? 'pl-0 md:pl-[300px] lg:pr-10' : 'pl-0 md:pl-[100px] lg:pr-10';
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -19,7 +19,7 @@ const Layout = ({ children, pageType }) => {
             ) : (
                 <Navbar />
             )}
-            <main className={`flex-1 flex flex-col  h-[100svh] items-center w-full ${mainContentClass} ${isAdminPanel ? sidebarPadding : ''}`}>
+            <main className={`flex-1 flex flex-col  h-[100svh] items-center w-full ${mainContentClass} ${isAdminPanel ? `${sidebarPadding} mb-20` : ''}`}>
                 {children}
                 <Outlet />
             </main>

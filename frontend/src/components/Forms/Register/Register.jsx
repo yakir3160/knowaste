@@ -4,7 +4,7 @@ import {ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RegisterForm from './RegisterForm';
 import PasswordRequirements from './PasswordRequirements';
-import { validationSchema } from './ValidationSchema';
+import { registerSchema } from './RegisterSchema';
 import Card from '../../Common/Card/Card';
 import {useCities} from "./Hooks/useCities";
 import {usePasswordStatus} from "./Hooks/usePasswordStatus";
@@ -42,7 +42,7 @@ const Register = () => {
                         password: '',
                         repeatPassword: '',
                     }}
-                    validationSchema={validationSchema}
+                    validationSchema={registerSchema}
                     onSubmit={register}
                 >
                     {({isSubmitting, handleChange}) => (

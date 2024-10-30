@@ -1,5 +1,5 @@
 import Button from "../../../Common/Button/Button";
-import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2, Warehouse, DollarSign, LogOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2, Warehouse, DollarSign, LogOut,UserRoundCog } from "lucide-react";
 import Logo from "../../../Common/Logo/Logo";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useAuthContext } from "../../../../contexts/AuthContext";
@@ -15,13 +15,13 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
 
     const sideBarTransition = "transition-all duration-200 ease-in-out";
     const sidebarClasses = {
-        container: "fixed mx-6 my-5",
-        aside: `flex flex-col rounded-lg h-[95vh] bg-secondary shadow-outer-custom ${sideBarTransition} ${isOpen ? "w-64" : "w-14"} animate-fadeIn`,
+        container: "fixed ",
+        aside: `flex flex-col rounded-r-lg h-[95vh] mb-6 bg-secondary shadow-outer-custom ${sideBarTransition} ${isOpen ? "w-64" : "w-14"} animate-fadeIn`,
         logoContainer: `overflow-hidden ${sideBarTransition} ${isOpen ? 'w-auto' : 'w-0'}`,
-        button: "z-10 p-2",
+        button: "z-10 ",
         menuList: "flex-grow list-inside text-titles py-5 flex flex-col gap-5 mt-10",
-        menuItem: `flex items-center gap-2 p-2 w-full shadow-none hover:bg-base ${isOpen ? "" : "justify-center"}`,
-        logout: "text-errorRed border-2 border-[transparent] text-buttons pl-3 hover:text-errorRed hover:bg-errorLightRed hover:border-errorRed",
+        menuItem: `flex items-center gap-2 p-2 px-4  w-full shadow-none hover:bg-base ${isOpen ? "" : "justify-center"}`,
+        logout: "text-errorRed border-2 border-[transparent]  text-buttons  px-4 hover:text-errorRed hover:bg-errorLightRed hover:border-errorRed",
         itemText: `whitespace-nowrap ${sideBarTransition} ${isOpen ? '' : 'hidden'}`,
         footer: "flex justify-center items-center bg-baseLight h-[10vh] rounded-b-lg",
     };
@@ -51,7 +51,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                     </Button>
                     <Button
                         onClick={() => navigate("/admin-panel/inventory-management")}
-                        className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel/inventory-management" ? "bg-base border-2 border-lime text-buttons pl-2" : "border-2 border-[transparent]"}`}
+                        className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel/inventory-management" ? `bg-base border-2 border-lime text-buttons pl-2` : "border-2 border-[transparent]"}`}
                     >
                         <Warehouse className="h-5 w-5" />
                         <span className={sidebarClasses.itemText}>Inventory Management</span>
@@ -60,7 +60,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                         <>
                             <Button
                                 onClick={() => navigate("/admin-panel/sales-report")}
-                                className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel/sales-report" ? "bg-base border-2 border-lime text-buttons pl-2" : "border-2 border-[transparent]"}`}
+                                className={`p-2 ${sidebarClasses.menuItem}${location.pathname === "/admin-panel/sales-report"  ? "bg-base border-2 border-lime text-buttons pl-2" : "border-2 border-[transparent]"}`}
                             >
                                 <FileText className="h-5 w-5" />
                                 <span className={sidebarClasses.itemText}>Daily Sales Report</span>
@@ -91,6 +91,13 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                         </Button>
                     )}
                     <Button
+                        className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel/account-settings" ? "bg-base border-2 border-lime text-buttons pl-2" : "border-2 border-[transparent]"}`}
+                        onClick={() => navigate("/admin-panel/account-settings")}
+                    >
+                        <UserRoundCog className="h-5 w-5" />
+                        <span className={sidebarClasses.itemText}>Account Settings</span>
+                    </Button>
+                    <Button
                         onClick={logout}
                         className={`p-2 ${sidebarClasses.menuItem} ${sidebarClasses.logout}`}
                     >
@@ -98,9 +105,8 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                         <span className={sidebarClasses.itemText}>Sign Out</span>
                     </Button>
                 </ul>
-
                 <div className={sidebarClasses.footer}>
-                    <p className="text-center text-xl text-titles">Hello {user?.email}</p>
+                    <p className="text-center text-xl text-titles">Hello {user?.contactName}</p>
                 </div>
             </aside>
         </div>

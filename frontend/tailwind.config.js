@@ -23,9 +23,9 @@ module.exports = {
         'logo-lg': '3.5rem',
       },
       boxShadow: {
-        'inset-custom': 'inset 4px 4px 8px rgba(230, 232, 222, 0.7), inset -6px -6px 8px #ffffff',
-        'outer-custom': '10px 10px 20px #e6e8de, -10px -10px 20px #ffffff',
-        'button-hover': '5px 5px 10px rgba(203, 209, 184, 0.60), -5px -5px 10px #fdfffa',
+        'inset-custom': 'inset 2px 2px 5px rgba(230, 232, 222, 0.7), inset -2px -2px 5px #ffffff',
+        'outer-custom': '2px 2px 5px #e6e8de, -2px 2px 5px #ffffff',
+        'button-hover': '1px 1px 5px rgba(203, 209, 184, 0.60), -1px -1px 5px #fdfffa',
       },
       screens: {
         'iphone': '375px',

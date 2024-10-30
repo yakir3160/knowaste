@@ -1,4 +1,4 @@
-import { LayoutDashboard, FileText, Trash2, Warehouse, DollarSign, LogOut, CircleChevronDown, CircleChevronUp } from "lucide-react";
+import { LayoutDashboard, FileText, Trash2, Warehouse, DollarSign, LogOut, CircleChevronDown, CircleChevronUp ,UserRoundCog} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {useAuthContext} from "../../../../contexts/AuthContext";
@@ -44,7 +44,7 @@ const MobileBottomNav = () => {
             <div
                 id="mobile-menu"
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    isVisible ? 'max-h-[500px]' : 'max-h-0'
+                    isVisible ? 'max-h-[600px]' : 'max-h-0'
                 }`}
             >
                 <div className="flex flex-col bg-white justify-center">
@@ -98,6 +98,16 @@ const MobileBottomNav = () => {
                         </button>
                     )
                     }
+                    <button
+                        onClick={() => {
+                            navigate('/admin-panel/account-settings')
+                        }}
+                        className={buttonClass("/admin-panel/account-settings")}
+                    >
+                        <UserRoundCog className={iconSize}/>
+                        <span className="text-sm text-titles">Account Settings</span>
+
+                    </button>
                     <button
                         onClick={logout}
                         className={buttonClass("/")}

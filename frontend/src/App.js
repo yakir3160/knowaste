@@ -5,19 +5,20 @@ import React , { useEffect}from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // ייבוא קומפוננטות של דפי האפליקציה
 import LandingPage from './components/Pages/LandingPage';
-import ContactForm from './components/Forms/ContactForm/ContactForm';
+import ContactForm from './components/Forms/ContactForm';
 import Auth from './components/Pages/Auth';
-import PasswordResetForm from "./components/Forms/PasswordResetForm/PasswordResetForm";
+import PasswordResetForm from "./components/Forms/PasswordResetForm";
 import Layout from "./components/Layouts/Layout";
 // פונקציה המאפשרת גלילה אוטומטית לראש הדף בעת שינוי דף
 import {ScrollToTop} from './clientFunctions/UI/ScrollToTop';
 // ייבוא קומפוננטות של דשבורד המנהל
-import Dashboard from "./components/AdminPanel/shared/Dashboard/Dashboard";
+import Dashboard from "./components/AdminPanel/Shared/Dashboard/Dashboard";
 import DailySalesReport from "./components/AdminPanel/RestaurantManager/DailySalesReport/dailySalesReport";
 import LeftoverReport from "./components/AdminPanel/RestaurantManager/LeftoverReport/LeftoverReport";
 import RequestPriceQuote from "./components/AdminPanel/RestaurantManager/RequestPriceQuote/PriceQuote";
 import SendPriceQuote from "./components/AdminPanel/supplier/SendPriceQuote/SendPriceQuote";
-import InventoryManagement from "./components/AdminPanel/shared/InventoryManagement/InventoryManagement";
+import InventoryManagement from "./components/AdminPanel/Shared/InventoryManagement/InventoryManagement";
+import AccountSettings from "./components/AdminPanel/Shared/AccountSettings/AccountSettings";
 // קומפוננטת הגנה על נתיבים (Routes) הדורשים הרשאות מיוחדות
 import ProtectedRoute from "./components/Routs/ProtectedRoute";
 // ספק ההקשר של המשתמש, מנהל נתוני המשתמש ברחבי האפליקציה
@@ -27,22 +28,10 @@ import {GuestRoute} from "./components/Routs/GuestRoute";
 import VerificationCodeInput from "./components/Common/inputs/VerificationCodeInput";
 
 
-//TODO: block the url according to the type of account
 
-const UserDisplay = () => {
-    const {userBaseData} = useUserContext();
-    console.table( userBaseData);
-    return (
-        <div className="text-titles text-3xl">
-            {userBaseData ? `Current user: ${userBaseData.email}` : 'No user logged in'}
-        </div>
-    );
-};
 
 const App = () => {
-    useEffect(() => {
 
-    }, []);
     return (
         <div className="App">
             {/* עוטפים את כל האפליקציה ב-BrowserRouter כדי לנהל את הניווט בין הדפים */}
@@ -53,7 +42,6 @@ const App = () => {
                     <UserProvider>
                         {/* גלילה אוטומטית לראש הדף כאשר הנתיב משתנה */}
                         <ScrollToTop />
-                        <UserDisplay />
                         {/* הגדרת הנתיבים של האפליקציה */}
                         <Routes>
                             {/* נתיב שורש, כולל פריסה כללית ודפים ראשיים */}
@@ -88,6 +76,8 @@ const App = () => {
                                 <Route path="request-quote" element={<RequestPriceQuote />} />
                                 {/* שלח הצעת מחיר */}
                                 <Route path="send-quote" element={<SendPriceQuote />} />
+                                {/* אזור אישי  */}
+                                <Route path="account-settings" element={<AccountSettings/>} />
                             </Route>
                         </Routes>
                     </UserProvider>

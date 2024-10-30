@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import Card from "../../Common/Card/Card";
-import Button from "../../Common/Button/Button";
-import GlobalField from "../../Common/inputs/GlobalField";
+import Card from "../Common/Card/Card";
+import Button from "../Common/Button/Button";
+import GlobalField from "../Common/inputs/GlobalField";
 import * as Yup from "yup";
-import { REQUIRED_MSG } from "../../../constants/Constants";
+import { REQUIRED_MSG } from "../../constants/Constants";
 import { useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
-import GoogleSignInBtn from "../../Common/GoogleSignInBtn/GoogleSignInBtn";
-import { useAuthContext } from "../../../contexts/AuthContext";
+import GoogleSignInBtn from "../Common/GoogleSignInBtn/GoogleSignInBtn";
+import { useAuthContext } from "../../contexts/AuthContext";
 import { MailCheck } from "lucide-react";
 
 const Login = () => {
@@ -15,6 +15,7 @@ const Login = () => {
     const location = useLocation();
     const emailFromRegister = location.state?.email || '';
     const message = location.state?.message || '';
+    const messageType = location.state?.type;
     const [isResetting, setIsResetting] = useState(false);
 
     useEffect(() => {
@@ -83,9 +84,11 @@ const Login = () => {
                                         name="password"
                                         legend="Password"
                                     />
-                                    <div className="text-md text-center text-errorRed h-fit">
+                                    <div
+                                        className={`text-md text-center ${ messageType !== 'success'  ? 'text-errorRed' : 'text-green'} h-fit`}>
                                         {getDisplayError()}
                                     </div>
+
                                     <div className="flex flex-col items-center justify-content-center p-2 my-2 h-fit">
                                         <button
                                             type="button"

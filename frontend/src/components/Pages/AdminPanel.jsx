@@ -1,5 +1,5 @@
 import React from 'react';
-import Dashboard from "../AdminPanel/shared/Dashboard/Dashboard";
+import Dashboard from "../AdminPanel/Shared/Dashboard/Dashboard";
 
 
 const AdminPanel = () => {
