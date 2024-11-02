@@ -1,16 +1,15 @@
 import React from 'react';
-import Card from '../../../Common/Card/Card';
+import MyMenu from "./MenuOrProducts/MenuOrProducts";
+import AdminPanelContainer from "../../AdminPanelContainer";
+
 
 
 const InventoryManagement = () => {
     return (
-        <div className="flex flex-col gap-5 w-full p-6 rounded-lg sm:rounded-lg">
-            <Card>
-                <h1 className={`text-titles text-4xl text-center`}>Inventory Management</h1>
-            </Card>
-
-        </div>
-    );
+        <AdminPanelContainer pageTitle={"Inventory Management"} layout={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 rounded-md border-2 p-6'}>
+            <MyMenu/>
+        </AdminPanelContainer>
+        );
 };
 
 export default InventoryManagement;

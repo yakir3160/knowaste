@@ -15,19 +15,19 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
 
     const sideBarTransition = "transition-all duration-200 ease-in-out";
     const sidebarClasses = {
-        container: "fixed ",
+        container: "fixed",
         aside: `flex flex-col rounded-r-lg h-[95vh] mb-6 mt-6 bg-secondary shadow-outer-custom ${sideBarTransition} ${isOpen ? "w-64" : "w-14"} animate-fadeIn`,
         logoContainer: `overflow-hidden ${sideBarTransition} ${isOpen ? 'w-auto' : 'w-0'}`,
         button: "z-10 ",
         menuList: "flex-grow list-inside text-titles py-5 flex flex-col gap-5 mt-10",
-        menuItem: `flex items-center gap-2 p-3 px-4  w-full shadow-none hover:bg-base ${isOpen ? "" : "justify-center"}`,
+        menuItem: `flex items-center gap-2 p-3 px-4  w-full shadow-none hover:bg-base `,
         logout: "text-errorRed border-2 border-[transparent]  text-buttons  px-4 hover:text-errorRed hover:bg-errorLightRed hover:border-errorRed",
         itemText: `whitespace-nowrap ${sideBarTransition} ${isOpen ? '' : 'hidden'}`,
         footer: "flex justify-center items-center bg-baseLight h-[10vh] rounded-b-lg",
     };
 
     return (
-        <div className={`${sidebarClasses.container} ${isOpen ? 'pr-[300px]' : 'pr-[50px]'}`}>
+        <div className={`${sidebarClasses.container}`}>
             <aside className={sidebarClasses.aside}>
                 <div className="flex justify-between items-center p-2">
                     <div className={sidebarClasses.logoContainer}>
