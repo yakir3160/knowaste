@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Formik, Form } from "formik";
-import {Pencil,Save} from 'lucide-react'
+import {Pencil,Save,CheckCircle} from 'lucide-react'
 import Card from "../Common/Card/Card";
 import Button from "../Common/Button/Button";
 import GlobalField from "../Common/inputs/GlobalField";
@@ -8,7 +8,16 @@ import {useUserContext} from "../../contexts/UserContext";
 
 const AccountInfoForm = () => {
     const [editing,setEditing] = useState(false)
-    const { userBaseData: user ,updateUserDetails,error,loading} = useUserContext();
+    const { userBaseData: user ,updateUserDetails,error,loading,success,setSuccess} = useUserContext();
+    useEffect(() => {
+        let timer;
+        if (success) {
+            timer = setTimeout(() => {
+                setSuccess(false);
+            }, 5000);
+        }
+        return () => clearTimeout(timer);
+    }, [success, setSuccess]);
     return (
         <Card className="w-full">
             <h3 className="text-titles text-3xl p-3 text-center">Account Info</h3>
@@ -91,37 +100,39 @@ const AccountInfoForm = () => {
                             onChange={handleChange}
                         />
 
-                        <div className={`flex  gap-5 justify-center align-items-center`}>
+                        <div className={`flex gap-5 justify-center align-items-center`}>
                             <Button className={`h-fit border-2 border-secondary self-center flex flex-row`} type={"button"} onClick={() => {setEditing(!editing)}}>
                                 Edit
                                 <Pencil className={`size-5 ml-2`}/>
                             </Button>
-                            {loading?
-                                (
-                                    <Button
-                                        className="h-fit  border-2 border-lime self-center flex flex-row "
-                                        type="submit"
-                                    >
-                                        Saving...
-                                        <div
-                                            className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles ml-3">
-
-                                        </div>
-                                    </Button>
-                                ) :
-                                (
-                                    <Button
-                                        className="h-fit border-2 border-lime self-center flex flex-row "
-                                        type="submit"
-                                    >
-                                        Save
-                                        <Save className={`size-5 ml-2`}/>
-                                    </Button>
-                                )
-                            }
-
+                            {loading ? (
+                                <Button
+                                    className="h-fit border-2 border-lime self-center flex flex-row"
+                                    type="submit"
+                                >
+                                    Saving...
+                                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles ml-3"></div>
+                                </Button>
+                            ) : success ? (
+                                <Button
+                                    className="h-fit bg-green border-2 border-white  text-white self-center hover:text-white flex flex-row"
+                                    type="submit"
+                                    disabled={true}
+                                >
+                                    Saved!
+                                    <CheckCircle className={`size-5 ml-2`}/>
+                                </Button>
+                            ) : (
+                                <Button
+                                    className="h-fit border-2 border-lime self-center flex flex-row"
+                                    type="submit"
+                                >
+                                    Save
+                                    <Save className={`size-5 ml-2`}/>
+                                </Button>
+                            )}
                         </div>
-                        {error&& (
+                        {error && (
                             <div className="text-md text-center text-errorRed h-fit">
                                 {error}
                             </div>

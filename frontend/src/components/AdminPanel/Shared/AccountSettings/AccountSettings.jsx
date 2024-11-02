@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
-import { useUserContext } from "../../../../contexts/UserContext";
+import React, { } from 'react';
 import AdminPanelContainer from "../../AdminPanelContainer";
 import AccountInfoForm from '../../../Forms/AccountInfoForm';
 import PasswordUpdateForm from '../../../Forms/PasswordUpdateForm';
-import Card from "../../../Common/Card/Card";
-import {usePasswordReset} from "../../../../Hooks/Auth/usePasswordReset";
 
 const AccountSettings = () => {
     return (

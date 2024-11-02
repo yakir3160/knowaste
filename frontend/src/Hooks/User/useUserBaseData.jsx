@@ -6,7 +6,7 @@ import {useAuthContext} from "../../contexts/AuthContext";
 export const useUserBaseData = () => {
     const [userBaseData, setUserBaseData] = useState(null); // יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני המשתמש
     const[loading, setLoading] = useState(true);
-    const[success, setSuccess] = useState(true);// יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני הטעינה
+    const[success, setSuccess] = useState(false);
     const [error,setError ] = useState(null);
     const {user} = useAuthContext(); // שימוש בהקשר לנתוני המשתמש
 

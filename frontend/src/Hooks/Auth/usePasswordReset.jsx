@@ -48,6 +48,6 @@ export const usePasswordReset = () => {
             }
         }
     }
-    return {handlePasswordResetEmail,handlePasswordReset,updatePasswordWithVerification,success, emailSent,error,};
+    return {handlePasswordResetEmail,handlePasswordReset,updatePasswordWithVerification,success,setSuccess, emailSent,error,};
 
 }
