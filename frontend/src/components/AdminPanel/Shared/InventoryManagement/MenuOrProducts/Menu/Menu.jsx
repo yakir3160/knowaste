@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import logo from "../../../../../Common/Logo/Logo";
 import Button from "../../../../../Common/Button/Button";
 import {CircleX,Pencil} from 'lucide-react'
+import GlobalField from "../../../../../Common/inputs/GlobalField";
+import {Form, Formik,FieldArray} from "formik";
 
 const Menu = ({ items }) => {
     const [selectedCategory ,setSelectedCategory] = useState("Appetizers")
@@ -11,16 +12,14 @@ const Menu = ({ items }) => {
     const mainCourses = items.filter(item => item.category === "Main Courses")
     const mainSubCategories = Array.from(new Set(mainCourses.map((item => item.subCategory)))).sort()
 
-    console.table(mainCourses)
-    console.table(mainSubCategories)
-    console.table(categories)
+    console.log(mainSubCategories.length)
     const filteredItems = selectedCategory === 'Main Courses'
         ?  mainCourses.filter(item => item.subCategory === selectedSubCategory)
         : items.filter(item => item.category === selectedCategory)
     return(
-        <div className={`flex flex-col justify-center items-center`}>
+        <div className={`flex flex-col w-full justify-center items-center`}>
             {/* Tabs עבור קטגוריות */}
-            <div className={`mb-6 bg-secondary w-full lg:w-fit self-center rounded-t-sm grid grid-cols-2 md:grid-cols-4 `}>
+            <div className={`mb-6 bg-secondary lg:w-fit self-center rounded-t-sm grid grid-cols-2 md:grid-cols-4 `}>
                 {categories.map(category => (
                     <button
                         key={category}
@@ -37,7 +36,7 @@ const Menu = ({ items }) => {
             {/* תפריט תתי קטגוריות עבור מנות עיקריות */}
             {selectedCategory === 'Main Courses' && (
                 <div
-                    className={`mb-6  w-fit  lg:w-fit self-center rounded-t-sm  grid grid-cols-2 md:grid-cols-${mainSubCategories.length} `}>
+                    className={`mb-6  w-full  lg:w-fit self-center rounded-t-sm  grid grid-cols-2 md:grid-cols-${mainSubCategories.length} `}>
                     {mainSubCategories.map(subCategory =>
                         <button
                             className={`p-3 rounded-t-sm text-buttons text-light  transform transition-all duration-300 ease-in-out border-b-2 border-buttons 
@@ -53,15 +52,18 @@ const Menu = ({ items }) => {
             )}
 
             {/* המנות בכל קטגוריה*/}
-            <div className={`w-full gap-3 grid grid-cols-1 lg:grid-cols-3`}>
+            <div className={`w-full gap-2 grid grid-cols-1`}>
             {filteredItems.map((item, index) => (
-                <div key={index} className="w-full max-w-md rounded-lg p-6 mb-4 border-2 border-secondary hover:border-primary transition-colors shadow-sm hover:shadow-md">
+                <div key={index} className=" rounded-lg p-6 mb-4 border-2 border-secondary  ">
                     <div className="flex justify-between items-center mb-2">
                         <h2 className="text-titles text-xl font-semibold">{item.name}</h2>
                         <span className="text-lg font-medium text-primary">{item.price}₪</span>
                     </div>
                     <p className="text-gray-600 mt-2 leading-relaxed">{item.description}</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                    {item.ingredients.map(ingredient =>
+                        <p className={`text-buttons text-sm `}>{ingredient}</p>
+                    )}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <Button
                             onClick={() => {
                                 console.log(`${item.name} Updated`)}}

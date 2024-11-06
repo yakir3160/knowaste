@@ -76,13 +76,13 @@ const Login = () => {
                                     <GlobalField
                                         type="email"
                                         name="email"
-                                        legend="Email"
+                                        label="Email"
                                     />
 
                                     <GlobalField
                                         type="password"
                                         name="password"
-                                        legend="Password"
+                                        label="Password"
                                     />
                                     <div
                                         className={`text-md text-center ${ messageType !== 'success'  ? 'text-errorRed' : 'text-green'} h-fit`}>

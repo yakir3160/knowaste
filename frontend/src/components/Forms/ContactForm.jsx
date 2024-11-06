@@ -46,21 +46,21 @@ const ContactForm = () => {
                                 <Form noValidate>
                                     <GlobalField
                                         name="firstName"
-                                        legend="First Name"
+                                        label="First Name"
                                     />
                                     <GlobalField
                                         name="lastName"
-                                        legend="Last Name"
+                                        label="Last Name"
                                     />
                                     <GlobalField
                                         name="email"
                                         type="email"
-                                        legend="Email Address"
+                                        label="Email Address"
                                     />
                                     <GlobalField
                                         name="message"
-                                        as="textarea"
-                                        legend="Message"
+                                        type="textarea"
+                                        label="Message"
                                         style={{justifyContent: 'start'}}
                                     />
 

@@ -45,7 +45,7 @@ const AccountInfoForm = () => {
                     >
                         <GlobalField
                             name="businessName"
-                            legend="Business Name"
+                            label="Business Name"
                             type="text"
                             value={values.businessName}
                             disabled={!editing}
@@ -53,7 +53,7 @@ const AccountInfoForm = () => {
                         />
                         <GlobalField
                             name="contactName"
-                            legend="Contact Name"
+                            label="Contact Name"
                             type="text"
                             value={values.contactName}
                             disabled={!editing}
@@ -61,7 +61,7 @@ const AccountInfoForm = () => {
                         />
                         <GlobalField
                             name="phone"
-                            legend="Phone"
+                            label="Phone"
                             type="tel"
                             value={values.phone}
                             disabled={!editing}
@@ -69,7 +69,7 @@ const AccountInfoForm = () => {
                         />
                         <GlobalField
                             name="email"
-                            legend="Email"
+                            label="Email"
                             type="email"
                             value={values.email}
                             disabled={!editing}
@@ -77,7 +77,7 @@ const AccountInfoForm = () => {
                         />
                         <GlobalField
                             name="address"
-                            legend="Address"
+                            label="Address"
                             type="text"
                             value={values.address}
                             disabled={!editing}
@@ -85,7 +85,7 @@ const AccountInfoForm = () => {
                         />
                         <GlobalField
                             name="city"
-                            legend="City"
+                            label="City"
                             type="text"
                             value={values.city}
                             disabled={!editing}
@@ -93,7 +93,7 @@ const AccountInfoForm = () => {
                         />
                         <GlobalField
                             name="zipCode"
-                            legend="Zip"
+                            label="Zip"
                             type="text"
                             value={values.zipCode}
                             disabled={!editing}
@@ -107,7 +107,7 @@ const AccountInfoForm = () => {
                             </Button>
                             {loading ? (
                                 <Button
-                                    className="h-fit border-2 border-lime self-center flex flex-row"
+                                    className="h-fit border-2 border-lime self-center flex flex-row transform transition-all duration-300"
                                     type="submit"
                                 >
                                     Saving...

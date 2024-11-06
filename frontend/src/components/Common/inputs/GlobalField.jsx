@@ -4,9 +4,8 @@ import { REQUIRED_MSG } from "../../../constants/Constants";
 import { Eye, EyeOff } from 'lucide-react';
 
 const GlobalField = ({
-                         legend,
+                         label,
                          name,
-                         as = 'input',
                          type = 'text',
                          placeholder,
                          options = [],
@@ -34,7 +33,7 @@ const GlobalField = ({
         }
     };
 
-    const fieldHeight = as === 'textarea' ? 'min-h-[100px]' : 'h-[55px]';
+    const fieldHeight = type === 'textarea' ? 'min-h-[100px]' : 'h-[55px]';
     const fieldClasses = `
         ${fieldHeight} p-3 w-full
         bg-white
@@ -43,12 +42,12 @@ const GlobalField = ({
         focus:border-lime focus-visible:border-2 rounded-3xl
         transition-all duration-200
         ${hasError ? 'border-2 border-errorRed' : 'border-2 border-cards'}
-        ${as === 'textarea' ? 'resize-none' : ''}
+        ${type === 'textarea' ? 'resize-none' : ''}
         ${type === 'password' && 'font-semibold'}
         ${disabled ? ' cursor-not-allowed opacity-50' : ''}
     `;
 
-    const legendClasses = `
+    const labelClasses = `
         h-[0.5vh] pl-2 transition-all duration-200 text-gray text-md font-medium
         ${hasValue ? 'text-titles mt-0' : ''}
         ${disabled ? 'opacity-75' : ''}
@@ -56,44 +55,61 @@ const GlobalField = ({
 
     return (
         <div className={`relative flex flex-col min-w-[100px] ${disabled ? 'opacity-75' : ''}`}>
-            <legend className={legendClasses}>
-                {legend}
-            </legend>
+            <label className={labelClasses}>
+                {label}
+            </label>
 
             <div className="flex justify-center mt-5">
-                {as === "select" ? (
-                    <Field
-                        as="select"
-                        name={name}
-                        disabled={disabled}
-                        {...props}
-                        className={fieldClasses}
-                    >
-                        {options.map(({ value, label }, index) => (
-                            <option key={index} value={value}>{label}</option>
-                        ))}
-                    </Field>
-                ) : (
-                    <>
-                        <Field
-                            name={name}
-                            type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
-                            as={as}
-                            placeholder={getPlaceholder()}
-                            disabled={disabled}
-                            {...props}
-                            className={fieldClasses}
-                        />
-                        {type === 'password' && !disabled && (
-                            <span
-                                onClick={togglePasswordVisibility}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md hover:shadow-lg transition-shadow duration-200"
-                            >
-                                {showPassword ? <Eye size={24} /> : <EyeOff size={24} />}
-                            </span>
-                        )}
-                    </>
-                )}
+                {(() => {
+                    switch (type) {
+                        case 'select':
+                            return (
+                                <Field
+                                    as="select"
+                                    name={name}
+                                    disabled={disabled}
+                                    {...props}
+                                    className={fieldClasses}
+                                >
+                                    {options.map(({ value, label }, index) => (
+                                        <option key={index} value={value}>{label}</option>
+                                    ))}
+                                </Field>
+                            );
+                        case 'textarea':
+                            return (
+                                <Field
+                                    name={name}
+                                    as="textarea"
+                                    placeholder={getPlaceholder()}
+                                    disabled={disabled}
+                                    {...props}
+                                    className={fieldClasses}
+                                />
+                            );
+                        default:
+                            return (
+                                <>
+                                    <Field
+                                        name={name}
+                                        type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
+                                        placeholder={getPlaceholder()}
+                                        disabled={disabled}
+                                        {...props}
+                                        className={fieldClasses}
+                                    />
+                                    {type === 'password' && !disabled && (
+                                        <span
+                                            onClick={togglePasswordVisibility}
+                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md hover:shadow-lg transition-shadow duration-200"
+                                        >
+                                            {showPassword ? <Eye size={24} /> : <EyeOff size={24} />}
+                                        </span>
+                                    )}
+                                </>
+                            );
+                    }
+                })()}
             </div>
 
             <div className="text-errorRed text-center min-h-[20px] text-sm w-full">
