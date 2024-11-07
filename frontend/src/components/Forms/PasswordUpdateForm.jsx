@@ -29,7 +29,7 @@ const PasswordUpdateForm = () => {
     };
 
     return (
-        <>
+        <div className={`flex flex-col`}>
             <Card className="w-full">
                 <h3 className="text-titles text-3xl p-3 text-center">Password Update</h3>
                 <Formik
@@ -113,7 +113,7 @@ const PasswordUpdateForm = () => {
             <div className="col-span-full">
                 <PasswordRequirements passwordStatus={passwordStatus} />
             </div>
-        </>
+        </div>
     );
 };
 

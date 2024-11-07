@@ -54,7 +54,7 @@ const GlobalField = ({
     `;
 
     return (
-        <div className={`relative flex flex-col min-w-[100px] ${disabled ? 'opacity-75' : ''}`}>
+        <div className={`relative flex flex-col min-w-[100px] ${disabled ? 'opacity-95' : ''}`}>
             <label className={labelClasses}>
                 {label}
             </label>
