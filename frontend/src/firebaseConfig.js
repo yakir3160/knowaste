@@ -1,14 +1,15 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import {initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth,GoogleAuthProvider} from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
+
+
 const firebaseConfig = {
-    apiKey: "AIzaSyCvGGpbmVpf-jZTNsClUDgDMURcP4zxxB4",
+    apiKey: 'AIzaSyCvGGpbmVpf-jZTNsClUDgDMURcP4zxxB4',
     authDomain: "knowwaste-f88b2.firebaseapp.com",
+    databaseURL: "https://knowwaste-f88b2-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "knowwaste-f88b2",
     storageBucket: "knowwaste-f88b2.appspot.com",
     messagingSenderId: "347995591885",
@@ -16,6 +17,13 @@ const firebaseConfig = {
     measurementId: "G-DGP0BW2Z0X"
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+const db = getFirestore(app);
+
+console.log("Firebase initialized");
+console.log(auth.currentUser);
+export { auth, googleProvider,db, analytics };

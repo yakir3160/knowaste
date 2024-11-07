@@ -6,7 +6,6 @@ import Register from '../Forms/Register/Register';
 const Auth = () => {
     const location = useLocation();
     const showRegister = location.state?.showRegister || false;
-
     return showRegister ? <Register /> : <Login />;
 };
 

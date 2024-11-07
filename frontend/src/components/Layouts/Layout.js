@@ -1,26 +1,25 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "../Menus/Navbar/Navbar";
+import Navbar from "../Menus/Website/Navbar";
 import Footer from "./Footer";
-import Sidebar from "../Menus/Sidebar/Sidebar";
+import AdminMenu from "../Menus/Admin/AdminMenu";
 
 const Layout = ({ children, pageType }) => {
     const [isOpen, setIsOpen] = useState(true);
     const isAdminPanel = pageType === 'admin-panel';
 
-    // Define main content class based on the admin panel state
     const mainContentClass = isAdminPanel ? '' : 'pt-[150px] px-4 sm:px-6 lg:px-8';
 
-    const sidebarPadding = isAdminPanel && isOpen ? 'pl-72' : 'pl-20';
+    const sidebarPadding = isOpen ? 'pl-0 md:pl-[300px] lg:pr-10' : 'pl-0 md:pl-[100px] lg:pr-10';
 
     return (
         <div className="min-h-screen flex flex-col">
             {isAdminPanel ? (
-                <Sidebar isOpen={isOpen}  setSidebarOpen={setIsOpen} />
+                <AdminMenu isOpen={isOpen} setIsOpen={setIsOpen} />
             ) : (
                 <Navbar />
             )}
-            <main className={`flex-1 flex flex-col items-center w-full ${mainContentClass} ${isAdminPanel ? sidebarPadding : ''}`}>
+            <main className={`flex-1 flex flex-col  h-[100svh] items-center w-full ${mainContentClass} ${isAdminPanel ? `${sidebarPadding} mb-20` : ''}`}>
                 {children}
                 <Outlet />
             </main>

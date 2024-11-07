@@ -7,6 +7,7 @@ import Card from "../Common/Card/Card";
 import Button from "../Common/Button/Button";
 import GlobalField from "../Common/inputs/GlobalField";
 import {REQUIRED_MSG} from "../../constants/Constants";
+import {SendHorizontal} from "lucide-react";
 
 const ContactForm = () => {
     const [submitted, setSubmitted] = useState(false);
@@ -41,33 +42,45 @@ const ContactForm = () => {
                                 resetForm();
                             }}
                         >
-                            {({ errors, touched }) => (
+                            {({isSubmitting, values}) => (
                                 <Form noValidate>
                                     <GlobalField
                                         name="firstName"
-                                        legend="First Name"
+                                        label="First Name"
                                     />
                                     <GlobalField
                                         name="lastName"
-                                        legend="Last Name"
+                                        label="Last Name"
                                     />
                                     <GlobalField
                                         name="email"
                                         type="email"
-                                        legend="Email Address"
+                                        label="Email Address"
                                     />
                                     <GlobalField
                                         name="message"
-                                        as="textarea"
-                                        legend="Message"
+                                        type="textarea"
+                                        label="Message"
                                         style={{justifyContent: 'start'}}
                                     />
+
                                     <div
                                         className="flex justify-center items-center h-full">
-                                        <Button className="text-titles  w-full h-16" type="submit ">
-                                            Submit
+                                        <Button
+                                            className="text-titles w-full h-14 flex justify-center items-center "
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                        >
+                                            {isSubmitting ? (
+                                                <>
+                                                    Submitting...
+                                                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles ml-3"></div>
+                                                </>
+                                            ) : (
+                                                "Send "
+                                            )}
+                                            <SendHorizontal size={16}  className={`ml-2`}/>
                                         </Button>
-
                                     </div>
 
                                 </Form>

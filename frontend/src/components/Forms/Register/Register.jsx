@@ -1,55 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Formik, Form } from 'formik';
-import { toast, ToastContainer } from 'react-toastify';
+import {ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RegisterForm from './RegisterForm';
 import PasswordRequirements from './PasswordRequirements';
-import { validationSchema } from './ValidationSchema';
-import { fetchCities } from './RegisterUtils';
+import { registerSchema } from './RegisterSchema';
 import Card from '../../Common/Card/Card';
-import Button from "../../Common/Button/Button";
+import {useCities} from "./Hooks/useCities";
+import {usePasswordStatus} from "./Hooks/usePasswordStatus";
+import {useAuthContext} from "../../../contexts/AuthContext";
 
 const Register = () => {
-    const [cities, setCities] = useState(['Select a city']);
-    const [passwordStatus, setPasswordStatus] = useState({
-        length: false,
-        uppercase: false,
-        lowercase: false,
-        number: false,
-        specialChar: false,
-    });
+    const { cities, isLoading } = useCities();
+    const { register } = useAuthContext();
+    const { passwordStatus, validatePassword } = usePasswordStatus();
 
-
-    fetchCities(setCities);
-
-    const handleSubmit = (values, { setSubmitting, resetForm }) => {
-        setTimeout(() => {
-            const userInfo = `
-                Business Name: ${values.businessName}
-                Contact Name: ${values.contactName}
-                Phone: ${values.phone}
-                Address: ${values.address}
-                ZIP: ${values.zipCode}
-                City: ${values.city}
-                Account Type: ${values.accountType}
-                Email: ${values.email}
-            `;
-            toast.success(userInfo, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            resetForm();
-            setSubmitting(false);
-        }, 1000);
-    };
+    if (isLoading) {
+        return (
+            <Card className="max-w-7xl min-w-[360px] mx-auto py-8 px-4">
+                <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+            </Card>
+        );
+    }
 
     return (
         <>
-            <ToastContainer/>
             <Card className="max-w-7xl min-w-[360px] mx-auto py-8 px-4">
                 <h3 className="title text-4xl text-titles mb-8">Let's create an account</h3>
                 <Formik
@@ -65,15 +42,15 @@ const Register = () => {
                         password: '',
                         repeatPassword: '',
                     }}
-                    validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
+                    validationSchema={registerSchema}
+                    onSubmit={register}
                 >
                     {({isSubmitting, handleChange}) => (
                         <Form className="w-full" noValidate>
                             <RegisterForm
                                 cities={cities}
                                 handleChange={handleChange}
-                                setPasswordStatus={setPasswordStatus}
+                                validatePassword={validatePassword}
                                 isSubmitting={isSubmitting}
                             />
                         </Form>
