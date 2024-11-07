@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { Formik, Form } from "formik";
 import {Pencil,Save,CheckCircle} from 'lucide-react'
-import Card from "../Common/Card/Card";
-import Button from "../Common/Button/Button";
-import GlobalField from "../Common/inputs/GlobalField";
-import {useUserContext} from "../../contexts/UserContext";
+import Card from "../../../Common/Card/Card";
+import Button from "../../../Common/Button/Button";
+import GlobalField from "../../../Common/inputs/GlobalField";
+import {useUserContext} from "../../../../contexts/UserContext";
 
 const AccountInfoForm = () => {
     const [editing,setEditing] = useState(false)
@@ -30,6 +30,7 @@ const AccountInfoForm = () => {
                     address: user?.address,
                     city: user?.city,
                     zipCode: user?.zipCode,
+                    kosher: user?.kosher,
                 }}
                 onSubmit={async (values ,{setSubmitting,resetForm}) => {
                     await updateUserDetails(values)
@@ -99,15 +100,25 @@ const AccountInfoForm = () => {
                             disabled={!editing}
                             onChange={handleChange}
                         />
+                        <GlobalField
+                            name="kosher"
+                            type="select"
+                            label={"Kosher"}
+                            value={values.kosher}
+                            disabled={!editing}
+                            options={[
+                                { value: true, label: 'Yes' },
+                                { value: false, label: 'No' }
+                            ]}
+                        />
 
-                        <div className={`flex gap-5 justify-center align-items-center`}>
-                            <Button className={`h-fit border-2 border-secondary self-center flex flex-row`} type={"button"} onClick={() => {setEditing(!editing)}}>
+                            <Button className={`h-fit text-center  border-2 border-secondary  flex flex-row justify-center`} type={"button"} onClick={() => {setEditing(!editing)}}>
                                 Edit
                                 <Pencil className={`size-5 ml-2`}/>
                             </Button>
                             {loading ? (
                                 <Button
-                                    className="h-fit border-2 border-lime self-center flex flex-row transform transition-all duration-300"
+                                    className="h-fit border-2 border-lime flex flex-row justify-center transform transition-all duration-300"
                                     type="submit"
                                 >
                                     Saving...
@@ -115,7 +126,7 @@ const AccountInfoForm = () => {
                                 </Button>
                             ) : success ? (
                                 <Button
-                                    className="h-fit bg-green border-2 border-white  text-white self-center hover:text-white flex flex-row"
+                                    className="h-fit bg-green border-2 border-white  text-white  hover:text-white flex flex-row justify-center"
                                     type="submit"
                                     disabled={true}
                                 >
@@ -124,14 +135,14 @@ const AccountInfoForm = () => {
                                 </Button>
                             ) : (
                                 <Button
-                                    className="h-fit border-2 border-lime self-center flex flex-row"
+                                    className="h-fit border-2 border-lime self-center flex flex-row justify-center"
                                     type="submit"
                                 >
                                     Save
                                     <Save className={`size-5 ml-2`}/>
                                 </Button>
                             )}
-                        </div>
+
                         {error && (
                             <div className="text-md text-center text-errorRed h-fit">
                                 {error}

@@ -2,14 +2,14 @@ import React, {useEffect} from 'react';
 import { Formik, Form } from "formik";
 import * as Yup from 'yup';
 import { CheckCircle } from "lucide-react";
-import Card from "../Common/Card/Card";
-import Button from "../Common/Button/Button";
-import GlobalField from "../Common/inputs/GlobalField";
-import { usePasswordReset } from "../../Hooks/Auth/usePasswordReset";
-import PasswordRequirements from "./Register/PasswordRequirements";
-import { usePasswordStatus } from "./Register/Hooks/usePasswordStatus";
-import { passwordSchema, repeatPasswordSchema } from "../../schemas/passwordSchema";
-import { REQUIRED_MSG } from "../../constants/Constants";
+import Card from "../../../Common/Card/Card";
+import Button from "../../../Common/Button/Button";
+import GlobalField from "../../../Common/inputs/GlobalField";
+import { usePasswordReset } from "../../../../Hooks/Auth/usePasswordReset";
+import PasswordRequirements from "../../../Forms/Register/PasswordRequirements";
+import { usePasswordStatus } from "../../../Forms/Register/Hooks/usePasswordStatus";
+import { passwordSchema, repeatPasswordSchema } from "../../../../schemas/passwordSchema";
+import { REQUIRED_MSG } from "../../../../constants/Constants";
 
 const PasswordUpdateForm = () => {
     const { updatePasswordWithVerification, error, success, setSuccess } = usePasswordReset();

@@ -17,6 +17,7 @@ export const useRegister = () => {
                 city: values.city,
                 zipCode: values.zipCode,
                 accountType: values.accountType,
+                kosher: values.kosher,
                 email: values.email,
                 uid: userCredential.user.uid
             };

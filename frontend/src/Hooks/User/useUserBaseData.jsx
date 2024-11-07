@@ -21,6 +21,7 @@ export const useUserBaseData = () => {
                     if (userDoc.exists()) {
                         const safeUserData = {
                             accountType: userDoc.data().accountType,
+                            kosher: userDoc.data().kosher,
                             zipCode: userDoc.data().zipCode,
                             city: userDoc.data().city,
                             businessName: userDoc.data().businessName,
@@ -28,6 +29,7 @@ export const useUserBaseData = () => {
                             address: userDoc.data().address,
                             phone: userDoc.data().phone,
                             contactName: userDoc.data().contactName,
+                            
                         };
                         setUserBaseData(safeUserData);
                     } else {

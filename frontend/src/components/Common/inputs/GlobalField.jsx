@@ -10,6 +10,7 @@ const GlobalField = ({
                          placeholder,
                          options = [],
                          disabled = false,
+                         autoFocus = false,
                          ...props
                      }) => {
     const [field, meta] = useField(name);
@@ -85,6 +86,7 @@ const GlobalField = ({
                                     disabled={disabled}
                                     {...props}
                                     className={fieldClasses}
+                                    autoFocus={autoFocus}
                                 />
                             );
                         default:
@@ -97,6 +99,7 @@ const GlobalField = ({
                                         disabled={disabled}
                                         {...props}
                                         className={fieldClasses}
+                                        autoFocus={autoFocus}
                                     />
                                     {type === 'password' && !disabled && (
                                         <span

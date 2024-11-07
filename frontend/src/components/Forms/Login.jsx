@@ -77,6 +77,7 @@ const Login = () => {
                                         type="email"
                                         name="email"
                                         label="Email"
+                                        autoFocus={true}
                                     />
 
                                     <GlobalField

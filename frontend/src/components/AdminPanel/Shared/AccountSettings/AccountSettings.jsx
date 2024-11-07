@@ -1,7 +1,7 @@
 import React, { } from 'react';
 import AdminPanelContainer from "../../AdminPanelContainer";
-import AccountInfoForm from '../../../Forms/AccountInfoForm';
-import PasswordUpdateForm from '../../../Forms/PasswordUpdateForm';
+import AccountInfoForm from './AccountInfoForm';
+import PasswordUpdateForm from './PasswordUpdateForm';
 
 const AccountSettings = () => {
     return (

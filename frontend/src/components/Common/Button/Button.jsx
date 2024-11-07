@@ -21,6 +21,7 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
         return `
           button
           ${className} 
+          
           hover:text-buttons 
           ${!hasBgColor ? 'bg-secondary' : ''} 
           ${!hasHover ? 'hover:text-buttons hover:shadow-button-hover hover:scale-[0.97]' : ''} 

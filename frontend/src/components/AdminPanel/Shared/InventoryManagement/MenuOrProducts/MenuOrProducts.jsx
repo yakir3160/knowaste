@@ -23,7 +23,7 @@ const MenuOrProducts = () => {
     useEffect(() => {
         const fakeItems = isSupplier
             ? [
-                { id: 1, name: "Product 1", description: "High-quality product", category: "Main Courses", subCategory: "Meat", price: 89, ingredients: ["Beef", "Salt", "Pepper", "Olive Oil"] },
+                { id: 1, name: "Product 1", description: "High-quality product", category: "Main Courses", subCategory: "Meat", price: 89, ingredients: ["Beef", "Salt", "Pepper", "Olive Oil,Rosmari"] },
                 { id: 2, name: "Product 2", description: "Affordable product", category: "Drinks", price: 15, ingredients: ["Water", "Sugar", "Fruit Flavor Extract", "Ice"] },
                 { id: 3, name: "Product 3", description: "Eco-friendly product", category: "Appetizers", price: 35, ingredients: ["Organic Lettuce", "Cherry Tomatoes", "Cucumber", "Vinaigrette"] },
                 { id: 4, name: "Product 4", description: "Organic fresh vegetables", category: "Main Courses", subCategory: "Vegetarian", price: 65, ingredients: ["Zucchini", "Eggplant", "Bell Peppers", "Olives"] },
@@ -59,13 +59,13 @@ const MenuOrProducts = () => {
                 { id: 12, name: "Minestrone Soup", description: "Hearty vegetable soup", category: "Main Courses", subCategory: "Soups", price: 42, ingredients: ["Tomatoes", "Carrots", "Celery", "Beans"] },
                 { id: 13, name: "Fruit Salad", description: "Mixed seasonal fruits", category: "Desserts", price: 32, ingredients: ["Seasonal Fruits", "Mint", "Lemon Juice"] },
                 { id: 14, name: "Iced Tea", description: "Refreshing brewed tea", category: "Drinks", price: 13, ingredients: ["Tea", "Ice", "Lemon", "Sugar"] },
-                { id: 15, name: "Grilled Salmon", description: "Fresh salmon fillet with herbs", category: "Main Courses", subCategory: "Seafood", price: 95, ingredients: ["Salmon", "Lemon", "Dill", "Butter"] },
+                { id: 15, name: "Grilled Salmon", description: "Fresh salmon fillet with herbs", category: "Main Courses", subCategory: "Seafood", price: 95, ingredients: ["Salmon", "Lemon", "Dill", "Butter" ,"Musterd"] },
                 { id: 16, name: "Mushroom Risotto", description: "Creamy Italian rice with mushrooms", category: "Main Courses", subCategory: "Vegetarian", price: 68, ingredients: ["Arborio Rice", "Mushrooms", "Parmesan", "White Wine"] },
                 { id: 17, name: "Greek Salad", description: "Fresh Mediterranean salad", category: "Appetizers", price: 48, ingredients: ["Tomatoes", "Cucumber", "Feta", "Olives"] },
                 { id: 18, name: "Espresso Martini", description: "Coffee-based cocktail", category: "Drinks", price: 42, ingredients: ["Vodka", "Coffee Liqueur", "Espresso"] },
                 { id: 19, name: "Apple Pie", description: "Homemade classic dessert", category: "Desserts", price: 36, ingredients: ["Apples", "Cinnamon", "Butter", "Flour"] },
                 { id: 20, name: "Caprese Salad", description: "Fresh mozzarella and tomatoes", category: "Appetizers", price: 52, ingredients: ["Mozzarella", "Tomatoes", "Basil", "Balsamic"] },
-                { id: 21, name: "Beef Lasagna", description: "Layered pasta with meat sauce", category: "Main Courses", subCategory: "Pasta", price: 72, ingredients: ["Pasta Sheets", "Ground Beef", "Tomato Sauce", "Cheese"] },
+                { id: 21, name: "Beef Lasagna", description: "Layered pasta with meat sauce", category: "Main Courses", subCategory: "Pasta", price: 72, ingredients: ["Pasta Sheets", "Ground Beef", "Tomato Sauce", "Cheese","Basil"] },
                 { id: 22, name: "Mojito", description: "Classic Cuban cocktail", category: "Drinks", price: 38, ingredients: ["Rum", "Mint", "Lime", "Soda"] },
                 { id: 23, name: "Crème Brûlée", description: "Classic French dessert", category: "Desserts", price: 45, ingredients: ["Cream", "Vanilla", "Sugar", "Eggs"] },
                 { id: 24, name: "Seafood Paella", description: "Spanish rice dish with seafood", category: "Main Courses", subCategory: "Seafood", price: 110, ingredients: ["Rice", "Mixed Seafood", "Saffron", "bell pepper","anshovis"] },
@@ -76,7 +76,7 @@ const MenuOrProducts = () => {
     }, [isSupplier]);
 
     return (
-        <Card className={`col-span-2 flex justify-center`}>
+        <Card className={`col-span-2 flex justify-center h-fit`}>
             <h3 className="text-titles text-3xl p-3 text-center">{title}</h3>
             <Button
                 className="w-fit p-4 m-6 border-2 border-lime flex flex-row justify-center items-center font-semibold text-lg"

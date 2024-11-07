@@ -16,13 +16,13 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
     };
 
     return (
-        <div className="rounded-lg p-6 mb-4 border-2 border-secondary">
+        <div className="rounded-lg p-3 mb-4 border-2 border-secondary ">
             <Formik
                 initialValues={item}
                 onSubmit={(values) => handleEditToggle(values)}
             >
                 {({ values }) => (
-                    <Form>
+                    <Form className={`pt-3`}>
                         <div className="flex justify-between items-center mb-2">
                             <GlobalField
                                 label={'Name'}
@@ -32,10 +32,10 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
                                 disabled={!isEditing}
                             />
                             <GlobalField
-                                label={'Price'}
+                                label={'Price (₪)'}
                                 type="number"
                                 name="price"
-                                className="text-lg font-medium text-primary"
+                                className="text-lg font-medium text-primary "
                                 disabled={!isEditing}
                             />
                         </div>
@@ -54,17 +54,40 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
                         </Button>
                         {showIngredients && (
                             <div
-                                className={`mt-4 overflow-hidden transition-all duration-500 ease-in-out ${showIngredients ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
+                                className={`mt-4 overflow-y-scroll transition-all duration-500 ease-in-out ${showIngredients ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
                             >
                                 <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
-                                {item.ingredients.map((ingredient, index) => (
-                                    <GlobalField
-                                        key={index}
-                                        type="text"
-                                        name={`ingredients[${index}]`}
-                                        className="text-buttons text-sm"
-                                        disabled={!isEditing}
-                                    />
+                                {item.ingredients.map((ingredient) => (
+                                    <div className={`grid grid-cols-5 gap-3`}>
+                                        <div className="text-buttons text-sm col-span-3">
+                                            <GlobalField
+                                                label={'Name'}
+                                                key={ingredient.id}
+                                                value={'ingredient name'}
+                                                type="text"
+                                                name={`ingredients[${ingredient.id}]`}
+                                                className="text-buttons text-sm "
+                                                disabled={!isEditing}
+                                            />
+                                        </div>
+                                        <div className="text-buttons text-sm col-span-1">
+                                            <GlobalField
+                                                label={'Amount (g)'}
+                                                key={ingredient.id}
+                                                value={'ingredient amount'}
+                                                type="number"
+                                                name={`ingredientAmounts[${ingredient.id}]`}
+                                                className="text-buttons text-sm w-25 "
+                                                disabled={!isEditing}
+                                            />
+
+                                        </div>
+                                        <div className="text-sm flex justify-end items-center col-span-1">
+                                            <button className={` text-errorRed ${!isEditing ? 'text-errorLightRed' : ''}`} disabled={!isEditing}>
+                                                <CircleX size={20}/>
+                                            </button>
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
                         )}
@@ -72,14 +95,14 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                             <Button
                                 type="submit"
-                                className="flex flex-row justify-center px-4 py-2 text-sm font-medium text-blue-600  border border-blue-600 rounded-md hover:bg-blue-50 transition-colors"
+                                className="flex flex-row justify-center px-4 py-2 text-sm font-medium border-2 border-lime rounded-md "
                             >
                                 {isEditing ? 'Save' : 'Update'}
                                 {isEditing ? <Save size={20} className="ml-2" /> : <Pencil size={20} className="ml-2" />}
                             </Button>
                             <Button
                                 onClick={() => onRemove(item)}
-                                className="flex flex-row justify-center px-4 py-2 text-sm font-medium text-errorRed border border-errorRed rounded-md hover:bg-errorLightRed hover:text-errorRed transition-colors"
+                                className="flex flex-row justify-center px-4 py-2 text-sm font-medium text-errorRed border-2 rounded-md hover:bg-errorLightRed hover:text-errorRed transition-colors"
                             >
                                 Remove
                                 <CircleX size={20} className="ml-2" />

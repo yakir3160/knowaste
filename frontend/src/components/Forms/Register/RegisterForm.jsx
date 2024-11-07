@@ -5,11 +5,12 @@ import Button from "../../Common/Button/Button";
 
 const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) => {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <GlobalField
                 name="businessName"
                 label="Business Name"
                 type="text"
+                autoFocus={true}
             />
             <GlobalField
                 name="contactName"
@@ -53,6 +54,16 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                 ]}
             />
             <GlobalField
+                name="kosher"
+                type="select"
+                label={"Kosher"}
+                options={[
+                    {value:'' ,label: 'Select Kosher' },
+                    { value: true, label: 'Yes' },
+                    { value: false, label: 'No' }
+                ]}
+            />
+            <GlobalField
                 name="password"
                 label="Password"
                 type="password"
@@ -66,7 +77,7 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                 label="Password confirmation"
                 type="password"
             />
-            <div className="col-span-1 sm:col-span-2 lg:col-span-2 flex justify-center items-center h-full">
+            <div className="col-span-1 sm:col-span-2  md:col-span-1 lg:col-span-1 flex justify-center items-center h-full">
                 <Button
                     className="text-titles w-full h-14 flex justify-center items-center"
                     type="submit"

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import {ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RegisterForm from './RegisterForm';
 import PasswordRequirements from './PasswordRequirements';

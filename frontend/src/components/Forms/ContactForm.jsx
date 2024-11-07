@@ -47,6 +47,7 @@ const ContactForm = () => {
                                     <GlobalField
                                         name="firstName"
                                         label="First Name"
+                                        autoFocus={true}
                                     />
                                     <GlobalField
                                         name="lastName"

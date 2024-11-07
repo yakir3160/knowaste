@@ -9,7 +9,7 @@ const ProtectedRoute = ({ element, allowGuest }) => {
         return <Navigate to="/auth" />;
     }
 
-    console.log('Rendering Protected Route'); // Log when rendering the protected route
+    console.log('Rendering Protected Route'); 
     return element;
 };
 

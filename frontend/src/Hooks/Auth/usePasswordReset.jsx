@@ -22,7 +22,6 @@ export const usePasswordReset = () => {
     };
     const handlePasswordReset = async (values,actionCode) => {
         try {
-            console.log(actionCode);
             await confirmPasswordReset(auth,actionCode ,values.password);
             setSuccess(true);
             navigate('/auth', { state: { message: 'Password reset successful! Please log in with your new password.', type: 'success' } });

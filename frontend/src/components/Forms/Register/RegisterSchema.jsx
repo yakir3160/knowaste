@@ -13,6 +13,7 @@ export const registerSchema = Yup.object().shape({
     city: Yup.string().required(REQUIRED_MSG),
     zipCode: Yup.string().optional(),
     accountType: Yup.string().required(REQUIRED_MSG),
+    kosher: Yup.boolean().required(REQUIRED_MSG),
     email: Yup.string()
         .email('Invalid email address')
         .required(REQUIRED_MSG),

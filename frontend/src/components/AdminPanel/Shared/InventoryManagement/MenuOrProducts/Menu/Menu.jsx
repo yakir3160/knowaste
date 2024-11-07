@@ -12,6 +12,7 @@ const Menu = ({ items }) => {
     const filteredItems = selectedCategory === 'Main Courses'
         ? mainCourses.filter(item => item.subCategory === selectedSubCategory)
         : items.filter(item => item.category === selectedCategory);
+    console.table(filteredItems);
 
     const handleUpdate = (item) => {
         console.log(`${item.name} Updated`);
@@ -27,8 +28,8 @@ const Menu = ({ items }) => {
                 {categories.map(category => (
                     <button
                         key={category}
-                        className={`p-3 rounded-t-sm font-semibold transform transition-all duration-300 
-                         ${selectedCategory === category ? 'bg-base border-b-2 border-lime text-buttons scale-110' : 'border-b-2 border-[transparent]'}`}
+                        className={`px-4  py-4 rounded-t-sm font-semibold transform transition-all duration-300 
+                         ${selectedCategory === category ? 'bg-base border-b-2 border-lime text-buttons ' : 'border-b-2 border-[transparent]'}`}
                         onClick={() => setSelectedCategory(category)}
                     >
                         {category}
@@ -42,7 +43,7 @@ const Menu = ({ items }) => {
                         <button
                             key={subCategory}
                             className={`p-3 rounded-t-sm text-buttons text-light transform transition-all duration-300 ease-in-out 
-                            ${selectedSubCategory === subCategory ? 'bg-white border-b-2 border-lime text-buttons scale-110' : 'border-b-2 border-[transparent]'}`}
+                            ${selectedSubCategory === subCategory ? 'bg-white border-b-2 border-lime text-buttons' : 'border-b-2 border-[transparent]'}`}
                             onClick={() => setSelectedSubCategory(subCategory)}
                         >
                             {subCategory}
@@ -52,9 +53,9 @@ const Menu = ({ items }) => {
             )}
 
             <div className="w-full gap-2 grid grid-cols-1">
-                {filteredItems.map((item, index) => (
+                {filteredItems.map((item) => (
                     <MenuItem
-                        key={index}
+                        key={item.id}
                         item={item}
                         onUpdate={handleUpdate}
                         onRemove={handleRemove}

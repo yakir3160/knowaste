@@ -54,7 +54,6 @@ const App = () => {
                                 {/* נתיב ההתחברות / הרשמה שמוגבל למשתמשים לא מחוברים בלבד */}
                                 <Route element={<GuestRoute/>}>
                                     <Route path="auth" element={<Auth />} />
-                                    <Route path={'auth/verification-code'} element={<VerificationCodeInput/>} />
                                     <Route path={'/auth/password-reset-form'} element={<PasswordResetForm />} />
                                 </Route>
                             </Route>
