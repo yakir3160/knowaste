@@ -1,12 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import { Formik, Form } from "formik";
+import * as Yup from 'yup';
 import {Pencil,Save,CheckCircle} from 'lucide-react'
 import Card from "../../../Common/Card/Card";
 import Button from "../../../Common/Button/Button";
 import GlobalField from "../../../Common/inputs/GlobalField";
 import {useUserContext} from "../../../../contexts/UserContext";
+import {useCities} from "../../../Forms/Register/Hooks/useCities";
+
+
+const validationSchema = Yup.object().shape({
+    businessName: Yup.string().required('Required'),
+    contactName: Yup.string().required('Required'),
+    phone: Yup.string().required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+    address: Yup.string().required('Required'),
+    city: Yup.string().required('Required'),
+    zipCode: Yup.string().required('Required'),
+    kosher: Yup.boolean().required('Required'),
+});
 
 const AccountInfoForm = () => {
+    const {cities} = useCities();
     const [editing,setEditing] = useState(false)
     const { userBaseData: user ,updateUserDetails,error,loading,success,setSuccess} = useUserContext();
     useEffect(() => {
@@ -32,8 +47,9 @@ const AccountInfoForm = () => {
                     zipCode: user?.zipCode,
                     kosher: user?.kosher,
                 }}
+                validationSchema={validationSchema}
                 onSubmit={async (values ,{setSubmitting,resetForm}) => {
-                    await updateUserDetails(values)
+                    editing && await updateUserDetails(values)
                     setEditing(false)
                     setSubmitting(false)
                     resetForm({ values });
@@ -87,10 +103,14 @@ const AccountInfoForm = () => {
                         <GlobalField
                             name="city"
                             label="City"
-                            type="text"
+                            type="select"
                             value={values.city}
                             disabled={!editing}
-                            onChange={handleChange}
+                            options={
+                            cities.map((city) => ({
+                                value: city,
+                                label: city
+                            }))}
                         />
                         <GlobalField
                             name="zipCode"
