@@ -132,13 +132,13 @@ const AccountInfoForm = () => {
                             ]}
                         />
 
-                            <Button className={`h-fit text-center  border-2 border-secondary  flex flex-row justify-center`} type={"button"} onClick={() => {setEditing(!editing)}}>
+                            <Button className={`h-fit text-center  border border-secondary  flex flex-row justify-center`} type={"button"} onClick={() => {setEditing(!editing)}}>
                                 Edit
                                 <Pencil className={`size-5 ml-2`}/>
                             </Button>
                             {loading ? (
                                 <Button
-                                    className="h-fit border-2 border-lime flex flex-row justify-center transform transition-all duration-300"
+                                    className="h-fit border border-lime flex flex-row justify-center transform transition-all duration-300"
                                     type="submit"
                                 >
                                     Saving...
@@ -146,7 +146,7 @@ const AccountInfoForm = () => {
                                 </Button>
                             ) : success ? (
                                 <Button
-                                    className="h-fit bg-green border-2 border-white  text-white  hover:text-white flex flex-row justify-center"
+                                    className="h-fit bg-green border border-white  text-white  hover:text-white flex flex-row justify-center"
                                     type="submit"
                                     disabled={true}
                                 >
@@ -155,7 +155,7 @@ const AccountInfoForm = () => {
                                 </Button>
                             ) : (
                                 <Button
-                                    className="h-fit border-2 border-lime self-center flex flex-row justify-center"
+                                    className="h-fit border border-lime self-center flex flex-row justify-center"
                                     type="submit"
                                 >
                                     Save

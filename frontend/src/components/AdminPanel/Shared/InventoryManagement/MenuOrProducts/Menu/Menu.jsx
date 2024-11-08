@@ -23,7 +23,7 @@ const Menu = ({ items }) => {
     };
 
     return (
-        <div className="flex flex-col w-full justify-center items-center">
+        <div className="flex flex-col h-fit w-full justify-center items-center">
             <div className="mb-6 bg-secondary lg:w-fit self-center rounded-t-sm   grid grid-cols-2 md:grid-cols-4">
                 {categories.map(category => (
                     <button

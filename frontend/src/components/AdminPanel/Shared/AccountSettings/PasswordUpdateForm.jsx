@@ -83,14 +83,14 @@ const PasswordUpdateForm = () => {
                             <div className="mt-6">
                                 {isSubmitting ? (
                                     <Button
-                                        className="w-full border-2 border-lime flex flex-row justify-center transform transition-all duration-300"
+                                        className="w-full border border-lime flex flex-row justify-center transform transition-all duration-300"
                                     >
                                         Updating Password...
                                         <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles ml-3"></div>
                                     </Button>
                                 ) : success ? (
                                     <Button
-                                        className="w-full bg-green border-2 border-white text-white flex flex-row justify-center hover:text-white"
+                                        className="w-full bg-green border border-white text-white flex flex-row justify-center hover:text-white"
                                         type="submit"
                                         disabled
                                     >
@@ -99,7 +99,7 @@ const PasswordUpdateForm = () => {
                                     </Button>
                                 ) : (
                                     <Button
-                                        className="w-full border-2 border-lime"
+                                        className="w-full border border-lime"
                                         type="submit"
                                     >
                                         Change Password
