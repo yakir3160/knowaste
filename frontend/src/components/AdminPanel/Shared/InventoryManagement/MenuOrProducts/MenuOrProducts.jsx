@@ -2,12 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Plus } from "lucide-react";
 import Card from "../../../../Common/Card/Card";
 import Button from "../../../../Common/Button/Button";
+import AddMenuItem   from "./Menu/AddMenuItem";
 import { useUserContext } from "../../../../../contexts/UserContext";
 import Menu from "./Menu/Menu";
 
 const MenuOrProducts = () => {
     const [items, setItems] = useState([]);
-    const { userBaseData: user } = useUserContext();
+    const {userBaseData: user} = useUserContext();
+    const [isAdding, setIsAdding] = useState(false);
+    const handleAddClick = () => {
+        setIsAdding(true);
+    };
+
     const accountType = user?.accountType;
 
     const isSupplier = accountType === 'supplier';
@@ -23,26 +29,173 @@ const MenuOrProducts = () => {
     useEffect(() => {
         const fakeItems = isSupplier
             ? [
-                { id: 1, name: "Product 1", description: "High-quality product", category: "Main Courses", subCategory: "Meat", price: 89, ingredients: ["Beef", "Salt", "Pepper", "Olive Oil,Rosmari"] },
-                { id: 2, name: "Product 2", description: "Affordable product", category: "Drinks", price: 15, ingredients: ["Water", "Sugar", "Fruit Flavor Extract", "Ice"] },
-                { id: 3, name: "Product 3", description: "Eco-friendly product", category: "Appetizers", price: 35, ingredients: ["Organic Lettuce", "Cherry Tomatoes", "Cucumber", "Vinaigrette"] },
-                { id: 4, name: "Product 4", description: "Organic fresh vegetables", category: "Main Courses", subCategory: "Vegetarian", price: 65, ingredients: ["Zucchini", "Eggplant", "Bell Peppers", "Olives"] },
-                { id: 5, name: "Product 5", description: "Gluten-free bread", category: "Appetizers", price: 28, ingredients: ["Rice Flour", "Water", "Yeast", "Olive Oil"] },
-                { id: 6, name: "Product 6", description: "Artisan cheese", category: "Main Courses", subCategory: "Dairy", price: 75, ingredients: ["Cow's Milk", "Cultures", "Salt"] },
-                { id: 7, name: "Product 7", description: "Handmade pasta", category: "Main Courses", subCategory: "Pasta", price: 68, ingredients: ["Durum Wheat Flour", "Water", "Eggs"] },
-                { id: 8, name: "Product 8", description: "Fresh herbs", category: "Appetizers", price: 12, ingredients: ["Basil", "Parsley", "Mint"] },
-                { id: 9, name: "Product 9", description: "Imported high-quality wine", category: "Drinks", price: 120, ingredients: ["Grapes", "Yeast", "Sugar"] },
-                { id: 10, name: "Product 10", description: "Locally crafted beer", category: "Drinks", price: 32, ingredients: ["Malt", "Hops", "Water", "Yeast"] },
-                { id: 11, name: "Product 11", description: "Premium olive oil", category: "Condiments", price: 45, ingredients: ["Extra Virgin Olive Oil"] },
-                { id: 12, name: "Product 12", description: "Aged balsamic vinegar", category: "Condiments", price: 38, ingredients: ["Balsamic Vinegar"] },
-                { id: 13, name: "Product 13", description: "Fresh seafood mix", category: "Main Courses", subCategory: "Seafood", price: 95, ingredients: ["Shrimp", "Mussels", "Squid", "Fish"] },
-                { id: 14, name: "Product 14", description: "Organic honey", category: "Condiments", price: 25, ingredients: ["Pure Honey"] },
-                { id: 15, name: "Product 15", description: "Specialty coffee beans", category: "Drinks", price: 42, ingredients: ["Arabica Coffee Beans"] },
-                { id: 16, name: "Product 16", description: "Artisanal chocolates", category: "Desserts", price: 55, ingredients: ["Cocoa", "Sugar", "Cocoa Butter"] },
-                { id: 17, name: "Product 17", description: "Gourmet spice blend", category: "Condiments", price: 28, ingredients: ["Mixed Spices", "Herbs"] },
-                { id: 18, name: "Product 18", description: "Premium rice", category: "Main Courses", subCategory: "Grains", price: 32, ingredients: ["Basmati Rice"] },
-                { id: 19, name: "Product 19", description: "Fresh mushroom mix", category: "Main Courses", subCategory: "Vegetarian", price: 48, ingredients: ["Portobello", "Shiitake", "Button Mushrooms"] },
-                { id: 20, name: "Product 20", description: "Specialty tea blend", category: "Drinks", price: 36, ingredients: ["Green Tea", "Herbs", "Dried Fruits"] }
+                {
+                    id: 1,
+                    name: "Product 1",
+                    description: "High-quality product",
+                    category: "Main Courses",
+                    subCategory: "Meat",
+                    price: 89,
+                    ingredients: ["Beef", "Salt", "Pepper", "Olive Oil,Rosmari"]
+                },
+                {
+                    id: 2,
+                    name: "Product 2",
+                    description: "Affordable product",
+                    category: "Drinks",
+                    price: 15,
+                    ingredients: ["Water", "Sugar", "Fruit Flavor Extract", "Ice"]
+                },
+                {
+                    id: 3,
+                    name: "Product 3",
+                    description: "Eco-friendly product",
+                    category: "Appetizers",
+                    price: 35,
+                    ingredients: ["Organic Lettuce", "Cherry Tomatoes", "Cucumber", "Vinaigrette"]
+                },
+                {
+                    id: 4,
+                    name: "Product 4",
+                    description: "Organic fresh vegetables",
+                    category: "Main Courses",
+                    subCategory: "Vegetarian",
+                    price: 65,
+                    ingredients: ["Zucchini", "Eggplant", "Bell Peppers", "Olives"]
+                },
+                {
+                    id: 5,
+                    name: "Product 5",
+                    description: "Gluten-free bread",
+                    category: "Appetizers",
+                    price: 28,
+                    ingredients: ["Rice Flour", "Water", "Yeast", "Olive Oil"]
+                },
+                {
+                    id: 6,
+                    name: "Product 6",
+                    description: "Artisan cheese",
+                    category: "Main Courses",
+                    subCategory: "Dairy",
+                    price: 75,
+                    ingredients: ["Cow's Milk", "Cultures", "Salt"]
+                },
+                {
+                    id: 7,
+                    name: "Product 7",
+                    description: "Handmade pasta",
+                    category: "Main Courses",
+                    subCategory: "Pasta",
+                    price: 68,
+                    ingredients: ["Durum Wheat Flour", "Water", "Eggs"]
+                },
+                {
+                    id: 8,
+                    name: "Product 8",
+                    description: "Fresh herbs",
+                    category: "Appetizers",
+                    price: 12,
+                    ingredients: ["Basil", "Parsley", "Mint"]
+                },
+                {
+                    id: 9,
+                    name: "Product 9",
+                    description: "Imported high-quality wine",
+                    category: "Drinks",
+                    price: 120,
+                    ingredients: ["Grapes", "Yeast", "Sugar"]
+                },
+                {
+                    id: 10,
+                    name: "Product 10",
+                    description: "Locally crafted beer",
+                    category: "Drinks",
+                    price: 32,
+                    ingredients: ["Malt", "Hops", "Water", "Yeast"]
+                },
+                {
+                    id: 11,
+                    name: "Product 11",
+                    description: "Premium olive oil",
+                    category: "Condiments",
+                    price: 45,
+                    ingredients: ["Extra Virgin Olive Oil"]
+                },
+                {
+                    id: 12,
+                    name: "Product 12",
+                    description: "Aged balsamic vinegar",
+                    category: "Condiments",
+                    price: 38,
+                    ingredients: ["Balsamic Vinegar"]
+                },
+                {
+                    id: 13,
+                    name: "Product 13",
+                    description: "Fresh seafood mix",
+                    category: "Main Courses",
+                    subCategory: "Seafood",
+                    price: 95,
+                    ingredients: ["Shrimp", "Mussels", "Squid", "Fish"]
+                },
+                {
+                    id: 14,
+                    name: "Product 14",
+                    description: "Organic honey",
+                    category: "Condiments",
+                    price: 25,
+                    ingredients: ["Pure Honey"]
+                },
+                {
+                    id: 15,
+                    name: "Product 15",
+                    description: "Specialty coffee beans",
+                    category: "Drinks",
+                    price: 42,
+                    ingredients: ["Arabica Coffee Beans"]
+                },
+                {
+                    id: 16,
+                    name: "Product 16",
+                    description: "Artisanal chocolates",
+                    category: "Desserts",
+                    price: 55,
+                    ingredients: ["Cocoa", "Sugar", "Cocoa Butter"]
+                },
+                {
+                    id: 17,
+                    name: "Product 17",
+                    description: "Gourmet spice blend",
+                    category: "Condiments",
+                    price: 28,
+                    ingredients: ["Mixed Spices", "Herbs"]
+                },
+                {
+                    id: 18,
+                    name: "Product 18",
+                    description: "Premium rice",
+                    category: "Main Courses",
+                    subCategory: "Grains",
+                    price: 32,
+                    ingredients: ["Basmati Rice"]
+                },
+                {
+                    id: 19,
+                    name: "Product 19",
+                    description: "Fresh mushroom mix",
+                    category: "Main Courses",
+                    subCategory: "Vegetarian",
+                    price: 48,
+                    ingredients: ["Portobello", "Shiitake", "Button Mushrooms"]
+                },
+                {
+                    id: 20,
+                    name: "Product 20",
+                    description: "Specialty tea blend",
+                    category: "Drinks",
+                    price: 36,
+                    ingredients: ["Green Tea", "Herbs", "Dried Fruits"]
+                }
             ]
             : [
                 {
@@ -586,13 +739,21 @@ const MenuOrProducts = () => {
             <h3 className="text-titles text-3xl p-3 text-center">{title}</h3>
             <Button
                 className="w-fit p-4 m-6 border-2 border-lime flex flex-row justify-center items-center font-semibold text-lg"
-                onClick={() => console.log(`Add ${isSupplier ? 'product' : 'menu item'}`)}
+                onClick={handleAddClick} // Show the AddMenuItem component
             >
                 {addButtonLabel}
-                <Plus size={22} />
+                <Plus size={22}/>
             </Button>
+
+            {isAdding && (
+                <AddMenuItem onAdd={(newItem) => {
+                    console.log(newItem);
+                    setIsAdding(false);
+                }}/>
+            )}
+
             {items.length > 0 ? (
-                <Menu items={items} title={title} />
+                <Menu items={items} title={title}/>
             ) : (
                 <Card className="text-center text-3xl gap-3 flex flex-col justify-center items-center">
                     <p>{emptyMessage}</p>
@@ -601,6 +762,6 @@ const MenuOrProducts = () => {
             )}
         </Card>
     );
-};
+}
 
 export default MenuOrProducts;
