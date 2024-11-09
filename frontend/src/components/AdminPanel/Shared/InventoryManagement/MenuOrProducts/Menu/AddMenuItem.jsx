@@ -23,6 +23,14 @@ const AddMenuItem = ({ onAdd }) => {
 
     return (
         <Card className=" w-full rounded-lg p-3 mb-4 border-2 border-secondary">
+            <Button
+                type="button"
+                onClick={() => onAdd() }
+                className="flex justify-center items-center  px-4 py-2 text-sm font-medium  rounded-md col-span-full"
+            >
+                Cancel
+                <CircleX size={20} className="ml-2" />
+            </Button>
             <Formik
                 initialValues={initialValues}
                 onSubmit={handleSubmit}
@@ -64,10 +72,10 @@ const AddMenuItem = ({ onAdd }) => {
                             setFieldValue={setFieldValue}
                         />
 
-                        <div className=" flex justify-end mt-4">
+                        <div className=" flex mt-4">
                             <Button
                                 type="submit"
-                                className="flex justify-center items-center w-full px-4 py-2 text-sm font-medium border border-lime rounded-md col-span-full"
+                                className="flex justify-center items-center w-full  px-4 py-2 text-sm font-medium border border-lime rounded-md col-span-full"
                             >
                                 Save
                                 <Save size={20} className="ml-2" />

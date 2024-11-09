@@ -7,13 +7,13 @@ import { CircleX, Plus } from 'lucide-react';
 const IngredientsList = ({ ingredients, isEditing, setFieldValue }) => (
     <FieldArray name="ingredients">
         {({ remove, push }) => (
-            <div className="mt-4 overflow-y-scroll transition-all duration-1000 ease-in-out">
+            <div className="mt-4 overflow-y-scroll transition-all duration-100 ease-in-out">
                 <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
                 {ingredients.map((ingredient, index) => (
                     <div
                         key={ingredient.id || index}
-                        className="grid grid-cols-5 mb-2 transition-opacity duration-300 ease-in-out"
-                        style={{ opacity: ingredient.removed ? 0 : 1 }} // Fade out when removed
+                        className="grid grid-cols-5 mb-2 transition-opacity duration-75 ease-in-out"
+                        style={{ opacity: ingredient.removed ? 0 : 1 }}
                     >
                         <div className="col-span-3">
                             <GlobalField
