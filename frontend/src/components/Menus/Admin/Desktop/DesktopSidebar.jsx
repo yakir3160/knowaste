@@ -13,21 +13,27 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     const { userBaseData: user } = useUserContext();
     const accountType = user?.accountType;
 
+    const isActive = (path) => location.pathname === path;
+    console.log(location.pathname);
+
     const sideBarTransition = "transition-all duration-200 ease-in-out";
     const sidebarClasses = {
         container: "fixed",
         aside: `flex flex-col rounded-r-lg h-[95vh] mb-6 mt-6 bg-secondary shadow-outer-custom ${sideBarTransition} ${isOpen ? "w-64" : "w-14"} animate-fadeIn`,
         logoContainer: `overflow-hidden ${sideBarTransition} ${isOpen ? 'w-auto' : 'w-0'}`,
-        button: "z-10 ",
+        button: "z-10",
         menuList: "flex-grow list-inside text-titles py-5 flex flex-col gap-5 mt-10",
-        menuItem: `flex items-center gap-2 p-3 px-4  w-full shadow-none hover:bg-base `,
-        logout: "text-errorRed border-2 border-[transparent]  text-buttons  px-4 hover:text-errorRed hover:bg-errorLightRed hover:border-errorRed",
+        menuItem: `flex items-center gap-2 rounded-r-md p-3 px-4 w-full shadow-none hover:bg-base `,
+        menuItemSelected: "bg-base border border-lime text-buttons",
+        logout: "text-errorRed border border-transparent text-buttons px-4 hover:text-errorRed hover:bg-errorLightRed hover:border-errorRed",
         itemText: `whitespace-nowrap ${sideBarTransition} ${isOpen ? '' : 'hidden'}`,
         footer: "flex justify-center items-center bg-baseLight h-[10vh] rounded-b-lg",
     };
 
+    const getMenuItemClasses = (path) => `p-2 ${sidebarClasses.menuItem} ${isActive(path) ? sidebarClasses.menuItemSelected : 'border border-transparent'}`;
+
     return (
-        <div className={`${sidebarClasses.container}`}>
+        <div className={sidebarClasses.container}>
             <aside className={sidebarClasses.aside}>
                 <div className="flex justify-between items-center p-2">
                     <div className={sidebarClasses.logoContainer}>
@@ -44,59 +50,63 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                 <ul className={sidebarClasses.menuList}>
                     <Button
                         onClick={() => navigate("/admin-panel")}
-                        className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel" ? "bg-base border-2 border-lime text-buttons " : "border-2 border-[transparent]"}`}
+                        className={getMenuItemClasses("/admin-panel")}
                     >
                         <LayoutDashboard className="h-5 w-5" />
                         <span className={sidebarClasses.itemText}>Home</span>
                     </Button>
                     <Button
                         onClick={() => navigate("/admin-panel/inventory-management")}
-                        className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel/inventory-management" ? `bg-base border-2 border-lime text-buttons ` : "border-2 border-[transparent]"}`}
+                        className={getMenuItemClasses("/admin-panel/inventory-management")}
                     >
                         <Warehouse className="h-5 w-5" />
                         <span className={sidebarClasses.itemText}>Inventory Management</span>
                     </Button>
+
                     {accountType === 'restaurant-manager' && (
                         <>
                             <Button
                                 onClick={() => navigate("/admin-panel/sales-report")}
-                                className={`p-2 ${sidebarClasses.menuItem}${location.pathname === "/admin-panel/sales-report"  ? "bg-base border-2 border-lime text-buttons " : "border-2 border-[transparent]"}`}
+                                className={getMenuItemClasses("/admin-panel/sales-report")}
                             >
                                 <FileText className="h-5 w-5" />
                                 <span className={sidebarClasses.itemText}>Daily Sales Report</span>
                             </Button>
                             <Button
                                 onClick={() => navigate("/admin-panel/leftover-report")}
-                                className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel/leftover-report" ? "bg-base border-2 border-lime text-buttons " : "border-2 border-[transparent]"}`}
+                                className={getMenuItemClasses("/admin-panel/leftover-report")}
                             >
                                 <Trash2 className="h-5 w-5" />
                                 <span className={sidebarClasses.itemText}>Leftover Report</span>
                             </Button>
                             <Button
                                 onClick={() => navigate("/admin-panel/request-quote")}
-                                className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel/request-quote" ? "bg-base border-2 border-lime text-buttons " : "border-2 border-[transparent]"}`}
+                                className={getMenuItemClasses("/admin-panel/request-quote")}
                             >
                                 <DollarSign className="h-5 w-5" />
                                 <span className={sidebarClasses.itemText}>Request Price Quote</span>
                             </Button>
                         </>
                     )}
+
                     {accountType === 'supplier' && (
                         <Button
                             onClick={() => navigate("/admin-panel/send-quote")}
-                            className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel/send-quote" ? "bg-base border-2 border-lime text-buttons  " : "border-2 border-[transparent]"}`}
+                            className={getMenuItemClasses("/admin-panel/send-quote")}
                         >
                             <DollarSign className="h-5 w-5" />
                             <span className={sidebarClasses.itemText}>Send Price Quote</span>
                         </Button>
                     )}
+
                     <Button
-                        className={`p-2 ${sidebarClasses.menuItem} ${location.pathname === "/admin-panel/account-settings" ? "bg-base border-2 border-lime text-buttons  " : "border-2 border-[transparent]"}`}
+                        className={getMenuItemClasses("/admin-panel/account-settings")}
                         onClick={() => navigate("/admin-panel/account-settings")}
                     >
                         <UserRoundCog className="h-5 w-5" />
                         <span className={sidebarClasses.itemText}>Account Settings</span>
                     </Button>
+
                     <Button
                         onClick={logout}
                         className={`p-2 ${sidebarClasses.menuItem} ${sidebarClasses.logout}`}
@@ -111,7 +121,6 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
             </aside>
         </div>
     );
-
 };
 
 export default DesktopSidebar;

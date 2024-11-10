@@ -4,11 +4,13 @@ import Button from '../../../../../Common/Button/Button';
 import { ChevronDown, ChevronUp, CircleX, Pencil, Save } from 'lucide-react';
 import GlobalField from "../../../../../Common/inputs/GlobalField";
 import Card from "../../../../../Common/Card/Card";
-import IngredientsList from './IngredientsList'; // נייבא את הקומפוננטה החדשה
+import IngredientsList from './IngredientsList';
+import {useUserContext} from "../../../../../../contexts/UserContext"; // נייבא את הקומפוננטה החדשה
 
 const MenuItem = ({ item, onUpdate, onRemove }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [showIngredients, setShowIngredients] = useState(false);
+    const {userBaseData: user} = useUserContext() // יצירת משתנה חדש ושימוש בפונקציה של הקונטקסט
 
     const handleSubmit = (values) => {
         if (isEditing) {
@@ -48,26 +50,31 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
                             className="text-gray mt-2 leading-relaxed"
                             disabled={!isEditing}
                         />
-                        <Button
-                            type="button"
-                            onClick={() => setShowIngredients(!showIngredients)}
-                            className="text-md flex flex-row"
-                        >
-                            {showIngredients ? 'Hide Ingredients' : 'Show Ingredients'}
-                            {showIngredients ? <ChevronUp size={20} className="mt-0.5"/> :
-                                <ChevronDown size={20} className="mt-0.5"/>}
-                        </Button>
-                        <div
-                            className={`overflow-hidden transition-all duration-300 ease-in-out mt-4 ${showIngredients ? 'max-h-screen' : 'max-h-0'}`}
-                        >
-                            {showIngredients && (
-                                <IngredientsList
-                                    ingredients={values.ingredients}
-                                    isEditing={isEditing}
-                                    setFieldValue={setFieldValue}
-                                />
-                            )}
-                        </div>
+                        {user?.accountType === 'restaurant-manager' && (
+                            <>
+                                <Button
+                                    type="button"
+                                    onClick={() => setShowIngredients(!showIngredients)}
+                                    className="text-md flex flex-row"
+                                >
+                                    {showIngredients ? 'Hide Ingredients' : 'Show Ingredients'}
+                                    {showIngredients ? <ChevronUp size={20} className="mt-0.5"/> :
+                                        <ChevronDown size={20} className="mt-0.5"/>}
+                                </Button>
+                                <div
+                                    className={`overflow-hidden  mt-4 ${showIngredients ? 'max-h-screen' : 'max-h-0'}`}
+                                >
+                                    {showIngredients && (
+                                        <IngredientsList
+                                            ingredients={values.ingredients}
+                                            isEditing={isEditing}
+                                            setFieldValue={setFieldValue}
+                                        />
+                                    )}
+                                </div>
+                            </>
+                        )}
+
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                             <Button
                                 type="submit"

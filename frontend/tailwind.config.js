@@ -89,6 +89,7 @@ module.exports = {
       black : 'var(--bs-black)',
       white: 'var(--bs-white)',
       green: 'var(--bs-green)',
+      transparent: 'transparent',
     },
   },
   plugins: [tailwindHamburgers],

@@ -16,6 +16,7 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
         const hasHover = className.includes('hover:') || style.hover;
         const hasBgColor = className.includes('bg-') || style.backgroundColor;
         const hasPadding = className.includes('p-') || style.Padding;
+        const hasBorderRadius = className.includes('rounded-') || style.borderRadius;
 
         // בניית מחרוזת ה-className עם ערכים דיפולטיים במידה ואין אותם
         return `
@@ -28,6 +29,7 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
           ${!hasTextColor ? 'text-titles' : ''} 
           ${!hasShadow ? 'shadow-outer-custom' : ''} 
           ${!hasPadding ? 'px-[17px] py-[13px]' : ''} 
+          ${!hasBorderRadius ? 'rounded-sm' : ''}
         `.trim();
         // .trim() להסרת רווחים מיותרים
     }, [className, style.color, style.boxShadow]);

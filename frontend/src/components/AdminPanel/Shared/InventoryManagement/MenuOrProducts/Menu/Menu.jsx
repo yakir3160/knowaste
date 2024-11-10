@@ -28,7 +28,7 @@ const Menu = ({ items }) => {
                 {categories.map(category => (
                     <button
                         key={category}
-                        className={`px-4  py-4 rounded-t-sm font-semibold transform transition-all duration-300 
+                        className={`px-4  py-4 rounded-t-sm font-semibold 
                          ${selectedCategory === category ? 'bg-base border-b-2 border-lime text-buttons ' : 'border-b-2 border-[transparent]'}`}
                         onClick={() => setSelectedCategory(category)}
                     >
@@ -42,7 +42,7 @@ const Menu = ({ items }) => {
                     {mainSubCategories.map(subCategory => (
                         <button
                             key={subCategory}
-                            className={`p-3 rounded-t-sm text-buttons text-light transform transition-all duration-300 ease-in-out 
+                            className={`p-3 rounded-t-sm text-buttons text-light
                             ${selectedSubCategory === subCategory ? 'bg-white border-b-2 border-lime text-buttons' : 'border-b-2 border-[transparent]'}`}
                             onClick={() => setSelectedSubCategory(subCategory)}
                         >
