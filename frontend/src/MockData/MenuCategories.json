@@ -1,0 +1,62 @@
+{
+  "categories": [
+    {
+      "id": "main-courses",
+      "name": "Main Courses",
+      "subCategories": [
+        {
+          "id": "meat",
+          "name": "Meat"
+        },
+        {
+          "id": "vegetarian",
+          "name": "Vegetarian"
+        },
+        {
+          "id": "pasta",
+          "name": "Pasta"
+        },
+        {
+          "id": "seafood",
+          "name": "Seafood"
+        },
+        {
+          "id": "pizza",
+          "name": "Pizza"
+        },
+        {
+          "id": "poultry",
+          "name": "Poultry"
+        }
+      ]
+    },
+    {
+      "id": "appetizers",
+      "name": "Appetizers"
+    },
+    {
+      "id": "drinks",
+      "name": "Drinks"
+    },
+    {
+      "id": "desserts",
+      "name": "Desserts"
+    },
+    {
+      "id": "breakfast",
+      "name": "Breakfast"
+    },
+    {
+      "id": "soups",
+      "name": "Soups"
+    },
+    {
+      "id": "salads",
+      "name": "Salads"
+    },
+    {
+      "id": "sides",
+      "name": "Sides"
+    }
+  ]
+}

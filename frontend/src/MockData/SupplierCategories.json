@@ -1,0 +1,53 @@
+{
+    "supplierCategories": [
+    {
+        "id": 1,
+        "category": "Main Courses",
+        "subCategories": [
+            "Meat",
+            "Vegetarian",
+            "Pasta",
+            "Seafood",
+            "Grains"
+        ]
+    },
+    {
+        "id": 2,
+        "category": "Drinks",
+        "subCategories": [
+            "Alcoholic",
+            "Non-Alcoholic",
+            "Hot Beverages",
+            "Cold Beverages"
+        ]
+    },
+    {
+        "id": 3,
+        "category": "Appetizers",
+        "subCategories": [
+            "Cold",
+            "Hot",
+            "Gluten-Free"
+        ]
+    },
+    {
+        "id": 4,
+        "category": "Condiments",
+        "subCategories": [
+            "Oils",
+            "Vinegars",
+            "Spices",
+            "Sauces"
+        ]
+    },
+    {
+        "id": 5,
+        "category": "Desserts",
+        "subCategories": [
+            "Cakes",
+            "Chocolates",
+            "Pastries"
+        ]
+    }
+]
+}
