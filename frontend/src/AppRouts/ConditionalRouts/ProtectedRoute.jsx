@@ -8,8 +8,6 @@ const ProtectedRoute = ({ element, allowGuest }) => {
     if (!currentUser && !allowGuest) {
         return <Navigate to="/auth" />;
     }
-
-    console.log('Rendering Protected Route'); 
     return element;
 };
 
