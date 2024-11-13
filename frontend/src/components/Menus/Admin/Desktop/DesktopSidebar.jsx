@@ -14,7 +14,6 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     const accountType = user?.accountType;
 
     const isActive = (path) => location.pathname === path;
-    console.log(location.pathname);
 
     const sideBarTransition = "transition-all duration-200 ease-in-out";
     const sidebarClasses = {

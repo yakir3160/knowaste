@@ -1,8 +1,8 @@
 {
-    "supplierCategories": [
+    "categories": [
     {
         "id": 1,
-        "category": "Main Courses",
+        "name": "Main Courses",
         "subCategories": [
             "Meat",
             "Vegetarian",
@@ -13,7 +13,7 @@
     },
     {
         "id": 2,
-        "category": "Drinks",
+        "name": "Drinks",
         "subCategories": [
             "Alcoholic",
             "Non-Alcoholic",
@@ -23,7 +23,7 @@
     },
     {
         "id": 3,
-        "category": "Appetizers",
+        "name": "Appetizers",
         "subCategories": [
             "Cold",
             "Hot",
@@ -32,7 +32,7 @@
     },
     {
         "id": 4,
-        "category": "Condiments",
+        "name": "Condiments",
         "subCategories": [
             "Oils",
             "Vinegars",
@@ -42,7 +42,7 @@
     },
     {
         "id": 5,
-        "category": "Desserts",
+        "name": "Desserts",
         "subCategories": [
             "Cakes",
             "Chocolates",

@@ -9,7 +9,6 @@ export const useUserBaseData = () => {
     const[success, setSuccess] = useState(false);
     const [error,setError ] = useState(null);
     const {user} = useAuthContext(); // שימוש בהקשר לנתוני המשתמש
-
     useEffect(() => {
         const getUserBaseData = async () => {
             if (user === null) {

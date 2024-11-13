@@ -5,9 +5,11 @@ import Button from "../../../../Common/Button/Button";
 import AddMenuItem   from "./Menu/AddMenuItem";
 import { useUserContext } from "../../../../../contexts/UserContext";
 import Menu from "./Menu/Menu";
+import {useItemsContext} from "../../../../../contexts/ItemsContext";
+
 
 const MenuOrProducts = () => {
-    const [items, setItems] = useState([]);
+    const { userItems,categories } = useItemsContext();
     const {userBaseData: user} = useUserContext();
     const [isAdding, setIsAdding] = useState(false);
     const handleAddClick = () => {
@@ -25,12 +27,6 @@ const MenuOrProducts = () => {
         ? 'Add Product'
         : 'Add Menu Item';
 
-// Populate with fake items on component mount
-    useEffect(() => {
-        
-
-    }, []);
-
     return (
         <Card className={`col-span-2 flex justify-center h-fit`}>
             <h3 className="text-titles text-3xl p-3 text-center">{title}</h3>
@@ -43,14 +39,15 @@ const MenuOrProducts = () => {
             </Button>
 
             {isAdding && (
-                <AddMenuItem onAdd={(newItem) => {
+                <AddMenuItem onAdd={(newItem)  => {
                     console.log(newItem);
                     setIsAdding(false);
-                }}/>
+                }} categories={categories}
+                />
             )}
 
-            {items.length > 0 ? (
-                <Menu items={items} title={title}/>
+            {userItems?.length > 0 ? (
+                <Menu userItems={userItems} categories={categories}  title={title}/>
             ) : (
                 <Card className="text-center text-3xl gap-3 flex flex-col justify-center items-center">
                     <p>{emptyMessage}</p>

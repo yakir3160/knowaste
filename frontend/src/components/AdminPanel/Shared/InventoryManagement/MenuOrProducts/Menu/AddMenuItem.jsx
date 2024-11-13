@@ -6,8 +6,7 @@ import GlobalField from "../../../../../Common/inputs/GlobalField";
 import Card from "../../../../../Common/Card/Card";
 import IngredientsList from './IngredientsList'; // Assuming IngredientsList is in the same directory
 
-const AddMenuItem = ({ onAdd }) => {
-    const categories = ["Appetizers", "Main Courses", "Desserts", "Drinks"];
+const AddMenuItem = ({ onAdd, categories }) => {
     const initialValues = {
         name: '',
         price: 0,
@@ -63,7 +62,7 @@ const AddMenuItem = ({ onAdd }) => {
                             type="select"
                             name="Category"
                             className="text-gray mt-2 leading-relaxed"
-                            options={categories.map(category => ({ value: category, label: category }))}
+                            options={categories.categories.map(category => ({ value: category.name, label: category.name }))}
                         />
 
                         <IngredientsList

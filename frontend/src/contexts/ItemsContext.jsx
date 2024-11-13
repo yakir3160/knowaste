@@ -1,11 +1,13 @@
-import React, {createContext, useContext, useEffect} from 'react'; // ייבוא רכיבי React
- // ייבוא פונקציה לקבלת נתוני המשתמש
-const ItemsContext = createContext(); // יצירת הקשר לנתוני המשתמש
+import React, { createContext, useContext } from 'react';
+import { useUserItems } from '../Hooks/User/useUserItems';
+
+const ItemsContext = createContext();
 
 export const ItemsProvider = ({ children }) => {
+    const {userItems,categories} = useUserItems();
 
     return (
-        <ItemsContext.Provider value={{}}>
+        <ItemsContext.Provider value={{userItems,categories}}>
             {children}
         </ItemsContext.Provider>
     );

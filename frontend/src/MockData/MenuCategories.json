@@ -1,62 +1,72 @@
 {
   "categories": [
     {
-      "id": "main-courses",
-      "name": "Main Courses",
+      "id": 1,
+      "name": "Appetizers",
       "subCategories": [
-        {
-          "id": "meat",
-          "name": "Meat"
-        },
-        {
-          "id": "vegetarian",
-          "name": "Vegetarian"
-        },
-        {
-          "id": "pasta",
-          "name": "Pasta"
-        },
-        {
-          "id": "seafood",
-          "name": "Seafood"
-        },
-        {
-          "id": "pizza",
-          "name": "Pizza"
-        },
-        {
-          "id": "poultry",
-          "name": "Poultry"
-        }
+        "Cold",
+        "Hot",
+        "Gluten-Free"
       ]
     },
     {
-      "id": "appetizers",
-      "name": "Appetizers"
+      "id": 2,
+      "name": "Breakfast",
+      "subCategories": [
+        "Omelettes",
+        "Pancakes",
+        "Smoothies"
+      ]
     },
     {
-      "id": "drinks",
-      "name": "Drinks"
+      "id": 3,
+      "name": "Main Courses",
+      "subCategories": [
+        "Meat",
+        "Vegetarian",
+        "Pasta",
+        "Seafood",
+        "Grains",
+        "Pizza",
+        "Poultry"
+      ]
     },
     {
-      "id": "desserts",
-      "name": "Desserts"
+      "id": 4,
+      "name": "Salads",
+      "subCategories": [
+        "Vegetable",
+        "Fruit",
+        "Pasta Salads"
+      ]
     },
     {
-      "id": "breakfast",
-      "name": "Breakfast"
+      "id": 5,
+      "name": "Sides",
+      "subCategories": [
+        "Fries",
+        "Mashed Potatoes",
+        "Rice"
+      ]
     },
     {
-      "id": "soups",
-      "name": "Soups"
+      "id": 6,
+      "name": "Drinks",
+      "subCategories": [
+        "Alcoholic",
+        "Non-Alcoholic",
+        "Hot Beverages",
+        "Cold Beverages"
+      ]
     },
     {
-      "id": "salads",
-      "name": "Salads"
-    },
-    {
-      "id": "sides",
-      "name": "Sides"
+      "id": 7,
+      "name": "Desserts",
+      "subCategories": [
+        "Cakes",
+        "Chocolates",
+        "Pastries"
+      ]
     }
   ]
 }
