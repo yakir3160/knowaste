@@ -1,18 +1,14 @@
-// ייבוא ספריות React
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-
-// ייבוא סגנונות
+import { Routes } from 'react-router-dom';
 import './css/App.css';
 
-// ייבוא Providers
 import { AuthProvider } from "./contexts/AuthContext";
 import { UserProvider } from "./contexts/UserContext";
-import { ItemsProvider } from "./contexts/ItemsContext";
-
-// ייבוא קומפוננטות
-import AppRoutes from './AppRouts/AppRouts';
 import { ScrollToTop } from './clientFunctions/UI/ScrollToTop';
+
+import { PublicRoutes } from './AppRouts/PublicRoutes';
+import { ProtectedRoutes } from './AppRouts/ProtectedRoutes';
 
 const App = () => {
     return (
@@ -21,14 +17,16 @@ const App = () => {
                 <AuthProvider>
                     <UserProvider>
                         <ScrollToTop />
-                        <ItemsProvider>
-                            <AppRoutes />
-                        </ItemsProvider>
+                        <Routes>
+                            {PublicRoutes}
+                            {ProtectedRoutes}
+                        </Routes>
                     </UserProvider>
                 </AuthProvider>
             </BrowserRouter>
         </div>
     );
 };
+
 
 export default App;

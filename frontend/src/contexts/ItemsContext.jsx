@@ -19,10 +19,12 @@ export const ItemsProvider = ({ children }) => {
 
     useEffect(() => {
         // הגדרת הנתונים פעם אחת, לפי סוג המשתמש
+        console.log(user?.accountType)
         setUserItems( user?.accountType === 'supplier' ? SupplierProducts.products : MenuItems.MenuItems);
         setCategories(user?.accountType === 'supplier' ? SupplierCategories : MenuCategories);
         console.log('User Items Set');
-    }, [authUser]);
+        console.log(userItems)
+    }, [user]);
 
     return (
         <ItemsContext.Provider value={{ userItems, categories }}>
