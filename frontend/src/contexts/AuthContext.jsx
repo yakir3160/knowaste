@@ -120,25 +120,24 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const contextValue = {
-        user,
-        login,
-        register,
-        logout,
-        signInWithGoogle,
-        passwordResetEmail,
-        authError,
-        setAuthError,
-        clearAuthError,
-        success,
-        emailSent,
-    };
-
     return (
-        <AuthContext.Provider value={contextValue}>
+        <AuthContext.Provider value={{
+            user,
+            login,
+            register,
+            logout,
+            signInWithGoogle,
+            passwordResetEmail,
+            authError,
+            setAuthError,
+            clearAuthError,
+            success,
+            emailSent,
+        }}>
             {children}
         </AuthContext.Provider>
     );
+
 };
 
 export const useAuthContext = () => useContext(AuthContext);
