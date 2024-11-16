@@ -47,7 +47,7 @@ const MenuOrProducts = () => {
             )}
 
             {userItems?.length > 0 ? (
-                <Menu userItems={userItems} categories={categories}  title={title}/>
+                <Menu userItems={userItems} categories={categories}   title={title}/>
             ) : (
                 <Card className="text-center text-3xl gap-3 flex flex-col justify-center items-center">
                     <p>{emptyMessage}</p>

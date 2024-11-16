@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import { Formik, Form, FieldArray } from 'formik';
 import Button from '../../../../../Common/Button/Button';
 import { Save, PlusCircle, CircleX } from 'lucide-react';
@@ -22,14 +22,13 @@ const AddMenuItem = ({ onAdd, categories }) => {
 
     return (
         <Card className=" w-full rounded-lg p-3 mb-4 border-2 border-secondary">
-            <Button
+            <button
                 type="button"
                 onClick={() => onAdd() }
-                className="flex justify-center items-center  px-4 py-2 text-sm font-medium  rounded-md col-span-full"
+                className="flex justify-center items-center shadow-outer-custom text-sm font-medium  rounded-md col-span-full"
             >
-                Cancel
-                <CircleX size={20} className="ml-2" />
-            </Button>
+                <CircleX size={22} />
+            </button>
             <Formik
                 initialValues={initialValues}
                 onSubmit={handleSubmit}
@@ -62,7 +61,7 @@ const AddMenuItem = ({ onAdd, categories }) => {
                             type="select"
                             name="Category"
                             className="text-gray mt-2 leading-relaxed"
-                            options={categories.categories.map(category => ({ value: category.name, label: category.name }))}
+                            options={categories.map(category => ({ value: category.name, label: category.name }))}
                         />
 
                         <IngredientsList
