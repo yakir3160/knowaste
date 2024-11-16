@@ -25,7 +25,7 @@ module.exports = {
       boxShadow: {
         'inset-custom': 'inset 2px 2px 5px rgba(230, 232, 222, 0.7), inset -2px -2px 5px #ffffff',
         'outer-custom': '2px 2px 5px #e6e8de, -2px 2px 5px #ffffff',
-        'button-hover': '1px 1px 5px rgba(203, 209, 184, 0.60), -1px -1px 5px #fdfffa',
+        'button-hover': '0px 0px 0px rgba(203, 209, 184, 0.60), -5px -5px 5px #fdfffa',
       },
       screens: {
         'iphone': '375px',

@@ -38,6 +38,7 @@ const Register = () => {
                         zipCode: '',
                         accountType: '',
                         email: '',
+                        kosher: '',
                         password: '',
                         repeatPassword: '',
                     }}

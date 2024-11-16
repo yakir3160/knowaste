@@ -1,8 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useUserContext } from "./UserContext";
-import MenuCategories from "../MockData/MenuCategories.json";
 import MenuItems from "../MockData/MenuItems.json";
-import SupplierCategories from "../MockData/SupplierCategories.json";
 import SupplierProducts from "../MockData/SupplierProducts.json";
 
 // יצירת הקונטקסט
@@ -18,7 +16,7 @@ export const ItemsProvider = ({ children }) => {
     useEffect(() => {
         setUserItems(
             user?.accountType === 'supplier'
-                ? user?.products
+                ? SupplierProducts.products
                 : MenuItems.categories.map(category => ({
                     id: category.id,
                     name: category.name,
