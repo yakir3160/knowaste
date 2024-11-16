@@ -34,7 +34,7 @@ const AccountInfoForm = () => {
         return () => clearTimeout(timer);
     }, [success, setSuccess]);
     return (
-        <Card className="w-full h-fit">
+        <Card className="w-full h-fit max-w-2xl">
             <h3 className="text-titles text-3xl p-3 text-center">Account Info</h3>
             <Formik
                 initialValues={{
