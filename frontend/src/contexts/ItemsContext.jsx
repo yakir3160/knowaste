@@ -16,22 +16,36 @@ export const ItemsProvider = ({ children }) => {
     useEffect(() => {
         setUserItems(
             user?.accountType === 'supplier'
-                ? SupplierProducts.products
+                ? Object.entries(SupplierProducts.suppliers["1"].categories).map(([categoryKey, category]) => ({
+                    id: categoryKey,
+                    name: categoryKey,
+                    products: category.products.map(product => ({
+                        id: product.productId,
+                        name: product.name,
+                        price: product.basePrice,
+                        brand: product.brand,
+                        unitType: product.unitType,
+                        minOrder: product.minOrder,
+                        type: product?.type,
+                        volume: product?.volume,
+                        origin: product?.origin,
+                        grade: product?.grade,
+                    }))
+                }))
                 : MenuItems.categories.map(category => ({
-                    id: category.id,
-                    name: category.name,
-                    dishes: category.subCategories
-                        ? category.subCategories.map(sub => ({
-                            subCategoryId: sub.id,
-                            subCategoryName: sub.name,
-                            items: sub.items
-                        }))
-                        :
-                        category.items
+                id: category.id,
+                name: category.name,
+                dishes: category.subCategories
+                    ? category.subCategories.map(sub => ({
+                        subCategoryId: sub.id,
+                        subCategoryName: sub.name,
+                        items: sub.items
+                    }))
+                    :
+                    category.items
 
             })) || []
         );
-
         setCategories(
             user?.accountType === 'supplier'
                 ? SupplierProducts
@@ -42,12 +56,15 @@ export const ItemsProvider = ({ children }) => {
 
                     }) || [])
 
-
         );
 
         console.log('User Items Set');
         console.log('user items', userItems)
         console.log('user categories',categories)
+        return () => {
+            setUserItems(null);
+            setCategories(null);
+        };
     }, [user]);
 
     return (
