@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState,useCallback} from "react";
 import Card from "../../../Common/Card/Card";
 import Button from "../../../Common/Button/Button";
-import {Dot, Plus} from 'lucide-react'
+import  {Plus} from 'lucide-react'
 
 
 const Inventory = ({ userItems, categories }) => {
@@ -15,20 +15,34 @@ const Inventory = ({ userItems, categories }) => {
                 {id:'a6',name: "Medjool Dates", quantity: 2, unitType: "kg"},
     ]
 );
-    const handleSort = (sortBy) => {
+    const [sortChoice, setSortChoice] = useState('name');
+    const handleSort = useCallback((sortBy) => {
         const sortedProducts = [...products].sort((a, b) => {
             switch (sortBy) {
                 case 'name':
-                return a.name.localeCompare(b.name);
+                    setSortChoice(sortBy);
+                    return a.name.localeCompare(b.name);
                 case 'quantity':
-                return a.quantity - b.quantity;
-
+                    setSortChoice(sortBy);
+                    return a.quantity - b.quantity;
+                default:
+                    return sortChoice;
             }
-            return 0;
         });
         setProducts(sortedProducts);
-    };
+    }, [products]);
 
+    useEffect(() => {
+        const savedSortChoice = localStorage.getItem('sortChoice');
+        console.log(savedSortChoice);
+        if (savedSortChoice) {
+            setSortChoice(savedSortChoice);
+            handleSort(savedSortChoice);
+        }
+    },  []);
+    useEffect(() => {
+        localStorage.setItem('sortChoice', sortChoice);
+    }, [sortChoice]);
 
     return (
         <Card className={`col-span-2 `}>
@@ -42,25 +56,34 @@ const Inventory = ({ userItems, categories }) => {
             </Button>
             </div>
             <ul className="w-full ">
-                <select
-                    name={"sortBy"}
-                    className={`w-1/4 p-2 border-2 border-secondary rounded-sm mb-2 focus:outline-none focus:border-lime`}
-                    onChange={(e) => {
-                        handleSort(e.target.value);
-                        console.log(e.target.value);
-                    }}
-                >
-                    <option value="" disabled selected >Sort by</option>
-                    <option value="name">Name</option>
-                    <option value="quantity">Quantity</option>
-                </select>
-                    <ul className={``}>
-                        {products?.map((product) => (
-                            <Card key={product.id} className={`text-titles text-xl grid grid-cols-3 gap-5`}>
-                                <strong className={`p-3`}>{`${product.name}`}</strong>
-                                <span >{`${product.quantity} ${product.unitType}`}</span>
-                                <div className="flex">
-                                    <span className={`${product.quantity > 1 ? 'text-green' : 'text-errorRed animate-pulse'} `}>{
+                <div className="flex justify-between items-center p-3">
+                    <h3 className="text-titles text-2xl">Products</h3>
+
+                    <div className="flex justify-center items-center ">
+                        <span className="text-titles text-lg p-2 mb-2">Sort by:</span>
+                        <select
+                            name={"sortBy"}
+                            className={`w-fit  p-2 border-2 border-secondary rounded-sm mb-2 focus:outline-none focus:border-lime`}
+                            onChange={(e) => {
+                                handleSort(e.target.value);
+                                console.log(e.target.value);
+                            }}
+                        >
+                            <option value="name">Name</option>
+                            <option value="quantity">Quantity</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <ul className={``}>
+                    {products?.map((product) => (
+                        <Card key={product.id} className={`text-titles text-xl grid grid-cols-3 gap-5`}>
+                            <strong className={`p-3`}>{`${product.name}`}</strong>
+                            <span>{`${product.quantity} ${product.unitType}`}</span>
+                            <div className="flex">
+                                    <span
+                                        className={`${product.quantity > 1 ? 'text-green' : 'text-errorRed animate-pulse'} `}>{
                                         product.quantity > 1
                                             ? 'In Stock'
                                             : 'Order Needed'

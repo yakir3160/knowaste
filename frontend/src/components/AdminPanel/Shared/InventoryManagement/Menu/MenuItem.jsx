@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
-import Button from '../../../../../Common/Button/Button';
+import Button from '../../../../Common/Button/Button';
 import { ChevronDown, ChevronUp, CircleX, Pencil, Save } from 'lucide-react';
-import GlobalField from "../../../../../Common/inputs/GlobalField";
-import Card from "../../../../../Common/Card/Card";
+import GlobalField from "../../../../Common/inputs/GlobalField";
+import Card from "../../../../Common/Card/Card";
 import IngredientsList from './IngredientsList';
-import {useUserContext} from "../../../../../../contexts/UserContext"; // נייבא את הקומפוננטה החדשה
+import {useUserContext} from "../../../../../contexts/UserContext"; // נייבא את הקומפוננטה החדשה
 
 const MenuItem = ({ item, onUpdate, onRemove }) => {
     const [isEditing, setIsEditing] = useState(false);

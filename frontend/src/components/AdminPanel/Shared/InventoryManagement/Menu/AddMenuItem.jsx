@@ -1,9 +1,9 @@
 import React, {useRef} from 'react';
 import { Formik, Form, FieldArray } from 'formik';
-import Button from '../../../../../Common/Button/Button';
+import Button from '../../../../Common/Button/Button';
 import { Save, PlusCircle, CircleX } from 'lucide-react';
-import GlobalField from "../../../../../Common/inputs/GlobalField";
-import Card from "../../../../../Common/Card/Card";
+import GlobalField from "../../../../Common/inputs/GlobalField";
+import Card from "../../../../Common/Card/Card";
 import IngredientsList from './IngredientsList'; // Assuming IngredientsList is in the same directory
 
 const AddMenuItem = ({ onAdd, categories }) => {

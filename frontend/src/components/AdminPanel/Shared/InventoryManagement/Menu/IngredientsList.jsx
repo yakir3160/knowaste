@@ -1,7 +1,7 @@
 import React from 'react';
 import { FieldArray } from 'formik';
-import GlobalField from "../../../../../Common/inputs/GlobalField";
-import Button from '../../../../../Common/Button/Button';
+import GlobalField from "../../../../Common/inputs/GlobalField";
+import Button from '../../../../Common/Button/Button';
 import { CircleX, Plus } from 'lucide-react';
 
 const IngredientsList = ({ ingredients, isEditing, setFieldValue }) => (
