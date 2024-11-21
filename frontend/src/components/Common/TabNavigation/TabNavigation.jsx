@@ -12,7 +12,7 @@ import React, {useState} from 'react';
              {tabs.map((tabName) => (
                  <button key={tabName} className={`px-4 py-4 rounded-sm font-semibold
                         ${activeTab === tabName ? 'bg-secondary  text-buttons shadow-outer-custom' : ''}
-                        transition-colors duration-300 `}
+                        transition-colors duration-150 `}
                         onClick={() => handleTabChange(tabName)}
                  >
                         {tabName}
