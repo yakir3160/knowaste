@@ -12,6 +12,16 @@ export const ItemsProvider = ({ children }) => {
     // יצירת ה-state עבור פריטים וקטגוריות
     const [userItems, setUserItems] = useState();
     const [categories, setCategories] = useState();
+    const [products, setProducts] = useState(
+        [
+            {id:'a1',name: "Yellow Cheddar", quantity: 1, unitType: "kg"},
+            {id:'a2',name: "Mozzarella", quantity: 3, unitType: "kg"},
+            {id:'a3',name: "Medjool Dates", quantity: 0.2, unitType: "kg"},
+            {id:'a4',name: "Pink Lady Apples", quantity: 2, unitType: "kg"},
+            {id:'a5',name: "Cavendish Bananas", quantity: 1, unitType: "kg"},
+            {id:'a6',name: "Medjool Dates", quantity: 2, unitType: "kg"},
+        ]
+    );
 
     useEffect(() => {
         setUserItems(
@@ -68,7 +78,7 @@ export const ItemsProvider = ({ children }) => {
     }, [user]);
 
     return (
-        <ItemsContext.Provider value={{ userItems, categories ,}}>
+        <ItemsContext.Provider value={{ userItems, categories ,products, setProducts}}>
             {children}
         </ItemsContext.Provider>
     );

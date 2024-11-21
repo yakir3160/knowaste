@@ -21,7 +21,7 @@ const AddMenuItem = ({ onAdd, categories }) => {
     };
 
     return (
-        <Card className=" w-full rounded-lg p-3 mb-4 border-2 border-secondary">
+        <Card className=" w-fit md:w-1/2 rounded-lg p-3 mb-4 border-2 border-secondary">
             <button
                 type="button"
                 onClick={() => onAdd() }

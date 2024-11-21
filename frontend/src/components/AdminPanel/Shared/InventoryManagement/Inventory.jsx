@@ -2,20 +2,13 @@ import React, {useEffect, useState,useCallback} from "react";
 import Card from "../../../Common/Card/Card";
 import Button from "../../../Common/Button/Button";
 import  {Plus} from 'lucide-react'
+import {useItemsContext} from "../../../../contexts/ItemsContext";
 
 
-const Inventory = ({ userItems, categories }) => {
-    const [products, setProducts] = useState(
-        [
-                {id:'a1',name: "Yellow Cheddar", quantity: 1, unitType: "kg"},
-                {id:'a2',name: "Mozzarella", quantity: 3, unitType: "kg"},
-                {id:'a3',name: "Medjool Dates", quantity: 0.2, unitType: "kg"},
-                {id:'a4',name: "Pink Lady Apples", quantity: 2, unitType: "kg"},
-                {id:'a5',name: "Cavendish Bananas", quantity: 1, unitType: "kg"},
-                {id:'a6',name: "Medjool Dates", quantity: 2, unitType: "kg"},
-    ]
-);
+const Inventory = ({ userItems, categories  }) => {
+    const  {products, setProducts} = useItemsContext();
     const [sortChoice, setSortChoice] = useState('name');
+
     const handleSort = useCallback((sortBy) => {
         const sortedProducts = [...products].sort((a, b) => {
             switch (sortBy) {
@@ -45,7 +38,7 @@ const Inventory = ({ userItems, categories }) => {
     }, [sortChoice]);
 
     return (
-        <Card className={`col-span-2 `}>
+        <Card className={`col-span-full `}>
             <h3 className="text-titles text-3xl p-3 text-center">Inventory</h3>
             <div className="flex justify-center items-center">
             <Button

@@ -20,7 +20,7 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
     };
 
     return (
-        <Card className="rounded-lg p-3 mb-4 border-2 border-secondary">
+        <Card className="rounded-lg h-fit p-3 mb-4 border-2 border-secondary ">
             <Formik
                 initialValues={item}
                 onSubmit={handleSubmit}
