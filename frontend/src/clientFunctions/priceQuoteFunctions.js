@@ -14,6 +14,7 @@ import { db } from '../firebaseConfig';
 
 const COLLECTION_NAME = 'priceQuotes';
 
+
 export const fetchUserQuotes = async (userId) => {
     if (!userId) {
         console.error('No userId provided to fetchUserQuotes');
@@ -36,8 +37,12 @@ export const fetchUserQuotes = async (userId) => {
         return querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data(),
-            date: doc.data().createdAt?.toDate().toLocaleDateString()
+            date: doc.data().createdAt?.toDate().toLocaleString('en-GB', {
+               day:'numeric',month:'numeric',year:'2-digit',
+               hour: 'numeric', minute: 'numeric', hour12: false
+            })
         }));
+
     } catch (error) {
         console.error('Error in fetchUserQuotes:', error);
         throw error;

@@ -35,12 +35,17 @@ export const getUnitOptions = (itemId, inventoryItems) => {
 export const getStatusColor = (status) => {
     switch (status) {
         case 'Completed':
-            return 'bg-green-100 text-green-800';
+            return ' bg-green';
         case 'Draft':
-            return 'bg-gray-100 text-gray-800';
+            return ' bg-gray text-white';
         case 'Pending':
-            return 'bg-yellow-100 text-yellow-800';
+            return 'bg-[yellow] animate-pulse';
         default:
-            return 'bg-gray-100 text-gray-800';
+            return 'bg-gray';
     }
 };
+export const tableStyles = {
+     tableCellClass : "p-2 text-left border border-secondary w-fit   ",
+     buttonClass : "p-1 mx-2",
+     thClass : "p-2 text-left text-titles ",
+}
