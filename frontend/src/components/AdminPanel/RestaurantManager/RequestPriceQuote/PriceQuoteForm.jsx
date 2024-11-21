@@ -7,6 +7,7 @@ import Button from "../../../Common/Button/Button";
 import { createQuote } from "../../../../clientFunctions/priceQuoteFunctions";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { calculateTotal, getUnitOptions } from './PriceQuoteHelpers';
+import GlobalField from "../../../Common/inputs/GlobalField";
 
 // Add validation schema
 const QuoteSchema = Yup.object().shape({
@@ -15,6 +16,7 @@ const QuoteSchema = Yup.object().shape({
             id: Yup.number().required(),
             itemId: Yup.string()
                 .required('Please select an ingredient'),
+            category: Yup.string().required('Please select a category'),
             quantity: Yup.number()
                 .required('Quantity is required')
                 .min(0.5, 'Minimum quantity is 0.5')
@@ -140,10 +142,11 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
                     <Form>
 
                         <div className=" w-full ">
-                            <div className={`overflow-x-auto `}>
-                                <table className={`w-full`}>
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
                                     <thead>
                                     <tr className="bg-secondary">
+                                        <th className="p-2 text-left">Category</th>
                                         <th className="p-2 text-left">Ingredient</th>
                                         <th className="p-2 text-left">Quantity</th>
                                         <th className=" p-2 text-left">Unit</th>
@@ -155,94 +158,70 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
                                     <tbody>
                                     {values.ingredients.map((ing, index) => (
                                         <tr key={ing.id}>
-                                            <td className=" p-2">
-                                                <div className="flex flex-col">
-                                                    <select
-                                                        value={ing.itemId}
-                                                        onChange={(e) => handleIngredientSelect(e.target.value, index, setFieldValue, values)}
-                                                        className={`w-full p-1 border rounded bg-base ${
-                                                            touched.ingredients?.[index]?.itemId &&
-                                                            errors.ingredients?.[index]?.itemId ? 'border-red-500' : ''
-                                                        }`}
-                                                        disabled={saving}
-                                                        onBlur={() => {
-                                                            const newTouched = {...touched};
-                                                            if (!newTouched.ingredients) newTouched.ingredients = [];
-                                                            if (!newTouched.ingredients[index]) newTouched.ingredients[index] = {};
-                                                            newTouched.ingredients[index].itemId = true;
-                                                        }}
-                                                    >
-                                                        <option value="">Select Ingredient</option>
-                                                        {categories.map(category => (
-                                                            <optgroup key={category} label={category}>
-                                                                {inventoryItems
-                                                                    .filter(item => item.category === category)
-                                                                    .map(item => (
-                                                                        <option key={item.id} value={item.id}>
-                                                                            {item.name}
-                                                                        </option>
-                                                                    ))
-                                                                }
-                                                            </optgroup>
-                                                        ))}
-                                                    </select>
-                                                    {touched.ingredients?.[index]?.itemId &&
-                                                        errors.ingredients?.[index]?.itemId && (
-                                                            <span className="text-xs text-red-500 mt-1">
-                                                            {errors.ingredients[index].itemId}
-                                                        </span>
-                                                        )}
-                                                </div>
-                                            </td>
-                                            <td className=" p-2">
-                                                <div className="flex flex-col">
-                                                    <input
-                                                        type="number"
-                                                        step="0.5"
-                                                        min="0"
-                                                        value={ing.quantity}
-                                                        onChange={(e) => {
-                                                            const value = Math.max(0, parseFloat(e.target.value));
-                                                            setFieldValue(`ingredients.${index}.quantity`, value);
-                                                        }}
-                                                        className={`w-full p-1 border rounded ${
-                                                            touched.ingredients?.[index]?.quantity &&
-                                                            errors.ingredients?.[index]?.quantity ? 'border-red-500' : ''
-                                                        }`}
-                                                        disabled={saving}
-                                                    />
-                                                    {touched.ingredients?.[index]?.quantity &&
-                                                        errors.ingredients?.[index]?.quantity && (
-                                                            <span className="text-xs text-errorRed mt-1">
-                                                            {errors.ingredients[index].quantity}
-                                                        </span>
-                                                        )}
-                                                </div>
-                                            </td>
-                                            <td className=" p-2">
-                                                <select
-                                                    value={ing.unit}
-                                                    onChange={(e) => setFieldValue(`ingredients.${index}.unit`, e.target.value)}
-                                                    className="w-full p-1 border rounded bg-base"
+                                            <td className="p-2">
+                                                <GlobalField
+                                                    name={`ingredients.${index}.category`}
+                                                    type="select"
+                                                    options={[
+                                                        { value: '', label: 'Select Category' },
+                                                        ...categories.map(category => ({
+                                                            value: category,
+                                                            label: category
+                                                        }))
+                                                    ]}
+                                                    onChange={(e) => {
+                                                        setFieldValue(`ingredients.${index}.category`, e.target.value);
+                                                        setFieldValue(`ingredients.${index}.itemId`, '');
+                                                    }}
                                                     disabled={saving}
-                                                >
-                                                    {getUnitOptions(ing.itemId, inventoryItems).map(option => (
-                                                        <option key={option.value} value={option.value}>
-                                                            {option.label}
-                                                        </option>
-                                                    ))}
-                                                </select>
+                                                />
                                             </td>
-                                            <td className=" p-2">
-                                                <Field
+                                            <td>
+                                                <GlobalField
+                                                    name={`ingredients.${index}.itemId`}
+                                                    type="select"
+                                                    options={[
+                                                        {value: '', label: 'Select Product'},
+                                                        ...inventoryItems
+                                                            .filter(item => item.category === values.ingredients[index].category)
+                                                            .map(item => ({
+                                                                value: item.id.toString(),
+                                                                label: item.name
+                                                            }))
+                                                    ]}
+                                                    onChange={(e) => handleIngredientSelect(e.target.value, index, setFieldValue, values)}
+                                                    disabled={saving || !values.ingredients[index].category}
+                                                />
+
+                                            </td>
+
+
+                                            <td className="p-2">
+                                                <GlobalField
+                                                    name={`ingredients.${index}.quantity`}
+                                                    type="number"
+                                                    step="0.5"
+                                                    min="0"
+                                                    disabled={saving}
+                                                />
+                                            </td>
+                                            <td className="p-2">
+                                                <GlobalField
+                                                    name={`ingredients.${index}.unit`}
+                                                    type="select"
+                                                    options={getUnitOptions(ing.itemId, inventoryItems)}
+                                                    disabled={saving}
+                                                />
+                                            </td>
+                                            <td className="p-2">
+                                                <GlobalField
+                                                    name={`ingredients.${index}.notes`}
                                                     type="text"
-                                                    value={ing.notes}
-                                                    onChange={(e) => setFieldValue(`ingredients.${index}.notes`, e.target.value)}
-                                                    className="w-full p-1 border rounded"
                                                     placeholder="Additional notes"
                                                     disabled={saving}
                                                 />
                                             </td>
+
                                             <td className=" p-2 ">
                                                 {ing.itemId &&
                                                     `₪${inventoryItems.find(item => item.id.toString() === ing.itemId)?.lastPrice}`
