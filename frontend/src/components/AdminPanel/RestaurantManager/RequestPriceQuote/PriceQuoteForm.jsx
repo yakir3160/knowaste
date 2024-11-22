@@ -5,8 +5,7 @@ import { Plus, Save, Send, CircleX } from 'lucide-react';
 import Card from "../../../Common/Card/Card";
 import Button from "../../../Common/Button/Button";
 import { createQuote } from "../../../../clientFunctions/priceQuoteFunctions";
-import { useAuthContext } from "../../../../contexts/AuthContext";
-import { calculateTotal, getUnitOptions } from './PriceQuoteHelpers';
+import { calculateTotal, getUnitOptions ,tableStyles} from './PriceQuoteHelpers';
 import GlobalField from "../../../Common/inputs/GlobalField";
 
 // Add validation schema
@@ -31,16 +30,17 @@ const QuoteSchema = Yup.object().shape({
         })
     ).min(1, 'At least one ingredient is required')
 });
+const initialValues = {
+    ingredients: [
+        { id: 0, itemId: '', category: '', quantity: 0.5, unit: 'kg', notes: '' },
+    ]
+};
 
-const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
+
+const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
     const [saving, setSaving] = useState(false);
     const categories = [...new Set(inventoryItems.map(item => item.category))];
 
-    const initialValues = {
-        ingredients: [
-            { id: 1, itemId: '', quantity: 0.5, unit: 'kg', notes: '' }
-        ]
-    };
 
     const handleIngredientSelect = (itemId, index, setFieldValue, values) => {
         console.log('Selecting ingredient:', itemId, 'for index:', index);
@@ -61,14 +61,19 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
         }
     };
 
-    const handleFormSubmit = async (values, { setSubmitting, resetForm }) => {
+    const handleFormSubmit = async (values, { setSubmitting, resetForm },onQuoteAdded) => {
         console.log('Form submitted', values);
         try {
+            setSubmitting(true);
             await handleSaveOrSubmit(values, resetForm, 'Pending');
         } catch (error) {
             console.error('Form submission error:', error);
         } finally {
+            onQuoteAdded?.();
             setSubmitting(false);
+            resetForm({ values: initialValues });
+            console.log("initial  ",initialValues)
+
         }
     };
 
@@ -77,13 +82,7 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
         console.log('User data:', userData);
         try {
             setSaving(true);
-
             const validIngredients = values.ingredients.filter(ing => ing.itemId && ing.quantity > 0);
-            if (validIngredients.length === 0) {
-                alert('Please add at least one ingredient');
-                return;
-            }
-
             const enrichedIngredients = validIngredients.map(ing => {
                 const item = inventoryItems.find(item => item.id.toString() === ing.itemId);
                 return {
@@ -96,7 +95,7 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
 
             const quoteData = {
                 userId: userData.uid,
-                businessId: userData.uid, // Use uid as businessId if no specific businessId
+                businessId: userData.uid,
                 businessName: userData.businessName,
                 status: status,
                 ingredients: enrichedIngredients,
@@ -110,15 +109,13 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
             console.log('Attempting to save quote:', quoteData);
             const docId = await createQuote(quoteData);
             console.log('Quote saved with ID:', docId);
-
-            resetForm({ values: initialValues });
-            onQuoteAdded();
-
+            onQuoteAdded?.();
         } catch (err) {
             console.error('Failed to save quote:', err);
             alert('Failed to save quote. Please try again.');
         } finally {
             setSaving(false);
+            resetForm({ values: initialValues });
         }
     };
 
@@ -144,26 +141,27 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
                         <div className=" w-full ">
                             <div className="overflow-x-auto">
                                 <table className="w-full">
-                                    <thead>
+                                    <thead className={tableStyles.thClass}>
                                     <tr className="bg-secondary">
                                         <th className="p-2 text-left">Category</th>
                                         <th className="p-2 text-left">Ingredient</th>
                                         <th className="p-2 text-left">Quantity</th>
                                         <th className=" p-2 text-left">Unit</th>
                                         <th className="p-2 text-left">Notes</th>
-                                        <th className=" p-2 text-left">Last Price</th>
+                                        <th className="p-2 text-left">Price per Unit</th>
+                                        <th className="p-2 text-left">Total Price</th>
                                         <th className="p-2 text-left">Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {values.ingredients.map((ing, index) => (
                                         <tr key={ing.id}>
-                                            <td className="p-2">
+                                            <td className={tableStyles.tableCellClass}>
                                                 <GlobalField
                                                     name={`ingredients.${index}.category`}
                                                     type="select"
                                                     options={[
-                                                        { value: '', label: 'Select Category' },
+                                                        {value: '', label: 'Select Category'},
                                                         ...categories.map(category => ({
                                                             value: category,
                                                             label: category
@@ -176,7 +174,7 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
                                                     disabled={saving}
                                                 />
                                             </td>
-                                            <td>
+                                            <td className={tableStyles.tableCellClass}>
                                                 <GlobalField
                                                     name={`ingredients.${index}.itemId`}
                                                     type="select"
@@ -195,17 +193,17 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
 
                                             </td>
 
-
-                                            <td className="p-2">
+                                            <td className={tableStyles.tableCellClass}>
                                                 <GlobalField
                                                     name={`ingredients.${index}.quantity`}
                                                     type="number"
                                                     step="0.5"
                                                     min="0"
+                                                    max="1000"
                                                     disabled={saving}
                                                 />
                                             </td>
-                                            <td className="p-2">
+                                            <td className={tableStyles.tableCellClass}>
                                                 <GlobalField
                                                     name={`ingredients.${index}.unit`}
                                                     type="select"
@@ -213,7 +211,7 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
                                                     disabled={saving}
                                                 />
                                             </td>
-                                            <td className="p-2">
+                                            <td className={tableStyles.tableCellClass}>
                                                 <GlobalField
                                                     name={`ingredients.${index}.notes`}
                                                     type="text"
@@ -222,12 +220,18 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
                                                 />
                                             </td>
 
-                                            <td className=" p-2 ">
-                                                {ing.itemId &&
-                                                    `₪${inventoryItems.find(item => item.id.toString() === ing.itemId)?.lastPrice}`
-                                                }
+                                            <td className={`${tableStyles.tableCellClass} min-w-[80px]`}>
+                                                 <span className="inline-block w-full">
+                                                        {ing.itemId ? `₪${(inventoryItems.find(item => item.id.toString() === ing.itemId)?.lastPrice || 0).toFixed(2)}` : '₪0.00'}
+                                                 </span>
                                             </td>
-                                            <td className="p-2">
+                                            <td className={`${tableStyles.tableCellClass} min-w-[80px]`}>
+                                                    <span className="inline-block w-full">
+                                                         {ing.itemId ? `₪${((inventoryItems.find(item => item.id.toString() === ing.itemId)?.lastPrice || 0) * ing.quantity).toFixed(2)}` : '₪0.00'}
+                                                     </span>
+                                            </td>
+
+                                            <td className={tableStyles.tableCellClass}>
                                                 <button
                                                     type="button"
                                                     onClick={() => {
@@ -270,7 +274,7 @@ const PriceQuoteForm = ({inventoryItems, onQuoteAdded, userData,}) => {
                                 <div
                                     className="flex w-full  gap-5 justify-between  md:w-fit md:justify-self-end bg-secondary rounded-sm">
                                     <Button
-                                        type="button"
+                                        type="submit"
                                         className="flex items-center justify-center border-2 border-lime p-3"
                                         onClick={() => handleSaveOrSubmit(values, resetForm, 'Draft')}
                                         disabled={saving || isSubmitting}
