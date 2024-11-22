@@ -1,19 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Download, Send, Edit, CircleX } from 'lucide-react';
 import Card from "../../../Common/Card/Card";
 import Button from "../../../Common/Button/Button";
 import { getStatusColor } from './PriceQuoteHelpers';
-import {tableStyles } from './PriceQuoteHelpers';
+import { tableStyles } from './PriceQuoteHelpers';
+import { fetchUserQuotes, updateQuote, deleteQuote } from '../../../../clientFunctions/priceQuoteFunctions';
 
-const PriceQuoteList = ({ quotes, onQuoteUpdated, userBaseData, isLoading }) => {
+const PriceQuoteList = ({ userBaseData, userId }) => {
+    const [quotes, setQuotes] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
+    const loadQuotes = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const fetchedQuotes = await fetchUserQuotes(userId);
+            setQuotes(fetchedQuotes);
+        } catch (err) {
+            console.error('Error loading quotes:', err);
+            setError('Failed to fetch quotes');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (userId) {
+            loadQuotes();
+        }
+    }, [userId]);
 
     return (
         <Card className="bg-gray p-5 w-full h-full rounded-sm">
             <h1 className="text-2xl text-center mb-6">
                 Price Quotes {userBaseData?.businessName ? `- ${userBaseData.businessName}` : ''}
             </h1>
-            <div className=" overflow-x-auto     ">
+            <div className="overflow-x-auto">
                 <table className="min-w-full">
                     <thead>
                     <tr className="bg-secondary">
@@ -25,7 +48,7 @@ const PriceQuoteList = ({ quotes, onQuoteUpdated, userBaseData, isLoading }) => 
                     </tr>
                     </thead>
                     <tbody>
-                    {isLoading ? (
+                    {loading ? (
                         <tr>
                             <td colSpan="5" className={`${tableStyles.tableCellClass} text-center`}>
                                 Loading quotes...
@@ -65,7 +88,13 @@ const PriceQuoteList = ({ quotes, onQuoteUpdated, userBaseData, isLoading }) => 
                                             <Button className={tableStyles.buttonClass}>
                                                 <Edit size={20}/>
                                             </Button>
-                                            <Button className={tableStyles.buttonClass}>
+                                            <Button
+                                                className={tableStyles.buttonClass}
+                                                onClick={async () => {
+                                                    await deleteQuote(quote.id);
+                                                    loadQuotes();
+                                                }}
+                                            >
                                                 <CircleX size={20} className="text-errorRed"/>
                                             </Button>
                                         </>
