@@ -45,6 +45,7 @@ export const ItemsProvider = ({ children }) => {
                 : MenuItems.categories.map(category => ({
                 id: category.id,
                 name: category.name,
+                subCategories:category.subCategories || null,
                 dishes: category.subCategories
                     ? category.subCategories.map(sub => ({
                         subCategoryId: sub.id,
