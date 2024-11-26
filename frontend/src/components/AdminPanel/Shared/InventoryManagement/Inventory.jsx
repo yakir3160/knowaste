@@ -7,25 +7,24 @@ import {useItemsContext} from "../../../../contexts/ItemsContext";
 
 const Inventory = ({ userItems, categories  }) => {
     const  {products, setProducts} = useItemsContext();
-    const [sortChoice, setSortChoice] = useState('name');
-    console.log('inventory rendered');
+    const [sortChoice, setSortChoice] = useState('');
 
     const handleSort = useCallback((sortBy) => {
+        setSortChoice("quantity");
+        console.log('Sorting by:', sortBy);
         const sortedProducts = [...products].sort((a, b) => {
             switch (sortBy) {
                 case 'name':
-                    setSortChoice(sortBy);
-                    console.log(sortBy);
                     return a.name.localeCompare(b.name);
                 case 'quantity':
-                    setSortChoice(sortBy);
                     return a.quantity - b.quantity;
                 default:
-                    return sortChoice;
+                    return 0;
             }
         });
         setProducts(sortedProducts);
-    }, [products]);
+    }, [products, setProducts]);
+
 
     return (
         <Card className={`col-span-full `}>
@@ -46,13 +45,15 @@ const Inventory = ({ userItems, categories  }) => {
                         <span className="text-titles text-lg p-2 mb-2">Sort by:</span>
                         <select
                             name={"sortBy"}
+                            value={sortChoice}
                             className={`w-fit  p-2 border-2 border-secondary rounded-sm mb-2 focus:outline-none focus:border-lime`}
                             onChange={(e) => {
-                                handleSort(e.target.value);
-                                console.log(e.target.value);
+                                const newSortChoice = e.target.value;
+                                handleSort(newSortChoice);
                             }}
                         >
-                            <option value="name">Name</option>
+                            <option  value="" disabled>Select </option>
+                            <option  value="name">Name</option>
                             <option value="quantity">Quantity</option>
                         </select>
                     </div>

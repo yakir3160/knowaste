@@ -13,6 +13,7 @@ export const useUserBaseData = () => {
         const getUserBaseData = async () => {
             setLoadingData(true);
             if (user === null) {
+                setUserBaseData(null);
                 setLoadingData(false);
             } else {
                 try {
