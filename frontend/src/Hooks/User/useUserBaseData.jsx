@@ -5,17 +5,18 @@ import {useAuthContext} from "../../contexts/AuthContext";
 
 export const useUserBaseData = () => {
     const [userBaseData, setUserBaseData] = useState(null); // יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני המשתמש
-    const[loading, setLoading] = useState(true);
+    const[loadingData, setLoadingData] = useState(false);
     const[success, setSuccess] = useState(false);
     const [error,setError ] = useState(null);
     const {user} = useAuthContext(); // שימוש בהקשר לנתוני המשתמש
     useEffect(() => {
         const getUserBaseData = async () => {
+            setLoadingData(true);
             if (user === null) {
-                setLoading(false);
-                setUserBaseData(null);
+                setLoadingData(false);
             } else {
                 try {
+
                     const userDoc = await getDoc(doc(db, 'users', user.uid));
                     if (userDoc.exists()) {
                         const safeUserData = {
@@ -36,16 +37,18 @@ export const useUserBaseData = () => {
                     }
                 } catch (error) {
                     setError('Error getting document: ' + error);
-                } finally {
-                    setLoading(false);
                 }
+                finally {
+                    setLoadingData(false);
+                }
+
             }
         };
         getUserBaseData();
     }, [user]);
     const updateUserDetails = async (newDetails) =>{
         try {
-            setLoading(true)
+            setLoadingData(true)
             const userDocRef = doc(db, 'users', user.uid);
             const userDoc = await getDoc(userDocRef);
             if (userDoc.exists()) {
@@ -64,9 +67,9 @@ export const useUserBaseData = () => {
                     setError('Error updating document: ' + error);
           }
         }finally {
-            setLoading(false)
+            setLoadingData(false)
         }
     }
 
-    return {userBaseData,updateUserDetails, loading, error,success,setSuccess};
+    return {userBaseData,updateUserDetails, loadingData, error,success,setSuccess};
 }
