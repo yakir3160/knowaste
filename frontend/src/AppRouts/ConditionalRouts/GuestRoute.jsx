@@ -1,8 +1,13 @@
 import {Navigate,Outlet} from "react-router-dom";
 import {useAuthContext} from "../../contexts/AuthContext";
+import Loading from "../../components/Common/Loading/Loading";
 
 export const GuestRoute = () => {
-    const {user} = useAuthContext();
+    const {user,loading} = useAuthContext();
+    console.log(loading);
+    if(loading)
+        return <Loading/>;
+
     return user ? <Navigate to="/admin-panel" /> : <Outlet />
 
 }

@@ -30,7 +30,7 @@ const Menu = ({ userItems = [],categories=[] ,}) => {
                             key={category.id}
                             className={`px-4 py-4 rounded-t-sm font-semibold 
                             ${selectedCategory === category.name ? 'bg-white border-x-2 border-t-2 border-lime text-buttons' : 'border-x-2 border-t-2 border-transparent'}
-                            hover:bg-opacity-10  transition-colors duration-500`}
+                            hover:bg-opacity-10  `}
                             onClick={() => setSelectedCategory(category.name)}
                         >
                             {category.name}

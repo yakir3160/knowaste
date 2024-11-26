@@ -8,12 +8,14 @@ import {useItemsContext} from "../../../../contexts/ItemsContext";
 const Inventory = ({ userItems, categories  }) => {
     const  {products, setProducts} = useItemsContext();
     const [sortChoice, setSortChoice] = useState('name');
+    console.log('inventory rendered');
 
     const handleSort = useCallback((sortBy) => {
         const sortedProducts = [...products].sort((a, b) => {
             switch (sortBy) {
                 case 'name':
                     setSortChoice(sortBy);
+                    console.log(sortBy);
                     return a.name.localeCompare(b.name);
                 case 'quantity':
                     setSortChoice(sortBy);
@@ -25,28 +27,16 @@ const Inventory = ({ userItems, categories  }) => {
         setProducts(sortedProducts);
     }, [products]);
 
-    useEffect(() => {
-        const savedSortChoice = localStorage.getItem('sortChoice');
-        console.log(savedSortChoice);
-        if (savedSortChoice) {
-            setSortChoice(savedSortChoice);
-            handleSort(savedSortChoice);
-        }
-    },  []);
-    useEffect(() => {
-        localStorage.setItem('sortChoice', sortChoice);
-    }, [sortChoice]);
-
     return (
         <Card className={`col-span-full `}>
             <h3 className="text-titles text-3xl p-3 text-center">Inventory</h3>
             <div className="flex justify-center items-center">
-            <Button
-                className="w-fit p-4 m-6 border-2 border-lime flex flex-row justify-center items-center font-semibold text-lg"
-            >
-                Add New Order
-                <Plus size={22}/>
-            </Button>
+                <Button
+                    className="w-fit p-4 m-6 border-2 border-lime flex flex-row justify-center items-center font-semibold text-lg"
+                >
+                    Add New Order
+                    <Plus size={22}/>
+                </Button>
             </div>
             <ul className="w-full ">
                 <div className="flex justify-between items-center p-3">
@@ -82,11 +72,11 @@ const Inventory = ({ userItems, categories  }) => {
                                             : 'Order Needed'
 
                                     }</span>
-                                </div>
+                            </div>
 
-                            </Card>
-                        ))}
-                    </ul>
+                        </Card>
+                    ))}
+                </ul>
             </ul>
         </Card>
     );
