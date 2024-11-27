@@ -6,11 +6,12 @@ import {useItemsContext} from "../../../../contexts/ItemsContext";
 
 
 const Inventory = ({ userItems, categories  }) => {
-    const  {products, setProducts} = useItemsContext();
-    const [sortChoice, setSortChoice] = useState('');
+    const  {products} = useItemsContext();
+    const [sortedProducts, setSortedProducts] = useState(products);
+    const [sortChoice, setSortChoice] = useState('name');
 
     const handleSort = useCallback((sortBy) => {
-        setSortChoice("quantity");
+        setSortChoice(sortBy);
         console.log('Sorting by:', sortBy);
         const sortedProducts = [...products].sort((a, b) => {
             switch (sortBy) {
@@ -22,9 +23,11 @@ const Inventory = ({ userItems, categories  }) => {
                     return 0;
             }
         });
-        setProducts(sortedProducts);
-    }, [products, setProducts]);
-
+        setSortedProducts(sortedProducts);
+    }, [sortChoice]);
+    useEffect(() => {
+        handleSort(sortChoice);
+    }, [ sortChoice]);
 
     return (
         <Card className={`col-span-full `}>
@@ -48,11 +51,9 @@ const Inventory = ({ userItems, categories  }) => {
                             value={sortChoice}
                             className={`w-fit  p-2 border-2 border-secondary rounded-sm mb-2 focus:outline-none focus:border-lime`}
                             onChange={(e) => {
-                                const newSortChoice = e.target.value;
-                                handleSort(newSortChoice);
+                               setSortChoice(e.target.value)
                             }}
                         >
-                            <option  value="" disabled>Select </option>
                             <option  value="name">Name</option>
                             <option value="quantity">Quantity</option>
                         </select>
@@ -61,7 +62,7 @@ const Inventory = ({ userItems, categories  }) => {
                 </div>
 
                 <ul className={``}>
-                    {products?.map((product) => (
+                    {sortedProducts?.map((product) => (
                         <Card key={product.id} className={`text-titles text-xl grid grid-cols-3 gap-5`}>
                             <strong className={`p-3`}>{`${product.name}`}</strong>
                             <span>{`${product.quantity} ${product.unitType}`}</span>
