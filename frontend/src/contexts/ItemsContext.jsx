@@ -9,7 +9,7 @@ const ItemsContext = createContext();
 export const ItemsProvider = ({ children }) => {
     const { userBaseData: user } = useUserContext();
 
-    // יצירת ה-state עבור פריטים וקטגוריות
+    const [loadingItems, setLoadingItems] = useState(true);
     const [userItems, setUserItems] = useState();
     const [categories, setCategories] = useState();
     const [products, setProducts] = useState(
@@ -24,6 +24,7 @@ export const ItemsProvider = ({ children }) => {
     );
 
     useEffect(() => {
+        setLoadingItems(true);
         setUserItems(
             user?.accountType === 'supplier'
                 ? Object.entries(SupplierProducts.suppliers["1"].categories).map(([categoryKey, category]) => ({
@@ -44,7 +45,7 @@ export const ItemsProvider = ({ children }) => {
                 }))
                 : MenuItems.categories.map(category => ({
                 id: category.id,
-                name: category.name,
+                category: category.name,
                 subCategories:category.subCategories || null,
                 dishes: category.subCategories
                     ? category.subCategories.map(sub => ({
@@ -72,6 +73,7 @@ export const ItemsProvider = ({ children }) => {
         console.log('User Items Set');
         console.log('user items', userItems)
         console.log('user categories',categories)
+        setLoadingItems(false);
         return () => {
             setUserItems(null);
             setCategories(null);
@@ -79,7 +81,7 @@ export const ItemsProvider = ({ children }) => {
     }, [user]);
 
     return (
-        <ItemsContext.Provider value={{ userItems, categories ,products, setProducts}}>
+        <ItemsContext.Provider value={{ userItems, categories ,products, setProducts,loadingItems}}>
             {children}
         </ItemsContext.Provider>
     );

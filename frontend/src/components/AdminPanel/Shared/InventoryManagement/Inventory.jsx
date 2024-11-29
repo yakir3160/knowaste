@@ -61,7 +61,7 @@ const Inventory = ({ userItems, categories  }) => {
 
                 </div>
 
-                <ul className={``}>
+                <ul className={`space-y-2`}>
                     {sortedProducts?.map((product) => (
                         <Card key={product.id} className={`text-titles text-xl grid grid-cols-3 gap-5`}>
                             <strong className={`p-3`}>{`${product.name}`}</strong>
