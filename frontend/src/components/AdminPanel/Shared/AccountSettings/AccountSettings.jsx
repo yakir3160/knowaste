@@ -5,7 +5,7 @@ import PasswordUpdateForm from './PasswordUpdateForm';
 
 const AccountSettings = () => {
     return (
-            <AdminPanelContainer pageTitle="Account Settings" layout="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-10 p-4">
+            <AdminPanelContainer pageTitle="Account Settings" layout="grid grid-cols-1 md:grid-cols-3 gap-5 p-5">
                 <AccountInfoForm />
                 <PasswordUpdateForm />
             </AdminPanelContainer>

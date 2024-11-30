@@ -23,7 +23,7 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                 type="tel"
             />
             <GlobalField
-                name="email"
+                name="email"xx
                 label="Email"
                 type="email"
             />
@@ -34,6 +34,7 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
             />
             <Suspense fallback={<div>Loading...</div>}>
                 <GlobalField
+                    label="City"
                     name="city"
                     options={cities.map((city) => ({ value: city, label: city }))}
                     type="select"
@@ -45,10 +46,11 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                 type="text"
             />
             <GlobalField
+                label={"Account Type"}
                 name="accountType"
                 type="select"
                 options={[
-                    { value: '', label: 'Account Type' },
+                    { value :"" , label: 'Select Account Type' },
                     { value: 'restaurant-manager', label: 'Restaurant Manager' },
                     { value: 'supplier', label: 'Supplier' }
                 ]}
@@ -58,7 +60,7 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                 type="select"
                 label={"Kosher"}
                 options={[
-                    {value:'' ,label: 'Select Kosher' },
+                    { value: "", label: 'Select Kosher' },
                     { value: true, label: 'Yes' },
                     { value: false, label: 'No' }
                 ]}

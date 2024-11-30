@@ -1,12 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import { Formik, Form } from "formik";
+import * as Yup from 'yup';
 import {Pencil,Save,CheckCircle} from 'lucide-react'
 import Card from "../../../Common/Card/Card";
 import Button from "../../../Common/Button/Button";
 import GlobalField from "../../../Common/inputs/GlobalField";
 import {useUserContext} from "../../../../contexts/UserContext";
+import {useCities} from "../../../Forms/Register/Hooks/useCities";
+
+
+const validationSchema = Yup.object().shape({
+    businessName: Yup.string().required('Required'),
+    contactName: Yup.string().required('Required'),
+    phone: Yup.string().required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+    address: Yup.string().required('Required'),
+    city: Yup.string().required('Required'),
+    zipCode: Yup.string().required('Required'),
+    kosher: Yup.boolean().required('Required'),
+});
 
 const AccountInfoForm = () => {
+    const {cities} = useCities();
     const [editing,setEditing] = useState(false)
     const { userBaseData: user ,updateUserDetails,error,loading,success,setSuccess} = useUserContext();
     useEffect(() => {
@@ -19,7 +34,7 @@ const AccountInfoForm = () => {
         return () => clearTimeout(timer);
     }, [success, setSuccess]);
     return (
-        <Card className="w-full h-fit">
+        <Card className="w-full h-fit col-span-2 align-self-end max-w-3xl">
             <h3 className="text-titles text-3xl p-3 text-center">Account Info</h3>
             <Formik
                 initialValues={{
@@ -32,8 +47,9 @@ const AccountInfoForm = () => {
                     zipCode: user?.zipCode,
                     kosher: user?.kosher,
                 }}
+                validationSchema={validationSchema}
                 onSubmit={async (values ,{setSubmitting,resetForm}) => {
-                    await updateUserDetails(values)
+                    editing && await updateUserDetails(values)
                     setEditing(false)
                     setSubmitting(false)
                     resetForm({ values });
@@ -87,10 +103,14 @@ const AccountInfoForm = () => {
                         <GlobalField
                             name="city"
                             label="City"
-                            type="text"
+                            type="select"
                             value={values.city}
                             disabled={!editing}
-                            onChange={handleChange}
+                            options={
+                            cities.map((city) => ({
+                                value: city,
+                                label: city
+                            }))}
                         />
                         <GlobalField
                             name="zipCode"
@@ -112,13 +132,13 @@ const AccountInfoForm = () => {
                             ]}
                         />
 
-                            <Button className={`h-fit text-center  border-2 border-secondary  flex flex-row justify-center`} type={"button"} onClick={() => {setEditing(!editing)}}>
+                            <Button className={`h-fit text-center  border border-secondary  flex flex-row justify-center`} type={"button"} onClick={() => {setEditing(!editing)}}>
                                 Edit
                                 <Pencil className={`size-5 ml-2`}/>
                             </Button>
                             {loading ? (
                                 <Button
-                                    className="h-fit border-2 border-lime flex flex-row justify-center transform transition-all duration-300"
+                                    className="h-fit border border-lime flex flex-row justify-center transform transition-all duration-300"
                                     type="submit"
                                 >
                                     Saving...
@@ -126,7 +146,7 @@ const AccountInfoForm = () => {
                                 </Button>
                             ) : success ? (
                                 <Button
-                                    className="h-fit bg-green border-2 border-white  text-white  hover:text-white flex flex-row justify-center"
+                                    className="h-fit bg-green border border-white  text-white  hover:text-white flex flex-row justify-center"
                                     type="submit"
                                     disabled={true}
                                 >
@@ -135,7 +155,7 @@ const AccountInfoForm = () => {
                                 </Button>
                             ) : (
                                 <Button
-                                    className="h-fit border-2 border-lime self-center flex flex-row justify-center"
+                                    className="h-fit border border-lime self-center flex flex-row justify-center"
                                     type="submit"
                                 >
                                     Save

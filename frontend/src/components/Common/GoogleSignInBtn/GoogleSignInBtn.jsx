@@ -8,12 +8,12 @@ const GoogleSignInBtn = ({ isSubmitting }) => {
     return (
         <Button
             className="relative bg-gradient-to-r from-[#4285F4] via-[#DB4437] to-[#F4B400] p-0.5 rounded-md
-                       animate-borderRotate transition-all duration-500"
+                       animate-borderRotate transition-all duration-300 hover:p-3"
             type="button"
             onClick={signInWithGoogle}
             disabled={isSubmitting}
         >
-            <span className="block relative z-10 bg-white rounded-[25px] px-[10px] py-[10px] transition-shadow duration-200">
+            <span className="block relative z-10 bg-white rounded-[25px] px-[10px] py-[10px] transition-shadow duration-[50]">
                 <div className="flex justify-center items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

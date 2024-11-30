@@ -15,26 +15,23 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [authError, setAuthError] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
     const { handleRegister } = useRegister();
     const { handleLogin } = useLogin();
     const { handleLogout } = useLogout();
     const { handleSignInWithGoogle } = useGoogleSignIn();
-    const {
-        handlePasswordResetEmail,
-        success,
-        emailSent
-    } = usePasswordReset();
+    const {handlePasswordResetEmail, success, emailSent} = usePasswordReset();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
+            console.log("User state changed");
+            setLoading(false);
         });
-        return unsubscribe;
+        return () => unsubscribe();
     }, []);
-
     const clearAuthError = () => setAuthError(null);
 
     const register = async (values, { setSubmitting, resetForm }) => {
@@ -120,25 +117,25 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const contextValue = {
-        user,
-        login,
-        register,
-        logout,
-        signInWithGoogle,
-        passwordResetEmail,
-        authError,
-        setAuthError,
-        clearAuthError,
-        success,
-        emailSent,
-    };
-
     return (
-        <AuthContext.Provider value={contextValue}>
+        <AuthContext.Provider value={{
+            user,
+            login,
+            register,
+            logout,
+            signInWithGoogle,
+            passwordResetEmail,
+            loading,
+            authError,
+            setAuthError,
+            clearAuthError,
+            success,
+            emailSent,
+        }}>
             {children}
         </AuthContext.Provider>
     );
+
 };
 
 export const useAuthContext = () => useContext(AuthContext);

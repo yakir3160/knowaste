@@ -3,7 +3,7 @@ import './Card.css';
 
 const Card = ({ children,className, style }) => {
     return (
-        <div className={`card ${className}`} style={style}>
+        <div className={`card ${className} animate-fadeIn`} style={style}>
             {children}
         </div>
     );

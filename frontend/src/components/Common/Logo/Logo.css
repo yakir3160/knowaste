@@ -2,7 +2,7 @@
     color: var(--titles-color);
     background-clip: text;
     -webkit-background-clip: text;
-    transition: all  0.2s ease-in-out;
+    transition: color  0.9s ease-in-out;
 }
 .w {
     text-shadow: var(--titles-color) 1px 1px 0;
