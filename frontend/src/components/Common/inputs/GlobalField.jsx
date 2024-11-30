@@ -37,9 +37,8 @@ const GlobalField = ({
     };
 
     const fieldHeight = type === 'textarea' ? 'min-h-[100px]' : 'h-[55px]';
-    const fieldWidth = type === 'number' ? 'w-20': 'w-fit';
     const fieldClasses = `
-       ${fieldWidth}
+       w-full
        ${fieldHeight} p-3 
         bg-white
         text-md
