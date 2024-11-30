@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { fetchCities } from '../RegisterUtils';
 
 export const useCities = () => {
-    const [cities, setCities] = useState(['Select a city']);
+    const [cities, setCities] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const requestInProgress = useRef(false);
 

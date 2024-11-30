@@ -17,8 +17,7 @@ export const fetchCities = async (setCities) => {
             )
             .sort();
 
-        // הוספת האפשרות לבחירת ברירת מחדל
-        setCities(['Select a city', ...cityNames]);
+        setCities(cityNames);
 
     } catch (err) {
         console.error('Error fetching cities:', err);

@@ -29,8 +29,8 @@ const PasswordUpdateForm = () => {
     };
 
     return (
-        <div className={`flex flex-col`}>
-            <Card className="w-full">
+        <div className={`flex flex-col border-2 border-secondary p-4 rounded-sm  w-fit`}>
+            <Card className="w-full max-w-2xl">
                 <h3 className="text-titles text-3xl p-3 text-center">Password Update</h3>
                 <Formik
                     validationSchema={Yup.object().shape({
@@ -83,14 +83,14 @@ const PasswordUpdateForm = () => {
                             <div className="mt-6">
                                 {isSubmitting ? (
                                     <Button
-                                        className="w-full border-2 border-lime flex flex-row justify-center transform transition-all duration-300"
+                                        className="w-full border border-lime flex flex-row justify-center transform transition-all duration-300"
                                     >
                                         Updating Password...
                                         <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles ml-3"></div>
                                     </Button>
                                 ) : success ? (
                                     <Button
-                                        className="w-full bg-green border-2 border-white text-white flex flex-row justify-center hover:text-white"
+                                        className="w-full bg-green border border-white text-white flex flex-row justify-center hover:text-white"
                                         type="submit"
                                         disabled
                                     >
@@ -99,7 +99,7 @@ const PasswordUpdateForm = () => {
                                     </Button>
                                 ) : (
                                     <Button
-                                        className="w-full border-2 border-lime"
+                                        className="w-full border border-lime"
                                         type="submit"
                                     >
                                         Change Password
