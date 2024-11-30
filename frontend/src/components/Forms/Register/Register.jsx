@@ -10,7 +10,7 @@ import {usePasswordStatus} from "./Hooks/usePasswordStatus";
 import {useAuthContext} from "../../../contexts/AuthContext";
 
 const Register = () => {
-    const { cities, isLoading } = useCities();
+    const { cities, isLoading } = useCities("Select City");
     const { register } = useAuthContext();
     const { passwordStatus, validatePassword } = usePasswordStatus();
 

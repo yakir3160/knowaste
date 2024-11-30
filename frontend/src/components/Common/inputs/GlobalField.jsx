@@ -11,12 +11,14 @@ const GlobalField = ({
                          options = [],
                          disabled = false,
                          autoFocus = false,
+                         className,
                          ...props
                      }) => {
     const [field, meta] = useField(name);
     const [showPassword, setShowPassword] = useState(false);
     const hasError = meta.touched && meta.error;
     const hasValue = field.value || (type === 'password' && field.value.length > 0);
+
 
     const togglePasswordVisibility = (e) => {
         e.preventDefault();
@@ -36,7 +38,8 @@ const GlobalField = ({
 
     const fieldHeight = type === 'textarea' ? 'min-h-[100px]' : 'h-[55px]';
     const fieldClasses = `
-        ${fieldHeight} p-3 w-full
+        w-full
+       ${fieldHeight} p-3 
         bg-white
         text-md
         shadow-inset-custom outline-none box-border
