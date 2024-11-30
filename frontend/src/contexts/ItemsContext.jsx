@@ -12,7 +12,7 @@ export const ItemsProvider = ({ children }) => {
     const [loadingItems, setLoadingItems] = useState(true);
     const [userItems, setUserItems] = useState();
     const [categories, setCategories] = useState();
-    const [products, setProducts] = useState(
+    const [ingredients, setIngredients] = useState(
         [
             {id:'a1',name: "Yellow Cheddar", quantity: 1, unitType: "kg"},
             {id:'a2',name: "Mozzarella", quantity: 3, unitType: "kg"},
@@ -23,40 +23,13 @@ export const ItemsProvider = ({ children }) => {
         ]
     );
 
+
     useEffect(() => {
         setLoadingItems(true);
         setUserItems(
             user?.accountType === 'supplier'
-                ? Object.entries(SupplierProducts.suppliers["1"].categories).map(([categoryKey, category]) => ({
-                    id: categoryKey,
-                    name: categoryKey,
-                    products: category.products.map(product => ({
-                        id: product.productId,
-                        name: product.name,
-                        price: product.basePrice,
-                        brand: product.brand,
-                        unitType: product.unitType,
-                        minOrder: product.minOrder,
-                        type: product?.type,
-                        volume: product?.volume,
-                        origin: product?.origin,
-                        grade: product?.grade,
-                    }))
-                }))
-                : MenuItems.categories.map(category => ({
-                id: category.id,
-                category: category.name,
-                subCategories:category.subCategories || null,
-                dishes: category.subCategories
-                    ? category.subCategories.map(sub => ({
-                        subCategoryId: sub.id,
-                        subCategoryName: sub.name,
-                        items: sub.items
-                    }))
-                    :
-                    category.items
-
-            })) || []
+                ? SupplierProducts
+                : MenuItems
         );
         setCategories(
             user?.accountType === 'supplier'
@@ -81,7 +54,7 @@ export const ItemsProvider = ({ children }) => {
     }, [user]);
 
     return (
-        <ItemsContext.Provider value={{ userItems, categories ,products, setProducts,loadingItems}}>
+        <ItemsContext.Provider value={{ userItems, categories ,ingredients, setIngredients,loadingItems}}>
             {children}
         </ItemsContext.Provider>
     );

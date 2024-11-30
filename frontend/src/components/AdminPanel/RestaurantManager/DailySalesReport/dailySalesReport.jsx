@@ -17,9 +17,8 @@ const DailySalesReport = () => {
 
     const filterDishes = (category) => {
         console.log('filtering dishes by category:', category);
-        setFilteredDishes(userItems
-            .flatMap(item => item.category === category ? item.dishes : [])
-        )
+        // setFilteredDishes(userItems?.map(item => item.category === category ? item.dishes : [])
+        // )
         console.log('filtered dishes:', filteredDishes);
     }
 
