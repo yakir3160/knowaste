@@ -2,6 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import {useUserContext} from "./UserContext";
 import MenuItems from "../MockData/MenuItems.json";
 import SupplierProducts from "../MockData/SupplierProducts.json";
+import IngredientCategories from '../MockData/ingredientCategories.json';
 
 // יצירת הקונטקסט
 const ItemsContext = createContext();
@@ -13,7 +14,8 @@ export const ItemsProvider = ({ children }) => {
     const [userItems, setUserItems] = useState();
     const [categories, setCategories] = useState();
     const [ingredients, setIngredients] = useState([]);
-
+    const ingredientCategories = IngredientCategories.categories.map(category => category);
+    console.log('ingredientCategories',ingredientCategories)
     const extractIngredients = (menuData) => {
         if (!menuData) return []; // אם אין נתוני תפריט, מחזירים מערך ריק
 
@@ -85,7 +87,7 @@ export const ItemsProvider = ({ children }) => {
     }, [user]);
 
     return (
-        <ItemsContext.Provider value={{ userItems, categories ,ingredients, setIngredients,loadingItems}}>
+        <ItemsContext.Provider value={{ userItems, categories ,ingredients, setIngredients,loadingItems,ingredientCategories}}>
             {children}
         </ItemsContext.Provider>
     );

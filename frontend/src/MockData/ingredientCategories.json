@@ -1,0 +1,88 @@
+{
+  "categories": [
+    {
+      "id": "bakery",
+      "name": "Bakery"
+    },
+    {
+      "id": "vegetables",
+      "name": "Vegetables"
+    },
+    {
+      "id": "herbs",
+      "name": "Herbs"
+    },
+    {
+      "id": "dairy",
+      "name": "Dairy"
+    },
+    {
+      "id": "condiments",
+      "name": "Condiments"
+    },
+    {
+      "id": "pasta",
+      "name": "Pasta"
+    },
+    {
+      "id": "sauce",
+      "name": "Sauce"
+    },
+    {
+      "id": "oils",
+      "name": "Oils"
+    },
+    {
+      "id:": "meat",
+      "name": "Meat"
+    },
+    {
+      "id": "seafood",
+      "name": "Seafood"
+    },
+    {
+      "id": "fruit",
+      "name": "Fruit"
+    },
+    {
+      "id": "nuts",
+      "name": "Nuts"
+    },
+    {
+      "id": "spices",
+      "name": "Spices"
+    },
+    {
+      "id": "beverages",
+      "name": "Beverages"
+    },
+    {
+      "id": "canned",
+      "name": "Canned"
+    },
+    {
+      "id": "frozen",
+      "name": "Frozen"
+    },
+    {
+      "id": "snacks",
+      "name": "Snacks"
+    },
+    {
+      "id": "baking",
+      "name": "Baking"
+    },
+    {
+      "id": "grains",
+      "name": "Grains"
+    },
+    {
+      "id": "sweets",
+      "name": "Sweets"
+    },
+    {
+      "id": "other",
+      "name": "Other"
+    }
+  ]
+}

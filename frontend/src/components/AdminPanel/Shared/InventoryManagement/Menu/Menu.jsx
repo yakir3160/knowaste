@@ -1,7 +1,7 @@
 import React from "react";
 import MenuItem from "./MenuItem";
 import { useUserItems } from "../../../../../Hooks/User/useUserItems";
-import useFilteredItems from "../../../../../Hooks/Items /useFilteredItems";
+import useFilteredItems from "../../../../../Hooks/Items/useFilteredItems";
 ;
 
 
@@ -25,7 +25,7 @@ const Menu = ({ userItems = [], categories = [] }) => {
                         <button
                             key={category.id}
                             className={`px-4 py-4 rounded-t-sm font-semibold 
-              ${selectedCategory === category.name ? 'bg-white border-x-2 border-t-2 border-lime text-buttons' : 'border-x-2 border-t-2 border-transparent'}
+              ${selectedCategory === category.name ? 'bg-white border-x border-t border-lime text-buttons' : 'border-x border-t border-transparent'}
               hover:bg-opacity-10`}
                             onClick={() => setSelectedCategory(category.name)}
                         >

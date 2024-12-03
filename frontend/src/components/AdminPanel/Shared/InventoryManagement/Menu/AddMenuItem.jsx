@@ -16,12 +16,12 @@ const AddMenuItem = ({ onAdd, categories }) => {
     };
 
     const handleSubmit = (values, { resetForm }) => {
-        onAdd(values); // Adds a new menu item
-        resetForm(); // Resets the form after adding
+        onAdd(values);
+        resetForm();
     };
 
     return (
-        <Card className=" w-fit md:w-1/2 rounded-lg p-3 mb-4 border-2 border-secondary">
+        <Card className=" w-full md:w-3/4 rounded-lg p-3 mb-4 border-2 border-secondary">
             <button
                 type="button"
                 onClick={() => onAdd() }
@@ -50,6 +50,7 @@ const AddMenuItem = ({ onAdd, categories }) => {
                                 className="text-lg font-medium text-primary mb-2"
                             />
                         </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 space-x-2">
                         <GlobalField
                             label="Description"
                             type="text"
@@ -63,7 +64,7 @@ const AddMenuItem = ({ onAdd, categories }) => {
                             className="text-gray mt-2 leading-relaxed"
                             options={categories.map(category => ({ value: category.name, label: category.name }))}
                         />
-
+                        </div>
                         <IngredientsList
                             ingredients={values.ingredients}
                             isEditing={true}

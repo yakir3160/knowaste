@@ -1,206 +1,206 @@
 import React, { useState } from 'react';
 import AdminPanelContainer from "../../AdminPanelContainer";
-import { Formik, Form, FieldArray } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import GlobalField from "../../../Common/inputs/GlobalField";
 import Card from '../../../Common/Card/Card';
 import Button from '../../../Common/Button/Button';
 import { useItemsContext } from "../../../../contexts/ItemsContext";
+import useFilteredItems from "../../../../Hooks/Items/useFilteredItems";
+import {useAuthContext} from "../../../../contexts/AuthContext";
+import { v4 as generateUniqueID } from 'uuid';
 import SalesList from "./SalesList";
-import Loading from "../../../Common/Loading/Loading";
-import useFilteredItems from "../../../../Hooks/Items /useFilteredItems";
+
+const TAX_PERCENTAGE = 0.17;
 
 const DailySalesReport = () => {
-    const { userItems, categories ,loadingItems} = useItemsContext();
+    const { userItems, categories, loadingItems } = useItemsContext();
+    const {user} =  useAuthContext()
     const {
         filteredItems,
+        subCategories,
         selectedCategory,
-        setSelectedCategory,
         selectedSubCategory,
+        setSelectedCategory,
         setSelectedSubCategory,
-        subCategories
-    }  = useFilteredItems(userItems,categories);
+    } = useFilteredItems(userItems, categories);
     const [reportItems, setReportItems] = useState([]);
-
-
+    const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0]);
+    const [sales,setSales] = useState([])
 
     const validationSchema = Yup.object({
-        date: Yup.date().required("Required").max(new Date(), "Cannot select future date"),
-        dishes: Yup.array().of(
-            Yup.object( {
-                category: Yup.string().required("Category is required"),
-                subCategory: Yup.string().optional(),
-                menuItem: Yup.string().required("Dish is required"),
-                quantity: Yup.number().required("Quantity is required").positive("Must be positive")
-            })
-        ).min(1, "At least one dish is required")
+        category: Yup.string().required("Category is required"),
+        subCategory: Yup.string().optional(),
+        menuItem: Yup.string().required("Dish is required"),
+        quantity: Yup.number().required("Quantity is required").positive("Must be positive")
+            .integer("Must be an integer"),
     });
+
     const initialValues = {
-        date: new Date().toISOString().split('T')[0],
-        dishes: [
-            {
-                category: "",
-                subCategory: "",
-                menuItem: "",
-                quantity: ""
-            }
-        ]
+        category: "",
+        subCategory: "",
+        menuItem: "",
+        quantity: "",
+        totalPrice: 0,
     };
 
+    const handleAddDish = (values, { resetForm }) => {
+        const selectedDish = filteredItems.find(item => item.name === values.menuItem);
 
-    const handleSubmit = (values, { setSubmitting, resetForm }) => {
-        const salesReport = {
-            date: new Date(values.date),
-            dishes: values.dishes.map(dish => ({
-                dish: userItems
-                    .flatMap(item => item.dishes)
-                    .find(d => d.name === dish.menuItem),
-                quantity: dish.quantity
-            }))
+        if (selectedDish) {
+            const newItem = {
+                ...values,
+                id: selectedDish.id,  // הוספת id של המנה
+                totalPrice: values.quantity * selectedDish.price
+            };
+
+            setReportItems([...reportItems, newItem]);
+            resetForm();
+            }
         };
 
-        console.log('Sales Report:', salesReport);
 
-        setSubmitting(false);
-        resetForm();
-    };
-
-    return (
-
-        <AdminPanelContainer pageTitle="Daily Sales Report" layout="p-10">
-            {loadingItems ?
-                (
-                    <Loading/>
-
-                ):
-                (
-                    <Card className="bg-white border-none p-5 h-full">
-                        <h1 className="text-2xl text-center">Add Daily Sales</h1>
-                        <div className="grid grid-cols-1">
-                            <Card className="flex justify-center">
-                                <Formik
-                                    initialValues={initialValues}
-                                    validationSchema={validationSchema}
-                                    onSubmit={handleSubmit}
-                                >
-                                    {({ values, isSubmitting, setFieldValue }) => (
-                                        <Form className="space-y-4 grid grid-cols-4 w-full" noValidate>
-                                            <div className={``}>
-                                                <GlobalField
-                                                    type="date"
-                                                    name="date"
-                                                    label="Date"
-                                                    max={new Date().toISOString().split('T')[0]}
-                                                />
-                                            </div>
-                                            <div className="space-y-4 col-span-full">
-                                                {values.dishes.map((dish, index) => (
-                                                    <Card key={index}
-                                                          className="grid  grid-cols-1 md:grid-cols-4 md:space-x-4 ">
-                                                        <GlobalField
-                                                            type="select"
-                                                            name={`category`}
-                                                            label="Category"
-                                                            options={[{
-                                                                value: '',
-                                                                label: 'Select a category'
-                                                            }, ...categories.map(category => ({
-                                                                value: category.name,
-                                                                label: category.name
-                                                            }))]}
-                                                            onChange={(e) => {
-                                                                const value = e.target.value;
-                                                                setFieldValue(value);
-                                                                setSelectedCategory(value);
-                                                            }}
-                                                        />
-                                                        {subCategories.length > 0 && (
-                                                            <GlobalField
-                                                                type="select"
-                                                                name={`subCategory`}
-                                                                label="Sub Category"
-                                                                options={[{
-                                                                    value: '',
-                                                                    label: 'Select a sub category'
-                                                                }, ...subCategories.map(subCategory => ({
-                                                                    value: subCategory.name,
-                                                                    label: subCategory.name
-                                                                }))]}
-                                                                onChange={(e) => {
-                                                                    const value = e.target.value;
-                                                                    setFieldValue(value);
-                                                                    setSelectedSubCategory(value);
-                                                                }}
-                                                            />
-                                                        )}
-                                                        <GlobalField
-                                                            type="select"
-                                                            name={`dishes.${index}.menuItem`}
-                                                            label="Dish"
-                                                            disabled={filteredItems.length === 0}
-                                                            options={[{
-                                                                value: '',
-                                                                label: 'Select a dish'
-                                                            }, ...filteredItems?.map(dish => ({
-                                                                value: dish.name,
-                                                                label: dish.name
-                                                            }))]}
-
-                                                        />
-                                                        <GlobalField
-                                                            type="number"
-                                                            name={`dishes.${index}.quantity`}
-                                                            label="Quantity"
-                                                            min="1"
-
-                                                        />
-                                                        <div className={`flex justify-center`}>
-                                                            <Button
-                                                                type="button"
-                                                                className={`w-full`}
-                                                            >
-                                                                Add Dish
-                                                            </Button>
-                                                        </div>
-                                                    </Card>
-                                                ))}
-
-                                            </div>
-
-                                            <div className="flex  justify-center col-span-full md:justify-end ">
-                                                <Button
-                                                    type="submit"
-                                                    disabled={isSubmitting}
-                                                    className="w-full border-2 border-lime mt-4 md:w-1/4  "
-                                                >
-                                                    Submit Report
-                                                </Button>
-                                            </div>
-                                        </Form>
-                                    )}
-                                </Formik>
-                                <div>
-                                    <h2>Report Items </h2>
-                                    <ul>
-                                        {reportItems.map((item,index) => (
-                                            <li key={index}>
-                                                <p>Category: {item.category}</p>
-                                                <p>Sub Category: {item.subCategory}</p>
-                                                <p>Dish: {item.menuItem}</p>
-                                                <p>Quantity: {item.quantity}</p>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </Card>
-                        </div>
-                    </Card>
-
-                )
+        const handleSubmitReport = async () => {
+            const totalSales = reportItems.reduce((acc, item) => acc + item.totalPrice, 0);
+            const report = {
+                userId:user.uid,
+                reportId: generateUniqueID(),
+                date:reportDate,
+                timeStamp: new Date().toISOString(),
+                items: reportItems,
+                totalItems: reportItems.length,
+                totalSales: totalSales,
+                totalSalesPreTax: parseFloat((totalSales * (1 - TAX_PERCENTAGE)).toFixed(2)),
             }
-            <SalesList/>
-        </AdminPanelContainer>
-    );
+            setReportItems([])
+            setSales([...sales,report])
+            console.log("Sales Report:", report);
+        };
+
+        return (
+            <AdminPanelContainer pageTitle="Daily Sales Report" layout="p-10">
+                <Card className="bg-white border-none p-5 h-full flex">
+                    <h1 className="text-2xl text-center mb-5">Add Daily Sales</h1>
+
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={handleAddDish}
+                    >
+                        {({ values, setFieldValue }) => (
+                            <Form className="gap-5 w-full" noValidate>
+                                <div className="flex justify-between items-center">
+                                    <GlobalField
+                                        type="date"
+                                        name="reportDate"
+                                        label="Report Date"
+                                        value={reportDate}
+                                        max={new Date().toISOString().split('T')[0]}
+                                        onChange={(e) => setReportDate(e.target.value)}
+                                    />
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2  border border-secondary  p-4 rounded-sm">
+                                    <GlobalField
+                                        type="select"
+                                        name="category"
+                                        label="Category"
+                                        options={[{ value: '', label: 'Select a category' }, ...categories.map(category => ({
+                                            value: category.name,
+                                            label: category.name
+                                        }))]}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            setFieldValue("category", value);
+                                            setSelectedCategory(value);
+                                        }}
+                                    />
+                                    {subCategories.length > 0 && (
+                                        <GlobalField
+                                            type="select"
+                                            name="subCategory"
+                                            label="Sub Category"
+                                            options={[{ value: '', label: 'Select a sub category' }, ...subCategories.map(subCategory => ({
+                                                value: subCategory.name,
+                                                label: subCategory.name
+                                            }))]}
+                                            onChange={(e) => {
+                                                const { value } = e.target;
+                                                setFieldValue("subCategory", value);
+                                                setSelectedSubCategory(value);
+                                            }}
+                                        />
+                                    )}
+                                    <GlobalField
+                                        type="select"
+                                        name="menuItem"
+                                        label="Dish"
+                                        options={[{ value: '', label: 'Select a dish' }, ...filteredItems.map(dish => ({
+                                            value: dish.name,
+                                            label: dish.name
+                                        }))]}
+                                    />
+                                    <div className="grid grid-cols-2">
+                                        <GlobalField
+                                            type="number"
+                                            name="quantity"
+                                            label="Quantity"
+                                            min="1"
+                                        />
+                                        <GlobalField
+                                            type="number"
+                                            name="totalItemSales"
+                                            label="Total Item Sales (₪)"
+                                            value={values.quantity * filteredItems.find(item => item.name === values.menuItem)?.price }
+                                            setFieldValue={values.totalPrice}
+                                        />
+                                    </div>
+                                    <Button
+                                        type="submit"
+                                        className="w-full h-fit self-center"
+                                    >
+                                        Add Dish
+                                    </Button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+
+                    <div className="mt-8 ">
+                        <h2 className="text-xl mb-4">Dishes in Report</h2>
+                        {reportItems.length > 0 ? (
+                            <ul>
+                                {reportItems.map((item, index) => (
+                                    <li key={index} className="border-2 border-secondary px-5 py-3 mb-2 text-titles rounded-md">
+                                        <strong>Category:</strong> {item.category} ,
+                                        {item.subCategory && (
+                                            <>
+                                                <strong>SubCategory:</strong> {item.subCategory} ,
+                                            </>
+                                        )}
+                                        <strong>Dish:</strong> {item.menuItem} ,
+                                        <strong>Quantity:</strong> {item.quantity} ,
+                                        <strong>Total Item Sales:</strong> {item.totalPrice} ₪,
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>No dishes added yet.</p>
+                        )}
+                    </div>
+
+                    <div className="self-end w-full md:w-fit p-2">
+                        <Button
+                            onClick={handleSubmitReport}
+                            className="w-full md:w-1/4 border border-lime"
+                        >
+                            Submit Report
+                        </Button>
+                    </div>
+                </Card>
+                <SalesList sales={sales} />
+
+            </AdminPanelContainer>
+        );
 };
 
 export default DailySalesReport;

@@ -4,7 +4,6 @@ import Loading from "../../components/Common/Loading/Loading";
 
 export const GuestRoute = () => {
     const {user,loading} = useAuthContext();
-    console.log(loading);
     if(loading)
         return <Loading/>;
 
