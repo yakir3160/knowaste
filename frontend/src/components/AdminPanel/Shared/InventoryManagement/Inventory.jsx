@@ -6,19 +6,20 @@ import {useItemsContext} from "../../../../contexts/ItemsContext";
 
 
 const Inventory = ({ userItems, categories  }) => {
-    const  {products} = useItemsContext();
-    const [sortedProducts, setSortedProducts] = useState(products);
+    const  {ingredients } = useItemsContext();
+    const [sortedProducts, setSortedProducts] = useState(ingredients);
     const [sortChoice, setSortChoice] = useState('name');
+    console.log('Inventory:', ingredients);
 
     const handleSort = useCallback((sortBy) => {
         setSortChoice(sortBy);
         console.log('Sorting by:', sortBy);
-        const sortedProducts = [...products].sort((a, b) => {
+        const sortedProducts = [...ingredients].sort((a, b) => {
             switch (sortBy) {
                 case 'name':
                     return a.name.localeCompare(b.name);
                 case 'quantity':
-                    return a.quantity - b.quantity;
+                    return a.stockQuantity - b.stockQuantity;
                 default:
                     return 0;
             }
@@ -63,9 +64,10 @@ const Inventory = ({ userItems, categories  }) => {
 
                 <ul className={`space-y-2`}>
                     {sortedProducts?.map((product) => (
-                        <Card key={product.id} className={`text-titles text-xl grid grid-cols-3 gap-5`}>
+                        <Card key={product.id} className={`text-titles text-xl grid grid-cols-4 gap-5`}>
                             <strong className={`p-3`}>{`${product.name}`}</strong>
-                            <span>{`${product.quantity} ${product.unitType}`}</span>
+                            <span>base: {`${product.baseQuantity} ${product.unitType}`}</span>
+                            <span>stock: {`${product.stockQuantity} ${product.unitType}`}</span>
                             <div className="flex">
                                     <span
                                         className={`${product.quantity > 1 ? 'text-green' : 'text-errorRed animate-pulse'} `}>{

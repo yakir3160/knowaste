@@ -13,7 +13,7 @@ import TabNavigation from "../../../Common/TabNavigation/TabNavigation";
 const TABS = ['Menu', 'Inventory'];
 
 const InventoryManagement = () => {
-    const { userItems, categories, products, setProducts } = useItemsContext();
+    const { ingredients ,userItems,categories } = useItemsContext();
     const { userBaseData: user } = useUserContext();
     const [isAdding, setIsAdding] = useState(false);
     const [currentTab, setCurrentTab] = useState(TABS[0]);
@@ -21,7 +21,6 @@ const InventoryManagement = () => {
     const handleAddClick = () => {
         setIsAdding(true);
     };
-
     const accountType = user?.accountType;
     const isSupplier = accountType === 'supplier';
     const title = isSupplier ? 'Products' : 'Menu';
@@ -68,7 +67,7 @@ const InventoryManagement = () => {
                 )}
             </Card>
         ),
-        'Inventory': () => <Inventory userItems={userItems} categories={categories} />
+        'Inventory': () => <Inventory userItems={ingredients} categories={categories} />
     };
 
     const CurrentTabComponent = TabComponents[currentTab] || (() => <div>Tab not found</div>);
