@@ -3,7 +3,7 @@ import { Download, Send, Edit, CircleX } from 'lucide-react';
 import Card from "../../../../Common/Card/Card";
 import Button from "../../../../Common/Button/Button";
 import { getStatusColor } from '../PriceQuoteHelpers';
-import { tableStyles } from '../PriceQuoteHelpers';
+import { tableStyles } from '../../../../../css/tableStyles';
 import { fetchUserQuotes, updateQuote, deleteQuote } from '../../../../../clientFunctions/priceQuoteFunctions';
 import { QuoteListRow, LoadingRow, EmptyRow } from './QuoteListRow';
 
@@ -48,7 +48,7 @@ const PriceQuoteList = ({ userBaseData, userId, refreshTrigger = null }) => {
             <h1 className="text-2xl text-center mb-6">
                 Price Quotes {userBaseData?.businessName ? `- ${userBaseData.businessName}` : ''}
             </h1>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto ">
                 <table className="min-w-full">
                     <thead>
                     <tr className="bg-secondary">

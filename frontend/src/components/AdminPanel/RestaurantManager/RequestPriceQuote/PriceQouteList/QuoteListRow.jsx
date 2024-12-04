@@ -1,7 +1,7 @@
 import React from 'react';
 import { Download, Send, Edit, CircleX } from 'lucide-react';
 import Button from "../../../../Common/Button/Button";
-import { tableStyles } from "../PriceQuoteHelpers";
+import { tableStyles } from '../../../../../css/tableStyles';
 import { getStatusColor } from "../PriceQuoteHelpers";
 
 const LoadingRow = () => (

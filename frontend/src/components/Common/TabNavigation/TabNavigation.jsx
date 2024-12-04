@@ -13,12 +13,12 @@ const TabNavigation = ({ tabs = ['tab1', 'tab2'] ,onTabChange}) => {
     };
 
     return (
-        <div className={`w-fit bg-base border border-secondary  rounded-sm shadow-inset-custom grid grid-cols-${tabs.length}`}>
+        <div className={`w-3/4 bg-secondary self-center  rounded-t-sm  grid grid-cols-${tabs.length}`}>
             {tabs?.map((tabName) => (
                 <button
                     key={tabName}
-                    className={`w-full px-4 py-4 rounded-sm font-semibold text-lg
-                     ${activeTab === tabName ? 'bg-secondary text-buttons shadow-outer-custom' : ''}
+                    className={`w-full min-w-min px-4 py-4 rounded-t-sm font-semibold text-lg
+                     ${activeTab === tabName ? 'bg-cards text-buttons' : ''}
                      transition-colors duration-150`}
                     onClick={() => handleTabChange(tabName)}
                 >

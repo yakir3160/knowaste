@@ -5,7 +5,8 @@ import { Plus, Save, Send, CircleX } from 'lucide-react';
 import Card from "../../../Common/Card/Card";
 import Button from "../../../Common/Button/Button";
 import { createQuote } from "../../../../clientFunctions/priceQuoteFunctions";
-import { calculateTotal, getUnitOptions ,tableStyles} from './PriceQuoteHelpers';
+import { calculateTotal, getUnitOptions} from './PriceQuoteHelpers';
+import { tableStyles } from '../../../../css/tableStyles';
 import GlobalField from "../../../Common/inputs/GlobalField";
 
 // Add validation schema
