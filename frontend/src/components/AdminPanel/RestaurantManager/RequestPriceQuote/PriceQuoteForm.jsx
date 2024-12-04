@@ -298,10 +298,11 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2  mt-5 rounded-sm w-full gap-4 p-4 ">
                             {/* כפתורים לייצוא */}
-                            <div className="flex flex-row  justify-center md:justify-start gap-3">
-                                <Button type="button" className="border px-4 py-2" disabled={saving}>CSV</Button>
-                                <Button type="button" className="border px-4 py-2" disabled={saving}>Excel</Button>
-                                <Button type="button" className="border px-4 py-2" disabled={saving}>PDF</Button>
+                            <div className="flex flex-row  w-fit  justify-center rounded-sm md:justify-start space-x-2 bg-white  border-2  border-secondary">
+                                <span className="text-lg  text-titles font-semibold self-center pl-5">Export to:</span>
+                                <Button type="button" disabled={saving}>CSV</Button>
+                                <Button type="button"  disabled={saving}>Excel</Button>
+                                <Button type="button"  disabled={saving}>PDF</Button>
                             </div>
                             {/* אזור הטוטאל */}
                             <div className="flex items-center p-2 justify-center md:justify-end">
