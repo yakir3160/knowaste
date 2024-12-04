@@ -25,7 +25,7 @@ const Menu = ({ userItems = [], categories = [] }) => {
                         <button
                             key={category.id}
                             className={`px-4 py-4 rounded-t-sm font-semibold 
-              ${selectedCategory === category.name ? 'bg-white border-x border-t border-lime text-buttons' : 'border-x border-t border-transparent'}
+              ${selectedCategory === category.name ? 'bg-white text-buttonss' : 'border-x border-t border-transparent'}
               hover:bg-opacity-10`}
                             onClick={() => setSelectedCategory(category.name)}
                         >
@@ -35,7 +35,7 @@ const Menu = ({ userItems = [], categories = [] }) => {
                 </div>
             </div>
 
-            <div className={`w-full flex flex-col bg-white p-5 rounded-sm`}>
+            <div className={`w-full flex flex-col bg-white p-5 rounded-sm `}>
                 <div
                     className={`mb-6 w-full lg:w-fit self-center rounded-t-sm grid grid-cols-3 md:grid-cols-${subCategories.length} gap-2 p-2`}>
                     {subCategories?.map(subCategory => (
