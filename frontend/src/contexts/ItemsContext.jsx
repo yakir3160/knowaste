@@ -18,7 +18,6 @@ export const ItemsProvider = ({ children }) => {
     console.log('ingredientCategories',ingredientCategories)
     const extractIngredients = (menuData) => {
         if (!menuData) return []; // אם אין נתוני תפריט, מחזירים מערך ריק
-
         // חילוץ כל הפריטים מתוך קטגוריות ותתי קטגוריות
         const menuItems = menuData?.categories.flatMap(category =>
             category.items || // אם יש פריטים ישירים בקטגוריה
@@ -46,7 +45,6 @@ export const ItemsProvider = ({ children }) => {
                     unitType: 'grams'
                 });
             }
-
             return acc;
         }, []);
     };

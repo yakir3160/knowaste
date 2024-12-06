@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {useAuthContext} from "../../../../contexts/AuthContext";
 import {useUserContext} from "../../../../contexts/UserContext";
+import WasteReport from "../../../AdminPanel/RestaurantManager/WasteReport/WasteReport";
 
 const MobileBottomNav = () => {
     const location = useLocation();
@@ -72,11 +73,11 @@ const MobileBottomNav = () => {
                                 <span className="text-sm text-titles">Daily Sales Report</span>
                             </button>
                             <button
-                                onClick={() => navigate("/admin-panel/leftover-report")}
+                                onClick={() => navigate("/admin-panel/waste-report")}
                                 className={buttonClass("/admin-panel/leftover-report")}
                             >
                                 <Trash2 className={`${iconSize} text-titles`}/>
-                                <span className="text-sm text-titles">Leftover Report</span>
+                                <span className="text-sm text-titles">Waste Report</span>
                             </button>
 
                             <button
@@ -105,7 +106,7 @@ const MobileBottomNav = () => {
                         className={buttonClass("/admin-panel/account-settings")}
                     >
                         <UserRoundCog className={iconSize}/>
-                        <span className="text-sm text-titles">Account Settings</span>
+                        <span className="text-sm text-titles">Account</span>
 
                     </button>
                     <button

@@ -48,8 +48,8 @@ const PriceQuoteList = ({ userBaseData, userId, refreshTrigger = null }) => {
             <h1 className="text-2xl text-center mb-6">
                 Price Quotes {userBaseData?.businessName ? `- ${userBaseData.businessName}` : ''}
             </h1>
-            <div className="overflow-x-auto ">
-                <table className="min-w-full">
+            <div className="overflow-x-auto p-5 ">
+                <table className="min-w-full ">
                     <thead>
                     <tr className="bg-secondary">
                         <th className={tableStyles.thClass}>Date</th>

@@ -4,6 +4,7 @@ import Logo from "../../../Common/Logo/Logo";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { useUserContext } from "../../../../contexts/UserContext";
+import WasteReport from "../../../AdminPanel/RestaurantManager/WasteReport/WasteReport";
 
 const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     const toggleSidebar = () => setIsOpen(!isOpen);
@@ -23,8 +24,8 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
         button: "z-10",
         menuList: "flex-grow list-inside text-titles py-5 flex flex-col gap-5 mt-10",
         menuItem: `flex items-center gap-2 rounded-r-md p-3 px-4 w-full shadow-none hover:bg-base `,
-        menuItemSelected: "bg-base border border-lime text-buttons",
-        logout: "text-errorRed border border-transparent text-buttons px-4 hover:text-errorRed hover:bg-errorLightRed hover:border-errorRed",
+        menuItemSelected: "bg-base border border-lime border-l-transparent text-buttons",
+        logout: "text-errorRed border border-transparent text-buttons px-4 hover:text-errorRed hover:bg-errorLightRed hover:border-errorRed hover:border-l-transparent",
         itemText: `whitespace-nowrap ${sideBarTransition} ${isOpen ? '' : 'hidden'}`,
         footer: "flex justify-center items-center bg-baseLight h-[10vh] rounded-b-lg",
     };
@@ -72,11 +73,11 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                                 <span className={sidebarClasses.itemText}>Daily Sales Report</span>
                             </Button>
                             <Button
-                                onClick={() => navigate("/admin-panel/leftover-report")}
+                                onClick={() => navigate("/admin-panel/waste-report")}
                                 className={getMenuItemClasses("/admin-panel/leftover-report")}
                             >
                                 <Trash2 className="h-5 w-5" />
-                                <span className={sidebarClasses.itemText}>Leftover Report</span>
+                                <span className={sidebarClasses.itemText}>Waste Report</span>
                             </Button>
                             <Button
                                 onClick={() => navigate("/admin-panel/request-quote")}
@@ -103,7 +104,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                         onClick={() => navigate("/admin-panel/account-settings")}
                     >
                         <UserRoundCog className="h-5 w-5" />
-                        <span className={sidebarClasses.itemText}>Account Settings</span>
+                        <span className={sidebarClasses.itemText}>Account</span>
                     </Button>
 
                     <Button

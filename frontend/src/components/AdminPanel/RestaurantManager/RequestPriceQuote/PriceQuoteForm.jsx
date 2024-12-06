@@ -121,16 +121,7 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
     };
 
     return (
-        <Card className={` h-full `}>
-            <h1 className={`text-2xl  text-center mb-6`}>
-                Request Price Quote
-                {userData?.businessName && (
-                    <div className="text-sm text-gray-600 mt-1">
-                        {userData.businessName}
-                    </div>
-                )}
-            </h1>
-
+        <Card className={` h-full`}>
             <Formik
                 initialValues={initialValues}
                 validationSchema={QuoteSchema}
@@ -138,8 +129,7 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
             >
                 {({ values, setFieldValue, resetForm, errors, touched, isSubmitting }) => (
                     <Form>
-
-                        <div className=" w-full ">
+                        <div className=" w-full p-5 ">
                             <div className="overflow-x-auto">
                                 <table className="w-full">
                                     <thead className={tableStyles.thClass}>
@@ -253,7 +243,7 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
                                 </table>
                             </div>
 
-                            <div className={`grid grid-cols-1  md:grid-cols-2 gap-10 py-5 px-3`}>
+                            <div className={`grid grid-cols-1  md:grid-cols-4 gap-10 py-5 px-3`}>
                                 <Button
                                     type="button"
                                     onClick={() => {
@@ -271,6 +261,19 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
                                     Add Item
                                     <Plus size={20} className="ml-2"/>
                                 </Button>
+                                {/* כפתורים לייצוא */}
+                                <div className="flex flex-row  w-fit  justify-center rounded-sm md:justify-start space-x-2 bg-white  border  border-secondary">
+                                    <span className="text-lg  text-titles font-semibold self-center pl-5">Export to:</span>
+                                    <Button type="button" className={`shadow-none`} disabled={saving}>CSV</Button>
+                                    <Button type="button" className={`shadow-none`} disabled={saving}>Excel</Button>
+                                    <Button type="button" className={`shadow-none`} disabled={saving}>PDF</Button>
+                                </div>
+                                {/* אזור הטוטאל */}
+                                <div className="flex items-center p-2 justify-center md:justify-end">
+                                    <strong className="text-lg">
+                                        Total: ₪{calculateTotal(values.ingredients, inventoryItems).toFixed(2)}
+                                    </strong>
+                                </div>
                                 {/* אזור הכפתורים */}
                                 <div
                                     className="flex w-full  gap-5 justify-between  md:w-fit md:justify-self-end bg-secondary rounded-sm">
@@ -292,26 +295,10 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
                                         <Send size={20} className="ml-2"/>
                                     </Button>
                                 </div>
+                           
 
                             </div>
                         </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2  mt-5 rounded-sm w-full gap-4 p-4 ">
-                            {/* כפתורים לייצוא */}
-                            <div className="flex flex-row  w-fit  justify-center rounded-sm md:justify-start space-x-2 bg-white  border-2  border-secondary">
-                                <span className="text-lg  text-titles font-semibold self-center pl-5">Export to:</span>
-                                <Button type="button" disabled={saving}>CSV</Button>
-                                <Button type="button"  disabled={saving}>Excel</Button>
-                                <Button type="button"  disabled={saving}>PDF</Button>
-                            </div>
-                            {/* אזור הטוטאל */}
-                            <div className="flex items-center p-2 justify-center md:justify-end">
-                                <strong className="text-lg">
-                                    Total: ₪{calculateTotal(values.ingredients, inventoryItems).toFixed(2)}
-                                </strong>
-                            </div>
-                        </div>
-
 
                     </Form>
                 )}

@@ -14,7 +14,7 @@ const PriceQuote = () => {
         setRefreshTrigger(prev => prev + 1);
     }
     return (
-        <AdminPanelContainer pageTitle={'Request Price Quote'} layout={`p-5 gap-10 grid grid-cols-1 lg:grid-cols-1`}>
+        <AdminPanelContainer pageTitle={'Request Price Quote'} layout={`p-2 gap-10 grid grid-cols-1 lg:grid-cols-1`}>
             <PriceQuoteForm
                 inventoryItems={INVENTORY_ITEMS}
                 onQuoteAdded={handleQuoteAdded}

@@ -31,9 +31,7 @@ const InventoryManagement = () => {
 
 
     return (
-        <AdminPanelContainer
-            pageTitle={"Inventory Management"}
-            layout={' border-2 p-6 flex flex-col '}
+        <AdminPanelContainer pageTitle={"Inventory Management"} layout={' border-2 p-2 flex flex-col '}
         >
             <TabNavigation tabs={['Menu', 'Inventory']} onTabChange={setActiveTab} />
             {activeTab === 'Menu' && (
