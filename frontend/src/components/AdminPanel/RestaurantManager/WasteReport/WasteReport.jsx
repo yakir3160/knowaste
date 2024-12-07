@@ -46,7 +46,7 @@ const WasteReport = () => {
     const [leftovers, setLeftovers] = useState([]);
     const [activeTab, setActiveTab] = useState('Items');
     const [saving, setSaving] = useState(false);
-
+    console.log(ingredients);
     const reasons = [
         "Expired",
         "Damaged",
@@ -94,7 +94,7 @@ const WasteReport = () => {
                         {({ values, setFieldValue }) => (
                             <Form>
                                 <div className="w-full p-5">
-                                    <div className="flex justify-start">
+                                    <div className="flex justify-between items-center">
                                         <GlobalField
                                             type="date"
                                             name="reportDate"
@@ -103,12 +103,18 @@ const WasteReport = () => {
                                             max={new Date().toISOString().split('T')[0]}
                                             onChange={(e) => setReportDate(e.target.value)}
                                         />
+                                        <div className="text-xl font-bold text-center">
+                                            <span className="text-titles">
+                                                    Total Cost:
+                                            ₪{values.items.reduce((acc, item) => acc + (item.cost || 0), 0).toFixed(2)}
+                                            </span>
+                                        </div>
                                     </div>
                                     <div className="overflow-x-auto mt-4">
                                         <table className="w-full">
                                             <thead>
                                             <tr className="bg-secondary">
-                                                <th className={tableStyles.thClass}>Ingredient</th>
+                                            <th className={tableStyles.thClass}>Ingredient</th>
                                                 <th className={tableStyles.thClass}>Quantity</th>
                                                 <th className={tableStyles.thClass}>Unit</th>
                                                 <th className={tableStyles.thClass}>Reason</th>
@@ -146,7 +152,7 @@ const WasteReport = () => {
                                                         />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
-                                                        {item.unit}
+                                                        {'kg'}
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
                                                         <GlobalField
@@ -162,12 +168,7 @@ const WasteReport = () => {
                                                         />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
-                                                        <GlobalField
-                                                            name={`items.${index}.cost`}
-                                                            type="number"
-                                                            min="0"
-                                                            step="0.01"
-                                                        />
+                                                        {'₪'}
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
                                                         <button
@@ -188,7 +189,7 @@ const WasteReport = () => {
                                         </table>
                                     </div>
 
-                                    <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-10 p-5">
+                                    <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 p-5 rounded-b-sm border-2 border-secondary border-t-2 border-t-transparent">
                                         <Button
                                             type="button"
                                             onClick={() => {
@@ -204,14 +205,13 @@ const WasteReport = () => {
                                             Add Item
                                             <Plus size={20} className="ml-2"/>
                                         </Button>
-                                        <div className="flex flex-row w-fit justify-center rounded-sm md:justify-start space-x-2 bg-white border border-secondary">
+                                        <div
+                                            className="flex flex-row w-fit justify-center rounded-sm md:justify-start space-x-2 bg-white border border-secondary">
                                             <span className="text-lg text-titles font-semibold self-center pl-5">Export to:</span>
                                             <Button type="button" className="shadow-none" disabled={saving}>CSV</Button>
-                                            <Button type="button" className="shadow-none" disabled={saving}>Excel</Button>
+                                            <Button type="button" className="shadow-none"
+                                                    disabled={saving}>Excel</Button>
                                             <Button type="button" className="shadow-none" disabled={saving}>PDF</Button>
-                                        </div>
-                                        <div className="text-xl font-bold text-center">
-                                            Total Cost: ₪{values.items.reduce((acc, item) => acc + (item.cost || 0), 0).toFixed(2)}
                                         </div>
                                         <div className="flex gap-4 justify-center md:justify-end">
                                             <Button
@@ -223,6 +223,7 @@ const WasteReport = () => {
                                                 <Send size={20} className="ml-2"/>
                                             </Button>
                                         </div>
+
                                     </div>
                                 </div>
                             </Form>

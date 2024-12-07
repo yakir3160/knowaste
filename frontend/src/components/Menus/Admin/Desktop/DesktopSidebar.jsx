@@ -74,7 +74,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                             </Button>
                             <Button
                                 onClick={() => navigate("/admin-panel/waste-report")}
-                                className={getMenuItemClasses("/admin-panel/leftover-report")}
+                                className={getMenuItemClasses("/admin-panel/waste-report")}
                             >
                                 <Trash2 className="h-5 w-5" />
                                 <span className={sidebarClasses.itemText}>Waste Report</span>
