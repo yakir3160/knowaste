@@ -2,7 +2,7 @@ import React from "react";
 import MenuItem from "./MenuItem";
 import { useUserItems } from "../../../../../Hooks/User/useUserItems";
 import useFilteredItems from "../../../../../Hooks/Items/useFilteredItems";
-;
+
 
 
 
@@ -49,7 +49,7 @@ const Menu = ({ userItems = [], categories = [] }) => {
                     ))}
                 </div>
 
-                <div className="w-full gap-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                <div className="w-full gap-3 grid grid-cols-1  ">
                     {filteredItems?.map((item) => (
                         <MenuItem
                             key={item.id}
