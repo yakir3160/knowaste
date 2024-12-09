@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
-import admin, { db } from '../config/firebase-admin.js';
+import admin, { db } from '../../config/firebase-admin.js';
 import nodemailer from 'nodemailer';
 
 
