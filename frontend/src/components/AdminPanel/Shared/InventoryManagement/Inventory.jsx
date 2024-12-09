@@ -19,7 +19,7 @@ const Inventory = ({ userItems, categories  }) => {
                 case 'name':
                     return a.name.localeCompare(b.name);
                 case 'quantity':
-                    return a.stockQuantity - b.stockQuantity;
+                    return a.stock - b.stock;
                 default:
                     return 0;
             }
@@ -52,10 +52,10 @@ const Inventory = ({ userItems, categories  }) => {
                             value={sortChoice}
                             className={`w-fit  p-2 border-2 border-secondary rounded-sm mb-2 focus:outline-none focus:border-lime`}
                             onChange={(e) => {
-                               setSortChoice(e.target.value)
+                                setSortChoice(e.target.value)
                             }}
                         >
-                            <option  value="name">Name</option>
+                            <option value="name">Name</option>
                             <option value="quantity">Quantity</option>
                         </select>
                     </div>
@@ -63,24 +63,29 @@ const Inventory = ({ userItems, categories  }) => {
                 </div>
 
                 <ul className={`space-y-2`}>
-                    {sortedProducts?.map((product) => (
-                        <Card key={product.id} className={`text-titles text-xl grid grid-cols-4 gap-5`}>
-                            <strong className={`p-3`}>{`${product.name}`}</strong>
-                            <span>base: {`${product.baseQuantity} ${product.unitType}`}</span>
-                            <span>stock: {`${product.stockQuantity} ${product.unitType}`}</span>
-                            <div className="flex">
-                                    <span
-                                        className={`${product.quantity > 1 ? 'text-green' : 'text-errorRed animate-pulse'} `}>{
-                                        product.quantity > 1
-                                            ? 'In Stock'
-                                            : 'Order Needed'
+                    {sortedProducts?.map((product) => {
+                        // חישוב הכמות הכוללת במונחי יחידות אספקה
+                        const stockInUnits = product.supply?.unitsPerPackage
+                            ? product.stock * product.supply.unitsPerPackage
+                            : product.stock;
 
-                                    }</span>
-                            </div>
+                        // המרה לגרם לק"ג אם יחידת המדידה היא גרם
+                        const formattedStock = product.unit === 'g' && stockInUnits >= 1000
+                            ? `${(stockInUnits / 1000).toFixed(2)} kg`
+                            : `${stockInUnits} ${product.unit}`;
 
-                        </Card>
-                    ))}
+                        return (
+                            <Card key={product.id} className={`text-titles text-xl grid grid-cols-4 gap-5`}>
+                                <strong className={`p-3`}>{product.name}</strong>
+                                <span>Category: {product.category}</span>
+                                <span>Stock: {formattedStock}({product.stock} {product.supply?.supplierUnit || 'units'})</span>
+                                <span>Price per unit: ${product.pricePerUnit}</span>
+                            </Card>
+                        );
+                    })}
                 </ul>
+
+
             </ul>
         </Card>
     );
