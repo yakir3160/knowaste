@@ -30,7 +30,7 @@ const IngredientsList = ({ ingredients, isEditing, setFieldValue }) => {
                             style={{ opacity: ingredient.removed ? 0 : 1 }}
                         >
                             <IngredientForm
-                                index={index}
+                                index={ingredient.id}
                                 isEditing={isEditing}
                                 prefix="ingredients"
                             />

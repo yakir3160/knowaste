@@ -1,136 +1,41 @@
 {
   "categories": [
-    {
-      "id": "bakery",
-      "name": "Bakery"
-    },
-    {
-      "id": "vegetables",
-      "name": "Vegetables"
-    },
-    {
-      "id": "herbs",
-      "name": "Herbs"
-    },
-    {
-      "id": "dairy",
-      "name": "Dairy"
-    },
-    {
-      "id": "condiments",
-      "name": "Condiments"
-    },
-    {
-      "id": "pasta",
-      "name": "Pasta"
-    },
-    {
-      "id": "sauce",
-      "name": "Sauce"
-    },
-    {
-      "id": "oils",
-      "name": "Oils"
-    },
-    {
-      "id": "meat",
-      "name": "Meat"
-    },
-    {
-      "id": "seafood",
-      "name": "Seafood"
-    },
-    {
-      "id": "fruit",
-      "name": "Fruit"
-    },
-    {
-      "id": "nuts",
-      "name": "Nuts"
-    },
-    {
-      "id": "spices",
-      "name": "Spices"
-    },
-    {
-      "id": "beverages",
-      "name": "Beverages"
-    },
-    {
-      "id": "canned",
-      "name": "Canned"
-    },
-    {
-      "id": "frozen",
-      "name": "Frozen"
-    },
-    {
-      "id": "snacks",
-      "name": "Snacks"
-    },
-    {
-      "id": "baking",
-      "name": "Baking"
-    },
-    {
-      "id": "grains",
-      "name": "Grains"
-    },
-    {
-      "id": "sweets",
-      "name": "Sweets"
-    },
-    {
-      "id": "other",
-      "name": "Other"
-    }
+    { "value": "","label": "Select a Category" },
+    { "value": "bakery", "label": "Bakery" },
+    { "value": "vegetables", "label": "Vegetables" },
+    { "value": "herbs", "label": "Herbs" },
+    { "value": "dairy", "label": "Dairy" },
+    { "value": "condiments", "label": "Condiments" },
+    { "value": "pasta", "label": "Pasta" },
+    { "value": "sauce", "label": "Sauce" },
+    { "value": "oils", "label": "Oils" },
+    { "value": "meat", "label": "Meat" },
+    { "value": "seafood", "label": "Seafood" },
+    { "value": "fruit", "label": "Fruit" },
+    { "value": "nuts", "label": "Nuts" },
+    { "value": "spices", "label": "Spices" },
+    { "value": "beverages", "label": "Beverages" },
+    { "value": "canned", "label": "Canned" },
+    { "value": "frozen", "label": "Frozen" },
+    { "value": "snacks", "label": "Snacks" },
+    { "value": "baking", "label": "Baking" },
+    { "value": "grains", "label": "Grains" },
+    { "value": "sweets", "label": "Sweets" },
+    { "value": "other", "label": "Other" }
   ],
   "storageTypes": [
-    {
-      "value": "",
-      "label": "Select Storage Type"
-    },
-    {
-      "value": "refrigerated",
-      "label": "Refrigerated"
-    },
-    {
-      "value": "frozen",
-      "label": "Frozen"
-    },
-    {
-      "value": "dry",
-      "label": "Dry Storage"
-    },
-    {
-      "value": "room",
-      "label": "Room Temperature"
-    }
+    { "value": "", "label": "Select Storage Type" },
+    { "value": "refrigerated", "label": "Refrigerated" },
+    { "value": "frozen", "label": "Frozen" },
+    { "value": "dry", "label": "Dry Storage" },
+    { "value": "room", "label": "Room Temperature" }
   ],
   "measurementUnits": [
-    {
-      "value": "",
-      "label": "Select Unit"
-    },
-    {
-      "value": "g",
-      "label": "Grams"
-    },
-    {
-      "value": "kg",
-      "label": "Kilograms"
-    },
-    {
-      "value": "l",
-      "label": "Liters"
-    },
-    {
-      "value": "ml",
-      "label": "Milliliters"
-    },
-    {
-      "value": "unit",
-      "label": "Units"
-    }
+    { "value": "", "label": "Select Unit" },
+    { "value": "g", "label": "Grams" },
+    { "value": "kg", "label": "Kilograms" },
+    { "value": "l", "label": "Liters" },
+    { "value": "ml", "label": "Milliliters" },
+    { "value": "unit", "label": "Unit" }
   ]
 }

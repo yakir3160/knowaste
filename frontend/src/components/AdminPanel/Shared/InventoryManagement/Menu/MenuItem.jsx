@@ -71,6 +71,27 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
                             className="text-gray mt-2 leading-relaxed"
                             disabled={!isEditing}
                         />
+                        <div className="grid grid-cols-2 gap-5">
+                            <Button
+                                type={isEditing ? "submit" : "button"}
+                                onClick={() => {
+                                    !isEditing && setIsEditing(true)
+                                    setShowIngredients(true)
+                                }}
+                                className="flex flex-row justify-center px-4 py-2 text-sm font-medium border border-lime rounded-md"
+                            >
+                                {isEditing ? 'Save' : 'Edit'}
+                                {isEditing ? <Save size={20} className="ml-2"/> : <Pencil size={20} className="ml-2"/>}
+                            </Button>
+                            <Button
+                                type="button"
+                                onClick={() => onRemove(item.id)}
+                                className="flex flex-row justify-center px-4 py-2 text-sm font-medium text-errorRed border rounded-md hover:bg-errorLightRed hover:text-errorRed transition-colors"
+                            >
+                                Remove
+                                <CircleX size={20} className="ml-2"/>
+                            </Button>
+                        </div>
                         {user?.accountType === 'restaurant-manager' && (
                             <div className="flex items-center justify-between mt-4">
                                 <Button
@@ -82,27 +103,6 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
                                     {showIngredients ? <ChevronUp size={20} className="mt-0.5"/> :
                                         <ChevronDown size={20} className="mt-0.5"/>}
                                 </Button>
-                                <div className="flex gap-2">
-                                    <Button
-                                        type={isEditing ? "submit" : "button"}
-                                        onClick={() => {
-                                            !isEditing && setIsEditing(true)
-                                            setShowIngredients(true)
-                                        }}
-                                        className="flex flex-row justify-center px-4 py-2 text-sm font-medium border border-lime rounded-md"
-                                    >
-                                        {isEditing ? 'Save' : 'Edit'}
-                                        {isEditing ? <Save size={20} className="ml-2"/> : <Pencil size={20} className="ml-2"/>}
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        onClick={() => onRemove(item.id)}
-                                        className="flex flex-row justify-center px-4 py-2 text-sm font-medium text-errorRed border rounded-md hover:bg-errorLightRed hover:text-errorRed transition-colors"
-                                    >
-                                        Remove
-                                        <CircleX size={20} className="ml-2"/>
-                                    </Button>
-                                </div>
                             </div>
                         )}
 

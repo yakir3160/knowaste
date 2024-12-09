@@ -10,7 +10,8 @@ const AddMenuItem = ({ onAdd, categories }) => {
     const initialValues = {
         name: '',
         price: 0,
-        Category: '',
+        category: '',
+        subCategory: '',
         description: '',
         ingredients: [],
     };

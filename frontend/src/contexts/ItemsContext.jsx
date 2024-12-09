@@ -41,9 +41,9 @@ export const ItemsProvider = ({ children }) => {
                 acc.push({
                     id: ingredient.ingredientId,
                     name: ingredient.name,
-                    baseQuantity: ingredient.amountInGrams,
+                    baseQuantity: ingredient.amountPerDish,
                     stockQuantity: 0,
-                    unitType: 'grams'
+                    unitType: ingredient.unit
                 });
             }
             return acc;

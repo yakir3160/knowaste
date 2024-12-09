@@ -1,28 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GlobalField from "../../../../Common/inputs/GlobalField";
 import { useItemsContext } from "../../../../../contexts/ItemsContext";
+import Button from "../../../../Common/Button/Button";
 
-const IngredientForm = ({ index, isEditing, prefix = "" }) => {
-    const { ingredientCategories, ingredientStorageTypes, measurementUnits } = useItemsContext();
+const IngredientForm = ({ index, isEditing, prefix = "" ,newIngredient = false}) => {
+    const { ingredients, ingredientCategories, ingredientStorageTypes, measurementUnits } = useItemsContext();
 
+    const [isNewProduct, setIsNewProduct] = useState(newIngredient); // מצב למוצר חדש
     const fieldPrefix = prefix ? `${prefix}.` : "";
 
+    const handleNewProductToggle = () => {
+        setIsNewProduct(prevState => !prevState); // משנה אם המוצר חדש או לא
+    };
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white rounded-lg shadow-sm">
-                <GlobalField
-                    label="Name"
-                    type="text"
-                    name={`${fieldPrefix}${index}.name`}
-                    className="text-buttons text-sm"
-                    disabled={!isEditing}
-                />
+        <div className="space-y-6 p-6 bg-white rounded-lg shadow-lg">
+            {/* כפתור למוצר חדש */}
+            <Button
+                onClick={handleNewProductToggle}
+                className={`w-full ${isNewProduct ? 'bg-lime ' : 'bg-white '} border border-lime`}
+                disabled={!isEditing}
+            >
+                {isNewProduct ? 'Set as Existing Product' : 'Set as New Product'}
+            </Button>
+
+            {/* שדה שם - אם המוצר חדש, זה יהיה טקסט, אחרת זה יהיה בחירה */}
+            <GlobalField
+                label="Name"
+                type={isNewProduct ? "text" : "select"}  // אם המוצר חדש, סוג השדה יהיה טקסט
+                name={`${fieldPrefix}${index}.name`}
+                className="text-buttons text-sm w-full"
+                disabled={!isEditing}
+                options={isNewProduct ? [] : [
+                    { value: '', label: 'Select or type new ingredient' },
+                    ...ingredients.map(ing => ({
+                        value: ing.name,
+                        label: ing.name
+                    }))
+                ]}
+                allowNewValues={isNewProduct}  // אם המוצר חדש, אפשר להכניס ערך חדש
+            />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <GlobalField
                     label="Category"
                     type="select"
                     name={`${fieldPrefix}${index}.category`}
                     className="text-buttons text-sm"
                     disabled={!isEditing}
-                    options={[{ value: '', label: 'Select a Category' }, ...ingredientCategories]}
+                    options={ingredientCategories}
                 />
                 <GlobalField
                     label="Storage Type"
@@ -32,10 +57,13 @@ const IngredientForm = ({ index, isEditing, prefix = "" }) => {
                     disabled={!isEditing}
                     options={ingredientStorageTypes}
                 />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <GlobalField
                     label="Amount"
                     type="number"
-                    name={`${fieldPrefix}${index}.amount`}
+                    name={`${fieldPrefix}${index}.amountPerDish`}
                     className="text-buttons text-sm"
                     disabled={!isEditing}
                     min="0"
@@ -48,6 +76,9 @@ const IngredientForm = ({ index, isEditing, prefix = "" }) => {
                     disabled={!isEditing}
                     options={measurementUnits}
                 />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <GlobalField
                     label="Price per Unit"
                     type="number"
@@ -73,14 +104,16 @@ const IngredientForm = ({ index, isEditing, prefix = "" }) => {
                         { value: 'shellfish', label: 'Shellfish' }
                     ]}
                 />
-                <GlobalField
-                    label="Minimum Stock Level"
-                    type="number"
-                    name={`${fieldPrefix}${index}.minStockLevel`}
-                    className="text-buttons text-sm"
-                    disabled={!isEditing}
-                    min="0"
-                />
+            </div>
+
+            <GlobalField
+                label="Minimum Stock Level"
+                type="number"
+                name={`${fieldPrefix}${index}.minStockLevel`}
+                className="text-buttons text-sm"
+                disabled={!isEditing}
+                min="0"
+            />
         </div>
     );
 };

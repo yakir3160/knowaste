@@ -13,22 +13,56 @@
             {
               "ingredientId": 101,
               "name": "Italian Bread",
-              "amountInGrams": 50
+              "category": "bakery",
+              "storageType": "room",
+              "amountPerDish": 1,
+              "unit": "unit",
+              "pricePerUnit": 0.05,
+              "allergens": ["wheat"],
+              "minStockLevel": 1000
             },
             {
               "ingredientId": 102,
               "name": "Chopped Tomatoes",
-              "amountInGrams": 30
+              "category": "vegetables",
+              "storageType": "refrigerated",
+              "amountPerDish": 50,
+              "unit": "g",
+              "pricePerUnit": 0.02,
+              "allergens": [],
+              "minStockLevel": 2000
             },
             {
               "ingredientId": 103,
               "name": "Garlic",
-              "amountInGrams": 5
+              "category": "vegetables",
+              "storageType": "room",
+              "amountPerDish": 50,
+              "unit": "g",
+              "pricePerUnit": 0.08,
+              "allergens": [],
+              "minStockLevel": 500
             },
             {
               "ingredientId": 104,
               "name": "Basil",
-              "amountInGrams": 2
+              "category": "herbs",
+              "storageType": "refrigerated",
+              "amountPerDish": 50,
+              "unit": "g",
+              "pricePerUnit": 0.03,
+              "allergens": [],
+              "minStockLevel": 500
+            },
+            {
+              "ingredientId": 105,
+              "name": "Olive Oil",
+              "category": "oils",
+              "storageType": "room",
+              "unit": "ml",
+              "pricePerUnit": 0.01,
+              "allergens": [],
+              "minStockLevel": 1000
             }
           ]
         },
