@@ -11,6 +11,6 @@ export const config = {
         clientX509CertUrl: process.env.FIREBASE_CLIENT_X509_CERT_URL
     },
     server: {
-        port: process.env.PORT || 5000
+        port: process.env.PORT || 5002
     }
 };
