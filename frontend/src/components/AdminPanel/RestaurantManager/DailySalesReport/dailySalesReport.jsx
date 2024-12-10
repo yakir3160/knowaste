@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import { Plus, Save, Send, CircleX } from 'lucide-react';
 import AdminPanelContainer from "../../AdminPanelContainer";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 import GlobalField from "../../../Common/inputs/GlobalField";
 import Card from '../../../Common/Card/Card';
 import Button from '../../../Common/Button/Button';
@@ -11,100 +10,92 @@ import useFilteredItems from "../../../../Hooks/Items/useFilteredItems";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { v4 as generateUniqueID } from 'uuid';
 import SalesList from "./SalesList";
-import { tableStyles } from '../../../../css/tableStyles';
 import TabNavigation from "../../../Common/TabNavigation/TabNavigation";
+import { tableStyles } from '../../../../css/tableStyles';
 
 const TAX_PERCENTAGE = 0.17;
 
-const validationSchema = Yup.object().shape({
-    items: Yup.array().of(
-        Yup.object().shape({
-            category: Yup.string().required("Category is required"),
-            subCategory: Yup.string().optional(),
-            menuItem: Yup.string().required("Dish is required"),
-            quantity: Yup.number()
-                .required("Quantity is required")
-                .positive("Must be positive")
-                .integer("Must be an integer"),
-        })
-    ).min(1, 'At least one item is required')
-});
-
-const initialValues = {
-    items: [
-        {
-            id: 0,
-            category: "",
-            subCategory: "",
-            menuItem: "",
-            quantity: 1,
-            totalPrice: 0
-        }
-    ]
-};
-
 const DailySalesReport = () => {
-    const { userItems, categories } = useItemsContext();
+    const { userItems, categories, loadingItems } = useItemsContext();
     const { user } = useAuthContext();
     const {
         filteredItems,
         subCategories,
+        selectedCategory,
+        selectedSubCategory,
         setSelectedCategory,
         setSelectedSubCategory,
     } = useFilteredItems(userItems, categories);
 
+    const [reportItems, setReportItems] = useState([]);
     const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0]);
     const [sales, setSales] = useState([]);
     const [activeTab, setActiveTab] = useState('Items');
-    const [saving, setSaving] = useState(false);
 
-    const handleSubmitReport = async (values, { resetForm }) => {
-        try {
-            setSaving(true);
-            const totalSales = values.items.reduce((acc, item) => acc + item.totalPrice, 0);
+    const validationSchema = Yup.object({
+        category: Yup.string().required("Category is required"),
+        subCategory: Yup.string().optional(),
+        menuItem: Yup.string().required("Dish is required"),
+        quantity: Yup.number().required("Quantity is required").positive("Must be positive")
+            .integer("Must be an integer"),
+    });
 
-            const report = {
-                userId: user.uid,
-                reportId: generateUniqueID(),
-                date: reportDate,
-                timeStamp: new Date().toISOString(),
-                items: values.items,
-                totalItems: values.items.length,
-                totalSales: totalSales,
-                totalSalesPreTax: parseFloat((totalSales * (1 - TAX_PERCENTAGE)).toFixed(2)),
+    const initialValues = {
+        category: "",
+        subCategory: "",
+        menuItem: "",
+        quantity: "",
+        totalPrice: 0,
+    };
+
+    const handleAddDish = (values, { resetForm }) => {
+        const selectedDish = filteredItems.find(item => item.name === values.menuItem);
+
+        if (selectedDish) {
+            const newItem = {
+                ...values,
+                id: selectedDish.id,
+                totalPrice: values.quantity * selectedDish.price
             };
 
-            setSales([...sales, report]);
-            resetForm({ values: initialValues });
-        } catch (error) {
-            console.error('Failed to submit report:', error);
-        } finally {
-            setSaving(false);
-            console.log(sales);
+            setReportItems([...reportItems, newItem]);
+            resetForm();
         }
     };
 
-    const calculateTotal = (items) => {
-        return items.reduce((total, item) => {
-            const menuItem = filteredItems.find(i => i.name === item.menuItem);
-            return total + (menuItem?.price || 0) * item.quantity;
-        }, 0);
+    const handleSubmitReport = async () => {
+        const totalSales = reportItems.reduce((acc, item) => acc + item.totalPrice, 0);
+        const report = {
+            userId: user.uid,
+            reportId: generateUniqueID(),
+            date: reportDate,
+            timeStamp: new Date().toISOString(),
+            items: reportItems,
+            totalItems: reportItems.length,
+            totalSales: totalSales,
+            totalSalesPreTax: parseFloat((totalSales * (1 - TAX_PERCENTAGE)).toFixed(2)),
+        };
+        setReportItems([]);
+        setSales([...sales, report]);
+        console.log("Sales Report:", report);
     };
 
     return (
-        <AdminPanelContainer pageTitle={"Daily Sales Report"} layout="p-2 flex flex-col">
-            <TabNavigation tabs={['Items', 'Sales']} onTabChange={(tab) => setActiveTab(tab)} />
-
-            {activeTab === 'Items' && (
-                <Card className="bg-white border-none h-full">
-                    <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmitReport}
-                    >
-                        {({ values, setFieldValue }) => (
-                            <Form>
-                                <div className="w-full p-5">
+        <AdminPanelContainer pageTitle="Daily Sales Report" layout="p-2 flex flex-col ">
+            <TabNavigation
+                tabs={['Items', 'Sales']}
+                onTabChange={(tab) => setActiveTab(tab)}
+            />
+                {activeTab === 'Items' && (
+                    <Card className="bg-white border-none p-5 h-full flex">
+                        <h1 className="text-2xl text-center mb-5">Add Daily Sales</h1>
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={validationSchema}
+                            onSubmit={handleAddDish}
+                        >
+                            {({values, setFieldValue}) => (
+                                <Form className="gap-5 w-full" noValidate>
                                     <div className="flex justify-between items-center">
                                         <GlobalField
                                             type="date"
@@ -114,151 +105,122 @@ const DailySalesReport = () => {
                                             max={new Date().toISOString().split('T')[0]}
                                             onChange={(e) => setReportDate(e.target.value)}
                                         />
-                                        <div className="text-xl font-bold text-center">
-                                            <span className="text-titles">
-                                                    Total Cost:
-                                            ₪{values.items.reduce((acc, item) => acc + (item.cost || 0), 0).toFixed(2)}
-                                            </span>
-                                        </div>
                                     </div>
-                                    <div className="overflow-x-auto mt-4">
-                                        <table className="w-full">
-                                            <thead>
-                                            <tr className="bg-secondary">
-                                                <th className={tableStyles.thClass}>Category</th>
-                                                <th className={tableStyles.thClass}>Sub Category</th>
-                                                <th className={tableStyles.thClass}>Dish</th>
-                                                <th className={tableStyles.thClass}>Quantity</th>
-                                                <th className={tableStyles.thClass}>Total Price</th>
-                                                <th className={tableStyles.thClass}>Actions</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {values.items.map((item, index) => (
-                                                <tr key={item.id}>
-                                                    <td className={tableStyles.tableCellClass}>
-                                                        <GlobalField
-                                                            name={`items.${index}.category`}
-                                                            type="select"
-                                                            options={[
-                                                                {value: '', label: 'Select Category'},
-                                                                ...categories.map(cat => ({
-                                                                    value: cat.name,
-                                                                    label: cat.name
-                                                                }))
-                                                            ]}
-                                                            onChange={(e) => {
-                                                                setFieldValue(`items.${index}.category`, e.target.value);
-                                                                setSelectedCategory(e.target.value);
-                                                            }}
-                                                        />
-                                                    </td>
-                                                    <td className={tableStyles.tableCellClass}>
-                                                        <GlobalField
-                                                            name={`items.${index}.subCategory`}
-                                                            type="select"
-                                                            options={[
-                                                                {value: '', label: 'Select Sub Category'},
-                                                                ...subCategories.map(sub => ({
-                                                                    value: sub.name,
-                                                                    label: sub.name
-                                                                }))
-                                                            ]}
-                                                            onChange={(e) => {
-                                                                setFieldValue(`items.${index}.subCategory`, e.target.value);
-                                                                setSelectedSubCategory(e.target.value);
-                                                            }}
-                                                            disabled={!item.category}
-                                                        />
-                                                    </td>
-                                                    <td className={tableStyles.tableCellClass}>
-                                                        <GlobalField
-                                                            name={`items.${index}.menuItem`}
-                                                            type="select"
-                                                            options={[
-                                                                {value: '', label: 'Select Dish'},
-                                                                ...filteredItems.map(dish => ({
-                                                                    value: dish.name,
-                                                                    label: dish.name
-                                                                }))
-                                                            ]}
-                                                        />
-                                                    </td>
-                                                    <td className={tableStyles.tableCellClass}>
-                                                        <GlobalField
-                                                            name={`items.${index}.quantity`}
-                                                            type="number"
-                                                            min="1"
-                                                        />
-                                                    </td>
-                                                    <td className={tableStyles.tableCellClass}>
-                                                        {(filteredItems.find(i => i.name === item.menuItem)?.price || 0) * item.quantity} ₪
-                                                    </td>
-                                                    <td className={tableStyles.tableCellClass}>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                const newItems = values.items.filter((_, i) => i !== index);
-                                                                setFieldValue('items', newItems);
-                                                            }}
-                                                            className="text-errorRed"
-                                                            disabled={values.items.length === 1}
-                                                        >
-                                                            <CircleX size={20}/>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 p-5 rounded-b-sm border-2 border-secondary border-t-2 border-t-transparent">
-                                        <Button
-                                            type="button"
-                                            onClick={() => {
-                                                const newId = values.items[values.items.length - 1].id + 1;
-                                                setFieldValue('items', [
-                                                    ...values.items,
-                                                    {...initialValues.items[0], id: newId}
-                                                ]);
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 border-2 border-secondary p-4 rounded-sm">
+                                        <GlobalField
+                                            type="select"
+                                            name="category"
+                                            label="Category"
+                                            options={[{
+                                                value: '',
+                                                label: 'Select a category'
+                                            }, ...categories.map(category => ({
+                                                value: category.name,
+                                                label: category.name
+                                            }))]}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                setFieldValue("category", value);
+                                                setSelectedCategory(value);
                                             }}
-                                            className="flex items-center border-2 border-lime w-fit"
-                                            disabled={saving}
+                                        />
+                                        {subCategories.length > 0 && (
+                                            <GlobalField
+                                                type="select"
+                                                name="subCategory"
+                                                label="Sub Category"
+                                                options={[{
+                                                    value: '',
+                                                    label: 'Select a sub category'
+                                                }, ...subCategories.map(subCategory => ({
+                                                    value: subCategory.name,
+                                                    label: subCategory.name
+                                                }))]}
+                                                onChange={(e) => {
+                                                    const {value} = e.target;
+                                                    setFieldValue("subCategory", value);
+                                                    setSelectedSubCategory(value);
+                                                }}
+                                            />
+                                        )}
+                                        <GlobalField
+                                            type="select"
+                                            name="menuItem"
+                                            label="Dish"
+                                            options={[{value: '', label: 'Select a dish'}, ...filteredItems.map(dish => ({
+                                                value: dish.name,
+                                                label: dish.name
+                                            }))]}
+                                        />
+                                        <div className="grid grid-cols-2">
+                                            <GlobalField
+                                                type="number"
+                                                name="quantity"
+                                                label="Quantity"
+                                                min="1"
+                                            />
+                                            <GlobalField
+                                                type="number"
+                                                name="totalItemSales"
+                                                label="Total Item Sales (₪)"
+                                                value={values.quantity * filteredItems.find(item => item.name === values.menuItem)?.price}
+                                                setFieldValue={values.totalPrice}
+                                            />
+                                        </div>
+                                        <Button
+                                            type="submit"
+                                            className="w-full h-fit self-center"
                                         >
-                                            Add Item
-                                            <Plus size={20} className="ml-2"/>
+                                            Add Dish
                                         </Button>
-                                        <div
-                                            className="flex flex-row  w-fit  justify-center rounded-sm md:justify-start space-x-2 bg-white  border  border-secondary">
-                                            <span className="text-lg  text-titles font-semibold self-center pl-5">Export to:</span>
-                                            <Button type="button" className={`shadow-none`}
-                                                    disabled={saving}>CSV</Button>
-                                            <Button type="button" className={`shadow-none`}
-                                                    disabled={saving}>Excel</Button>
-                                            <Button type="button" className={`shadow-none`}
-                                                    disabled={saving}>PDF</Button>
-                                        </div>
-                                        <div className="flex gap-4 justify-center md:justify-end">
-                                            <Button
-                                                type="submit"
-                                                className="flex items-center border-2 border-lime"
-                                                disabled={saving}
-                                            >
-                                                {saving ? 'Saving...' : 'Submit Report'}
-                                                <Send size={20} className="ml-2"/>
-                                            </Button>
-                                        </div>
-
                                     </div>
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
-                </Card>
-            )}
+                                </Form>
+                            )}
+                        </Formik>
+                        <div className="m-8 w-full overflow-x-auto">
+                            <h2 className="text-xl mb-4">Dishes in Report</h2>
+                            {reportItems.length > 0 ? (
+                                <table className="min-w-full border-collapse">
+                                    <thead className={`bg-secondary`}>
+                                    <tr>
+                                        <th className={tableStyles.thClass}>Category</th>
+                                        <th className={tableStyles.thClass}>SubCategory</th>
+                                        <th className={tableStyles.thClass}>Dish</th>
+                                        <th className={tableStyles.thClass}>Quantity</th>
+                                        <th className={tableStyles.thClass}>Total Item Sales (₪)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {reportItems.map((item, index) => (
+                                        <tr key={index} className="border-b">
+                                            <td className={tableStyles.tableCellClass}>{item.category}</td>
+                                            <td className={tableStyles.tableCellClass}>{item.subCategory || 'N/A'}</td>
+                                            <td className={tableStyles.tableCellClass}>{item.menuItem}</td>
+                                            <td className={tableStyles.tableCellClass}>{item.quantity}</td>
+                                            <td className={tableStyles.tableCellClass}>{item.totalPrice} ₪</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <p>No dishes added yet.</p>
+                            )}
+                        </div>
 
-            {activeTab === 'Sales' && <SalesList sales={sales}/>}
+                        <div className="self-end w-full md:w-fit p-2">
+                            <Button
+                                onClick={handleSubmitReport}
+                                className="w-full md:w-1/4 border border-lime"
+                            >
+                                Submit Report
+                            </Button>
+                        </div>
+                    </Card>
+                )}
+
+            {activeTab === 'Sales' && (
+                    <SalesList sales={sales}/>
+            )}
         </AdminPanelContainer>
     );
 };

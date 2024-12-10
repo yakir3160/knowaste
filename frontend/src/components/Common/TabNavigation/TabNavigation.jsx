@@ -13,7 +13,7 @@ const TabNavigation = ({ tabs = ['tab1', 'tab2'] ,onTabChange}) => {
     };
 
     return (
-        <div className={`w-3/4 bg-secondary self-center  rounded-t-sm  grid grid-cols-${tabs.length}`}>
+        <div className={`w-1/2 bg-secondary self-center  rounded-t-sm  grid grid-cols-${tabs.length}`}>
             {tabs?.map((tabName) => (
                 <button
                     key={tabName}

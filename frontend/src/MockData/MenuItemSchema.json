@@ -1,0 +1,42 @@
+{
+  "categories": [
+    {
+      "id": "string",
+      "name": "string",
+      "items": [
+        {
+          "id": "number",
+          "name": "string",
+          "price": "number",
+          "availability": "string",
+          "ingredients": [
+            {
+              "ingredientId": "number",
+              "quantity": "number"
+            }
+          ]
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "string",
+          "name": "string",
+          "items": [
+            {
+              "id": "number",
+              "name": "string",
+              "price": "number",
+              "availability": "string",
+              "ingredients": [
+                {
+                  "ingredientId": "number",
+                  "quantity": "number"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -10,6 +10,9 @@
       "pricePerUnit": 0.05,
       "allergens": ["wheat"],
       "minStockLevel": 1000,
+      "usageRate": 10,
+      "isCritical": true,
+      "wastePercentage": 0.02,
       "supply": {
         "packageType": "box",
         "unitsPerPackage": 24,
@@ -32,6 +35,9 @@
       "stock": 150000,
       "pricePerUnit": 0.02,
       "minStockLevel": 2000,
+      "usageRate": 5000,
+      "isCritical": true,
+      "wastePercentage": 0.1,
       "supply": {
         "packageType": "crate",
         "unitsPerPackage": 10000,
@@ -54,6 +60,9 @@
       "stock": 75000,
       "pricePerUnit": 0.03,
       "minStockLevel": 1500,
+      "usageRate": 3000,
+      "isCritical": false,
+      "wastePercentage": 0.15,
       "supply": {
         "packageType": "crate",
         "unitsPerPackage": 5000,
@@ -77,6 +86,9 @@
       "pricePerUnit": 0.04,
       "allergens": ["wheat"],
       "minStockLevel": 2000,
+      "usageRate": 1000,
+      "isCritical": true,
+      "wastePercentage": 0.01,
       "supply": {
         "packageType": "package",
         "unitsPerPackage": 500,

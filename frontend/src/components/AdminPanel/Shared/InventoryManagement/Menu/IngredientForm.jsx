@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import GlobalField from "../../../../Common/inputs/GlobalField";
 import { useItemsContext } from "../../../../../contexts/ItemsContext";
 import Button from "../../../../Common/Button/Button";
+import {Field} from "formik";
 
 const IngredientForm = ({ index, isEditing, prefix = "" ,newIngredient = false}) => {
     const { ingredients, ingredientCategories, ingredientStorageTypes, measurementUnits } = useItemsContext();
@@ -31,7 +32,7 @@ const IngredientForm = ({ index, isEditing, prefix = "" ,newIngredient = false})
                 className="text-buttons text-sm w-full"
                 disabled={!isEditing}
                 options={isNewProduct ? [] : [
-                    { value: '', label: 'Select or type new ingredient' },
+                    {value: '', label: 'Select or type new ingredient'},
                     ...ingredients.map(ing => ({
                         value: ing.name,
                         label: ing.name
@@ -88,32 +89,43 @@ const IngredientForm = ({ index, isEditing, prefix = "" ,newIngredient = false})
                     min="0"
                     step="0.01"
                 />
+
                 <GlobalField
-                    label="Allergens"
-                    type="select"
-                    name={`${fieldPrefix}${index}.allergens`}
+                    label="Minimum Stock Level"
+                    type="number"
+                    name={`${fieldPrefix}${index}.minStockLevel`}
                     className="text-buttons text-sm"
                     disabled={!isEditing}
-                    options={[
-                        { value: 'nuts', label: 'Nuts' },
-                        { value: 'dairy', label: 'Dairy' },
-                        { value: 'eggs', label: 'Eggs' },
-                        { value: 'soy', label: 'Soy' },
-                        { value: 'wheat', label: 'Wheat' },
-                        { value: 'fish', label: 'Fish' },
-                        { value: 'shellfish', label: 'Shellfish' }
-                    ]}
+                    min="0"
                 />
+
+            </div>
+            <div className="space-y-2 border-2 border-lime rounded-sm p-4 ">
+                <label className="block text-sm font-medium  text-gray">Allergens</label>
+                <div className="grid grid-cols-4 gap-2">
+                    {[
+                        {value: 'nuts', label: 'Nuts'},
+                        {value: 'dairy', label: 'Dairy'},
+                        {value: 'eggs', label: 'Eggs'},
+                        {value: 'soy', label: 'Soy'},
+                        {value: 'wheat', label: 'Wheat'},
+                        {value: 'fish', label: 'Fish'},
+                        {value: 'shellfish', label: 'Shellfish'}
+                    ].map((allergen) => (
+                        <label key={allergen.value} className="flex items-center space-x-2">
+                            <Field
+                                type="checkbox"
+                                name={`${fieldPrefix}${index}.allergens`}
+                                value={allergen.value}
+                                disabled={!isEditing}
+                                className="form-checkbox h-4 w-4 bg-lime rounded border-lime focus:ring-lime"
+                            />
+                            <span className="text-sm">{allergen.label}</span>
+                        </label>
+                    ))}
+                </div>
             </div>
 
-            <GlobalField
-                label="Minimum Stock Level"
-                type="number"
-                name={`${fieldPrefix}${index}.minStockLevel`}
-                className="text-buttons text-sm"
-                disabled={!isEditing}
-                min="0"
-            />
         </div>
     );
 };

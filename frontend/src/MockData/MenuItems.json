@@ -7,8 +7,8 @@
         {
           "id": 1,
           "name": "Bruschetta",
-          "description": "Grilled bread with fresh tomatoes",
           "price": 32,
+          "availability": "in_stock",
           "ingredients": [
             {
               "ingredientId": 101,
@@ -33,8 +33,8 @@
             {
               "id": 2,
               "name": "Spaghetti Carbonara",
-              "description": "Pasta with bacon and eggs",
               "price": 45,
+              "availability": "in_stock",
               "ingredients": [
                 {
                   "ingredientId": 103,
@@ -59,8 +59,8 @@
             {
               "id": 6,
               "name": "Steak",
-              "description": "Grilled beef steak",
               "price": 60,
+              "availability": "out_of_stock",
               "ingredients": [
                 {
                   "ingredientId": 111,
@@ -77,8 +77,8 @@
             {
               "id": 7,
               "name": "Salmon",
-              "description": "Grilled salmon",
               "price": 55,
+              "availability": "in_stock",
               "ingredients": [
                 {
                   "ingredientId": 112,
@@ -87,8 +87,7 @@
               ]
             }
           ]
-        }
-        ,
+        },
         {
           "id": "vegetarian",
           "name": "Vegetarian",
@@ -96,8 +95,8 @@
             {
               "id": 8,
               "name": "Eggplant Parmesan",
-              "description": "Breaded eggplant with tomato sauce",
               "price": 40,
+              "availability": "in_stock",
               "ingredients": [
                 {
                   "ingredientId": 113,
@@ -114,8 +113,8 @@
             {
               "id": 9,
               "name": "Vegan Burger",
-              "description": "Plant-based burger",
               "price": 35,
+              "availability": "in_stock",
               "ingredients": [
                 {
                   "ingredientId": 114,
@@ -127,36 +126,36 @@
         }
       ]
     },
-{
-  "id": "sides",
-  "name": "Sides",
-  "items": [
     {
-      "id": 10,
-      "name": "French Fries",
-      "description": "Crispy golden fries",
-      "price": 20,
-      "ingredients": [
+      "id": "sides",
+      "name": "Sides",
+      "items": [
         {
-          "ingredientId": 115,
-          "quantity": 200
+          "id": 10,
+          "name": "French Fries",
+          "price": 20,
+          "availability": "in_stock",
+          "ingredients": [
+            {
+              "ingredientId": 115,
+              "quantity": 200
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "name": "Onion Rings",
+          "price": 25,
+          "availability": "in_stock",
+          "ingredients": [
+            {
+              "ingredientId": 116,
+              "quantity": 150
+            }
+          ]
         }
       ]
     },
-    {
-      "id": 11,
-      "name": "Onion Rings",
-      "description": "Battered and fried onion rings",
-      "price": 25,
-      "ingredients": [
-        {
-          "ingredientId": 116,
-          "quantity": 150
-        }
-      ]
-    }
-  ]
-},
     {
       "id": "beverages",
       "name": "Beverages",
@@ -168,8 +167,8 @@
             {
               "id": 4,
               "name": "Espresso",
-              "description": "Strong black coffee",
               "price": 15,
+              "availability": "in_stock",
               "ingredients": [
                 {
                   "ingredientId": 109,
@@ -180,8 +179,8 @@
             {
               "id": 5,
               "name": "Green Tea",
-              "description": "Refreshing green tea",
               "price": 10,
+              "availability": "in_stock",
               "ingredients": [
                 {
                   "ingredientId": 110,
@@ -198,8 +197,8 @@
             {
               "id": 12,
               "name": "Red Wine",
-              "description": "Cabernet Sauvignon",
               "price": 50,
+              "availability": "out_of_stock",
               "ingredients": [
                 {
                   "ingredientId": 117,
@@ -210,8 +209,8 @@
             {
               "id": 13,
               "name": "White Wine",
-              "description": "Chardonnay",
               "price": 45,
+              "availability": "in_stock",
               "ingredients": [
                 {
                   "ingredientId": 118,
@@ -221,15 +220,15 @@
             }
           ]
         },
-{
+        {
           "id": "hot",
           "name": "Hot Drinks",
           "items": [
             {
               "id": 14,
               "name": "Hot Chocolate",
-              "description": "Rich and creamy hot chocolate",
               "price": 20,
+              "availability": "in_stock",
               "ingredients": [
                 {
                   "ingredientId": 119,
@@ -240,8 +239,8 @@
             {
               "id": 15,
               "name": "Latte",
-              "description": "Espresso with steamed milk",
               "price": 25,
+              "availability": "in_stock",
               "ingredients": [
                 {
                   "ingredientId": 120,
@@ -260,8 +259,8 @@
         {
           "id": 3,
           "name": "Tiramisu",
-          "description": "Coffee-flavored Italian dessert",
           "price": 25,
+          "availability": "in_stock",
           "ingredients": [
             {
               "ingredientId": 106,
