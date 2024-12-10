@@ -1,21 +1,23 @@
 import React from 'react';
-import { FieldArray } from 'formik';
+import { FieldArray, useFormikContext } from 'formik';
 import Button from '../../../../Common/Button/Button';
 import { CircleX, Plus } from 'lucide-react';
 import IngredientForm from './IngredientForm';
 
-const IngredientsList = ({ ingredients, isEditing, setFieldValue }) => {
+const IngredientsList = ({ ingredients, isEditing }) => {
+    const { setFieldValue } = useFormikContext();
+
     const initialIngredient = {
         id: Date.now(),
         name: '',
-        amount: 0,
+        amountPerDish: 0,
         unit: '',
         storageType: '',
         pricePerUnit: 0,
         category: '',
         kosherStatus: '',
         allergens: [],
-        minStockLevel: 0
+        minStockLevel: 0,
     };
 
     return (
@@ -25,12 +27,12 @@ const IngredientsList = ({ ingredients, isEditing, setFieldValue }) => {
                     <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
                     {ingredients.map((ingredient, index) => (
                         <div
-                            key={ingredient.id || index}
+                            key={ingredient.id}
                             className="relative"
                             style={{ opacity: ingredient.removed ? 0 : 1 }}
                         >
                             <IngredientForm
-                                index={ingredient.id}
+                                index={index}
                                 isEditing={isEditing}
                                 prefix="ingredients"
                             />
