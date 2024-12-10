@@ -1,67 +1,59 @@
 // Collection: users/{uid}/ingredients/{ingredientId}
 const ingredientDoc = {
-    uid: 'string', // מזהה משתמש לבעלות
-    id: 'auto-generated', // מזהה ייחודי שנוצר אוטומטית
-    name: 'string', // שם המרכיב
-    category: 'string', // קטגוריה (לדוגמה: ירקות, בשרים)
-    storageType: 'string', // סוג אחסון (לדוגמה: קירור, הקפאה)
-    unit: 'string', // יחידת מידה (לדוגמה: ק"ג, יחידה)
-    currentStock: 'number', // כמות נוכחית במלאי
-    minStockLevel: 'number', // רמת מלאי מינימלית לאזעקות חידוש
-    pricePerUnit: 'number', // מחיר ליחידה
-    kosherStatus: 'string', // מצב כשרות (לדוגמה: כשר, לא כשר)
-    allergens: ['string'], // רשימת אלרגנים פוטנציאליים
-    expirationDate: 'timestamp', // תאריך תפוגה
-    lastRestockDate: 'timestamp', // תאריך חידוש אחרון
-    lastUpdated: 'timestamp', // תאריך עדכון אחרון של המידע
-    averageStorageTime: 'number', // משך אחסון ממוצע בימים
-    storageConditions: { // תנאי אחסון
-        temperature: 'number', // טמפרטורה
-        humidity: 'number', // לחות
-        light: 'string' // אור
-    }
-};
-
-// Collection: users/{uid}/userIngredientsList
-const userIngredientsListDoc = {
-    uid: 'string', // מזהה משתמש
-    ingredients: [{ // רשימת המרכיבים למשתמש
-        id: 'string', // מזהה המרכיב
-        name: 'string', // שם המרכיב
-        category: 'string', // קטגוריה
-        unit: 'string', // יחידת מידה
-        isActive: 'boolean' // האם המרכיב פעיל
-    }],
-    lastUpdated: 'timestamp' // תאריך עדכון אחרון
+    id: 'number', // Unique ID for the ingredient
+    name: 'string', // Name of the ingredient
+    category: 'string', // Category (e.g., vegetables, meat)
+    storageType: 'string', // Storage type (e.g., refrigerated, frozen)
+    unit: 'string', // Unit of measurement (e.g., kg, unit)
+    stock: 'number', // Current stock (renamed from currentStock)
+    pricePerUnit: 'number', // Price per unit
+    minStockLevel: 'number', // Minimum stock level for alerts
+    allergens: ['string'], // List of potential allergens
+    supply: {
+        packageType: 'string', // Type of package
+        unitsPerPackage: 'number', // Units per package
+        minimumOrderQuantity: 'number', // Minimum order quantity
+        supplierUnit: 'string', // Supplier unit
+        deliveryDays: ['string'], // Delivery days
+        preparationMethod: 'string', // Preparation method
+        shelfLife: {
+            duration: 'number', // Duration of shelf life
+            unit: 'string' // Unit for shelf life duration
+        }
+    },
+    lastUpdated: 'timestamp' // Last update timestamp
 };
 
 // Collection: users/{uid}/menu/{menuId}
 const menuDoc = {
-    uid: 'string', // מזהה משתמש
-    id: 'auto-generated', // מזהה ייחודי של התפריט
-    categories: [{ // קטגוריות בתפריט
-        id: 'string', // מזהה ייחודי לקטגוריה
-        name: 'string', // שם הקטגוריה
-        subCategories: [{ // תתי קטגוריות
-            id: 'string', // מזהה ייחודי לתת קטגוריה
-            name: 'string', // שם תת הקטגוריה
-            items: [{ // פריטים בתוך תת הקטגוריה
-                id: 'string', // מזהה ייחודי לפריט
-                name: 'string', // שם הפריט
-                description: 'string', // תיאור הפריט
-                price: 'number', // מחיר
-                ingredients: [{ // מרכיבים בשימוש בפריט
-                    ingredientId: 'string', // מזהה המרכיב
-                    amount: 'number', // כמות נדרשת
-                    unit: 'string' // יחידת מידה
-                }],
-                isActive: 'boolean', // האם הפריט פעיל
-                image: 'string', // קישור לתמונה
-                createdAt: 'timestamp', // תאריך יצירה
-                updatedAt: 'timestamp' // תאריך עדכון אחרון
+    categories: [{
+        id: 'string', // Category ID
+        name: 'string', // Category name
+        items: [{
+            id: 'number', // Unique item ID (changed to number)
+            name: 'string', // Item name
+            price: 'number', // Price
+            availability: 'string', // Availability status
+            ingredients: [{
+                ingredientId: 'number', // Ingredient ID (changed to number)
+                quantity: 'number' // Quantity required (renamed from amount)
+            }]
+        }],
+        subCategories: [{
+            id: 'string', // Subcategory ID
+            name: 'string', // Subcategory name
+            items: [{
+                id: 'number', // Unique item ID (changed to number)
+                name: 'string', // Item name
+                price: 'number', // Price
+                availability: 'string', // Availability status
+                ingredients: [{
+                    ingredientId: 'number', // Ingredient ID (changed to number)
+                    quantity: 'number' // Quantity required (renamed from amount)
+                }]
             }]
         }]
     }],
-    lastUpdated: 'timestamp', // תאריך עדכון אחרון
-    version: 'number' // גרסת התפריט
+    lastUpdated: 'timestamp', // Last update timestamp
+    version: 'number' // Menu version
 };
