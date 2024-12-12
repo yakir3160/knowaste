@@ -15,7 +15,6 @@ export const ItemsProvider = ({ children }) => {
     const [categories, setCategories] = useState();
     const [ingredients, setIngredients] = useState([]);
     const ingredientCategories = IngredientCategories.categories.map(category => category);
-    console.log('ingredientCategories',ingredientCategories)
     const extractIngredients = (menuData) => {
         if (!menuData) return []; // אם אין נתוני תפריט, מחזירים מערך ריק
         // חילוץ כל הפריטים מתוך קטגוריות ותתי קטגוריות
@@ -73,10 +72,6 @@ export const ItemsProvider = ({ children }) => {
                 ? []
                 : extractIngredients(MenuItems)
         )
-
-        console.log('User Items Set');
-        console.log('user categories',categories)
-        console.log('user ingredients',ingredients)
         setLoadingItems(false);
         return () => {
             setUserItems(null);

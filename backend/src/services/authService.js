@@ -5,6 +5,7 @@ import admin, { db } from '../../config/firebase-admin.js';
 import nodemailer from 'nodemailer';
 
 
+
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const emailTransporter = nodemailer.createTransport({
     service: 'gmail',
@@ -17,16 +18,7 @@ const emailTransporter = nodemailer.createTransport({
 class AuthService {
     async register(userData) {
         try {
-            const userRecord = await db.collection('users')
-                .where('email', '==', userData.email)
-                .get();
-
-            if (!userRecord.empty) {
-                throw new Error('Email already exists');
-            }
-
             const hashedPassword = await bcrypt.hash(userData.password, 12);
-
             // Create a batch operation
             const batch = db.batch();
 
@@ -57,6 +49,7 @@ class AuthService {
             const menuRef = db.collection('menus').doc(userId);
             const menuData = {
                 userId: userId,
+                email: userData.email,
                 menu: userData.menuSchema || {},
                 createdAt: admin.firestore.FieldValue.serverTimestamp(),
                 updatedAt: admin.firestore.FieldValue.serverTimestamp()
@@ -71,9 +64,13 @@ class AuthService {
             const token = this.generateToken(userDocData);
             return { user: this.excludePassword(userDocData), token };
         } catch (error) {
-            console.error('Registration error:', error);
-            throw error;
+            console.error('Registration error:', error.message);
+            if (error.message === 'Email already exists') {
+                return response.status(409).json({ error: 'Email already exists' });
+            }
+            return response.status(500).json({ error: 'Internal server error' });
         }
+
     }
 
     async login(email, password) {
@@ -95,7 +92,7 @@ class AuthService {
         return { user: this.excludePassword(user), token };
     }
 
-    async googleSingIn(token) {
+    async googleSignIn(token) {
         const ticket = await googleClient.verifyIdToken({
             idToken: token,
             audience: process.env.GOOGLE_CLIENT_ID
@@ -108,7 +105,6 @@ class AuthService {
             .limit(1)
             .get();
 
-
         let user;
         if (userSnapshot.empty) {
             const userRef = db.collection('users').doc();
@@ -116,11 +112,12 @@ class AuthService {
                 id: userRef.id,
                 email,
                 googleId: payload.sub,
-                accountType: 'RESTAURANT_MANAGER',
+                accountType: 'restaurant-manager',
                 createdAt: admin.firestore.FieldValue.serverTimestamp(),
                 updatedAt: admin.firestore.FieldValue.serverTimestamp()
             };
             await userRef.set(user);
+            console.log('User created:', user);
         } else {
             user = { id: userSnapshot.docs[0].id, ...userSnapshot.docs[0].data() };
         }

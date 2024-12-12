@@ -29,7 +29,7 @@ export const login = async (req, res) => {
 export const googleSignIn = async (req, res) => {
     try {
         const { token } = req.body;
-        const result = await authService.googleSingIn(token);
+        const result = await authService.googleSignIn(token);
         res.json(result);
     } catch (error) {
         console.error('Google sign-in error:', error);
