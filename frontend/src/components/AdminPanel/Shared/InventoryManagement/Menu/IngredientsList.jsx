@@ -4,8 +4,8 @@ import Button from '../../../../Common/Button/Button';
 import { CircleX, Plus } from 'lucide-react';
 import IngredientForm from './IngredientForm';
 
-const IngredientsList = ({ ingredients, isEditing }) => {
-    const { setFieldValue } = useFormikContext();
+const IngredientsList = ({ isEditing }) => {
+    const { values, setFieldValue } = useFormikContext();
 
     const initialIngredient = {
         id: Date.now(),
@@ -25,16 +25,20 @@ const IngredientsList = ({ ingredients, isEditing }) => {
             {({ remove, push }) => (
                 <div className="mt-4 space-y-4 h-fit">
                     <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
-                    {ingredients.map((ingredient, index) => (
+                    {values.ingredients.map((ingredient, index) => (
                         <div
-                            key={ingredient.id}
+                            key={ingredient.id || index}
                             className="relative"
                             style={{ opacity: ingredient.removed ? 0 : 1 }}
                         >
                             <IngredientForm
-                                index={index}
+                                initialValues={ingredient}
+                                onSubmit={(updatedValues) => {
+                                    setFieldValue(`ingredients.${index}`, updatedValues);
+                                }}
                                 isEditing={isEditing}
-                                prefix="ingredients"
+                                fieldPrefix="ingredients"
+                                index={index}
                             />
                             {isEditing && (
                                 <Button
