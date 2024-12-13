@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
-import admin, { db } from '../../config/firebase-admin.js';
+import admin, { db ,auth} from '../../config/firebase-admin.js';
 import nodemailer from 'nodemailer';
 
 
@@ -18,20 +18,22 @@ const emailTransporter = nodemailer.createTransport({
 class AuthService {
     async register(userData) {
         try {
-            const hashedPassword = await bcrypt.hash(userData.password, 12);
-            // Create a batch operation
             const batch = db.batch();
 
+            // Create Firebase Auth user
+            const firebaseUser = await auth.createUser({
+                email: userData.email,
+                password: userData.password,
+                displayName: userData.businessName
+            });
 
-            // Create user with correct data structure
-            const userRef = db.collection('users').doc();
-            const userId = userRef.id;
+            const userId = firebaseUser.uid;
+            const userRef = db.collection('users').doc(userId);
 
-            // User data
             const userDocData = {
                 id: userId,
+                firebaseUID: userId,
                 email: userData.email,
-                password: hashedPassword,
                 businessName: userData.businessName,
                 contactName: userData.contactName,
                 phone: userData.phone,
@@ -44,8 +46,6 @@ class AuthService {
                 updatedAt: admin.firestore.FieldValue.serverTimestamp()
             };
 
-
-            // Create menu for the user
             const menuRef = db.collection('menus').doc(userId);
             const menuData = {
                 userId: userId,
@@ -55,42 +55,70 @@ class AuthService {
                 updatedAt: admin.firestore.FieldValue.serverTimestamp()
             };
 
+            await admin.auth().setCustomUserClaims(userId, {
+                role: userData.accountType
+            });
+
             batch.set(userRef, userDocData);
             batch.set(menuRef, menuData);
-
-            // Commit the batch
             await batch.commit();
 
-            const token = this.generateToken(userDocData);
-            return { user: this.excludePassword(userDocData), token };
+            const token = await admin.auth().createCustomToken(userId);
+            return { user: userDocData, token };
         } catch (error) {
             console.error('Registration error:', error.message);
-            if (error.message === 'Email already exists') {
-                return response.status(409).json({ error: 'Email already exists' });
+            if (error.code === 'auth/email-already-exists') {
+                throw { status: 409, message: 'Email already exists' };
             }
-            return response.status(500).json({ error: 'Internal server error' });
+            throw { status: 500, message: 'Internal server error' };
         }
-
     }
+
 
     async login(email, password) {
-        const userSnapshot = await db.collection('users')
-            .where('email', '==', email)
-            .limit(1)
-            .get();
+        try {
+            console.log('Fetching user from Firebase Auth...');
+            const userRecord = await auth.getUserByEmail(email);
 
-        if (userSnapshot.empty) {
-            throw new Error('Invalid email or password');
+            console.log('Authenticating via Firebase REST API...');
+            const response = await fetch(
+                `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.FIREBASE_WEB_API_KEY}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                        returnSecureToken: true
+                    })
+                }
+            );
+
+            const authData = await response.json();
+            if (!response.ok) {
+                console.error('Auth error:', authData.error);
+                throw new Error(authData.error.message);
+            }
+
+            console.log('Fetching user data from Firestore...');
+            const userDoc = await db.collection('users').doc(userRecord.uid).get();
+
+            console.log('Creating custom token...');
+            // Generate JWT token
+            const token = this.generateToken(userDoc.data());
+
+            return {
+                user: userDoc.data(),
+                token: token
+            };
+        } catch (error) {
+            console.error('Login error:', error);
+            throw { status: 401, message: 'Invalid email or password' };
         }
-
-        const user = { id: userSnapshot.docs[0].id, ...userSnapshot.docs[0].data() };
-
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            throw new Error('Invalid email or password');
-        }
-        const token = this.generateToken(user);
-        return { user: this.excludePassword(user), token };
     }
+
 
     async googleSignIn(token) {
         const ticket = await googleClient.verifyIdToken({
@@ -146,6 +174,7 @@ class AuthService {
             used: false
         })
         const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+        console.log('Reset link:', resetLink);
 
         await emailTransporter.sendMail({
             from: process.env.EMAIL_USER,

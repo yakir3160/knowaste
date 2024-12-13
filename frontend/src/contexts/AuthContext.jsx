@@ -15,9 +15,9 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||  'http://localhost:50
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [token, setToken] = useState(null);
     const [authError, setAuthError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [token, setToken] = useState(null);
     console.log('User:', user);
     console.log('Token:', token);
     const navigate = useNavigate();
@@ -26,13 +26,36 @@ export const AuthProvider = ({ children }) => {
     const {handlePasswordResetEmail, success, emailSent} = usePasswordReset();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setUser(user);
-            console.log("User state changed");
-            setLoading(false);
-        });
-        return () => unsubscribe();
+         const token = localStorage.getItem('authToken');
+         if(token) {
+             fetch(`${API_BASE_URL}/api/auth/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+             })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Not authorized');
+                    }
+                    console.log('Response:', response);
+                    return response.json();
+                })
+                .then(userData => {
+                    setUser(userData.user);
+                    setToken(token);
+                })
+                .catch(error => {
+                    console.error('Error fetching user data:', error.message);
+                    setUser(null);
+                    localStorage.removeItem('authToken');
+                })
+                .finally(() => setLoading(false));
+         }
+            else {
+                setLoading(false);
+            }
     }, []);
+
     const clearAuthError = () => setAuthError(null);
 
     const register = async (values, { setSubmitting, resetForm }) => {
@@ -80,9 +103,13 @@ export const AuthProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(values),
+                body: JSON.stringify({
+                    email: values.email,
+                    password: values.password
+                }),
             });
-
+            const userData = await response.json();
+            console.log('Response data:', userData);
             if (!response.ok) {
                 if (response.status === 401) {
                     setAuthError('Invalid email or password.');
@@ -91,14 +118,11 @@ export const AuthProvider = ({ children }) => {
                 }
                 return;
             }
-
-            // Parse response data
-            const userData = await response.json();
             if (userData.token) {
                 localStorage.setItem('authToken', userData.token);
+                setToken(userData.token);
             }
             setUser(userData.user);
-            setToken(userData.token);
             resetForm();
             navigate('/admin-panel');
         } catch (error) {
@@ -127,8 +151,9 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await handleLogout();
             setUser(null);
+            setToken(null);
+            localStorage.removeItem('authToken');
             navigate('/');
         } catch (error) {
             setAuthError('Error during logout.');
