@@ -11,7 +11,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import { MailCheck } from "lucide-react";
 
 const Login = () => {
-    const { login, authError, clearAuthError, passwordResetEmail, emailSent,loading } = useAuthContext();
+    const { login, authError, clearAuthError, passwordResetEmail, emailSent, } = useAuthContext();
     const location = useLocation();
     const emailFromRegister = location.state?.email || '';
     const message = location.state?.message || '';
@@ -23,7 +23,7 @@ const Login = () => {
     }, []);
 
     useEffect(() => {
-        if (emailSent && !loading) {
+        if (emailSent) {
             setTimeout(() => {
                 window.location.reload();
             }, 3000);

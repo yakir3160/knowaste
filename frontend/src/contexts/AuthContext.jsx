@@ -18,14 +18,12 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [authError, setAuthError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [emailSent, setEmailSent] = useState(false);
-
     console.log('User:', user);
     console.log('Token:', token);
     const navigate = useNavigate();
     const { handleLogout } = useLogout();
     const { handleSignInWithGoogle } = useGoogleSignIn();
-    const {handlePasswordResetEmail, } = usePasswordReset();
+    const {handlePasswordResetEmail, success, emailSent} = usePasswordReset();
 
     useEffect(() => {
          const token = localStorage.getItem('authToken');
@@ -193,8 +191,6 @@ export const AuthProvider = ({ children }) => {
             console.log('Error sending password reset email:', error);
         } finally {
             setLoading(false);
-            setEmailSent(true);
-
         }
     };
 
@@ -210,6 +206,7 @@ export const AuthProvider = ({ children }) => {
             authError,
             setAuthError,
             clearAuthError,
+            success,
             emailSent,
         }}>
             {children}

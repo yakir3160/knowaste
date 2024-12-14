@@ -155,38 +155,36 @@ class AuthService {
     }
 
     async sendPasswordResetEmail(email) {
-        try {
-            // Get the ID token for authentication
-            const idToken = await auth.createCustomToken(email);
+        const userSnapshot = await db.collection('users')
+            .where('email', '==', email)
+            .limit(1)
+            .get();
 
-            const response = await fetch(
-                `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.FIREBASE_WEB_API_KEY}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        requestType: 'PASSWORD_RESET',
-                        email: email,
-                        continueUrl: `${process.env.FRONTEND_URL}/auth`
-                    })
-                }
-            );
-
-            const data = await response.json();
-            console.log('Reset email response:', data);
-
-            return { message: 'Password reset email sent successfully' };
-        } catch (error) {
-            console.log('Error details:', error);
-            throw {
-                status: 500,
-                message: 'Failed to send reset email'
-            };
+        if (userSnapshot.empty) {
+            throw new Error('User not found');
         }
-    }
+        const user = { id: userSnapshot.docs[0].id, ...userSnapshot.docs[0].data() };
+        const resetToken = this.generateResetToken(user, '1h');
 
+        await db.collection('passwordResets').add({
+            userId: user.id,
+            token: resetToken,
+            expiresAt: new Date(Date.now() + 3600000), // 1 hour
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            used: false
+        })
+        const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+        console.log('Reset link:', resetLink);
+
+        await emailTransporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Password Reset',
+            html: `Click <a href="${resetLink}">here</a> to reset your password`
+        });
+
+        return { message: 'Password reset email sent' };
+    }
 
     async resetPassword(token, newPassword) {
         const resetSnapshot = await db.collection('passwordResets')
