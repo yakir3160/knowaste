@@ -188,7 +188,7 @@ export const AuthProvider = ({ children }) => {
                 'default': 'An error occurred. Please try again'
             };
             setAuthError(errorMessages[error.code] || errorMessages.default);
-            console.log('Error sending password reset email:', error);
+            console.log('Error sending password reset email: ', error);
         } finally {
             setLoading(false);
         }

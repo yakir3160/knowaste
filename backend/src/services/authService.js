@@ -77,7 +77,7 @@ class AuthService {
 
     async login(email, password) {
         try {
-            console.log('Fetching user from Firebase Auth...');
+            console.log('Fetching user from Firebase Auth..');
             const userRecord = await auth.getUserByEmail(email);
 
             console.log('Authenticating via Firebase REST API...');

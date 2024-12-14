@@ -45,7 +45,7 @@ const Login = () => {
     });
 
     const getDisplayError = () =>
-        emailFromRegister ? "This email is already registered. Please login to continue." :
+        emailFromRegister ? "This email is already registered. Please login to continue. " :
             message || null ||
             authError || null;
 
