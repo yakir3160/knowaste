@@ -11,7 +11,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import { MailCheck } from "lucide-react";
 
 const Login = () => {
-    const { login, authError, clearAuthError, passwordResetEmail, emailSent, } = useAuthContext();
+    const { login, authError, clearAuthError, passwordResetEmail, emailSent,loading } = useAuthContext();
     const location = useLocation();
     const emailFromRegister = location.state?.email || '';
     const message = location.state?.message || '';
@@ -23,7 +23,7 @@ const Login = () => {
     }, []);
 
     useEffect(() => {
-        if (emailSent) {
+        if (emailSent && !loading) {
             setTimeout(() => {
                 window.location.reload();
             }, 3000);
@@ -45,7 +45,7 @@ const Login = () => {
     });
 
     const getDisplayError = () =>
-        emailFromRegister ? "This email is already registered. Please login to continue. " :
+        emailFromRegister ? "This email is already registered. Please login to continue." :
             message || null ||
             authError || null;
 
@@ -111,7 +111,7 @@ const Login = () => {
                                 </div>
                                 <div className="flex flex-col">
                                     <div className={`flex flex-col gap-4`}>
-                                    <Button
+                                        <Button
                                             className="bg-lime text-titles flex justify-center items-center"
                                             type="submit"
                                             disabled={isSubmitting}

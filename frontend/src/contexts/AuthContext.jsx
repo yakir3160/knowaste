@@ -1,15 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from 'firebase/auth';
+import {GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
 
 // Firebase & Custom Hooks
 import { auth } from "../firebaseConfig";
-import { useRegister } from "../Hooks/Auth/useRegister";
-import { useLogin } from "../Hooks/Auth/useLogin";
-import { useLogout } from "../Hooks/Auth/useLogout";
-import { useGoogleSignIn } from "../Hooks/Auth/useGoogleSignIn";
-import { usePasswordReset } from "../Hooks/Auth/usePasswordReset";
 
+import { useGoogleSignIn } from "../Hooks/Auth/useGoogleSignIn";
 const AuthContext = createContext();
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||  'http://localhost:5002';
 
@@ -18,21 +14,19 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [authError, setAuthError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [emailSent, setEmailSent] = useState(false);
+
     console.log('User:', user);
     console.log('Token:', token);
     const navigate = useNavigate();
-    const { handleLogout } = useLogout();
-    const { handleSignInWithGoogle } = useGoogleSignIn();
-    const {handlePasswordResetEmail, success, emailSent} = usePasswordReset();
-
     useEffect(() => {
-         const token = localStorage.getItem('authToken');
-         if(token) {
-             fetch(`${API_BASE_URL}/api/auth/me`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    }
-             })
+        const token = localStorage.getItem('authToken');
+        if(token) {
+            fetch(`${API_BASE_URL}/api/auth/me`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Not authorized');
@@ -50,10 +44,10 @@ export const AuthProvider = ({ children }) => {
                     localStorage.removeItem('authToken');
                 })
                 .finally(() => setLoading(false));
-         }
-            else {
-                setLoading(false);
-            }
+        }
+        else {
+            setLoading(false);
+        }
     }, []);
 
     const clearAuthError = () => setAuthError(null);
@@ -138,13 +132,26 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-
     const signInWithGoogle = async () => {
+
+        const provider = new GoogleAuthProvider();
         try {
-            await handleSignInWithGoogle();
-            setUser(auth.currentUser);
+            const result = await signInWithPopup(auth, provider);
+            const token = await result.user.getIdToken();
+            const response = await fetch(`${API_BASE_URL}/api/auth/google`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({token}),
+            });
+            const userData = await response.json();
+            localStorage.setItem('authToken', userData.token);
+            setUser(userData.user);
+            setToken(userData.token);
             navigate('/admin-panel');
         } catch (error) {
+            console.error('Error during Google sign-in:', error.message);
             setAuthError('Error during Google sign-in.');
         }
     };
@@ -168,7 +175,7 @@ export const AuthProvider = ({ children }) => {
 
         setLoading(true);
         try {
-           const response = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
+            const response = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -188,9 +195,11 @@ export const AuthProvider = ({ children }) => {
                 'default': 'An error occurred. Please try again'
             };
             setAuthError(errorMessages[error.code] || errorMessages.default);
-            console.log('Error sending password reset email: ', error);
+            console.log('Error sending password reset email:', error);
         } finally {
             setLoading(false);
+            setEmailSent(true);
+
         }
     };
 
@@ -206,7 +215,6 @@ export const AuthProvider = ({ children }) => {
             authError,
             setAuthError,
             clearAuthError,
-            success,
             emailSent,
         }}>
             {children}

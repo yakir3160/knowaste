@@ -77,7 +77,7 @@ class AuthService {
 
     async login(email, password) {
         try {
-            console.log('Fetching user from Firebase Auth..');
+            console.log('Fetching user from Firebase Auth...');
             const userRecord = await auth.getUserByEmail(email);
 
             console.log('Authenticating via Firebase REST API...');
@@ -119,72 +119,70 @@ class AuthService {
         }
     }
 
-
     async googleSignIn(token) {
-        const ticket = await googleClient.verifyIdToken({
-            idToken: token,
-            audience: process.env.GOOGLE_CLIENT_ID
-        });
+        console.log('Starting Google Sign In process');
+        console.log('Verifying Google token...', token);
+        const decodedToken = await auth.verifyIdToken(token);
+        console.log('Token verified successfully:', decodedToken);
+
         const payload = ticket.getPayload();
+        console.log('Token payload:', payload);
+
         const email = payload.email;
+        console.log('User email:', email);
 
-        let userSnapshot = await db.collection('users')
-            .where('email', '==', email)
-            .limit(1)
-            .get();
+        const userRef = db.collection('users').doc();
+        const user = {
+            id: userRef.id,
+            email: decodedToken.email,
+            googleId: decodedToken.sub,
+            accountType: 'restaurant-manager',
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        };
 
-        let user;
-        if (userSnapshot.empty) {
-            const userRef = db.collection('users').doc();
-            user = {
-                id: userRef.id,
-                email,
-                googleId: payload.sub,
-                accountType: 'restaurant-manager',
-                createdAt: admin.firestore.FieldValue.serverTimestamp(),
-                updatedAt: admin.firestore.FieldValue.serverTimestamp()
-            };
-            await userRef.set(user);
-            console.log('User created:', user);
-        } else {
-            user = { id: userSnapshot.docs[0].id, ...userSnapshot.docs[0].data() };
-        }
+        await userRef.set(user);
+        console.log('User created/updated:', user);
 
         const authToken = this.generateToken(user);
-        return {user: this.excludePassword(user), token: authToken};
+        console.log('JWT token generated');
+
+        return { user, token: authToken };
     }
 
     async sendPasswordResetEmail(email) {
-        const userSnapshot = await db.collection('users')
-            .where('email', '==', email)
-            .limit(1)
-            .get();
+        try {
+            // Get the ID token for authentication
+            const idToken = await auth.createCustomToken(email);
 
-        if (userSnapshot.empty) {
-            throw new Error('User not found');
+            const response = await fetch(
+                `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.FIREBASE_WEB_API_KEY}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        requestType: 'PASSWORD_RESET',
+                        email: email,
+                        continueUrl: `${process.env.FRONTEND_URL}/auth`
+                    })
+                }
+            );
+
+            const data = await response.json();
+            console.log('Reset email response:', data);
+
+            return { message: 'Password reset email sent successfully' };
+        } catch (error) {
+            console.log('Error details:', error);
+            throw {
+                status: 500,
+                message: 'Failed to send reset email'
+            };
         }
-        const user = { id: userSnapshot.docs[0].id, ...userSnapshot.docs[0].data() };
-        const resetToken = this.generateResetToken(user, '1h');
-
-        await db.collection('passwordResets').add({
-            userId: user.id,
-            token: resetToken,
-            expiresAt: new Date(Date.now() + 3600000), // 1 hour
-            createdAt: admin.firestore.FieldValue.serverTimestamp(),
-            used: false
-        })
-        const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-        console.log('Reset link:', resetLink);
-
-        await emailTransporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Password Reset',
-            html: `Click <a href="${resetLink}">here</a> to reset your password`
-        });
-
-        return { message: 'Password reset email sent' };
     }
+
 
     async resetPassword(token, newPassword) {
         const resetSnapshot = await db.collection('passwordResets')
