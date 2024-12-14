@@ -149,6 +149,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('authToken', userData.token);
             setUser(userData.user);
             setToken(userData.token);
+            setLoading(false);
             navigate('/admin-panel');
         } catch (error) {
             console.error('Error during Google sign-in:', error.message);

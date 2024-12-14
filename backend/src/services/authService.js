@@ -121,29 +121,32 @@ class AuthService {
 
     async googleSignIn(token) {
         console.log('Starting Google Sign In process');
-        console.log('Verifying Google token...', token);
+
+        console.log('Verifying Google token...');
         const decodedToken = await auth.verifyIdToken(token);
-        console.log('Token verified successfully:', decodedToken);
+        console.log('Token verified successfully:');
 
-        const payload = ticket.getPayload();
-        console.log('Token payload:', payload);
-
-        const email = payload.email;
+        const email = decodedToken.email;
         console.log('User email:', email);
 
-        const userRef = db.collection('users').doc();
-        const user = {
-            id: userRef.id,
-            email: decodedToken.email,
-            googleId: decodedToken.sub,
-            accountType: 'restaurant-manager',
-            createdAt: admin.firestore.FieldValue.serverTimestamp(),
-            updatedAt: admin.firestore.FieldValue.serverTimestamp()
-        };
+        const userRef = db.collection('users').doc(decodedToken.sub);
+        const userDoc = await userRef.get();
 
-        await userRef.set(user);
-        console.log('User created/updated:', user);
-
+        let user;
+        if (userDoc.exists) {
+            user = userDoc.data();
+        } else {
+            user = {
+                id: userRef.id,
+                email: decodedToken.email,
+                googleId: decodedToken.sub,
+                accountType: 'restaurant-manager',
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                updatedAt: admin.firestore.FieldValue.serverTimestamp()
+            };
+            await userRef.set(user);
+            console.log('User created/updated:', user);
+        }
         const authToken = this.generateToken(user);
         console.log('JWT token generated');
 
