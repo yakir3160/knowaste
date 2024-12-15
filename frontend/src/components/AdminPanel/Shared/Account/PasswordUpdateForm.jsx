@@ -20,13 +20,6 @@ const PasswordUpdateForm = () => {
         return () => timer && clearTimeout(timer);
     }, [success, setSuccess]);
 
-    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-        await updatePasswordWithVerification(values.currentPassword, values.password);
-        setSubmitting(false);
-        if (!success) {
-            resetForm();
-        }
-    };
 
     return (
         <div className={`flex flex-col border-2 border-secondary p-4 rounded-sm  w-fit`}>
@@ -49,7 +42,7 @@ const PasswordUpdateForm = () => {
                         password: '',
                         repeatPassword: '',
                     }}
-                    onSubmit={handleSubmit}
+                    onSubmit={(values,{setSubmitting,resetForm}) => { updatePasswordWithVerification(values.currentPassword, values.password,{ setSubmitting, resetForm });}}
                 >
                     {({ handleChange, handleSubmit, values, isSubmitting }) => (
                         <Form className="grid grid-cols-1 gap-4 h-fit relative" onSubmit={handleSubmit}>

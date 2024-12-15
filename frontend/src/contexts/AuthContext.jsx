@@ -2,10 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import {GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
 
-// Firebase & Custom Hooks
 import { auth } from "../firebaseConfig";
-
-import { useGoogleSignIn } from "../Hooks/Auth/useGoogleSignIn";
 const AuthContext = createContext();
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||  'http://localhost:5002';
 
@@ -92,6 +89,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (values, { setSubmitting, resetForm }) => {
         try {
+            clearAuthError();
             const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
@@ -105,12 +103,8 @@ export const AuthProvider = ({ children }) => {
             const userData = await response.json();
             console.log('Response data:', userData);
             if (!response.ok) {
-                if (response.status === 401) {
-                    setAuthError('Invalid email or password.');
-                } else {
-                    setAuthError('An unexpected error occurred during login.');
-                }
-                return;
+                    setAuthError(userData.error || 'An unexpected error occurred.');
+                    return;
             }
             if (userData.token) {
                 localStorage.setItem('authToken', userData.token);

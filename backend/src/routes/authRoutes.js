@@ -5,7 +5,8 @@ import {
     login,
     googleSignIn,
     sendPasswordResetEmail,
-    resetPassword
+    resetPassword,
+    updatePasswordWithVerification,
 } from '../controllers/authController.js'
 
 const router = Router();
@@ -16,6 +17,7 @@ router.post('/google', googleSignIn)
 
 router.post('/reset-password', sendPasswordResetEmail)
 router.post('/reset-password/confirm', resetPassword)
+router.post('/update-password', updatePasswordWithVerification)
 
 router.get('/me', verifyToken, (req, res) => {
     res.json({ user: req.user });

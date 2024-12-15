@@ -2,27 +2,27 @@ import {auth} from '../../firebaseConfig';
 import {sendPasswordResetEmail,confirmPasswordReset,updatePassword,EmailAuthProvider,reauthenticateWithCredential} from 'firebase/auth';
 import {useState} from 'react';
 import {useNavigate} from "react-router-dom";
+import {useAuthContext} from "../../contexts/AuthContext";
 
 
 export const usePasswordReset = () => {
     const [success, setSuccess] = useState(false);
-    const [emailSent, setEmailSent] = useState(false);
 
     const [error, setError] = useState(null);
+    const {user} = useAuthContext();
     const navigate = useNavigate();
 
-
-    const handlePasswordResetEmail = async (email) => {
-        try {
-            await sendPasswordResetEmail(auth, email);
-            setEmailSent(true);
-        } catch (error) {
-            throw error;
-        }
-    };
     const handlePasswordReset = async (values,actionCode) => {
         try {
-            await confirmPasswordReset(auth,actionCode ,values.password);
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/reset-password/confirm`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: actionCode, newPassword: values.password }),
+            })
+            const data = await response.json();
+            console.log('Reset password response:', data);
             setSuccess(true);
             navigate('/auth', { state: { message: 'Password reset successful! Please log in with your new password.', type: 'success' } });
         }catch (error) {
@@ -30,23 +30,32 @@ export const usePasswordReset = () => {
         }
 
     }
-    const updatePasswordWithVerification = async (currentPassword,newPassword) => {
-        try {
-            const user = auth.currentUser;
-            const credential = EmailAuthProvider.credential(user.email, currentPassword);
-            await reauthenticateWithCredential(user, credential);
-            await updatePassword(user, newPassword);
-            setSuccess(true);
-        } catch (error) {
-            switch (error.code){
-                case 'auth/invalid-credential':
-                    setError('wrong current password');
-                    break;
-                default:
-                    setError('Error updating password');
-            }
-        }
+    const updatePasswordWithVerification = async (currentPassword, newPassword,{setSubmitting,resetForm}) => {
+    if (!user) {
+        setError('User is not authenticated');
+        return;
     }
-    return {handlePasswordResetEmail,handlePasswordReset,updatePasswordWithVerification,success,setSuccess, emailSent,error,};
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/update-password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: user.email, currentPassword, newPassword }),
+        });
+        const data = await response.json();
+        console.log('Update password response:', data);
+        if (!response.ok) {
+            setError(data.error);
+        } else {
+            setSuccess(true);
+            setSubmitting(false);
+            resetForm();
+        }
+    } catch (error) {
+        setError(error.message);
+    }
+};
+    return {handlePasswordReset,updatePasswordWithVerification,success,setSuccess,error,};
 
 }

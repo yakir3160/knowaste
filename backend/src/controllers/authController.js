@@ -22,6 +22,9 @@ export const login = async (req, res) => {
         if (error.message === 'Invalid email or password') {
             return res.status(401).json({ error: error.message });
         }
+        if (error.message === 'TOO_MANY_ATTEMPTS_TRY_LATER') {
+            return res.status(400).json({ error: 'Too many attempts. Try again later' });
+        }
         res.status(500).json({ error: 'Error during login' });
     }
 };
@@ -60,5 +63,17 @@ export const resetPassword = async (req, res) => {
             return res.status(400).json({ error: error.message });
         }
         res.status(500).json({ error: 'Error resetting password' });
+    }
+};
+export const updatePasswordWithVerification = async (req, res) => {
+    try {
+        const {email, currentPassword, newPassword } = req.body;
+        const result = await authService.updatePasswordWithVerification(email, currentPassword, newPassword);
+        res.json(result);
+    } catch (error) {
+        if (error.message === 'Invalid email or password') {
+            return res.status(400).json({ error: error.message });
+        }
+        res.status(500).json({ error: 'Error updating password' });
     }
 };

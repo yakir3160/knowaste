@@ -1,9 +1,7 @@
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { OAuth2Client } from 'google-auth-library';
-import admin, { db ,auth} from '../../config/firebase-admin.js';
+import {OAuth2Client} from 'google-auth-library';
+import admin, {auth, db} from '../../config/firebase-admin.js';
 import nodemailer from 'nodemailer';
-
 
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -108,14 +106,15 @@ class AuthService {
             console.log('Creating custom token...');
             // Generate JWT token
             const token = this.generateToken(userDoc.data());
-
+            const firebaseToken = authData.idToken || authData.token;
             return {
                 user: userDoc.data(),
-                token: token
+                token: token,
+                firebaseToken: firebaseToken,
             };
         } catch (error) {
             console.error('Login error:', error);
-            throw { status: 401, message: 'Invalid email or password' };
+            throw error;
         }
     }
 
@@ -155,9 +154,6 @@ class AuthService {
 
     async sendPasswordResetEmail(email) {
         try {
-            // Get the ID token for authentication
-            const idToken = await auth.createCustomToken(email);
-
             const response = await fetch(
                 `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.FIREBASE_WEB_API_KEY}`,
                 {
@@ -188,37 +184,60 @@ class AuthService {
 
 
     async resetPassword(token, newPassword) {
-        const resetSnapshot = await db.collection('passwordResets')
-            .where('token', '==', token)
-            .where('used', '==', false)
-            .where('expiresAt', '>', new Date())
-            .limit(1)
-            .get();
+        console.log('Starting password reset process');
+        try {
+            const response = await fetch(
+                `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${process.env.FIREBASE_WEB_API_KEY}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        oobCode: token,
+                        newPassword: newPassword
+                    })
+                }
+            );
+            console.log('Password updated successfully');
 
-        if (resetSnapshot.empty) {
-            throw new Error('Invalid or expired token');
+            return { message: 'Password reset successful' };
+        }catch(error) {
+            console.error('Reset password error:', error);
+            throw { status: 400, message: 'Invalid or expired token' };
         }
-
-        const resetDoc = resetSnapshot.docs[0];
-        const resetData = resetDoc.data();
-
-        const hashedPassword = await bcrypt.hash(newPassword, 12);
-
-        // Use transaction to update password and mark reset token as used
-        await db.runTransaction(async (transaction) => {
-            await transaction.update(db.collection('users').doc(resetData.userId), {
-                password: hashedPassword,
-                updatedAt: admin.firestore.FieldValue.serverTimestamp()
-            });
-
-            await transaction.update(resetDoc.ref, {
-                used: true,
-                updatedAt: admin.firestore.FieldValue.serverTimestamp()
-            });
-        });
-
-        return { message: 'Password reset successful' };
     }
+    async updatePasswordWithVerification(email,currentPassword,newPassword) {
+        try {
+            console.log('Starting password update process for:', email);
+            console.log('Verifying current password using login...');
+            const {firebaseToken} = await this.login(email, currentPassword);
+            console.log('Password verified successfully');
+            if (!firebaseToken) {
+                throw { status: 400, message: 'Invalid email or password' };
+            }
+            console.log('firebaseToken:', firebaseToken);
+            console.log('Current password verified. Proceeding to update password...');
+
+            const updateResponse = await fetch( `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${process.env.FIREBASE_WEB_API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    idToken: firebaseToken,
+                    password: newPassword,
+                })
+            })
+            console.log('Password updated successfully');
+            const updateData = await updateResponse.json();
+            return {message: 'Password updated successfully',updateData};
+        } catch (error) {
+            console.error('Error updating password:', error.message);
+            throw { status: 400, message: error.message || 'Invalid password' };
+        }
+    }
+
 
     generateToken(user, expiresIn = '24h') {
         return jwt.sign({userId: user.id}, process.env.JWT_SECRET, {expiresIn});
