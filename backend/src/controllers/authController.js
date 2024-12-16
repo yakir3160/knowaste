@@ -77,3 +77,16 @@ export const updatePasswordWithVerification = async (req, res) => {
         res.status(500).json({ error: 'Error updating password' });
     }
 };
+export const updateEmail = async (req, res) => {
+    try {
+        const {firebaseToken,newEmail} = req.body;
+        const result = await authService.updateEmail(firebaseToken,newEmail);
+        res.json(result);
+        console.log('result:',result);
+    } catch (error) {
+        if (error.message === 'Invalid email') {
+            return res.status(400).json({ error: error.message });
+        }
+        res.status(500).json({ error: 'Error updating email' });
+    }
+}

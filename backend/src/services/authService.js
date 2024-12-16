@@ -3,7 +3,6 @@ import {OAuth2Client} from 'google-auth-library';
 import admin, {auth, db} from '../../config/firebase-admin.js';
 import nodemailer from 'nodemailer';
 
-
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const emailTransporter = nodemailer.createTransport({
     service: 'gmail',
@@ -237,6 +236,39 @@ class AuthService {
             throw { status: 400, message: error.message || 'Invalid password' };
         }
     }
+    async updateEmail(firebaseToken, newEmail) {
+        try {
+            console.log('Starting AUTH email update process IN AUTH SERVICE');
+            console.log('new email in auth',newEmail);
+            const response = await fetch(
+                `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${process.env.FIREBASE_WEB_API_KEY}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+
+                        idToken: firebaseToken,
+                        email: newEmail,
+                        returnSecureToken: true
+                    })
+                }
+            );
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error.message || 'Failed to update email');
+            }
+
+            const updateData = await response.json();
+            console.log('Email updated successfully IN AUTH SERVICE');
+            return { message: 'Email updated successfully', updateData };
+        } catch (error) {
+            console.error('Error updating email:', error);
+            throw { status: 400, message: error.message || 'Invalid email' };
+        }
+    }
+
 
 
     generateToken(user, expiresIn = '24h') {

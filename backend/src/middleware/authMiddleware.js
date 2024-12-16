@@ -3,6 +3,7 @@ import { db } from '../../config/firebase-admin.js';
 
 export const verifyToken = async (req, res, next) => {
     try {
+        console.log('Verifying token...');
         const authHeader = req.headers.authorization;
 
         if(!authHeader) {
@@ -28,7 +29,7 @@ export const verifyToken = async (req, res, next) => {
             id: userDoc.id,
             ...userData
         };
-
+        console.log('Token verified successfully');
         next();
     } catch (error) {
         if (error.name === 'JsonWebTokenError') {
