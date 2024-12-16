@@ -22,9 +22,9 @@ const PasswordUpdateForm = () => {
 
 
     return (
-        <div className={`flex flex-col border-2 border-secondary p-4 rounded-sm  w-fit`}>
+        <div className={`flex flex-col  rounded-sm  w-fit`}>
             <Card className="w-full">
-                <h3 className="text-titles text-3xl p-3 text-center">Password Update</h3>
+                <h3 className="text-titles text-3xl p-3 text-center">Update Password</h3>
                 <Formik
                     validationSchema={Yup.object().shape({
                         currentPassword: Yup.string().required(REQUIRED_MSG),

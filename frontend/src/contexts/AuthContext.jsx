@@ -3,18 +3,19 @@ import { useNavigate } from "react-router-dom";
 import {GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
 
 import { auth } from "../firebaseConfig";
+import {useUserData} from "../Hooks/User/useUserData";
 const AuthContext = createContext();
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||  'http://localhost:5002';
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
+    const [firebaseToken, setFirebaseToken] = useState(null);
     const [authError, setAuthError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [success, setSuccess] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
 
-    console.log('User:', user);
-    console.log('Token:', token);
     const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -28,7 +29,6 @@ export const AuthProvider = ({ children }) => {
                     if (!response.ok) {
                         throw new Error('Not authorized');
                     }
-                    console.log('Response:', response);
                     return response.json();
                 })
                 .then(userData => {
@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
                     console.error('Error fetching user data:', error.message);
                     setUser(null);
                     localStorage.removeItem('authToken');
+                    setFirebaseToken(null);
                 })
                 .finally(() => setLoading(false));
         }
@@ -110,6 +111,7 @@ export const AuthProvider = ({ children }) => {
                 localStorage.setItem('authToken', userData.token);
                 setToken(userData.token);
             }
+            setFirebaseToken(userData.firebaseToken);
             setUser(userData.user);
             resetForm();
             navigate('/admin-panel');
@@ -197,16 +199,51 @@ export const AuthProvider = ({ children }) => {
 
         }
     };
+    const updateEmail = async (newEmail) => {
+        try {
+            console.log('New email:', newEmail);
+            console.log('Firebase token:', firebaseToken);
+            const response = await fetch(`${API_BASE_URL}/api/auth/update-email`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+
+                },
+                body: JSON.stringify( {
+                    firebaseToken:`${firebaseToken}`,
+                    newEmail: newEmail,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                setAuthError(errorData.error || 'An unexpected error occurred.');
+                throw new Error(response.statusText);
+            }
+            return true;
+
+            // logout();
+            // navigate('/auth');
+        } catch (error) {
+            console.error('Error updating email:', error.message);
+            setAuthError('An error occurred. Please try again.');
+            return false;
+        }
+    }
 
     return (
         <AuthContext.Provider value={{
             user,
+            setUser,
             login,
             register,
             logout,
             signInWithGoogle,
             passwordResetEmail,
+            updateEmail,
             loading,
+            success,
+            setSuccess,
             authError,
             setAuthError,
             clearAuthError,
