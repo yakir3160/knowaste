@@ -33,7 +33,7 @@ const EmailUpdateForm = ({ user }) => {
     };
 
     return (
-        <Card className="relative">
+        <Card>
             <h2 className="text-titles text-3xl p-3 text-center">Update Email</h2>
             <Formik
                 initialValues={{ email: user?.email || '' }}

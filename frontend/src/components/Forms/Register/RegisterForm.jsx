@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react';
 import GlobalField from "../../Common/inputs/GlobalField";
 import Button from "../../Common/Button/Button";
+import loadingAnimation from "../../../animations/AnimationLoading.json";
+import {Player} from "@lottiefiles/react-lottie-player";
 
 
 const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) => {
@@ -88,7 +90,12 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                     {isSubmitting ? (
                         <>
                             Submitting...
-                            <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles ml-3"></div>
+                            <Player
+                                autoplay
+                                loop
+                                src={loadingAnimation}
+                                className="size-6"
+                            />
                         </>
                     ) : (
                         "Submit"

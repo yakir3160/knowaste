@@ -36,7 +36,7 @@ const UserDetailsForm = ({ user }) => {
     };
 
     return (
-        <Card className="relative">
+        <Card >
             <h2 className="text-titles text-3xl p-3 text-center ">Update Details</h2>
             <Formik
                 initialValues={initialValues}
