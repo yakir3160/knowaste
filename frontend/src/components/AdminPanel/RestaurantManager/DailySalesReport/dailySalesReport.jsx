@@ -57,30 +57,34 @@ const DailySalesReport = () => {
     const [sales, setSales] = useState([]);
     const [activeTab, setActiveTab] = useState('Items');
     const [saving, setSaving] = useState(false);
+    const {addReport} = useItemsContext();
 
     const handleSubmitReport = async (values, { resetForm }) => {
         try {
             setSaving(true);
-            const totalSales = values.items.reduce((acc, item) => acc + item.totalPrice, 0);
 
-            const report = {
-                userId: user.uid,
-                reportId: generateUniqueID(),
+            // שולחים רק את המידע הבסיסי הנדרש
+            const reportData = {
                 date: reportDate,
-                timeStamp: new Date().toISOString(),
-                items: values.items,
-                totalItems: values.items.length,
-                totalSales: totalSales,
-                totalSalesPreTax: parseFloat((totalSales * (1 - TAX_PERCENTAGE)).toFixed(2)),
+                items: values.items.map(item => ({
+                    category: item.category,
+                    subCategory: item.subCategory,
+                    menuItem: item.menuItem,
+                    quantity: item.quantity
+                }))
             };
 
-            setSales([...sales, report]);
+            // הבקאנד מחזיר את הדוח המעובד
+            const processedReport = await addReport(reportData, 'sales');
+
+            // עדכון ה-UI עם התוצאה מהבקאנד
+            setSales(prev => [...prev, processedReport]);
             resetForm({ values: initialValues });
+
         } catch (error) {
             console.error('Failed to submit report:', error);
         } finally {
             setSaving(false);
-            console.log(sales);
         }
     };
 

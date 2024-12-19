@@ -94,7 +94,7 @@ module.exports = {
       white: 'var(--bs-white)',
       green: 'var(--bs-green)',
       transparent: 'transparent',
-      half_transparent: 'rgba(248,251,239,0.55)',
+      half_transparent: 'rgba(248,251,239,0.64)',
     },
   },
   plugins: [tailwindHamburgers],

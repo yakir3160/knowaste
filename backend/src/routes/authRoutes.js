@@ -11,11 +11,10 @@ import {
 } from '../controllers/authController.js'
 
 const router = Router();
-
+// ===================== Auth Routes =====================
 router.post('/register', register)
 router.post('/login', login)
 router.post('/google', googleSignIn)
-
 router.post('/reset-password', sendPasswordResetEmail)
 router.post('/reset-password/confirm', resetPassword)
 router.post('/update-password', updatePasswordWithVerification)

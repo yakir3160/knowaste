@@ -1,7 +1,6 @@
 import { config } from '../config/config.js';
 import express from 'express';
-import authRoutes from './routes/authRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+import apiRoutes from './routes/index.js';
 
 import cors from 'cors';
 
@@ -10,9 +9,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Use routes
-app.use('/api/auth', authRoutes);
-app.use('/api/user', userRoutes);
+app.use('/api', apiRoutes);
+
+
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

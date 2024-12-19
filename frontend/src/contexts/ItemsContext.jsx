@@ -6,9 +6,11 @@ import IngredientCategories from '../MockData/ingredientCategories.json';
 
 // יצירת הקונטקסט
 const ItemsContext = createContext();
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5002';
 
 export const ItemsProvider = ({ children }) => {
     const { userBaseData: user } = useUserContext();
+    const token = localStorage.getItem('authToken');
 
     const [loadingItems, setLoadingItems] = useState(true);
     const [userItems, setUserItems] = useState();
@@ -47,6 +49,19 @@ export const ItemsProvider = ({ children }) => {
             return acc;
         }, []);
     };
+const addReport = (report, reportType) => {
+    // const result = fetch(`${API_BASE_URL}/api/${reportType}/add-report`, {
+        // method: 'POST',
+        // headers: {
+        //     'Content-Type': 'application/json',
+        //     Authorization: `Bearer ${token}`,
+        // },
+        // body: JSON.stringify(report),
+    // });
+    console.log(`${API_BASE_URL}/api/${reportType}/add-report`)
+    console.log('report type:', reportType);
+    console.log('report:', report);
+}
 
     useEffect(() => {
         setLoadingItems(true);
@@ -79,8 +94,9 @@ export const ItemsProvider = ({ children }) => {
         };
     }, [user]);
 
+
     return (
-        <ItemsContext.Provider value={{ userItems, categories ,ingredients, setIngredients,loadingItems,ingredientCategories}}>
+        <ItemsContext.Provider value={{ userItems, categories ,ingredients, setIngredients,loadingItems,ingredientCategories,addReport}}>
             {children}
         </ItemsContext.Provider>
     );

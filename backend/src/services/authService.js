@@ -106,6 +106,8 @@ class AuthService {
             // Generate JWT token
             const token = this.generateToken(userDoc.data());
             const firebaseToken = authData.idToken || authData.token;
+            console.log('Token generated successfully');
+            console.log('User logged in successfully:', email);
             return {
                 user: userDoc.data(),
                 token: token,
