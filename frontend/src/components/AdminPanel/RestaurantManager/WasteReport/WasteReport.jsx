@@ -13,6 +13,7 @@ import { tableStyles } from '../../../../css/tableStyles';
 import TabNavigation from "../../../Common/TabNavigation/TabNavigation";
 import {useItemsContext} from "../../../../contexts/ItemsContext";
 
+
 const validationSchema = Yup.object().shape({
     items: Yup.array().of(
         Yup.object().shape({
@@ -46,7 +47,8 @@ const WasteReport = () => {
     const [leftovers, setLeftovers] = useState([]);
     const [activeTab, setActiveTab] = useState('Items');
     const [saving, setSaving] = useState(false);
-    console.log(ingredients);
+    const {addReport} = useItemsContext();
+
     const reasons = [
         "Expired",
         "Damaged",
@@ -59,19 +61,13 @@ const WasteReport = () => {
     const handleSubmitReport = async (values, { resetForm }) => {
         try {
             setSaving(true);
-            const totalCost = values.items.reduce((acc, item) => acc + item.cost, 0);
-
-            const report = {
-                userId: user.uid,
-                reportId: generateUniqueID(),
+            // שליחת המערך הגולמי לבקאנד
+            const reportData = {
                 date: reportDate,
-                timeStamp: new Date().toISOString(),
                 items: values.items,
-                totalItems: values.items.length,
-                totalCost: totalCost,
+                userId: user.id
             };
-
-            setLeftovers([...leftovers, report]);
+            await addReport(reportData, 'waste');
             resetForm({ values: initialValues });
         } catch (error) {
             console.error('Failed to submit report:', error);

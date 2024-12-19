@@ -47,6 +47,7 @@ const Register = () => {
                 >
                     {({isSubmitting, handleChange}) => (
                         <Form className="w-full" noValidate>
+                            {isSubmitting}
                             <RegisterForm
                                 cities={cities}
                                 handleChange={handleChange}

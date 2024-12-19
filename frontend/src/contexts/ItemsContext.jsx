@@ -7,20 +7,59 @@ import IngredientCategories from '../MockData/ingredientCategories.json';
 
 // יצירת הקונטקסט
 const ItemsContext = createContext();
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5002';
 
 export const ItemsProvider = ({ children }) => {
     const { userBaseData: user } = useUserContext();
+    const token = localStorage.getItem('authToken');
 
     const [loadingItems, setLoadingItems] = useState(true);
     const [userItems, setUserItems] = useState();
     const [categories, setCategories] = useState();
     const [ingredients, setIngredients] = useState();
     const ingredientCategories = IngredientCategories.categories.map(category => category);
-    const ingredientStorageTypes = IngredientCategories.storageTypes.map(storageType => storageType);
-    const measurementUnits = IngredientCategories.measurementUnits.map(unit => unit);
+    const extractIngredients = (menuData) => {
+        if (!menuData) return []; // אם אין נתוני תפריט, מחזירים מערך ריק
+        // חילוץ כל הפריטים מתוך קטגוריות ותתי קטגוריות
+        const menuItems = menuData?.categories.flatMap(category =>
+            category.items || // אם יש פריטים ישירים בקטגוריה
+            category.subCategories.flatMap(sub => sub.items.map(item => item)) // אחרת, לוקחים פריטים מתוך תתי-קטגוריות
+        );
+
+        // חילוץ רשימת המרכיבים מכל פריטי התפריט
+        const ingredients = menuItems?.flatMap(item => item.ingredients);
 
 
-
+            if (existingIngredient) {
+                // אם המרכיב כבר קיים, מוסיפים את הכמות הנוכחית לכמות הבסיסית
+                existingIngredient.baseQuantity += ingredient.amountInGrams;
+            } else {
+                // אם המרכיב אינו קיים, מוסיפים אותו כרשומה חדשה
+                acc.push({
+                    id: ingredient.ingredientId,
+                    name: ingredient.name,
+                    baseQuantity: ingredient.amountInGrams,
+                    stockQuantity: 0,
+                    unitType: 'grams'
+                });
+            }
+            return acc;
+        }, []);
+    };
+const addReport = (report, reportType) => {
+    // const result = fetch(`${API_BASE_URL}/api/${reportType}/add-report`, {
+        // method: 'POST',
+        // headers: {
+        //     'Content-Type': 'application/json',
+        //     Authorization: `Bearer ${token}`,
+        // },
+        // body: JSON.stringify(report),
+    // });
+    console.log(`${API_BASE_URL}/api/${reportType}/add-report`)
+    console.log('Authorization:', `Bearer ${token}`);
+    console.log('report type:', reportType);
+    console.log('report:', report);
+}
     useEffect(() => {
         setLoadingItems(true);
         setUserItems(
@@ -45,10 +84,7 @@ export const ItemsProvider = ({ children }) => {
                 ? []
                 : Ingredients.ingredients.flatMap(ingredient => ingredient)
         )
-
-        console.log('User Items ',userItems);
-        console.log('user categories',categories)
-        console.log('user ingredients',ingredients)
+      
         setLoadingItems(false);
         return () => {
             setUserItems(null);
@@ -56,8 +92,11 @@ export const ItemsProvider = ({ children }) => {
         };
     }, [user]);
 
+
     return (
-        <ItemsContext.Provider value={{ userItems, categories ,loadingItems,ingredients,setIngredients,ingredientCategories,ingredientStorageTypes,measurementUnits}}>
+
+        <ItemsContext.Provider value={{ userItems, categories ,ingredients, setIngredients,loadingItems,ingredientCategories,addReport}}>
+
             {children}
         </ItemsContext.Provider>
     );

@@ -1,12 +1,18 @@
 import { RiLoader5Line } from "react-icons/ri";
+import loadingAnimation from "../../../animations/AnimationLoading.json";
+import {Player} from "@lottiefiles/react-lottie-player";
+import React from "react";
 
 const Loading = () => {
     return (
         <div className="flex flex-col justify-center items-center h-screen text-center">
-            <RiLoader5Line
-                className={`size-20 md:size-[100px] animate-spin text-titles border-4 border-lime rounded-[20px] md:rounded-[30px] bg-white shadow-outer-custom p-2`}
+            <Player
+                autoplay
+                loop
+                src={loadingAnimation}
+                className="size-24"
             />
-            <p className="mt-4 text-xl md:text-3xl font-semibold text-titles p-5 animate-pulse">Loading...</p>
+            <p className="mt-4 text-xl md:text-3xl font-semibold text-titles animate-pulse">Loading...</p>
         </div>
     );
 };

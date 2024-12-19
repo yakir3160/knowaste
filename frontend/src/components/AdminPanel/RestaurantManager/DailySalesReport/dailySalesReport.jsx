@@ -31,35 +31,35 @@ const DailySalesReport = () => {
     const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0]);
     const [sales, setSales] = useState([]);
     const [activeTab, setActiveTab] = useState('Items');
+    const [saving, setSaving] = useState(false);
+    const {addReport} = useItemsContext();
 
-    const validationSchema = Yup.object({
-        category: Yup.string().required("Category is required"),
-        subCategory: Yup.string().optional(),
-        menuItem: Yup.string().required("Dish is required"),
-        quantity: Yup.number().required("Quantity is required").positive("Must be positive")
-            .integer("Must be an integer"),
-    });
+    const handleSubmitReport = async (values, { resetForm }) => {
+        try {
+            setSaving(true);
 
-    const initialValues = {
-        category: "",
-        subCategory: "",
-        menuItem: "",
-        quantity: "",
-        totalPrice: 0,
-    };
-
-    const handleAddDish = (values, { resetForm }) => {
-        const selectedDish = filteredItems.find(item => item.name === values.menuItem);
-
-        if (selectedDish) {
-            const newItem = {
-                ...values,
-                id: selectedDish.id,
-                totalPrice: values.quantity * selectedDish.price
+            // שולחים רק את המידע הבסיסי הנדרש
+            const reportData = {
+                date: reportDate,
+                items: values.items.map(item => ({
+                    category: item.category,
+                    subCategory: item.subCategory,
+                    menuItem: item.menuItem,
+                    quantity: item.quantity
+                }))
             };
 
-            setReportItems([...reportItems, newItem]);
-            resetForm();
+            // הבקאנד מחזיר את הדוח המעובד
+            const processedReport = await addReport(reportData, 'sales');
+
+            // עדכון ה-UI עם התוצאה מהבקאנד
+            setSales(prev => [...prev, processedReport]);
+            resetForm({ values: initialValues });
+
+        } catch (error) {
+            console.error('Failed to submit report:', error);
+        } finally {
+            setSaving(false);
         }
     };
 

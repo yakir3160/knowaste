@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from "../Common/Card/Card";
 import Button from "../Common/Button/Button";
 import GlobalField from "../Common/inputs/GlobalField";
@@ -9,9 +9,13 @@ import { Form, Formik } from "formik";
 import GoogleSignInBtn from "../Common/GoogleSignInBtn/GoogleSignInBtn";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { MailCheck } from "lucide-react";
+import { Player } from '@lottiefiles/react-lottie-player';
+
+// Example Lottie animation files (you can change this URL to your Lottie file URL or local file)
+import loadingAnimation from '../../animations/AnimationLoading.json'; // Add a Lottie file in the assets folder
 
 const Login = () => {
-    const { login, authError, clearAuthError, passwordResetEmail, emailSent, } = useAuthContext();
+    const { login, authError, clearAuthError, passwordResetEmail, emailSent, loading } = useAuthContext();
     const location = useLocation();
     const emailFromRegister = location.state?.email || '';
     const message = location.state?.message || '';
@@ -23,7 +27,7 @@ const Login = () => {
     }, []);
 
     useEffect(() => {
-        if (emailSent) {
+        if (emailSent && !loading) {
             setTimeout(() => {
                 window.location.reload();
             }, 3000);
@@ -70,7 +74,7 @@ const Login = () => {
                         onSubmit={login}
                         enableReinitialize={true}
                     >
-                        {({isSubmitting, values}) => (
+                        {({ isSubmitting, values }) => (
                             <Form className="p-4" noValidate>
                                 <div className="mb-3">
                                     <GlobalField
@@ -86,11 +90,11 @@ const Login = () => {
                                         label="Password"
                                     />
                                     <div
-                                        className={`text-md text-center ${ messageType !== 'success'  ? 'text-errorRed' : 'text-green'} h-fit`}>
+                                        className={`text-md text-center ${messageType !== 'success' ? 'text-errorRed' : 'text-green'} h-fit`}>
                                         {getDisplayError()}
                                     </div>
 
-                                    <div className="flex flex-col items-center justify-content-center p-2 my-2 h-fit">
+                                    <div className="flex flex-col items-center justify-center p-2 my-2 h-fit">
                                         <button
                                             type="button"
                                             onClick={() => handlePasswordReset(values)}
@@ -100,8 +104,6 @@ const Login = () => {
                                             {isResetting ? (
                                                 <>
                                                     Sending reset email...
-                                                    <div
-                                                        className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-titles"></div>
                                                 </>
                                             ) : (
                                                 'Forgot your password?'
@@ -110,29 +112,34 @@ const Login = () => {
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
-                                    <div className={`flex flex-col gap-4`}>
-                                    <Button
+                                    <div className="flex flex-col gap-4">
+                                        <Button
                                             className="bg-lime text-titles flex justify-center items-center"
                                             type="submit"
-                                            disabled={isSubmitting}
+                                            disabled={isSubmitting || loading} // Disable if submitting or loading
                                         >
-                                            {isSubmitting ? (
+                                            {isSubmitting || loading ? (
                                                 <>
                                                     Logging in...
-                                                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles ml-3"></div>
+                                                    <Player
+                                                        autoplay
+                                                        loop
+                                                        src={loadingAnimation}
+                                                        className="size-6"
+                                                        />
                                                 </>
                                             ) : (
                                                 'Login'
                                             )}
                                         </Button>
-                                        <GoogleSignInBtn isSubmitting={isSubmitting}/>
+                                        <GoogleSignInBtn isSubmitting={isSubmitting} />
                                     </div>
                                     <div className="flex flex-row items-center p-2 m-2 mt-2 gap-2 h-fit">
                                         <p className="text-center my-4">Don't have an account?</p>
                                         <Button
                                             className="text-buttons text-center"
                                             to="/auth"
-                                            state={{showRegister: true}}
+                                            state={{ showRegister: true }}
                                         >
                                             Sign up
                                         </Button>

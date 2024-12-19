@@ -8,6 +8,8 @@ import Button from "../Common/Button/Button";
 import GlobalField from "../Common/inputs/GlobalField";
 import {REQUIRED_MSG} from "../../constants/Constants";
 import {SendHorizontal} from "lucide-react";
+import {Player} from "@lottiefiles/react-lottie-player";
+import loadingAnimation from "../../animations/AnimationLoading.json";
 
 const ContactForm = () => {
     const [submitted, setSubmitted] = useState(false);
@@ -74,13 +76,21 @@ const ContactForm = () => {
                                         >
                                             {isSubmitting ? (
                                                 <>
-                                                    Submitting...
-                                                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-titles ml-3"></div>
+                                                    Sending...
+                                                        <Player
+                                                            autoplay
+                                                            loop
+                                                            src={loadingAnimation}
+                                                            className="size-6"
+                                                        />
                                                 </>
                                             ) : (
-                                                "Send "
+                                                <>
+                                                    Send
+                                                    <SendHorizontal size={16}  className={`ml-2`}/>
+                                                </>
                                             )}
-                                            <SendHorizontal size={16}  className={`ml-2`}/>
+
                                         </Button>
                                     </div>
 
