@@ -210,7 +210,7 @@ const DailySalesReport = () => {
                         <div className="self-end w-full md:w-fit p-2">
                             <Button
                                 onClick={handleSubmitReport}
-                                className="w-full md:w-1/4 border border-lime"
+                                className="w-full md:w-1/4 border-2 border-lime"
                             >
                                 Submit Report
                             </Button>

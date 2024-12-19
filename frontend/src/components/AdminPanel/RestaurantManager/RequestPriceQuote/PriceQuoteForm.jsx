@@ -257,7 +257,7 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
                                 </div>
 
                                 <div
-                                    className={`grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 py-5 px-3 gap-5 rounded-b-sm border-2 border-secondary border-t-2 border-t-transparent`}>
+                                    className={`grid grid-cols-1  md:grid-cols-2 lg:grid-cols-7 py-5 px-3 gap-5 rounded-b-sm border-2 border-secondary border-t-2 border-t-transparent`}>
                                     <Button
                                         type="button"
                                         onClick={() => {
@@ -269,7 +269,7 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
                                             ];
                                             setFieldValue('ingredients', newIngredients);
                                         }}
-                                        className="flex items-center border-2 border-lime w-fit h-fit"
+                                        className="flex items-center  w-fit h-fit col-end-1"
                                         disabled={saving || isSubmitting}
                                     >
                                         Add Item
@@ -277,7 +277,7 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
                                     </Button>
                                     {/* כפתורים לייצוא */}
                                     <div
-                                        className="flex flex-row  w-fit  h-fit justify-center rounded-sm md:justify-start space-x-2 bg-white  border  border-secondary">
+                                        className="flex flex-row  w-fit  h-fit justify-center col-span-3 rounded-sm md:justify-start space-x-2 bg-white  border  border-secondary">
                                     <span
                                         className="text-lg  text-titles font-semibold self-center pl-5">Export to:</span>
                                         <Button type="button" className={`shadow-none`} disabled={saving}>CSV</Button>
@@ -286,10 +286,10 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
                                     </div>
                                     {/* אזור הכפתורים */}
                                     <div
-                                        className="grid grid-cols-2 w-full h-fit gap-5  bg-secondary rounded-sm">
+                                        className="grid grid-cols-1 md:grid-cols-2 w-full h-fit gap-5 col-span-4  bg-secondary rounded-sm">
                                         <Button
                                             type="submit"
-                                            className="flex items-center justify-center border-2 border-lime p-3"
+                                            className="flex items-center justify-center border-2 border-lime text-nowrap"
                                             onClick={() => handleSaveOrSubmit(values, resetForm, 'Draft')}
                                             disabled={saving || isSubmitting}
                                         >
@@ -298,7 +298,7 @@ const PriceQuoteForm = ({inventoryItems, userData,onQuoteAdded}) => {
                                         </Button>
                                         <Button
                                             type="submit"
-                                            className="flex items-center justify-center border-2 border-lime p-3"
+                                            className="flex items-center justify-center border-2 border-lime text-nowrap "
                                             disabled={saving || isSubmitting}
                                         >
                                             {(saving || isSubmitting) ? 'Sending...' : 'Send Request'}

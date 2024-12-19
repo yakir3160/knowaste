@@ -199,7 +199,7 @@ const WasteReport = () => {
                                                     {...initialValues.items[0], id: newId}
                                                 ]);
                                             }}
-                                            className="flex items-center border-2 border-lime w-fit"
+                                            className="flex items-center  w-fit"
                                             disabled={saving}
                                         >
                                             Add Item
