@@ -7,137 +7,46 @@
         {
           "id": 1,
           "name": "Bruschetta",
-          "description": "Grilled bread with fresh tomatoes",
           "price": 32,
+          "availability": "in_stock",
           "ingredients": [
             {
               "ingredientId": 101,
-              "name": "Italian Bread",
-              "amountInGrams": 50
+              "quantity": 1
             },
             {
               "ingredientId": 102,
-              "name": "Chopped Tomatoes",
-              "amountInGrams": 30
-            },
-            {
-              "ingredientId": 103,
-              "name": "Garlic",
-              "amountInGrams": 5
-            },
-            {
-              "ingredientId": 104,
-              "name": "Basil",
-              "amountInGrams": 2
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "name": "Caesar Salad",
-          "description": "Romaine lettuce with classic Caesar dressing",
-          "price": 45,
-          "ingredients": [
-            {
-              "ingredientId": 201,
-              "name": "Romaine Lettuce",
-              "amountInGrams": 50
-            },
-            {
-              "ingredientId": 202,
-              "name": "Croutons",
-              "amountInGrams": 20
-            },
-            {
-              "ingredientId": 203,
-              "name": "Parmesan",
-              "amountInGrams": 10
-            },
-            {
-              "ingredientId": 204,
-              "name": "Caesar Dressing",
-              "amountInGrams": 15
+              "quantity": 50
             }
           ]
         }
       ]
     },
     {
-      "id": "main-courses",
-      "name": "Main Courses",
+      "id": "entrees",
+      "name": "Entrees",
       "subCategories": [
         {
           "id": "pasta",
           "name": "Pasta",
           "items": [
             {
-              "id": 3,
-              "name": "Spaghetti",
-              "description": "Classic Italian pasta with tomato sauce",
-              "price": 62,
+              "id": 2,
+              "name": "Spaghetti Carbonara",
+              "price": 45,
+              "availability": "in_stock",
               "ingredients": [
                 {
-                  "ingredientId": 301,
-                  "name": "Spaghetti Pasta",
-                  "amountInGrams": 100
+                  "ingredientId": 103,
+                  "quantity": 100
                 },
                 {
-                  "ingredientId": 302,
-                  "name": "Tomato Sauce",
-                  "amountInGrams": 50
+                  "ingredientId": 104,
+                  "quantity": 50
                 },
                 {
-                  "ingredientId": 303,
-                  "name": "Garlic",
-                  "amountInGrams": 5
-                },
-                {
-                  "ingredientId": 304,
-                  "name": "Olive Oil",
-                  "amountInGrams": 10
-                }
-              ]
-            },
-            {
-              "id": 13,
-              "name": "Beef Stroganoff",
-              "description": "Tender beef in a creamy mushroom sauce over egg noodles",
-              "price": 78,
-              "ingredients": [
-                {
-                  "ingredientId": 1301,
-                  "name": "Beef Tenderloin",
-                  "amountInGrams": 200
-                },
-                {
-                  "ingredientId": 1302,
-                  "name": "Egg Noodles",
-                  "amountInGrams": 100
-                },
-                {
-                  "ingredientId": 1303,
-                  "name": "Mushrooms",
-                  "amountInGrams": 60
-                },
-                {
-                  "ingredientId": 1304,
-                  "name": "Sour Cream",
-                  "amountInGrams": 50
-                },
-                {
-                  "ingredientId": 1305,
-                  "name": "Onion",
-                  "amountInGrams": 30
-                },
-                {
-                  "ingredientId": 1306,
-                  "name": "Beef Broth",
-                  "amountInGrams": 100
-                },
-                {
-                  "ingredientId": 1307,
-                  "name": "Butter",
-                  "amountInGrams": 15
+                  "ingredientId": 105,
+                  "quantity": 1
                 }
               ]
             }
@@ -148,64 +57,14 @@
           "name": "Meat",
           "items": [
             {
-              "id": 4,
-              "name": "Steak",
-              "description": "Grilled steak cooked to perfection",
-              "price": 120,
-              "ingredients": [
-                {
-                  "ingredientId": 401,
-                  "name": "Beef",
-                  "amountInGrams": 250
-                },
-                {
-                  "ingredientId": 402,
-                  "name": "Salt",
-                  "amountInGrams": 2
-                },
-                {
-                  "ingredientId": 403,
-                  "name": "Black Pepper",
-                  "amountInGrams": 2
-                },
-                {
-                  "ingredientId": 404,
-                  "name": "Rosemary",
-                  "amountInGrams": 1
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "pizza",
-          "name": "Pizza",
-          "items": [
-            {
               "id": 6,
-              "name": "Margherita Pizza",
-              "description": "Classic pizza with mozzarella and basil",
-              "price": 50,
+              "name": "Steak",
+              "price": 60,
+              "availability": "out_of_stock",
               "ingredients": [
                 {
-                  "ingredientId": 601,
-                  "name": "Pizza Dough",
-                  "amountInGrams": 200
-                },
-                {
-                  "ingredientId": 602,
-                  "name": "Tomato Sauce",
-                  "amountInGrams": 50
-                },
-                {
-                  "ingredientId": 603,
-                  "name": "Mozzarella Cheese",
-                  "amountInGrams": 70
-                },
-                {
-                  "ingredientId": 604,
-                  "name": "Basil Leaves",
-                  "amountInGrams": 5
+                  "ingredientId": 111,
+                  "quantity": 1
                 }
               ]
             }
@@ -216,145 +75,14 @@
           "name": "Seafood",
           "items": [
             {
-              "id": 8,
-              "name": "Fish Tacos",
-              "description": "Crispy fish tacos with slaw and lime",
-              "price": 70,
+              "id": 7,
+              "name": "Salmon",
+              "price": 55,
+              "availability": "in_stock",
               "ingredients": [
                 {
-                  "ingredientId": 801,
-                  "name": "Tortillas",
-                  "amountInGrams": 50
-                },
-                {
-                  "ingredientId": 802,
-                  "name": "Cod Fish",
-                  "amountInGrams": 100
-                },
-                {
-                  "ingredientId": 803,
-                  "name": "Cabbage Slaw",
-                  "amountInGrams": 40
-                },
-                {
-                  "ingredientId": 804,
-                  "name": "Lime",
-                  "amountInGrams": 10
-                }
-              ]
-            },
-            {
-              "id": 11,
-              "name": "Grilled Salmon",
-              "description": "Fresh salmon fillet with lemon and dill",
-              "price": 90,
-              "ingredients": [
-                {
-                  "ingredientId": 1101,
-                  "name": "Salmon Fillet",
-                  "amountInGrams": 180
-                },
-                {
-                  "ingredientId": 1102,
-                  "name": "Lemon",
-                  "amountInGrams": 15
-                },
-                {
-                  "ingredientId": 1103,
-                  "name": "Dill",
-                  "amountInGrams": 5
-                },
-                {
-                  "ingredientId": 1104,
-                  "name": "Olive Oil",
-                  "amountInGrams": 10
-                },
-                {
-                  "ingredientId": 1105,
-                  "name": "Salt",
-                  "amountInGrams": 2
-                },
-                {
-                  "ingredientId": 1106,
-                  "name": "Black Pepper",
-                  "amountInGrams": 1
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "poultry",
-          "name": "Poultry",
-          "items": [
-            {
-              "id": 10,
-              "name": "Chicken Parmesan",
-              "description": "Breaded chicken breast topped with marinara and mozzarella",
-              "price": 85,
-              "ingredients": [
-                {
-                  "ingredientId": 1001,
-                  "name": "Chicken Breast",
-                  "amountInGrams": 200
-                },
-                {
-                  "ingredientId": 1002,
-                  "name": "Breadcrumbs",
-                  "amountInGrams": 30
-                },
-                {
-                  "ingredientId": 1003,
-                  "name": "Marinara Sauce",
-                  "amountInGrams": 50
-                },
-                {
-                  "ingredientId": 1004,
-                  "name": "Mozzarella Cheese",
-                  "amountInGrams": 40
-                },
-                {
-                  "ingredientId": 1005,
-                  "name": "Olive Oil",
-                  "amountInGrams": 10
-                }
-              ]
-            },
-            {
-              "id": 15,
-              "name": "Spinach and Feta Stuffed Chicken",
-              "description": "Juicy chicken breast stuffed with spinach and feta",
-              "price": 92,
-              "ingredients": [
-                {
-                  "ingredientId": 1501,
-                  "name": "Chicken Breast",
-                  "amountInGrams": 180
-                },
-                {
-                  "ingredientId": 1502,
-                  "name": "Spinach",
-                  "amountInGrams": 40
-                },
-                {
-                  "ingredientId": 1503,
-                  "name": "Feta Cheese",
-                  "amountInGrams": 30
-                },
-                {
-                  "ingredientId": 1504,
-                  "name": "Breadcrumbs",
-                  "amountInGrams": 20
-                },
-                {
-                  "ingredientId": 1505,
-                  "name": "Garlic",
-                  "amountInGrams": 5
-                },
-                {
-                  "ingredientId": 1506,
-                  "name": "Olive Oil",
-                  "amountInGrams": 10
+                  "ingredientId": 112,
+                  "quantity": 1
                 }
               ]
             }
@@ -365,40 +93,32 @@
           "name": "Vegetarian",
           "items": [
             {
-              "id": 14,
-              "name": "Vegetable Fried Rice",
-              "description": "Stir-fried rice with mixed vegetables",
-              "price": 55,
+              "id": 8,
+              "name": "Eggplant Parmesan",
+              "price": 40,
+              "availability": "in_stock",
               "ingredients": [
                 {
-                  "ingredientId": 1401,
-                  "name": "Cooked Rice",
-                  "amountInGrams": 150
-                },
+                  "ingredientId": 113,
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vegan",
+          "name": "Vegan",
+          "items": [
+            {
+              "id": 9,
+              "name": "Vegan Burger",
+              "price": 35,
+              "availability": "in_stock",
+              "ingredients": [
                 {
-                  "ingredientId": 1402,
-                  "name": "Mixed Vegetables",
-                  "amountInGrams": 100
-                },
-                {
-                  "ingredientId": 1403,
-                  "name": "Soy Sauce",
-                  "amountInGrams": 10
-                },
-                {
-                  "ingredientId": 1404,
-                  "name": "Sesame Oil",
-                  "amountInGrams": 5
-                },
-                {
-                  "ingredientId": 1405,
-                  "name": "Eggs",
-                  "amountInGrams": 30
-                },
-                {
-                  "ingredientId": 1406,
-                  "name": "Garlic",
-                  "amountInGrams": 10
+                  "ingredientId": 114,
+                  "quantity": 1
                 }
               ]
             }
@@ -407,88 +127,126 @@
       ]
     },
     {
-      "id": "soups",
-      "name": "Soups",
+      "id": "sides",
+      "name": "Sides",
       "items": [
         {
-          "id": 12,
-          "name": "Chicken Noodle Soup",
-          "description": "Hearty chicken soup with egg noodles",
-          "price": 52,
+          "id": 10,
+          "name": "French Fries",
+          "price": 20,
+          "availability": "in_stock",
           "ingredients": [
             {
-              "ingredientId": 1201,
-              "name": "Chicken Broth",
-              "amountInGrams": 300
-            },
+              "ingredientId": 115,
+              "quantity": 200
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "name": "Onion Rings",
+          "price": 25,
+          "availability": "in_stock",
+          "ingredients": [
             {
-              "ingredientId": 1202,
-              "name": "Chicken Thighs",
-              "amountInGrams": 150
-            },
-            {
-              "ingredientId": 1203,
-              "name": "Egg Noodles",
-              "amountInGrams": 60
-            },
-            {
-              "ingredientId": 1204,
-              "name": "Carrots",
-              "amountInGrams": 30
-            },
-            {
-              "ingredientId": 1205,
-              "name": "Celery",
-              "amountInGrams": 20
-            },
-            {
-              "ingredientId": 1206,
-              "name": "Onion",
-              "amountInGrams": 15
-            },
-            {
-              "ingredientId": 1207,
-              "name": "Parsley",
-              "amountInGrams": 5
+              "ingredientId": 116,
+              "quantity": 150
             }
           ]
         }
       ]
     },
     {
-      "id": "breakfast",
-      "name": "Breakfast",
-      "items": [
+      "id": "beverages",
+      "name": "Beverages",
+      "subCategories": [
         {
-          "id": 7,
-          "name": "Pancakes",
-          "description": "Fluffy pancakes served with syrup",
-          "price": 28,
-          "ingredients": [
+          "id": "soft",
+          "name": "Soft Drinks",
+          "items": [
             {
-              "ingredientId": 701,
-              "name": "Flour",
-              "amountInGrams": 100
+              "id": 4,
+              "name": "Espresso",
+              "price": 15,
+              "availability": "in_stock",
+              "ingredients": [
+                {
+                  "ingredientId": 109,
+                  "quantity": 1
+                }
+              ]
             },
             {
-              "ingredientId": 702,
-              "name": "Milk",
-              "amountInGrams": 150
+              "id": 5,
+              "name": "Green Tea",
+              "price": 10,
+              "availability": "in_stock",
+              "ingredients": [
+                {
+                  "ingredientId": 110,
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "alcoholic",
+          "name": "Alcoholic Beverages",
+          "items": [
+            {
+              "id": 12,
+              "name": "Red Wine",
+              "price": 50,
+              "availability": "out_of_stock",
+              "ingredients": [
+                {
+                  "ingredientId": 117,
+                  "quantity": 1
+                }
+              ]
             },
             {
-              "ingredientId": 703,
-              "name": "Eggs",
-              "amountInGrams": 50
+              "id": 13,
+              "name": "White Wine",
+              "price": 45,
+              "availability": "in_stock",
+              "ingredients": [
+                {
+                  "ingredientId": 118,
+                  "quantity": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hot",
+          "name": "Hot Drinks",
+          "items": [
+            {
+              "id": 14,
+              "name": "Hot Chocolate",
+              "price": 20,
+              "availability": "in_stock",
+              "ingredients": [
+                {
+                  "ingredientId": 119,
+                  "quantity": 1
+                }
+              ]
             },
             {
-              "ingredientId": 704,
-              "name": "Butter",
-              "amountInGrams": 10
-            },
-            {
-              "ingredientId": 705,
-              "name": "Maple Syrup",
-              "amountInGrams": 20
+              "id": 15,
+              "name": "Latte",
+              "price": 25,
+              "availability": "in_stock",
+              "ingredients": [
+                {
+                  "ingredientId": 120,
+                  "quantity": 1
+                }
+              ]
             }
           ]
         }
@@ -498,264 +256,23 @@
       "id": "desserts",
       "name": "Desserts",
       "items": [
-    {
-          "id": 16,
-          "name": "Chocolate Cake",
-          "description": "Rich chocolate cake with a creamy frosting",
-          "price": 40,
-          "ingredients": [
-            {
-              "ingredientId": 1601,
-              "name": "Flour",
-              "amountInGrams": 100
-            },
-            {
-              "ingredientId": 1602,
-              "name": "Cocoa Powder",
-              "amountInGrams": 50
-            },
-            {
-              "ingredientId": 1603,
-              "name": "Sugar",
-              "amountInGrams": 150
-            },
-            {
-              "ingredientId": 1604,
-              "name": "Butter",
-              "amountInGrams": 100
-            },
-            {
-              "ingredientId": 1605,
-              "name": "Eggs",
-              "amountInGrams": 100
-            },
-            {
-              "ingredientId": 1606,
-              "name": "Baking Powder",
-              "amountInGrams": 5
-            },
-            {
-              "ingredientId": 1607,
-              "name": "Vanilla Extract",
-              "amountInGrams": 5
-            }
-          ]
-        },
         {
-          "id": 17,
+          "id": 3,
           "name": "Tiramisu",
-          "description": "Classic Italian dessert with coffee and mascarpone",
-          "price": 45,
+          "price": 25,
+          "availability": "in_stock",
           "ingredients": [
             {
-              "ingredientId": 1701,
-              "name": "Ladyfingers",
-              "amountInGrams": 100
+              "ingredientId": 106,
+              "quantity": 100
             },
             {
-              "ingredientId": 1702,
-              "name": "Espresso",
-              "amountInGrams": 50
+              "ingredientId": 107,
+              "quantity": 50
             },
             {
-              "ingredientId": 1703,
-              "name": "Mascarpone Cheese",
-              "amountInGrams": 100
-            },
-            {
-              "ingredientId": 1704,
-              "name": "Eggs",
-              "amountInGrams": 50
-            },
-            {
-              "ingredientId": 1705,
-              "name": "Sugar",
-              "amountInGrams": 30
-            },
-            {
-              "ingredientId": 1706,
-              "name": "Cocoa Powder",
-              "amountInGrams": 5
-            }
-          ]
-        },
-        {
-          "id": 18,
-          "name": "Apple Pie",
-          "description": "Warm apple pie with a flaky crust",
-          "price": 35,
-          "ingredients": [
-            {
-              "ingredientId": 1801,
-              "name": "Apples",
-              "amountInGrams": 200
-            },
-            {
-              "ingredientId": 1802,
-              "name": "Flour",
-              "amountInGrams": 100
-            },
-            {
-              "ingredientId": 1803,
-              "name": "Sugar",
-              "amountInGrams": 50
-            },
-            {
-              "ingredientId": 1804,
-              "name": "Butter",
-              "amountInGrams": 50
-            },
-            {
-              "ingredientId": 1805,
-              "name": "Cinnamon",
-              "amountInGrams": 5
-            },
-            {
-              "ingredientId": 1806,
-              "name": "Lemon Juice",
-              "amountInGrams": 10
-            }
-          ]
-        },
-        {
-          "id": 19,
-          "name": "Cheesecake",
-          "description": "Creamy cheesecake with a graham cracker crust",
-          "price": 42,
-          "ingredients": [
-            {
-              "ingredientId": 1901,
-              "name": "Cream Cheese",
-              "amountInGrams": 200
-            },
-            {
-              "ingredientId": 1902,
-              "name": "Sugar",
-              "amountInGrams": 100
-            },
-            {
-              "ingredientId": 1903,
-              "name": "Eggs",
-              "amountInGrams": 50
-            },
-            {
-              "ingredientId": 1904,
-              "name": "Sour Cream",
-              "amountInGrams": 50
-            },
-            {
-              "ingredientId": 1905,
-              "name": "Vanilla Extract",
-              "amountInGrams": 5
-            },
-            {
-              "ingredientId": 1906,
-              "name": "Graham Crackers",
-              "amountInGrams": 50
-            }
-          ]
-        },
-        {
-          "id": 20,
-          "name": "Panna Cotta",
-          "description": "Italian dessert made with cream and gelatin",
-          "price": 38,
-          "ingredients": [
-            {
-              "ingredientId": 2001,
-              "name": "Cream",
-              "amountInGrams": 200
-            },
-            {
-              "ingredientId": 2002,
-              "name": "Sugar",
-              "amountInGrams": 50
-            },
-            {
-              "ingredientId": 2003,
-              "name": "Gelatin",
-              "amountInGrams": 5
-            },
-            {
-              "ingredientId": 2004,
-              "name": "Vanilla Extract",
-              "amountInGrams": 5
-            },
-            {
-              "ingredientId": 2005,
-              "name": "Raspberries",
-              "amountInGrams": 30
-            }
-          ]
-        }
-
-      ]
-    },
-    {
-      "id": "drinks",
-      "name": "Drinks",
-      "subCategories": [
-        {
-          "id": "soft-drinks",
-          "name": "Soft Drinks",
-          "items": [
-            {
-              "id": 21,
-              "name": "Coca Cola",
-              "description": "Chilled Coca Cola",
-              "price": 10,
-              "ingredients": [
-                {
-                  "ingredientId": 2101,
-                  "name": "Coca Cola",
-                  "amountInGrams": 330
-                }
-              ]
-            },
-            {
-              "id": 22,
-              "name": "Sprite",
-              "description": "Chilled Sprite",
-              "price": 10,
-              "ingredients": [
-                {
-                  "ingredientId": 2201,
-                  "name": "Sprite",
-                  "amountInGrams": 330
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "alcoholic-drinks",
-          "name": "Alcoholic Drinks",
-          "items": [
-            {
-              "id": 23,
-              "name": "Beer",
-              "description": "Chilled Beer",
-              "price": 20,
-              "ingredients": [
-                {
-                  "ingredientId": 2301,
-                  "name": "Beer",
-                  "amountInGrams": 500
-                }
-              ]
-            },
-            {
-              "id": 24,
-              "name": "Wine",
-              "description": "Red Wine",
-              "price": 50,
-              "ingredients": [
-                {
-                  "ingredientId": 2401,
-                  "name": "Red Wine",
-                  "amountInGrams": 150
-                }
-              ]
+              "ingredientId": 108,
+              "quantity": 1
             }
           ]
         }
@@ -763,4 +280,3 @@
     }
   ]
 }
-

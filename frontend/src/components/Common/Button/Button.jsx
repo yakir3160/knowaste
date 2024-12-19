@@ -25,6 +25,7 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
           ${className} 
          
           hover:text-buttons 
+        
           ${!hasBgColor ? 'bg-secondary' : ''} 
           ${!hasHover ? 'hover:text-buttons hover:shadow-button-hover  transition-hover duration-500' : ''}
           ${!hasTextColor ? 'text-titles' : ''} 
@@ -35,14 +36,16 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
         // .trim() להסרת רווחים מיותרים
     }, [className, style.color, style.boxShadow]);
     // הקשב לשינויים ב-className, צבע טקסט או צל לצורך מחשוב מחדש של ה-className המשולב
-
-    // פרופס כלליים שמשותפים ל-<button> או ל-<Link>
-    const commonProps = {
-        className: combinedClassName,
-        style,
-        onClick: !disabled ? onClick : undefined, // מבטל onClick אם הכפתור מנוטרל (disabled)
-        'aria-disabled': disabled // מאפשר תמיכה טובה יותר בנגישות עבור כפתורים מנוטרלים
-    };
+// פרופס כלליים שמשותפים ל-<button> או ל-<Link>
+const commonProps = {
+    className: combinedClassName,
+    style: {
+        ...style,
+        opacity: disabled ? 0.5 : style.opacity // אם הכפתור מנוטרל, קבע אטימות ל-0.5
+    },
+    onClick: !disabled ? onClick : undefined, // מבטל onClick אם הכפתור מנוטרל (disabled)
+    'aria-disabled': disabled // מאפשר תמיכה טובה יותר בנגישות עבור כפתורים מנוטרלים
+};
     // אם קיים 'to', זהו כפתור שנראה כמו קישור (<Link>)
     // אחרת, זהו כפתור רגיל (<button>)
     return (

@@ -8,7 +8,7 @@ import GlobalField from "../../../Common/inputs/GlobalField";
 import { usePasswordReset } from "../../../../Hooks/Auth/usePasswordReset";
 import PasswordRequirements from "../../../Forms/Register/PasswordRequirements";
 import { usePasswordStatus } from "../../../Forms/Register/Hooks/usePasswordStatus";
-import { passwordSchema, repeatPasswordSchema } from "../../../../schemas/passwordSchema";
+import { passwordSchema, repeatPasswordSchema } from "../../../../validationSchemas/passwordSchema";
 import { REQUIRED_MSG } from "../../../../constants/Constants";
 
 const PasswordUpdateForm = () => {

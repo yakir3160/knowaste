@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { REQUIRED_MSG } from "../../../constants/Constants";
-import {passwordSchema,repeatPasswordSchema} from "../../../schemas/passwordSchema";
+import {passwordSchema,repeatPasswordSchema} from "../../../validationSchemas/passwordSchema";
 
 
 export const registerSchema = Yup.object().shape({

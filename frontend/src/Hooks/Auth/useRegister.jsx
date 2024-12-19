@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../../firebaseConfig';
 import { doc, setDoc, WriteBatch, writeBatch } from "firebase/firestore";
 import { toast } from 'react-toastify';
-import menuSchema from '../../schemas/menuSchema';
+
 
 export const useRegister = () => {
 
@@ -22,18 +22,11 @@ export const useRegister = () => {
                 email: values.email,
                 uid: userCredential.user.uid
             };
-            const menuTemplate = {
-                uid: userCredential.user.uid,
-                menu:menuSchema,
-            }
-
             const batch = writeBatch(db);
 
             const userRef = doc(db, "users", userCredential.user.uid);
             batch.set(userRef, userData);
 
-            const menuRef = doc(db, "menus", userCredential.user.uid);
-            batch.set(menuRef, menuTemplate);
             try {
                 await batch.commit();
                 console.log("User and menu documents successfully written!");

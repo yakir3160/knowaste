@@ -18,8 +18,7 @@ import { usePasswordReset } from "../../Hooks/Auth/usePasswordReset";
 import { auth } from "../../firebaseConfig";
 
 // Validation Schemas
-import { passwordSchema, repeatPasswordSchema } from "../../schemas/passwordSchema";
-
+import { passwordSchema, repeatPasswordSchema } from "../../validationSchemas/passwordSchema";
 const validationSchema = Yup.object().shape({
     password: passwordSchema,
     repeatPassword: repeatPasswordSchema,

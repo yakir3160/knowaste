@@ -2,7 +2,7 @@ import React from "react";
 import MenuItem from "./MenuItem";
 import { useUserItems } from "../../../../../Hooks/User/useUserItems";
 import useFilteredItems from "../../../../../Hooks/Items/useFilteredItems";
-;
+
 
 
 
@@ -16,11 +16,10 @@ const Menu = ({ userItems = [], categories = [] }) => {
         setSelectedSubCategory,
         subCategories
     } = useFilteredItems(userItems, categories); // משתמשים ב-hook
-
     return (
         <div className="flex flex-col h-full w-full justify-center items-center">
             <div className="w-fit bg-secondary self-center rounded-t-sm">
-                <div className={`grid grid-cols-2 lg:grid-cols-6 justify-center`}>
+                <div className={`w-full`}>
                     {categories.map(category => (
                         <button
                             key={category.id}
@@ -34,14 +33,14 @@ const Menu = ({ userItems = [], categories = [] }) => {
                 </div>
             </div>
 
-            <div className={`w-full flex flex-col bg-white p-5 rounded-sm `}>
+            <div className={`w-full flex flex-col bg-white p-5 rounded-b-sm md:rounded-sm`}>
                 <div
-                    className={`mb-6 w-full lg:w-fit self-center rounded-t-sm grid grid-cols-3 md:grid-cols-${subCategories.length} gap-2 p-2`}>
+                    className={`mb-6 w-full lg:w-fit  flex justify-center overflow-x-scroll self-center`}>
                     {subCategories?.map(subCategory => (
                         <button
                             key={subCategory.id}
                             className={`p-3 rounded-t-sm text-buttons text-light
-              ${selectedSubCategory === subCategory.name ? 'bg-white border-b-2 border-lime text-buttons' : 'border-b-2 border-[transparent]'}`}
+                                ${selectedSubCategory === subCategory.name ? 'bg-white border-b-2 border-lime text-buttons' : 'border-b-2 border-[transparent]'}`}
                             onClick={() => setSelectedSubCategory(subCategory.name)}
                         >
                             {subCategory.name}
@@ -49,7 +48,7 @@ const Menu = ({ userItems = [], categories = [] }) => {
                     ))}
                 </div>
 
-                <div className="w-full gap-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                <div className="w-full gap-3 grid grid-cols-1  ">
                     {filteredItems?.map((item) => (
                         <MenuItem
                             key={item.id}

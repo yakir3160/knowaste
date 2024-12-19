@@ -1,6 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {useUserContext} from "./UserContext";
 import MenuItems from "../MockData/MenuItems.json";
+import Ingredients  from "../MockData/Ingredeints.json";
 import SupplierProducts from "../MockData/SupplierProducts.json";
 import IngredientCategories from '../MockData/ingredientCategories.json';
 
@@ -15,7 +16,7 @@ export const ItemsProvider = ({ children }) => {
     const [loadingItems, setLoadingItems] = useState(true);
     const [userItems, setUserItems] = useState();
     const [categories, setCategories] = useState();
-    const [ingredients, setIngredients] = useState([]);
+    const [ingredients, setIngredients] = useState();
     const ingredientCategories = IngredientCategories.categories.map(category => category);
     const extractIngredients = (menuData) => {
         if (!menuData) return []; // אם אין נתוני תפריט, מחזירים מערך ריק
@@ -28,10 +29,6 @@ export const ItemsProvider = ({ children }) => {
         // חילוץ רשימת המרכיבים מכל פריטי התפריט
         const ingredients = menuItems?.flatMap(item => item.ingredients);
 
-        // איחוד מרכיבים זהים וסיכום הכמות שלהם
-        return ingredients.reduce((acc, ingredient) => {
-            // בדיקה אם המרכיב כבר קיים ברשימה על פי שמו
-            const existingIngredient = acc.find(item => item.name === ingredient.name);
 
             if (existingIngredient) {
                 // אם המרכיב כבר קיים, מוסיפים את הכמות הנוכחית לכמות הבסיסית
@@ -63,7 +60,6 @@ const addReport = (report, reportType) => {
     console.log('report type:', reportType);
     console.log('report:', report);
 }
-
     useEffect(() => {
         setLoadingItems(true);
         setUserItems(
@@ -86,8 +82,9 @@ const addReport = (report, reportType) => {
         setIngredients(
             user?.accountType === 'supplier'
                 ? []
-                : extractIngredients(MenuItems)
+                : Ingredients.ingredients.flatMap(ingredient => ingredient)
         )
+      
         setLoadingItems(false);
         return () => {
             setUserItems(null);
@@ -97,7 +94,9 @@ const addReport = (report, reportType) => {
 
 
     return (
+
         <ItemsContext.Provider value={{ userItems, categories ,ingredients, setIngredients,loadingItems,ingredientCategories,addReport}}>
+
             {children}
         </ItemsContext.Provider>
     );

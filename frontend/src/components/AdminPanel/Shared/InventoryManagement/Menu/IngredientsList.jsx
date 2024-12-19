@@ -1,71 +1,67 @@
 import React from 'react';
-import { FieldArray } from 'formik';
-import GlobalField from "../../../../Common/inputs/GlobalField";
+import { FieldArray, useFormikContext } from 'formik';
 import Button from '../../../../Common/Button/Button';
 import { CircleX, Plus } from 'lucide-react';
-import {useItemsContext} from "../../../../../contexts/ItemsContext";
+import IngredientForm from './IngredientForm';
 
-const IngredientsList = ({ ingredients, isEditing, setFieldValue }) => {
-const {ingredientCategories} = useItemsContext();
+const IngredientsList = ({ isEditing }) => {
+    const { values, setFieldValue } = useFormikContext();
+
+    const initialIngredient = {
+        id: Date.now(),
+        name: '',
+        amountPerDish: 0,
+        unit: '',
+        storageType: '',
+        pricePerUnit: 0,
+        category: '',
+        kosherStatus: '',
+        allergens: [],
+        minStockLevel: 0,
+    };
+
     return (
         <FieldArray name="ingredients">
             {({ remove, push }) => (
-                <div className="mt-4 overflow-y-scroll ">
+                <div className="mt-4 space-y-4 h-fit">
                     <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
-                    {ingredients.map((ingredient, index) => (
+                    {values.ingredients.map((ingredient, index) => (
                         <div
                             key={ingredient.id || index}
-                            className="grid grid-cols-1 md:grid-cols-4 mb-2  space-x-2"
+                            className="relative"
                             style={{ opacity: ingredient.removed ? 0 : 1 }}
                         >
-                                <GlobalField
-                                    label="Name"
-                                    type="text"
-                                    name={`ingredients.${index}.name`}
-                                    className="text-buttons text-sm"
-                                    disabled={!isEditing}
-                                    autoFocus={index === ingredients.length - 1}
-                                />
-                                <GlobalField
-                                    label="Category"
-                                    type="select"
-                                    name={`ingredients.${index}.category`}
-                                    className="text-buttons text-sm"
-                                    disabled={!isEditing}
-                                    options={[{value : '' ,label : 'Select a Category'},...ingredientCategories.map(category => ({ value: category.name, label: category.name }))]}
-                                />
-                                <GlobalField
-                                    label="Amount (g)"
-                                    type="number"
-                                    name={`ingredients.${index}.amountInGrams`}
-                                    className="text-buttons text-sm w-25"
-                                    disabled={!isEditing}
-                                />
-                            <div className="text-sm flex justify-end lg:justify-center items-center ">
+                            <IngredientForm
+                                initialValues={ingredient}
+                                onSubmit={(updatedValues) => {
+                                    setFieldValue(`ingredients.${index}`, updatedValues);
+                                }}
+                                isEditing={isEditing}
+                                fieldPrefix="ingredients"
+                                index={index}
+                            />
+                            {isEditing && (
                                 <Button
                                     type="button"
-                                    className={`${isEditing ? 'text-errorRed' : 'text-errorLightRed'}`}
-                                    disabled={!isEditing}
+                                    className="absolute top-2 right-2 text-errorRed"
                                     onClick={() => {
-                                        if (isEditing) {
-                                            setFieldValue(`ingredients.${index}.removed`, true);
-                                            setTimeout(() => remove(index), 300); // Wait for fade-out before removal
-                                        }
+                                        setFieldValue(`ingredients.${index}.removed`, true);
+                                        setTimeout(() => remove(index), 300);
                                     }}
                                 >
                                     <CircleX size={20} />
                                 </Button>
-                            </div>
+                            )}
                         </div>
                     ))}
                     {isEditing && (
                         <Button
                             type="button"
-                            onClick={() => push({ id: Date.now(), name: '', amountInGrams: 0 })}
-                            className={`border border-lime flex flex-row m-2 justify-center`}
+                            onClick={() => push(initialIngredient)}
+                            className="border border-lime flex items-center justify-center w-full p-2"
                         >
                             Add Ingredient
-                            <Plus size={20} className={`ml-2 self-center`} />
+                            <Plus size={20} className="ml-2" />
                         </Button>
                     )}
                 </div>
