@@ -1,4 +1,5 @@
 import {db} from '../../config/firebase-admin.js';
+import {getMenuCategories} from "../controllers/menuController.js";
 
 class MenuService {
     async addMenuItem(menuItemData) {
@@ -60,6 +61,34 @@ class MenuService {
         } catch (error) {
             console.error('Error deleting menu item:', error);
             return false;
+        }
+    }
+    async getMenuCategories() {
+        try {
+            console.log('Starting get menu categories process');
+
+            console.log('Fetching menu categories...');
+            const menuDocs = await db.collection('menu').get();
+            const menuCategories = menuDocs.docs.map(menuDoc => menuDoc.data().category);
+            console.log('Menu categories fetched successfully');
+            return menuCategories;
+        } catch (error) {
+            console.error('Error fetching menu categories:', error);
+            return [];
+        }
+    }
+    async getMenuItemsByCategory(category) {
+        try {
+            console.log('Starting get menu items by category process');
+
+            console.log('Fetching menu items...');
+            const menuDocs = await db.collection('menu').where('category', '==', category).get();
+            const menuItems = menuDocs.docs.map(menuDoc => menuDoc.data());
+            console.log('Menu items fetched successfully');
+            return menuItems;
+        } catch (error) {
+            console.error('Error fetching menu items:', error);
+            return [];
         }
     }
 }

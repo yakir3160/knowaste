@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import {verifyToken} from "../middleware/authMiddleware.js";
+import {addSalesReport, getSalesReports, deleteSalesReport} from '../controllers/salesController.js';
+
 const router = Router();
 
 // ===================== Sales Routes =====================
-router.post('sales/add-report',verifyToken, );
-router.get('sales/get-reports',verifyToken, );
-router.delete('sales/delete-report',verifyToken, );
+router.post('/add-report',verifyToken,addSalesReport );
+router.get('/get-reports',verifyToken,getSalesReports );
+router.delete('/delete-report',verifyToken, deleteSalesReport);
 
 export default router;

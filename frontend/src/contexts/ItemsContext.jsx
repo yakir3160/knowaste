@@ -59,6 +59,7 @@ const addReport = (report, reportType) => {
         // body: JSON.stringify(report),
     // });
     console.log(`${API_BASE_URL}/api/${reportType}/add-report`)
+    console.log('Authorization:', `Bearer ${token}`);
     console.log('report type:', reportType);
     console.log('report:', report);
 }

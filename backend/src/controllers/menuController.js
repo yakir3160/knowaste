@@ -33,6 +33,23 @@ export const getMenuItems = async (req, res) => {
         });
     }
 }
+export const updateMenuItem = async (req, res) => {
+    try {
+        const { menuItemId, newDetails } = req.body;
+        const result = await MenuService.updateMenuItem(menuItemId, newDetails);
+        res.status(200).json({
+            success: true,
+            data: result,
+            error: "Menu item updated successfully"
+        });
+    } catch (error) {
+        console.error("Update menu item error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            error: error.message || "Error updating menu item"
+        });
+    }
+}
 export const deleteMenuItem = async (req, res) => {
     try {
         const { menuItemId } = req.body;
@@ -50,20 +67,36 @@ export const deleteMenuItem = async (req, res) => {
         });
     }
 }
-export const updateMenuItem = async (req, res) => {
+export const getMenuItemsByCategory = async (req, res) => {
     try {
-        const { menuItemId, newDetails } = req.body;
-        const result = await MenuService.updateMenuItem(menuItemId, newDetails);
+        const { category } = req.params;
+        const menuItems = await MenuService.getMenuItemsByCategory(category);
         res.status(200).json({
             success: true,
-            data: result,
-            error: "Menu item updated successfully"
+            data: menuItems,
+            error: "Menu items fetched successfully"
         });
     } catch (error) {
-        console.error("Update menu item error:", error);
+        console.error("Get menu items by category error:", error);
         res.status(error.status || 500).json({
             success: false,
-            error: error.message || "Error updating menu item"
+            error: error.message || "Error fetching menu items"
+        });
+    }
+}
+export const getMenuCategories = async (req, res) => {
+    try {
+        const menuCategories = await MenuService.getMenuCategories();
+        res.status(200).json({
+            success: true,
+            data: menuCategories,
+            error: "Menu categories fetched successfully"
+        });
+    } catch (error) {
+        console.error("Get menu categories error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            error: error.message || "Error fetching menu categories"
         });
     }
 }

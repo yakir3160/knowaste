@@ -2,51 +2,53 @@ import SalesService from "../services/salesService.js";
 
 export const addSalesReport = async (req, res) => {
     try {
-        const { salesReportData } = req.body;
-        const result = await SalesService.addSalesReport(salesReportData);
+        const salesData = req.body;
+        console.log('salesData:', salesData);
+        const result = await SalesService.addSalesReport(salesData);
         res.status(200).json({
             success: true,
             data: result,
-            error: "Sales report added successfully"
+            error: "Sale added successfully"
         });
     } catch (error) {
-        console.error("Add sales report error:", error);
+        console.error("Add sale error:", error);
         res.status(error.status || 500).json({
             success: false,
-            error: error.message || "Error adding sales report"
+            error: error.message || "Error adding sale"
         });
     }
 }
 export const getSalesReports = async (req, res) => {
     try {
-        const salesReports = await SalesService.getSalesReports();
+        const sales = await SalesService.getSalesReports();
         res.status(200).json({
             success: true,
-            data: salesReports,
-            error: "Sales reports fetched successfully"
+            data: sales,
+            error: "Sales fetched successfully"
         });
     } catch (error) {
-        console.error("Get sales reports error:", error);
+        console.error("Get sales error:", error);
         res.status(error.status || 500).json({
             success: false,
-            error: error.message || "Error fetching sales reports"
+            error: error.message || "Error fetching sales"
         });
     }
 }
 export const deleteSalesReport = async (req, res) => {
     try {
-        const { salesReportId } = req.body;
-        const result = await SalesService.deleteSalesReport(salesReportId);
+        const saleId = req.params.id;
+        console.log('saleId:', saleId);
+        const result = await SalesService.deleteSalesReport(saleId);
         res.status(200).json({
             success: true,
             data: result,
-            error: "Sales report deleted successfully"
+            error: "Sale deleted successfully"
         });
     } catch (error) {
-        console.error("Delete sales report error:", error);
+        console.error("Delete sale error:", error);
         res.status(error.status || 500).json({
             success: false,
-            error: error.message || "Error deleting sales report"
+            error: error.message || "Error deleting sale"
         });
     }
 }
