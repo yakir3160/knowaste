@@ -1,10 +1,10 @@
-import {menuSchema} from "./MenuModel.js";
+import menuItemSchema from "./MenuModel.js";
 import {ingredientSchema} from "./IngredientModel.js";
 
 const getSchema = type => {
     switch (type) {
         case 'menu':
-            return menuSchema;
+            return menuItemSchema;
         case 'ingredient':
             return ingredientSchema;
         default:
@@ -19,9 +19,10 @@ export const validateSchema = async (type, data) => {
             return {error: 'Invalid schema type'};
         }
         await schemaToValidate.validate(data);
-        return true;
+        console.log('Schema validation successful');
+        return {success: true};
     } catch (error) {
-        console.error('Validation error:', error);
-        return false;
+        console.error('Schema validation error:', error);
+        return {error: error.message};
     }
 }

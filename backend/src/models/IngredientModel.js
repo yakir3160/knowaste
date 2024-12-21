@@ -11,7 +11,7 @@ export const shelfLifeSchema = Yup.object({
 export const  supplySchema = Yup.object({
     packageType: Yup.string().required(),
     unitsPerPackage: Yup.number().required().positive(),
-    minimumOrderQuantity: yup.number().required().positive(),
+    minimumOrderQuantity: Yup.number().required().positive(),
     supplierUnit: Yup.string().required().oneOf(allUnits),
     deliveryDays: Yup.array().of(Yup.string()).required(),
     preparationMethod: Yup.string().required(),

@@ -1,34 +1,32 @@
 import * as Yup from "yup";
-import {allUnits} from "./Units.js";
 
-export const  menuIngredientSchema = Yup.object({
-    ingredientId: Yup.number().required().positive(),
-    quantity: Yup.number().required().positive()
+const menuItemSchema = Yup.object({
+    userId: Yup.string().required('User ID is required'),
+    menuItemData: Yup.object({
+        categoryId: Yup.string().required('Category ID is required'),
+        categoryName: Yup.string().required('Category name is required'),
+        subcategoryId: Yup.string().nullable(),
+        subcategoryName: Yup.string().nullable(),
+        name: Yup.string().required('Item name is required'),
+        price: Yup.number()
+            .required('Price is required')
+            .positive('Price must be positive')
+            .typeError('Price must be a number'),
+        availability: Yup.boolean().required('Availability is required'),
+        ingredients: Yup.array()
+            .of(
+                Yup.object({
+                    ingredientId: Yup.number()
+                        .required('Ingredient ID is required')
+                        .positive('Ingredient ID must be positive')
+                        .typeError('Ingredient ID must be a number'),
+                    quantity: Yup.number()
+                        .required('Quantity is required')
+                        .positive('Quantity must be positive')
+                        .typeError('Quantity must be a number')
+                })
+            )
+            .min(1, 'At least one ingredient is required')
+    }).required('Menu item data is required')
 });
-
-export const  menuItemSchema = Yup.object({
-    id: Yup.number().required().positive(),
-    name: Yup.string().required(),
-    price: Yup.number().required().positive(),
-    availability: Yup.string().required().oneOf(['available', 'unavailable']),
-    ingredients: Yup.array().of(menuIngredientSchema).required()
-});
-
-export const  subCategorySchema = Yup.object({
-    id: Yup.string().required(),
-    name: Yup.string().required(),
-    items: Yup.array().of(menuItemSchema).required()
-});
-
-export const  categorySchema = Yup.object({
-    id: Yup.string().required(),
-    name: Yup.string().required(),
-    items: Yup.array().of(menuItemSchema).required(),
-    subCategories: Yup.array().of(subCategorySchema)
-});
-
-export const menuSchema = Yup.object({
-    categories: Yup.array().of(categorySchema).required(),
-    lastUpdated: Yup.date().required(),
-    version: Yup.number().required().positive()
-});
+export default menuItemSchema;
