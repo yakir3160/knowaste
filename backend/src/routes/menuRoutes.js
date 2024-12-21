@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {verifyToken} from "../middleware/authMiddleware.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
 import {
     addMenuItem,
     getMenuItems,
@@ -8,14 +8,18 @@ import {
     getMenuCategories,
     getMenuItemsByCategory
 } from '../controllers/menuController.js';
+
 const router = Router();
+
+// Apply verifyToken middleware to all routes
+router.use(verifyToken);
+
 // ===================== Menu Routes =====================
-router.get('/get-categories',verifyToken,getMenuCategories );
-router.get ('/get-item-by-category',verifyToken,getMenuItemsByCategory);
-router.get('/get-items',verifyToken,updateMenuItem );
-router.post('/add-item',verifyToken,addMenuItem );
-router.put('/update-item',verifyToken,getMenuItems);
-router.delete('/delete-item',verifyToken,deleteMenuItem);
+router.get('/categories', getMenuCategories);
+router.get('/items-by-category', getMenuItemsByCategory);
+router.get('/items', getMenuItems);
+router.post('/item', addMenuItem);
+router.put('/item', updateMenuItem);
+router.delete('/item', deleteMenuItem);
 
 export default router;
-

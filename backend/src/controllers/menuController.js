@@ -2,8 +2,9 @@ import MenuService from "../services/menuService.js";
 
 export const addMenuItem = async (req, res) => {
     try {
+        const {userId} = req.user;
         const { menuItemData } = req.body;
-        const result = await MenuService.addMenuItem(menuItemData);
+        const result = await MenuService.addMenuItem(userId,menuItemData);
         res.status(200).json({
             success: true,
             data: result,

@@ -41,7 +41,7 @@ const commonProps = {
     className: combinedClassName,
     style: {
         ...style,
-        opacity: disabled ? 0.5 : style.opacity // אם הכפתור מנוטרל, קבע אטימות ל-0.5
+        opacity: disabled ? 0.9 : style.opacity // אם הכפתור מנוטרל, קבע אטימות ל-0.5
     },
     onClick: !disabled ? onClick : undefined, // מבטל onClick אם הכפתור מנוטרל (disabled)
     'aria-disabled': disabled // מאפשר תמיכה טובה יותר בנגישות עבור כפתורים מנוטרלים

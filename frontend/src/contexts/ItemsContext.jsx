@@ -1,11 +1,11 @@
-import React, {createContext, useContext, useEffect, useState} from 'react';
-import {useUserContext} from "./UserContext";
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useUserContext } from "./UserContext";
 import MenuItems from "../MockData/MenuItems.json";
-import Ingredients  from "../MockData/Ingredeints.json";
+import Ingredients from "../MockData/Ingredeints.json";
 import SupplierProducts from "../MockData/SupplierProducts.json";
 import IngredientCategories from '../MockData/ingredientCategories.json';
 
-// יצירת הקונטקסט
+// Create the context
 const ItemsContext = createContext();
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5002';
 
@@ -14,27 +14,28 @@ export const ItemsProvider = ({ children }) => {
     const token = localStorage.getItem('authToken');
 
     const [loadingItems, setLoadingItems] = useState(true);
-    const [userItems, setUserItems] = useState();
-    const [categories, setCategories] = useState();
-    const [ingredients, setIngredients] = useState();
-    const ingredientCategories = IngredientCategories.categories.map(category => category);
+    const [userItems, setUserItems] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [ingredients, setIngredients] = useState([]);
+    const ingredientCategories = IngredientCategories.categories;
+
+    // Helper function to extract ingredients
     const extractIngredients = (menuData) => {
-        if (!menuData) return []; // אם אין נתוני תפריט, מחזירים מערך ריק
-        // חילוץ כל הפריטים מתוך קטגוריות ותתי קטגוריות
-        const menuItems = menuData?.categories.flatMap(category =>
-            category.items || // אם יש פריטים ישירים בקטגוריה
-            category.subCategories.flatMap(sub => sub.items.map(item => item)) // אחרת, לוקחים פריטים מתוך תתי-קטגוריות
-        );
+        if (!menuData) return [];
 
-        // חילוץ רשימת המרכיבים מכל פריטי התפריט
-        const ingredients = menuItems?.flatMap(item => item.ingredients);
+        const menuItems = menuData.categories?.flatMap(category =>
+            category.items?.length > 0
+                ? category.items
+                : category.subCategories?.flatMap(sub => sub.items) || []
+        ) || [];
 
+        const ingredientsList = menuItems.flatMap(item => item.ingredients);
 
+        const groupedIngredients = ingredientsList.reduce((acc, ingredient) => {
+            const existingIngredient = acc.find(i => i.id === ingredient.ingredientId);
             if (existingIngredient) {
-                // אם המרכיב כבר קיים, מוסיפים את הכמות הנוכחית לכמות הבסיסית
                 existingIngredient.baseQuantity += ingredient.amountInGrams;
             } else {
-                // אם המרכיב אינו קיים, מוסיפים אותו כרשומה חדשה
                 acc.push({
                     id: ingredient.ingredientId,
                     name: ingredient.name,
@@ -45,62 +46,65 @@ export const ItemsProvider = ({ children }) => {
             }
             return acc;
         }, []);
+
+        return groupedIngredients;
     };
-const addReport = (report, reportType) => {
-    // const result = fetch(`${API_BASE_URL}/api/${reportType}/add-report`, {
-        // method: 'POST',
-        // headers: {
-        //     'Content-Type': 'application/json',
-        //     Authorization: `Bearer ${token}`,
-        // },
-        // body: JSON.stringify(report),
-    // });
-    console.log(`${API_BASE_URL}/api/${reportType}/add-report`)
-    console.log('Authorization:', `Bearer ${token}`);
-    console.log('report type:', reportType);
-    console.log('report:', report);
-}
+
+    // Add report function
+    const addReport = (report, reportType) => {
+        console.log(`${API_BASE_URL}/api/${reportType}/add-report`);
+        console.log('Authorization:', `Bearer ${token}`);
+        console.log('report type:', reportType);
+        console.log('report:', report);
+    };
+
+    // useEffect to initialize data
     useEffect(() => {
         setLoadingItems(true);
-        setUserItems(
-            user?.accountType === 'supplier'
-                ? SupplierProducts
-                : MenuItems.categories
-        );
+
+        const isSupplier = user?.accountType === 'supplier';
+
+        setUserItems(isSupplier ? SupplierProducts : MenuItems.categories || []);
         setCategories(
-            user?.accountType === 'supplier'
-                ? SupplierProducts
-                : MenuItems.categories
-                    .map(category => ({
-                        name: category.name,
-                        subCategories: category.subCategories?.map(sub => ({
-                        id: sub.id,
-                        name: sub.name
-                    })) || []
+            isSupplier
+                ? []
+                : MenuItems.categories?.map(category => ({
+                name: category.name,
+                subCategories: category.subCategories?.map(sub => ({
+                    id: sub.id,
+                    name: sub.name
                 })) || []
+            })) || []
         );
         setIngredients(
-            user?.accountType === 'supplier'
+            isSupplier
                 ? []
-                : Ingredients.ingredients.flatMap(ingredient => ingredient)
-        )
-      
+                : Ingredients.ingredients || []
+        );
+
         setLoadingItems(false);
+
         return () => {
-            setUserItems(null);
-            setCategories(null);
+            setUserItems([]);
+            setCategories([]);
+            setIngredients([]);
         };
     }, [user]);
 
-
     return (
-
-        <ItemsContext.Provider value={{ userItems, categories ,ingredients, setIngredients,loadingItems,ingredientCategories,addReport}}>
-
+        <ItemsContext.Provider value={{
+            userItems,
+            categories,
+            ingredients,
+            setIngredients,
+            loadingItems,
+            ingredientCategories,
+            addReport
+        }}>
             {children}
         </ItemsContext.Provider>
     );
 };
 
-// hook לשימוש בקונטקסט
+// Hook to use the context
 export const useItemsContext = () => useContext(ItemsContext);

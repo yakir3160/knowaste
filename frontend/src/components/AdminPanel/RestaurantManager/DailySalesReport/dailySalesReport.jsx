@@ -13,7 +13,6 @@ import SalesList from "./SalesList";
 import TabNavigation from "../../../Common/TabNavigation/TabNavigation";
 import { tableStyles } from '../../../../css/tableStyles';
 
-const TAX_PERCENTAGE = 0.17;
 
 const DailySalesReport = () => {
     const { userItems, categories, loadingItems } = useItemsContext();
@@ -34,12 +33,42 @@ const DailySalesReport = () => {
     const [saving, setSaving] = useState(false);
     const {addReport} = useItemsContext();
 
+    const validationSchema = Yup.object({
+        category: Yup.string().required("Category is required"),
+        subCategory: Yup.string().optional(),
+        menuItem: Yup.string().required("Dish is required"),
+        quantity: Yup.number().required("Quantity is required").positive("Must be positive")
+            .integer("Must be an integer"),
+    });
+
+    const initialValues = {
+        category: "",
+        subCategory: "",
+        menuItem: "",
+        quantity: "",
+        totalPrice: 0,
+    };
+    const handleAddDish = (values, { resetForm }) => {
+        const selectedDish = filteredItems.find(item => item.name === values.menuItem);
+
+        if (selectedDish) {
+            const newItem = {
+                ...values,
+                id: selectedDish.id,
+                totalPrice: values.quantity * selectedDish.price
+            };
+
+            setReportItems([...reportItems, newItem]);
+            resetForm();
+        }
+    };
+
     const handleSubmitReport = async (values, { resetForm }) => {
         try {
             setSaving(true);
-
             // שולחים רק את המידע הבסיסי הנדרש
             const reportData = {
+                id: generateUniqueID(),
                 date: reportDate,
                 items: values.items.map(item => ({
                     category: item.category,
@@ -61,23 +90,6 @@ const DailySalesReport = () => {
         } finally {
             setSaving(false);
         }
-    };
-
-    const handleSubmitReport = async () => {
-        const totalSales = reportItems.reduce((acc, item) => acc + item.totalPrice, 0);
-        const report = {
-            userId: user.uid,
-            reportId: generateUniqueID(),
-            date: reportDate,
-            timeStamp: new Date().toISOString(),
-            items: reportItems,
-            totalItems: reportItems.length,
-            totalSales: totalSales,
-            totalSalesPreTax: parseFloat((totalSales * (1 - TAX_PERCENTAGE)).toFixed(2)),
-        };
-        setReportItems([]);
-        setSales([...sales, report]);
-        console.log("Sales Report:", report);
     };
 
     return (

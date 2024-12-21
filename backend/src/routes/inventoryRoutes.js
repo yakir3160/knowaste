@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {verifyToken} from "../middleware/authMiddleware.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
 import {
     getInventoryItems,
     addInventoryItem,
@@ -9,11 +9,13 @@ import {
 
 const router = Router();
 
+// Apply authentication middleware to all routes
+router.use(verifyToken);
 
 // ===================== Inventory Routes =====================
-router.get('/get-items',verifyToken, getInventoryItems );
-router.post('/add-item ',verifyToken, addInventoryItem);
-router.put('/update-item',verifyToken,updateInventoryItem );
-router.delete('/delete-item',verifyToken, deleteInventoryItem);
+router.get('/items', getInventoryItems);
+router.post('/item', addInventoryItem);
+router.put('/item', updateInventoryItem);
+router.delete('/item', deleteInventoryItem);
 
 export default router;

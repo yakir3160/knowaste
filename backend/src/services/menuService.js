@@ -2,12 +2,14 @@ import {db} from '../../config/firebase-admin.js';
 import {getMenuCategories} from "../controllers/menuController.js";
 
 class MenuService {
-    async addMenuItem(menuItemData) {
+    async addMenuItem(userId,menuItemData) {
         try {
             console.log('Starting add menu item process');
 
             console.log('Adding menu item to database...');
-            await db.collection('menu').add(menuItemData);
+            const menuDocRef = db.collection('menu').doc(userId);
+            await menuDocRef.set(menuItemData);
+
             console.log('Menu item added successfully');
             return true;
         } catch (error) {

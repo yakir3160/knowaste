@@ -1,6 +1,4 @@
-import {useState,useEffect } from 'react'; // ייבוא רכיבי React
-import {doc,getDoc ,updateDoc} from 'firebase/firestore'; // ייבוא רכיבים מהספרייה של Firebase
-import {db} from '../../firebaseConfig'; // ייבוא קובץ firebase
+import {useState } from 'react';
 import {useAuthContext} from "../../contexts/AuthContext";
 
 export const useUserData = () => {// יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני המשתמש
@@ -13,7 +11,7 @@ export const useUserData = () => {// יצירת משתנה חדש ופונקצי
         try {
             setLoading(true)
             const token = localStorage.getItem('authToken');
-            const results =await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/update-profile`,{
+            const results =await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/update-profile`,{
                 method: 'PUT',
                 headers: {
                     authorization: `Bearer ${token}`,
@@ -24,6 +22,7 @@ export const useUserData = () => {// יצירת משתנה חדש ופונקצי
                     newDetails
                 })
             })
+            console.log(results)
             setSuccess(true);
             setUser((prevData) => ({ ...prevData, ...newDetails }));
         }catch (error) {
