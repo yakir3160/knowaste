@@ -1,9 +1,16 @@
 import InventoryService from "../services/inventoryService.js";
 
-export const addInventoryItem = async (req, res) => {
+export const addOrUpdateInventoryItem = async (req, res) => {
     try {
-        const { item } = req.body;
-        const result = await InventoryService.addInventoryItem(item);
+        const userId = req.user.id;
+        const  ingredientData  = req.body;
+        const result = await InventoryService.addOrUpdateInventoryItem(userId,ingredientData);
+        if (!result.success) {
+            throw {
+                status: 500,
+                message: result.error
+            };
+        }
         res.status(200).json({
             success: true,
             data: result,

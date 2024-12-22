@@ -1,5 +1,5 @@
 import menuItemSchema from "./MenuModel.js";
-import {ingredientSchema} from "./IngredientModel.js";
+import ingredientSchema from "./IngredientModel.js";
 
 const getSchema = type => {
     switch (type) {
@@ -18,6 +18,7 @@ export const validateSchema = async (type, data) => {
         if (!schemaToValidate) {
             return {error: 'Invalid schema type'};
         }
+
         await schemaToValidate.validate(data);
         console.log('Schema validation successful');
         return {success: true};

@@ -9,14 +9,19 @@ class MenuService {
             console.log('Starting add menu item process');
 
             // Validate the menu item data
+            console.log('Validating menu item data');
             const validation = await validateSchema('menu', { userId, menuItemData });
             if (!validation.success) {
                 throw new Error(validation.error);
             }
+            console.log('Menu item data is valid');
+
+            console.log('Adding/updating menu item to database...');
 
             // Reference to the menu items collection
             const menuItemsRef = db.collection('menus').doc(userId).collection('menuItems');
 
+            console.log('Checking if the item already exists...');
             // Check if the item already exists
             const existingItemSnapshot = await menuItemsRef.doc(menuItemData.id).get();
             if (existingItemSnapshot.exists) {
