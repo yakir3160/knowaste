@@ -1,32 +1,31 @@
 import * as Yup from "yup";
+import {allUnits} from "./Units.js";
 
-const menuItemSchema = Yup.object({
-    userId: Yup.string().required('User ID is required'),
-    menuItemData: Yup.object({
-        categoryId: Yup.string().required('Category ID is required'),
-        categoryName: Yup.string().required('Category name is required'),
-        subcategoryId: Yup.string().nullable(),
-        subcategoryName: Yup.string().nullable(),
-        name: Yup.string().required('Item name is required'),
-        price: Yup.number()
-            .required('Price is required')
-            .positive('Price must be positive')
-            .typeError('Price must be a number'),
-        availability: Yup.boolean().required('Availability is required'),
-        ingredients: Yup.array()
-            .of(
-                Yup.object({
-                    ingredientId: Yup.number()
-                        .required('Ingredient ID is required')
-                        .positive('Ingredient ID must be positive')
-                        .typeError('Ingredient ID must be a number'),
-                    quantity: Yup.number()
-                        .required('Quantity is required')
-                        .positive('Quantity must be positive')
-                        .typeError('Quantity must be a number')
-                })
-            )
-            .min(1, 'At least one ingredient is required')
-    }).required('Menu item data is required')
+const shelfLifeSchema = Yup.object({
+    duration: Yup.number().required('Duration is required').positive(),
+    unit: Yup.string().required('Unit is required').oneOf(['days', 'weeks', 'months'])
 });
-export default menuItemSchema;
+
+const ingredientSchema = Yup.object({
+    userId: Yup.string().required('User ID is required'),
+    ingredientData: Yup.object({
+        name: Yup.string().required('Name is required'),
+        category: Yup.string().required('Category is required'),
+        storageType: Yup.string().required('Storage type is required'),
+        unit: Yup.string().required('Unit is required').oneOf(allUnits),
+        stock: Yup.number().required('Stock is required').min(0),
+        pricePerUnit: Yup.number().required('Price is required').positive(),
+        minStockLevel: Yup.number().required('Minimum stock level is required').min(0),
+        allergens: Yup.array().of(Yup.string()),
+        packageType: Yup.string().required('Package type is required'),
+        unitsPerPackage: Yup.number().required('Units per package is required').positive(),
+        minimumOrderQuantity: Yup.number().required('Minimum order quantity is required').positive(),
+        supplierUnit: Yup.string().required('Supplier unit is required').oneOf(allUnits),
+        deliveryDays: Yup.array().of(Yup.string()).required('Delivery days are required'),
+        preparationMethod: Yup.string().required('Preparation method is required'),
+        shelfLife: shelfLifeSchema.required('Shelf life is required'),
+        lastUpdated: Yup.date().required('Last updated date is required')
+    }).required('Ingredient data is required')
+});
+
+export default ingredientSchema;
