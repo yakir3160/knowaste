@@ -17,38 +17,7 @@ export const ItemsProvider = ({ children }) => {
     const [userItems, setUserItems] = useState([]);
     const [categories, setCategories] = useState([]);
     const [ingredients, setIngredients] = useState([]);
-    const ingredientCategories = IngredientCategories.categories;
 
-    // Helper function to extract ingredients
-    const extractIngredients = (menuData) => {
-        if (!menuData) return [];
-
-        const menuItems = menuData.categories?.flatMap(category =>
-            category.items?.length > 0
-                ? category.items
-                : category.subCategories?.flatMap(sub => sub.items) || []
-        ) || [];
-
-        const ingredientsList = menuItems.flatMap(item => item.ingredients);
-
-        const groupedIngredients = ingredientsList.reduce((acc, ingredient) => {
-            const existingIngredient = acc.find(i => i.id === ingredient.ingredientId);
-            if (existingIngredient) {
-                existingIngredient.baseQuantity += ingredient.amountInGrams;
-            } else {
-                acc.push({
-                    id: ingredient.ingredientId,
-                    name: ingredient.name,
-                    baseQuantity: ingredient.amountInGrams,
-                    stockQuantity: 0,
-                    unitType: 'grams'
-                });
-            }
-            return acc;
-        }, []);
-
-        return groupedIngredients;
-    };
 
     // Add report function
     const addReport = (report, reportType) => {
@@ -58,32 +27,96 @@ export const ItemsProvider = ({ children }) => {
         console.log('report:', report);
     };
 
+    // Add menu item
+    const addMenuItem = async (itemData) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/menu`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(itemData),
+            });
+            const data = await response.json();
+            console.log('Add menu item:', data);
+        } catch (error) {
+            console.error('Error adding menu item:', error.message);
+        }
+    };
+    // Get menu items
+    const getMenuItems = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/menu`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const data = await response.json();
+            setUserItems(data);
+            console.log('Menu items:', data.data);
+        } catch (error) {
+            console.error('Error fetching menu items:', error.message);
+        }
+    }
+    const getMenuByCategory = async (categoryId) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/menu//items-by-category/?category=${categoryId}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const data = await response.json();
+            setUserItems(data);
+            console.log('Menu items by category:', data.data);
+        } catch (error) {
+            console.error('Error fetching menu items by category:', error.message);
+        }
+    }
+    const deleteMenuItem = async (itemId) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/menu/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const data = await response.json();
+            console.log('Delete menu item:', data);
+        } catch (error) {
+            console.error('Error deleting menu item:', error.message);
+        }
+    }
+
+
     // useEffect to initialize data
     useEffect(() => {
-        setLoadingItems(true);
-
-        const isSupplier = user?.accountType === 'supplier';
-
-        setUserItems(isSupplier ? SupplierProducts : MenuItems.categories || []);
-        setCategories(
-            isSupplier
-                ? []
-                : MenuItems.categories?.map(category => ({
-                name: category.name,
-                subCategories: category.subCategories?.map(sub => ({
-                    id: sub.id,
-                    name: sub.name
-                })) || []
-            })) || []
-        );
-        setIngredients(
-            isSupplier
-                ? []
-                : Ingredients.ingredients || []
-        );
-
-        setLoadingItems(false);
-
+    //     addMenuItem({
+    //         categoryId: "main-courses",
+    //         categoryName: "Main Courses",
+    //         subCategoryId: "pizza",
+    //         subCategoryName: "Pizza",
+    //         "id": "1",
+    //         "name": "Classic Margherita Pizza",
+    //         "price": 58.6,
+    //         "ingredients": [
+    //         {
+    //             "ingredientId": 1,
+    //             "quantity": 200,
+    //         },
+    //         {
+    //             "ingredientId": 2,
+    //             "quantity": 100,
+    //         },
+    //         {
+    //             "ingredientId": 3,
+    //             "quantity": 150,
+    //         }
+    //     ]
+    // });
+        getMenuItems();
         return () => {
             setUserItems([]);
             setCategories([]);
@@ -98,8 +131,8 @@ export const ItemsProvider = ({ children }) => {
             ingredients,
             setIngredients,
             loadingItems,
-            ingredientCategories,
-            addReport
+            addReport,
+            getMenuItems,
         }}>
             {children}
         </ItemsContext.Provider>

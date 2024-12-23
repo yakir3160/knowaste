@@ -25,7 +25,7 @@ const IngredientsList = ({ isEditing }) => {
             {({ remove, push }) => (
                 <div className="mt-4 space-y-4 h-fit">
                     <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
-                    {values.ingredients.map((ingredient, index) => (
+                    {values.ingredients?.map((ingredient, index) => (
                         <div
                             key={ingredient.id || index}
                             className="relative"

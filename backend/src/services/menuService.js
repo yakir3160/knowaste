@@ -7,7 +7,7 @@ class MenuService {
     async addOrUpdateMenuItem(userId, menuItemData) {
         try {
             console.log('Starting add menu item process');
-
+            console.log('menu item data:', menuItemData);
             // Validate the menu item data
             console.log('Validating menu item data');
             const validation = await validateSchema('menu', { userId, menuItemData });
@@ -22,6 +22,7 @@ class MenuService {
             const menuItemsRef = db.collection('menus').doc(userId).collection('menuItems');
 
             console.log('Checking if the item already exists...');
+            console.log('Item ID:', menuItemData.id);
             // Check if the item already exists
             const existingItemSnapshot = await menuItemsRef.doc(menuItemData.id).get();
             if (existingItemSnapshot.exists) {
