@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Card from "../../../Common/Card/Card";
-import Button from "../../../Common/Button/Button";
+import Card from "../../Common/Card/Card";
+import Button from "../../Common/Button/Button";
 import { Plus } from 'lucide-react';
-import { useItemsContext } from "../../../../contexts/ItemsContext";
+import { useItemsContext } from "../../../contexts/ItemsContext";
 
 const Inventory = ({ userItems, categories }) => {
     const { ingredients } = useItemsContext();

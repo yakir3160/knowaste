@@ -4,7 +4,6 @@ import Logo from "../../../Common/Logo/Logo";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { useUserContext } from "../../../../contexts/UserContext";
-import WasteReport from "../../../AdminPanel/RestaurantManager/WasteReport/WasteReport";
 
 const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     const toggleSidebar = () => setIsOpen(!isOpen);
@@ -12,7 +11,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     const navigate = useNavigate();
     const { logout } = useAuthContext();
     const { userBaseData: user } = useUserContext();
-    const accountType = user?.accountType;
+
 
     const isActive = (path) => location.pathname === path;
 
@@ -63,42 +62,21 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                         <span className={sidebarClasses.itemText}>Inventory Management</span>
                     </Button>
 
-                    {accountType === 'restaurant-manager' && (
-                        <>
-                            <Button
-                                onClick={() => navigate("/admin-panel/sales-report")}
-                                className={getMenuItemClasses("/admin-panel/sales-report")}
-                            >
-                                <FileText className="h-5 w-5" />
-                                <span className={sidebarClasses.itemText}>Daily Sales Report</span>
-                            </Button>
-                            <Button
-                                onClick={() => navigate("/admin-panel/waste-report")}
-                                className={getMenuItemClasses("/admin-panel/waste-report")}
-                            >
-                                <Trash2 className="h-5 w-5" />
-                                <span className={sidebarClasses.itemText}>Waste Report</span>
-                            </Button>
-                            <Button
-                                onClick={() => navigate("/admin-panel/request-quote")}
-                                className={getMenuItemClasses("/admin-panel/request-quote")}
-                            >
-                                <DollarSign className="h-5 w-5" />
-                                <span className={sidebarClasses.itemText}>Request Price Quote</span>
-                            </Button>
-                        </>
-                    )}
 
-                    {accountType === 'supplier' && (
-                        <Button
-                            onClick={() => navigate("/admin-panel/send-quote")}
-                            className={getMenuItemClasses("/admin-panel/send-quote")}
-                        >
-                            <DollarSign className="h-5 w-5" />
-                            <span className={sidebarClasses.itemText}>Send Price Quote</span>
-                        </Button>
-                    )}
-
+                    <Button
+                        onClick={() => navigate("/admin-panel/sales-report")}
+                        className={getMenuItemClasses("/admin-panel/sales-report")}
+                    >
+                        <FileText className="h-5 w-5" />
+                        <span className={sidebarClasses.itemText}>Daily Sales Report</span>
+                    </Button>
+                    <Button
+                        onClick={() => navigate("/admin-panel/waste-report")}
+                        className={getMenuItemClasses("/admin-panel/waste-report")}
+                    >
+                        <Trash2 className="h-5 w-5" />
+                        <span className={sidebarClasses.itemText}>Waste Report</span>
+                    </Button>
                     <Button
                         className={getMenuItemClasses("/admin-panel/account-settings")}
                         onClick={() => navigate("/admin-panel/account-settings")}
@@ -106,7 +84,6 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                         <UserRoundCog className="h-5 w-5" />
                         <span className={sidebarClasses.itemText}>Account</span>
                     </Button>
-
                     <Button
                         onClick={logout}
                         className={`p-2 ${sidebarClasses.menuItem} ${sidebarClasses.logout}`}

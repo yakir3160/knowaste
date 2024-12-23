@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import AdminPanelContainer from "../../AdminPanelContainer";
+import AdminPanelContainer from "../AdminPanelContainer";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import GlobalField from "../../../Common/inputs/GlobalField";
-import Card from '../../../Common/Card/Card';
-import Button from '../../../Common/Button/Button';
-import { useItemsContext } from "../../../../contexts/ItemsContext";
-import useFilteredItems from "../../../../Hooks/Items/useFilteredItems";
-import { useAuthContext } from "../../../../contexts/AuthContext";
+import GlobalField from "../../Common/inputs/GlobalField";
+import Card from '../../Common/Card/Card';
+import Button from '../../Common/Button/Button';
+import { useItemsContext } from "../../../contexts/ItemsContext";
+import useFilteredItems from "../../../Hooks/Items/useFilteredItems";
+import { useAuthContext } from "../../../contexts/AuthContext";
 import { v4 as generateUniqueID } from 'uuid';
 import SalesList from "./SalesList";
-import TabNavigation from "../../../Common/TabNavigation/TabNavigation";
-import { tableStyles } from '../../../../css/tableStyles';
+import TabNavigation from "../../Common/TabNavigation/TabNavigation";
+import { tableStyles } from '../../../css/tableStyles';
 
 
 const DailySalesReport = () => {

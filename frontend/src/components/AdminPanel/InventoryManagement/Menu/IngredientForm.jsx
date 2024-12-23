@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import GlobalField from "../../../../Common/inputs/GlobalField";
-import { useItemsContext } from "../../../../../contexts/ItemsContext";
-import Button from "../../../../Common/Button/Button";
+import GlobalField from "../../../Common/inputs/GlobalField";
+import { useItemsContext } from "../../../../contexts/ItemsContext";
+import Button from "../../../Common/Button/Button";
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),

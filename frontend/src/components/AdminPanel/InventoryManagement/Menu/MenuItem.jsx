@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
-import Button from '../../../../Common/Button/Button';
+import Button from '../../../Common/Button/Button';
 import { ChevronDown, ChevronUp, CircleX, Pencil, Save } from 'lucide-react';
-import GlobalField from "../../../../Common/inputs/GlobalField";
-import Card from "../../../../Common/Card/Card";
+import GlobalField from "../../../Common/inputs/GlobalField";
+import Card from "../../../Common/Card/Card";
 import IngredientsList from './IngredientsList';
-import {useUserContext} from "../../../../../contexts/UserContext";
+import {useUserContext} from "../../../../contexts/UserContext";
 import * as Yup from 'yup';
-import {ingredientSchema} from "../../../../../validationSchemas/ingredientSchema";
+import {ingredientSchema} from "../../../../validationSchemas/ingredientSchema";
 
 const MenuItem = ({ item, onUpdate, onRemove }) => {
     const [isEditing, setIsEditing] = useState(false);

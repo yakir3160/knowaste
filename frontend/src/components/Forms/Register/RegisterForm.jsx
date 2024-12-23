@@ -1,13 +1,12 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import GlobalField from "../../Common/inputs/GlobalField";
 import Button from "../../Common/Button/Button";
 import loadingAnimation from "../../../animations/AnimationLoading.json";
 import {Player} from "@lottiefiles/react-lottie-player";
 
-
-const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) => {
+const RegisterForm = ({ handleChange, isSubmitting, validatePassword }) => {
     return (
-        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <GlobalField
                 name="businessName"
                 label="Business Name"
@@ -25,47 +24,9 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                 type="tel"
             />
             <GlobalField
-                name="email"xx
+                name="email"
                 label="Email"
                 type="email"
-            />
-            <GlobalField
-                name="address"
-                label="Address"
-                type="text"
-            />
-            <Suspense fallback={<div>Loading...</div>}>
-                <GlobalField
-                    label="City"
-                    name="city"
-                    options={cities.map((city) => ({ value: city, label: city }))}
-                    type="select"
-                />
-            </Suspense>
-            <GlobalField
-                name="zipCode"
-                label="Zip"
-                type="text"
-            />
-            <GlobalField
-                label={"Account Type"}
-                name="accountType"
-                type="select"
-                options={[
-                    { value :"" , label: 'Select Account Type' },
-                    { value: 'restaurant-manager', label: 'Restaurant Manager' },
-                    { value: 'supplier', label: 'Supplier' }
-                ]}
-            />
-            <GlobalField
-                name="kosher"
-                type="select"
-                label={"Kosher"}
-                options={[
-                    { value: "", label: 'Select Kosher' },
-                    { value: true, label: 'Yes' },
-                    { value: false, label: 'No' }
-                ]}
             />
             <GlobalField
                 name="password"
@@ -81,7 +42,7 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                 label="Password confirmation"
                 type="password"
             />
-            <div className="col-span-1 sm:col-span-2  md:col-span-1 lg:col-span-1 flex justify-center items-center h-full">
+            <div className="col-span-1 sm:col-span-2 flex justify-center items-center h-full">
                 <Button
                     className="text-titles w-full h-14 flex justify-center items-center"
                     type="submit"
@@ -102,7 +63,6 @@ const RegisterForm = ({ cities, handleChange, isSubmitting ,validatePassword}) =
                     )}
                 </Button>
             </div>
-
         </div>
     );
 };

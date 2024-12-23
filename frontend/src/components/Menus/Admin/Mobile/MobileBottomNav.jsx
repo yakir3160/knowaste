@@ -3,14 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {useAuthContext} from "../../../../contexts/AuthContext";
 import {useUserContext} from "../../../../contexts/UserContext";
-import WasteReport from "../../../AdminPanel/RestaurantManager/WasteReport/WasteReport";
+
 
 const MobileBottomNav = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const {logout} = useAuthContext();
     const {userBaseData: user} = useUserContext();
-    const accountType = user?.accountType;
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleBottomMenu = () => setIsVisible(!isVisible);
@@ -63,42 +62,21 @@ const MobileBottomNav = () => {
                         <Warehouse className={`${iconSize} text-titles`}/>
                         <span className="text-sm text-titles">Inventory Management</span>
                     </button>
-                    {accountType === 'restaurant-manager' && (
-                        <>
-                            <button
-                                onClick={() => navigate("/admin-panel/sales-report")}
-                                className={buttonClass("/admin-panel/sales-report")}
-                            >
-                                <FileText className={`${iconSize} text-titles`}/>
-                                <span className="text-sm text-titles">Daily Sales Report</span>
-                            </button>
-                            <button
-                                onClick={() => navigate("/admin-panel/waste-report")}
-                                className={buttonClass("/admin-panel/leftover-report")}
-                            >
-                                <Trash2 className={`${iconSize} text-titles`}/>
-                                <span className="text-sm text-titles">Waste Report</span>
-                            </button>
+                    <button
+                        onClick={() => navigate("/admin-panel/sales-report")}
+                        className={buttonClass("/admin-panel/sales-report")}
+                    >
+                        <FileText className={`${iconSize} text-titles`}/>
+                        <span className="text-sm text-titles">Daily Sales Report</span>
+                    </button>
+                    <button
+                        onClick={() => navigate("/admin-panel/waste-report")}
+                        className={buttonClass("/admin-panel/leftover-report")}
+                    >
+                        <Trash2 className={`${iconSize} text-titles`}/>
+                        <span className="text-sm text-titles">Waste Report</span>
+                    </button>
 
-                            <button
-                                onClick={() => navigate("/admin-panel/request-quote")}
-                                className={buttonClass("/admin-panel/request-quote")}
-                            >
-                                <DollarSign className={`${iconSize} text-titles`}/>
-                                <span className="text-sm text-titles">Request Price Quote</span>
-                            </button>
-                        </>
-                    )}
-                    { accountType === 'supplier' && (
-                        <button
-                            onClick={() => navigate("/admin-panel/send-quote")}
-                            className={buttonClass("/admin-panel/send-quote")}
-                        >
-                            <DollarSign className={`${iconSize} text-titles`}/>
-                            <span className="text-sm text-titles">Send Price Quote</span>
-                        </button>
-                    )
-                    }
                     <button
                         onClick={() => {
                             navigate('/admin-panel/account-settings')

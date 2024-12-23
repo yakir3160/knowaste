@@ -1,5 +1,5 @@
-import Card from "../../../Common/Card/Card";
-import { tableStyles } from '../../../../css/tableStyles';
+import Card from "../../Common/Card/Card";
+import { tableStyles } from '../../../css/tableStyles';
 
 const SalesList = ({ sales }) => {
     return (

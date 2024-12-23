@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import Menu from "./Menu/Menu";
-import AdminPanelContainer from "../../AdminPanelContainer";
+import AdminPanelContainer from "../AdminPanelContainer";
 import Inventory from "./Inventory";
-import { useItemsContext } from "../../../../contexts/ItemsContext";
-import { useUserContext } from "../../../../contexts/UserContext";
-import Card from "../../../Common/Card/Card";
-import Button from "../../../Common/Button/Button";
+import { useItemsContext } from "../../../contexts/ItemsContext";
+import { useUserContext } from "../../../contexts/UserContext";
+import Card from "../../Common/Card/Card";
+import Button from "../../Common/Button/Button";
 import { Plus } from "lucide-react";
 import AddMenuItem from "./Menu/AddMenuItem";
-import TabNavigation from "../../../Common/TabNavigation/TabNavigation";
+import TabNavigation from "../../Common/TabNavigation/TabNavigation";
 
 const InventoryManagement = () => {
     const { ingredients ,userItems,categories } = useItemsContext();

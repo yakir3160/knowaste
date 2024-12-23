@@ -1,7 +1,7 @@
 import React from "react";
 import MenuItem from "./MenuItem";
-import { useUserItems } from "../../../../../Hooks/User/useUserItems";
-import useFilteredItems from "../../../../../Hooks/Items/useFilteredItems";
+import { useUserItems } from "../../../../Hooks/User/useUserItems";
+import useFilteredItems from "../../../../Hooks/Items/useFilteredItems";
 
 
 

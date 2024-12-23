@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import AdminPanelContainer from "../../AdminPanelContainer";
+import AdminPanelContainer from "../AdminPanelContainer";
 import UserDetailsForm from './UserDetailsForm';
 import EmailUpdateForm from './EmailUpdateForm';
 import PasswordUpdateForm from './PasswordUpdateForm';
-import { useAuthContext } from "../../../../contexts/AuthContext";
-import { useUserContext } from "../../../../contexts/UserContext";
-import LoadingOverlay from "../../../Common/Overlays/LoadingOverlay";
-import SavingOverlay from "../../../Common/Overlays/SavingOverlay";
+import { useAuthContext } from "../../../contexts/AuthContext";
+import { useUserContext } from "../../../contexts/UserContext";
+import LoadingOverlay from "../../Common/Overlays/LoadingOverlay";
+import SavingOverlay from "../../Common/Overlays/SavingOverlay";
 
 const Account = () => {
     const { user } = useAuthContext();

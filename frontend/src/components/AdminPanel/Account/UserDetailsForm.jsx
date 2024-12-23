@@ -1,25 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {} from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { Pencil, Save, CheckCircle, CircleX } from 'lucide-react';
-import Card from "../../../Common/Card/Card";
-import Button from "../../../Common/Button/Button";
-import GlobalField from "../../../Common/inputs/GlobalField";
-import { useUserContext } from "../../../../contexts/UserContext";
-import { useCities } from "../../../Forms/Register/Hooks/useCities";
+import { Pencil, Save, CircleX } from 'lucide-react';
+import Card from "../../Common/Card/Card";
+import Button from "../../Common/Button/Button";
+import GlobalField from "../../Common/inputs/GlobalField";
+import { useUserContext } from "../../../contexts/UserContext";
+
 
 
 const validationSchema = Yup.object().shape({
     businessName: Yup.string().required('Required'),
     contactName: Yup.string().required('Required'),
     phone: Yup.string().required('Required'),
-    address: Yup.string().required('Required'),
-    city: Yup.string().required('Required'),
-    zipCode: Yup.string().required('Required'),
-    kosher: Yup.boolean().required('Required'),
 });
 const UserDetailsForm = ({ user }) => {
-    const { cities } = useCities();
     const { updateUserDetails, error } = useUserContext();
     const [editing, setEditing] = React.useState(false);
 
@@ -29,10 +24,6 @@ const UserDetailsForm = ({ user }) => {
         businessName: user?.businessName,
         contactName: user?.contactName,
         phone: user?.phone,
-        address: user?.address,
-        city: user?.city,
-        zipCode: user?.zipCode,
-        kosher: user?.kosher,
     };
 
     return (
@@ -83,44 +74,6 @@ const UserDetailsForm = ({ user }) => {
                                 value={values.phone}
                                 disabled={!editing}
                                 onChange={handleChange}
-                            />
-                            <GlobalField
-                                name="address"
-                                label="Address"
-                                type="text"
-                                value={values.address}
-                                disabled={!editing}
-                                onChange={handleChange}
-                            />
-                            <GlobalField
-                                name="city"
-                                label="City"
-                                type="select"
-                                value={values.city}
-                                disabled={!editing}
-                                options={cities.map((city) => ({
-                                    value: city,
-                                    label: city
-                                }))}
-                            />
-                            <GlobalField
-                                name="zipCode"
-                                label="Zip"
-                                type="text"
-                                value={values.zipCode}
-                                disabled={!editing}
-                                onChange={handleChange}
-                            />
-                            <GlobalField
-                                name="kosher"
-                                type="select"
-                                label={"Kosher"}
-                                value={values.kosher}
-                                disabled={!editing}
-                                options={[
-                                    {value: true, label: 'Yes'},
-                                    {value: false, label: 'No'}
-                                ]}
                             />
 
                             <div className="relative flex flex-col justify-center col-span-full">

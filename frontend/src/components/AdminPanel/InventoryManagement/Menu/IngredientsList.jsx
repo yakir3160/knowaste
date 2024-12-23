@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldArray, useFormikContext } from 'formik';
-import Button from '../../../../Common/Button/Button';
+import Button from '../../../Common/Button/Button';
 import { CircleX, Plus } from 'lucide-react';
 import IngredientForm from './IngredientForm';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import Card from '../../../Common/Card/Card';
-import AdminPanelContainer from "../../AdminPanelContainer";
+import Card from '../../Common/Card/Card';
+import AdminPanelContainer from "../AdminPanelContainer";
 
 const PlaceholderChart = () => (
     <div className="w-full h-full flex items-center justify-center text-gray-500 rounded-md shadow-sm sm:rounded-lg">

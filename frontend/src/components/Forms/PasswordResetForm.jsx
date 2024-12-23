@@ -11,7 +11,7 @@ import Button from "../Common/Button/Button";
 import PasswordRequirements from "./Register/PasswordRequirements";
 
 // Custom Hooks
-import { usePasswordStatus } from "./Register/Hooks/usePasswordStatus";
+import { usePasswordStatus } from "../../Hooks/User/usePasswordStatus";
 import { usePasswordReset } from "../../Hooks/Auth/usePasswordReset";
 
 // Firebase Config
