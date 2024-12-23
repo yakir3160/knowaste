@@ -1,5 +1,5 @@
 import menuItemSchema from "./MenuModel.js";
-import ingredientSchema from "./IngredientModel.js";
+import {ingredientSchema} from "./IngredientModel.js";
 
 const getSchema = type => {
     switch (type) {
