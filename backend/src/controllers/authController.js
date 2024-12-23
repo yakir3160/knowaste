@@ -31,14 +31,35 @@ export const login = async (req, res) => {
 
 export const googleSignIn = async (req, res) => {
     try {
-        const { token } = req.body;
-        const result = await authService.googleSignIn(token);
-        res.json(result);
+        const { token, isSignUp, email, displayName, photoURL } = req.body;
+
+        const result = await authService.googleSignIn({
+            token,
+            isSignUp,
+            email,
+            displayName,
+            photoURL
+        });
+        if (result.isNewUser) {
+            res.status(201).json({
+                message: 'User successfully registered',
+                ...result
+            });
+        } else {
+            res.json({
+                message: 'User successfully logged in',
+                ...result
+            });
+        }
     } catch (error) {
         console.error('Google sign-in error:', error);
-        res.status(401).json({ error: 'Error during Google sign-in' });
+        res.status(401).json({
+            error: 'Authentication failed',
+            details: error.message
+        });
     }
 };
+
 
 export const sendPasswordResetEmail = async (req, res) => {
     try {

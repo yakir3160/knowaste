@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import {GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
+import {getAuth, GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
 
 import { auth } from "../firebaseConfig";
 import {useUserData} from "../Hooks/User/useUserData";
@@ -104,8 +104,8 @@ export const AuthProvider = ({ children }) => {
             const userData = await response.json();
             console.log('Response data:', userData);
             if (!response.ok) {
-                    setAuthError(userData.error || 'An unexpected error occurred.');
-                    return;
+                setAuthError(userData.error || 'An unexpected error occurred.');
+                return;
             }
             if (userData.token) {
                 localStorage.setItem('authToken', userData.token);
@@ -129,18 +129,33 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signInWithGoogle = async () => {
-
         const provider = new GoogleAuthProvider();
+        provider.addScope('profile');
+        provider.addScope('email');
+
+        //TODO : Add if statement to check if user is existing or new and only if new show the consent prompt
+        provider.setCustomParameters({
+            prompt: 'consent'
+        });
+
         try {
             const result = await signInWithPopup(auth, provider);
             const token = await result.user.getIdToken();
+
             const response = await fetch(`${API_BASE_URL}/api/auth/google`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({token}),
+                body: JSON.stringify({
+                    token,
+                    isSignUp: true,
+                    email: result.user.email,
+                    displayName: result.user.displayName,
+                    photoURL: result.user.photoURL
+                }),
             });
+
             const userData = await response.json();
             localStorage.setItem('authToken', userData.token);
             setUser(userData.user);

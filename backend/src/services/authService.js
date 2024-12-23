@@ -100,8 +100,12 @@ class AuthService {
             }
 
             console.log('Fetching user data from Firestore...');
-            const userDoc = await db.collection('users').doc(userRecord.uid).get();
+             const userRef = db.collection('users').doc(userRecord.uid);
 
+            await userRef.update({
+                lastLogin: new Date().toISOString()
+            });
+            const userDoc = await userRef.get();
             console.log('Creating custom token...');
             // Generate JWT token
             const token = this.generateToken(userDoc.data());
@@ -119,38 +123,45 @@ class AuthService {
         }
     }
 
-    async googleSignIn(token) {
-        console.log('Starting Google Sign In process');
+    async googleSignIn(userData) {
+        try {
+            const { token, email,displayName, photoURL } = userData;
+            console.log('Verifying Google token...');
+            const decodedToken = await auth.verifyIdToken(token);
 
-        console.log('Verifying Google token...');
-        const decodedToken = await auth.verifyIdToken(token);
-        console.log('Token verified successfully:');
+            const userRef = db.collection('users').doc(decodedToken.sub);
+            const userDoc = await userRef.get();
 
-        const email = decodedToken.email;
-        console.log('User email:', email);
+            let user;
+            if (userDoc.exists) {
+                // User exists - update login timestamp
+                user = userDoc.data();
+                await userRef.update({
+                    lastLogin: admin.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: admin.firestore.FieldValue.serverTimestamp()
+                });
+                console.log('Existing user logged in:', user.email);
+            } else {
+                // New user - create account
+                user = {
+                    id: userRef.id,
+                    email: email,
+                    contactName: displayName,
+                    photoURL: photoURL,
+                    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                   lastLogin: admin.firestore.FieldValue.serverTimestamp(),
+                };
+                await userRef.set(user);
+                console.log('New user created:', user.email);
+            }
 
-        const userRef = db.collection('users').doc(decodedToken.sub);
-        const userDoc = await userRef.get();
-
-        let user;
-        if (userDoc.exists) {
-            user = userDoc.data();
-        } else {
-            user = {
-                id: userRef.id,
-                email: decodedToken.email,
-                googleId: decodedToken.sub,
-                accountType: 'restaurant-manager',
-                createdAt: admin.firestore.FieldValue.serverTimestamp(),
-                updatedAt: admin.firestore.FieldValue.serverTimestamp()
-            };
-            await userRef.set(user);
-            console.log('User created/updated:', user);
+            const authToken = this.generateToken(user);
+            return { user, token: authToken };
+        } catch (error) {
+            console.error('Google sign in error:', error);
+            throw error;
         }
-        const authToken = this.generateToken(user);
-        console.log('JWT token generated');
-
-        return { user, token: authToken };
     }
 
     async sendPasswordResetEmail(email) {
