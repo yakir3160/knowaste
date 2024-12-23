@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { verifyToken } from "../middleware/authMiddleware.js";
 import {
     getInventoryItems,
-    addInventoryItem,
+    addOrUpdateInventoryItem,
     updateInventoryItem,
     deleteInventoryItem
 } from '../controllers/inventoryController.js';
@@ -13,9 +13,9 @@ const router = Router();
 router.use(verifyToken);
 
 // ===================== Inventory Routes =====================
-router.get('/items', getInventoryItems);
-router.post('/item', addInventoryItem);
-router.put('/item', updateInventoryItem);
-router.delete('/item', deleteInventoryItem);
+router.get('/', getInventoryItems);
+router.post('/', addOrUpdateInventoryItem);
+router.put('/:id', updateInventoryItem);
+router.delete('/:id', deleteInventoryItem);
 
 export default router;
