@@ -28,6 +28,7 @@ const DailySalesReport = () => {
 
     const [reportItems, setReportItems] = useState([]);
     const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0]);
+    const [totalReportPrice, setTotalReportPrice] = useState(0);
     const [sales, setSales] = useState([]);
     const [activeTab, setActiveTab] = useState('Items');
     const [saving, setSaving] = useState(false);
@@ -59,6 +60,7 @@ const DailySalesReport = () => {
             };
 
             setReportItems([...reportItems, newItem]);
+            setTotalReportPrice(prev => prev + newItem.totalPrice);
             resetForm();
         }
     };
@@ -70,6 +72,7 @@ const DailySalesReport = () => {
             const reportData = {
                 id: generateUniqueID(),
                 date: reportDate,
+                totalSales: totalReportPrice,
                 items: values.items.map(item => ({
                     category: item.category,
                     subCategory: item.subCategory,
@@ -101,6 +104,7 @@ const DailySalesReport = () => {
                 {activeTab === 'Items' && (
                     <Card className="bg-white border-none p-5 h-full flex">
                         <h1 className="text-2xl text-center mb-5">Add Daily Sales</h1>
+
                         <Formik
                             initialValues={initialValues}
                             validationSchema={validationSchema}
@@ -117,8 +121,10 @@ const DailySalesReport = () => {
                                             max={new Date().toISOString().split('T')[0]}
                                             onChange={(e) => setReportDate(e.target.value)}
                                         />
+                                        <h3 className={`font-semibold text-xl `}>Total Sales: {totalReportPrice} ₪</h3>
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 border-2 border-secondary p-4 rounded-sm">
+                                    <div
+                                        className="grid grid-cols-1 md:grid-cols-2 gap-2 border-2 border-secondary p-4 rounded-sm">
                                         <GlobalField
                                             type="select"
                                             name="category"
@@ -136,30 +142,14 @@ const DailySalesReport = () => {
                                                 setSelectedCategory(value);
                                             }}
                                         />
-                                        {subCategories.length > 0 && (
-                                            <GlobalField
-                                                type="select"
-                                                name="subCategory"
-                                                label="Sub Category"
-                                                options={[{
-                                                    value: '',
-                                                    label: 'Select a sub category'
-                                                }, ...subCategories.map(subCategory => ({
-                                                    value: subCategory.name,
-                                                    label: subCategory.name
-                                                }))]}
-                                                onChange={(e) => {
-                                                    const {value} = e.target;
-                                                    setFieldValue("subCategory", value);
-                                                    setSelectedSubCategory(value);
-                                                }}
-                                            />
-                                        )}
                                         <GlobalField
                                             type="select"
                                             name="menuItem"
                                             label="Dish"
-                                            options={[{value: '', label: 'Select a dish'}, ...filteredItems.map(dish => ({
+                                            options={[{
+                                                value: '',
+                                                label: 'Select a dish'
+                                            }, ...filteredItems.map(dish => ({
                                                 value: dish.name,
                                                 label: dish.name
                                             }))]}
@@ -189,7 +179,7 @@ const DailySalesReport = () => {
                                 </Form>
                             )}
                         </Formik>
-                        <div className="m-8 w-full overflow-x-auto">
+                        <div className="m-8 w-full overflow-x-auto flex flex-col items-center ">
                             <h2 className="text-xl mb-4">Dishes in Report</h2>
                             {reportItems.length > 0 ? (
                                 <table className="min-w-full border-collapse">
@@ -213,6 +203,7 @@ const DailySalesReport = () => {
                                         </tr>
                                     ))}
                                     </tbody>
+
                                 </table>
                             ) : (
                                 <p>No dishes added yet.</p>
@@ -227,6 +218,7 @@ const DailySalesReport = () => {
                                 Submit Report
                             </Button>
                         </div>
+
                     </Card>
                 )}
 

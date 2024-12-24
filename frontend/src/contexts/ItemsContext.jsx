@@ -16,8 +16,7 @@ export const ItemsProvider = ({ children }) => {
     const [loadingItems, setLoadingItems] = useState(true);
     const [userItems, setUserItems] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [ingredients, setIngredients] = useState([]);
-
+    const [inventoryItems,setInventoryItems] = useState([]);
 
     // Add report function
     const addReport = (report, reportType) => {
@@ -47,6 +46,7 @@ export const ItemsProvider = ({ children }) => {
     // Get menu items
     const getMenuItems = async () => {
         try {
+            setLoadingItems(true);
             const response = await fetch(`${API_BASE_URL}/api/menu`, {
                 method: 'GET',
                 headers: {
@@ -54,8 +54,11 @@ export const ItemsProvider = ({ children }) => {
                 },
             });
             const data = await response.json();
-            setUserItems(data);
+            setUserItems(data.data);
+            setCategories(data.categories);
             console.log('Menu items:', data.data);
+            console.log('Categories:', data.categories);
+            setLoadingItems(false);
         } catch (error) {
             console.error('Error fetching menu items:', error.message);
         }
@@ -90,37 +93,31 @@ export const ItemsProvider = ({ children }) => {
         }
     }
 
+    const getInventoryItems = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/inventory`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const data = await response.json();
+            console.log('Inventory items:', data.data);
+            setInventoryItems(data.data);
+            console.log('Ingredients:', data.data);
+        } catch (error) {
+            console.error('Error fetching ingredients:', error.message);
+        }
+    }
+
 
     // useEffect to initialize data
     useEffect(() => {
-    //     addMenuItem({
-    //         categoryId: "main-courses",
-    //         categoryName: "Main Courses",
-    //         subCategoryId: "pizza",
-    //         subCategoryName: "Pizza",
-    //         "id": "1",
-    //         "name": "Classic Margherita Pizza",
-    //         "price": 58.6,
-    //         "ingredients": [
-    //         {
-    //             "ingredientId": 1,
-    //             "quantity": 200,
-    //         },
-    //         {
-    //             "ingredientId": 2,
-    //             "quantity": 100,
-    //         },
-    //         {
-    //             "ingredientId": 3,
-    //             "quantity": 150,
-    //         }
-    //     ]
-    // });
         getMenuItems();
+        getInventoryItems();
         return () => {
-            setUserItems([]);
-            setCategories([]);
-            setIngredients([]);
+            setUserItems([]);;
+            setInventoryItems([]);
         };
     }, [user]);
 
@@ -128,8 +125,8 @@ export const ItemsProvider = ({ children }) => {
         <ItemsContext.Provider value={{
             userItems,
             categories,
-            ingredients,
-            setIngredients,
+            inventoryItems,
+            setInventoryItems,
             loadingItems,
             addReport,
             getMenuItems,

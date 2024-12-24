@@ -13,7 +13,7 @@ const PlaceholderChart = () => (
 const PlaceholderList = () => (
     <div className="p-4 rounded-lg">
         <h4 className="text-lg font-semibold mb-2">List Placeholder</h4>
-        <ul className="list-disc list-inside space-y-2 text-gray-700">
+        <ul className="list-disc list-inside space-y-2">
             <li>Item 1</li>
             <li>Item 2</li>
             <li>Item 3</li>
@@ -26,9 +26,8 @@ const PlaceholderList = () => (
 const Dashboard = () => {
     const {getMenuItems} = useItemsContext();
 
-    const layout = 'flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 rounded-md border-2 p-6 ';
     return (
-        <AdminPanelContainer pageTitle={"Dashboard"} layout={layout}>
+        <AdminPanelContainer pageTitle={"Dashboard"} layout={`grid grid-cols-1 md:grid-cols-4 p-2 gap-5 `}>
                 <Button onClick={getMenuItems}>Get Menu Items</Button>
                 <Card className="w-full h-[20rem] bg-base p-4">
                     <PlaceholderChart />

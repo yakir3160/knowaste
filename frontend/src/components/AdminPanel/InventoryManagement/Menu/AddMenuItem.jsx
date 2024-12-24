@@ -1,24 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Formik, Form } from 'formik';
 import Button from '../../../Common/Button/Button';
 import { Save, CircleX } from 'lucide-react';
 import GlobalField from "../../../Common/inputs/GlobalField";
 import Card from "../../../Common/Card/Card";
 import menuItemSchema from '../../../../schemas/firestoreSchemas/menuItemSchema';
-import IngredientsList from "./IngredientsList";
+import { v4 as generateUniqueID } from 'uuid';
 
-const AddMenuItem = ({ onAdd, categories, userId }) => {
+const AddMenuItem = ({ onAdd, categories }) => {
+    const [newCategory, setNewCategory] = useState(false);
     const initialValues = {
-        userId: userId,
-        menuItemData: {
-            name: '',
-            price: 0,
-            ingredients: []
-        }
+        categoryName: '',
+        subCategoryName: '',
+        name: '',
+        price: 0,
     };
 
     const handleSubmit = (values, { resetForm }) => {
-        onAdd(values);
+        console.log('values', values);
+        const newItem = {
+            ...values,
+            id: generateUniqueID(),
+            categoryId: newCategory
+                ? generateUniqueID()
+                : categories.find(category => category.name === values.categoryName)?.id,
+        }
+        console.log('new item', newItem);
+        onAdd(newItem);
         resetForm();
     };
 
@@ -38,36 +46,68 @@ const AddMenuItem = ({ onAdd, categories, userId }) => {
             >
                 {({ values, setFieldValue }) => (
                     <Form className="pt-3">
-                        <div className="flex justify-between items-center mb-2">
-                            <GlobalField
-                                label="Name"
-                                type="text"
-                                name="menuItemData.name"
-                                className="text-titles text-xl font-semibold mb-2"
-                                autoFocus={true}
-                            />
-                            <GlobalField
-                                label="Price (₪)"
-                                type="number"
-                                name="menuItemData.price"
-                                className="text-lg font-medium text-primary mb-2"
-                            />
-                        </div>
-                        <IngredientsList
-                            ingredients={values.menuItemData.ingredients}
-                            isEditing={true}
-                            setFieldValue={(ingredients) =>
-                                setFieldValue('menuItemData.ingredients', ingredients)
-                            }
-                        />
-                        <div className="flex mt-4">
+                        <div className="space-y-4">
                             <Button
-                                type="submit"
-                                className="flex justify-center items-center w-full px-4 py-2 text-sm font-medium border border-lime rounded-md col-span-full"
+                                type="button"
+                                onClick={() => setNewCategory(!newCategory)}
                             >
-                                Save
-                                <Save size={20} className="ml-2" />
+                                {newCategory ? 'Existing Category' : 'New Category'}
                             </Button>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                {
+                                    newCategory ? (
+                                        <GlobalField
+                                            label="Category Name"
+                                            type="text"
+                                            name="categoryName"
+                                            className="text-titles font-medium"
+                                        />
+                                    ) : (
+                                        <GlobalField
+                                            label="Category Name"
+                                            type="select"
+                                            name="categoryName"
+                                            className="text-titles font-medium"
+                                            options={[
+                                                { value: '', label: 'Select Category' },
+                                                ...categories.map(category => ({
+                                                value: category.name,
+                                                label: category.name
+                                                }))
+                                            ]}
+                                        />
+                                    )
+                                }
+                                <GlobalField
+                                    label="Sub Category Name (optional)"
+                                    type="text"
+                                    name="subCategoryName"
+                                    className="text-titles font-medium"
+                                />
+                                <GlobalField
+                                    label="Name"
+                                    type="text"
+                                    name="name"
+                                    className="text-titles text-xl font-semibold"
+                                    autoFocus={true}
+                                />
+                                <GlobalField
+                                    label="Price (₪)"
+                                    type="number"
+                                    name="price"
+                                    className="text-lg font-medium text-primary"
+                                />
+                            </div>
+
+                            <div className="flex mt-4">
+                                <Button
+                                    type="submit"
+                                    className="flex justify-center items-center w-full px-4 py-2 text-sm font-medium border border-lime rounded-md col-span-full"
+                                >
+                                    Save
+                                    <Save size={20} className="ml-2" />
+                                </Button>
+                            </div>
                         </div>
                     </Form>
                 )}

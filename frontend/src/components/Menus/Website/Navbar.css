@@ -6,17 +6,17 @@
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 1rem;
     background-color: transparent;
     transition: background-color 0.3s ease;
+    border-radius: 0 0 25px 25px;
     z-index: 1000;
 }
 
 .navigation.scrolling {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--secondary-color);
     backdrop-filter: blur(15px);
-    box-shadow: inset 6px 6px 12px rgba(203, 209, 184, 0.60), inset -6px -6px 12px #fcfdf3;
     transition: all 0.3s ease-in-out;
+
 }
 
 .menu-button {
@@ -50,10 +50,7 @@
 }
 
 @media (max-width: 768px) {
-    .navigation {
-        padding: 0.5rem;
 
-    }
 
     .mobile-menu {
         width: 100%;

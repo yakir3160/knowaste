@@ -22,8 +22,8 @@ const Account = () => {
     }, [success,setSuccess]);
 
     return (
-        <AdminPanelContainer pageTitle="Account Settings" layout="grid grid-cols-1 md:grid-cols-3 p-2 space-y-10 md:space-y-0 md:space-x-5">
-            <div className="col-span-2 ">
+        <AdminPanelContainer pageTitle="Account Settings" layout="grid grid-cols-1 md:grid-cols-3 p-2 gap-2 ">
+            <div className="col-span-2 gap-2 ">
                 {
                     loading && (
                         <LoadingOverlay loading={loading} text={'Saving...'} success={success} setSuccess={setSuccess} />
@@ -34,10 +34,10 @@ const Account = () => {
                         <SavingOverlay loading={loading} text={'Saved !'} success={success} setSuccess={setSuccess} />
                     )
                 }
-                <>
+                <div className={`space-y-2`}>
                     <UserDetailsForm user={user} />
                     <EmailUpdateForm user={user} />
-                </>
+                </div>
             </div>
             <PasswordUpdateForm />
         </AdminPanelContainer>

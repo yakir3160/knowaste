@@ -45,7 +45,6 @@ const WasteReport = () => {
     const { ingredients } = useItemsContext();
     const { user } = useAuthContext();
     const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0]);
-    const [leftovers, setLeftovers] = useState([]);
     const [activeTab, setActiveTab] = useState('Items');
     const [saving, setSaving] = useState(false);
     const {addReport} = useItemsContext();
@@ -62,7 +61,6 @@ const WasteReport = () => {
     const handleSubmitReport = async (values, { resetForm }) => {
         try {
             setSaving(true);
-            // שליחת המערך הגולמי לבקאנד
             const reportData = {
                 date: reportDate,
                 items: values.items,
@@ -78,9 +76,8 @@ const WasteReport = () => {
     };
 
     return (
-        <AdminPanelContainer pageTitle={"Waste Report"} layout="p-2 flex flex-col">
+        <AdminPanelContainer pageTitle={"Waste Report"} layout=" p-2 flex flex-col">
             <TabNavigation tabs={['Items', 'History']} onTabChange={(tab) => setActiveTab(tab)} />
-
             {activeTab === 'Items' && (
                 <Card className="bg-white border-none h-full ">
                     <Formik
@@ -128,7 +125,7 @@ const WasteReport = () => {
                                                             type="select"
                                                             options={[
                                                                 { value: '', label: 'Select Ingredient' },
-                                                                ...ingredients.map(ing => ({
+                                                                ...ingredients?.map(ing => ({
                                                                     value: ing.name,
                                                                     label: ing.name
                                                                 }))
@@ -190,20 +187,21 @@ const WasteReport = () => {
                                         <Button
                                             type="button"
                                             onClick={() => {
-                                                const newId = values.items[values.items.length - 1].id + 1;
-                                                setFieldValue('items', [
-                                                    ...values.items,
-                                                    {...initialValues.items[0], id: newId}
-                                                ]);
+                                                const newItem = {
+                                                    ...initialValues.items[0],
+                                                    id: generateUniqueID(),
+                                                };
+                                                setFieldValue('items', [...values.items, newItem]);
                                             }}
-                                            className="flex items-center  w-fit"
+                                            className="flex items-center w-fit"
                                             disabled={saving}
                                         >
                                             Add Item
-                                            <Plus size={20} className="ml-2"/>
+                                            <Plus size={20} className="ml-2" />
                                         </Button>
+
                                         <div
-                                            className="flex flex-row w-fit justify-center rounded-sm md:justify-start space-x-2 bg-white border border-secondary">
+                                            className=" w-fit rounded-sm grid grid-cols-2 md:grid-cols-4  space-x-2 bg-white border border-secondary">
                                             <span className="text-lg text-titles font-semibold self-center pl-5">Export to:</span>
                                             <Button type="button" className="shadow-none" disabled={saving}>CSV</Button>
                                             <Button type="button" className="shadow-none"

@@ -10,7 +10,7 @@ class MenuService {
             console.log('menu item data:', menuItemData);
             // Validate the menu item data
             console.log('Validating menu item data');
-            const validation = await validateSchema('menu', { userId, menuItemData });
+            const validation = await validateSchema('menu',  menuItemData );
             if (!validation.success) {
                 throw new Error(validation.error);
             }
@@ -46,9 +46,15 @@ class MenuService {
             console.log('Fetching all menu items');
             const menuItemsSnapshot = await db.collection('menus').doc(userId).collection('menuItems').get();
             const menuItems = menuItemsSnapshot.docs.map(doc => doc.data());
+            const uniqueCategories = [...new Set(menuItems.map(item => item.categoryId))].map(categoryId => ({
+                id: categoryId,
+                name: menuItems.find(item => item.categoryId === categoryId).categoryName,
+            }));
+
             return {
                 success: true,
                 data: menuItems,
+                categories: uniqueCategories,
                 message: 'Menu items fetched successfully'
             };
         } catch (error) {

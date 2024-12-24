@@ -26,11 +26,11 @@ export const addOrUpdateInventoryItem = async (req, res) => {
 }
 export const getInventoryItems = async (req, res) => {
     try {
-        const inventoryItems = await InventoryService.getInventoryItems();
+        const userId = req.user.id;
+        const inventoryItems = await InventoryService.getInventoryItems(userId);
         res.status(200).json({
             success: true,
-            data: inventoryItems,
-            error: "Inventory items fetched successfully"
+            data : inventoryItems.data,
         });
     } catch (error) {
         console.error("Get inventory items error:", error);
@@ -42,8 +42,15 @@ export const getInventoryItems = async (req, res) => {
 }
 export const deleteInventoryItem = async (req, res) => {
     try {
-        const { itemId } = req.body;
-        const result = await InventoryService.deleteInventoryItem(itemId);
+        const userId = req.user.id;
+        const inventoryItemId  = req.params.id;
+        const result = await InventoryService.deleteInventoryItem(userId,inventoryItemId);
+        if (!result) {
+            throw {
+                status: 500,
+                message: "Failed to delete inventory item"
+            };
+        }
         res.status(200).json({
             success: true,
             data: result,
@@ -54,23 +61,6 @@ export const deleteInventoryItem = async (req, res) => {
         res.status(error.status || 500).json({
             success: false,
             error: error.message || "Error deleting inventory item"
-        });
-    }
-}
-export const updateInventoryItem = async (req, res) => {
-    try {
-        const { itemId, newDetails } = req.body;
-        const result = await InventoryService.updateInventoryItem(itemId, newDetails);
-        res.status(200).json({
-            success: true,
-            data: result,
-            error: "Inventory item updated successfully"
-        });
-    } catch (error) {
-        console.error("Update inventory item error:", error);
-        res.status(error.status || 500).json({
-            success: false,
-            error: error.message || "Error updating inventory item"
         });
     }
 }

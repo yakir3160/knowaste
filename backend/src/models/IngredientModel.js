@@ -29,18 +29,17 @@ const usageStatsSchema = Yup.object({
 
 // Updated ingredient schema focusing on waste and usage analysis
 const ingredientSchema = Yup.object({
-    userId: Yup.string()
-        .required('User ID is required'),
-    ingredientData: Yup.object({
+
+        id: Yup.string()
+            .required('ID is required'),
+        name: Yup.string()
+            .required('Name is required'),
         usageStats: usageStatsSchema
             .required('Usage statistics are required'),
         wasteHistory: Yup.array()
             .of(wasteHistorySchema)
-            .default([]),
-    }).required('Ingredient data is required')
+            .default([]).required('Ingredient data is required'),
 });
-
-
 export {
     ingredientSchema,
     wasteHistorySchema,

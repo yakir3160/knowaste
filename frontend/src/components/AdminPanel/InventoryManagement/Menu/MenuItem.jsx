@@ -23,10 +23,6 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
             .required('Price is required')
             .min(0, 'Price must be positive')
             .max(1000000, 'Price is too high'),
-        description: Yup.string()
-            .required('Description is required')
-            .min(10, 'Description must be at least 10 characters')
-            .max(500, 'Description must be less than 500 characters'),
         ingredients: Yup.array().of(ingredientSchema)
     });
 
@@ -48,7 +44,7 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
             >
                 {({ values, setFieldValue }) => (
                     <Form className="pt-3">
-                        <div className="flex justify-between items-center mb-2">
+
                             <GlobalField
                                 label="Name"
                                 type="text"
@@ -63,14 +59,6 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
                                 className="text-lg font-medium text-primary"
                                 disabled={!isEditing}
                             />
-                        </div>
-                        <GlobalField
-                            label="Description"
-                            type="text"
-                            name="description"
-                            className="text-gray mt-2 leading-relaxed"
-                            disabled={!isEditing}
-                        />
                         <div className="grid grid-cols-2 gap-5">
                             <Button
                                 type={isEditing ? "submit" : "button"}

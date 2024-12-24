@@ -36,6 +36,7 @@ export const getMenuItems = async (req, res) => {
         res.status(200).json({
             success: true,
             data: menuItems.data,
+            categories: menuItems.categories,
             error: "Menu items fetched successfully"
         });
     } catch (error) {

@@ -24,8 +24,8 @@ const MobileBottomNav = () => {
     const iconSize = "h-7 w-7";
     const buttonClass = (path) => `
         flex flex-col items-center text-center font-bold bg-[transparent] shadow-none
-        p-3 rounded-2xl w-full 
-        ${location.pathname === path ? "bg-secondary border-2 border-lime" : "border-2 border-[transparent]"}
+        p-3 rounded-t-sm w-full 
+        ${location.pathname === path ? "bg-secondary border border-lime" : "border-2 border-[transparent]"}
     `;
 
     return (
@@ -71,7 +71,7 @@ const MobileBottomNav = () => {
                     </button>
                     <button
                         onClick={() => navigate("/admin-panel/waste-report")}
-                        className={buttonClass("/admin-panel/leftover-report")}
+                        className={buttonClass("/admin-panel/waste-report")}
                     >
                         <Trash2 className={`${iconSize} text-titles`}/>
                         <span className="text-sm text-titles">Waste Report</span>

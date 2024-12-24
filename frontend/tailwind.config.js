@@ -2,6 +2,7 @@
 
 import tailwindHamburgers from 'tailwind-hamburgers';
 
+
 module.exports = {
   content: [
       "./src/**/*.{html,js,jsx,css,ts,tsx}",
@@ -9,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        jaro: ['"Jaro"', 'sans-serif'],
+        josefin: ['"Josefin Sans"', 'sans-serif'],
         jost: ['"Jost"', 'sans-serif'],
         tac: ['"Tac One"', 'sans-serif'],
         openSans: ['Open Sans', 'sans-serif'],
@@ -25,8 +26,8 @@ module.exports = {
         'logo-lg': '3.5rem',
       },
       boxShadow: {
-        'inset-custom': 'inset 2px 2px 5px rgba(230, 232, 222, 0.7), inset -2px -2px 5px #ffffff',
-        'outer-custom': '2px 2px 5px #e6e8de, -2px 2px 5px #ffffff',
+        'inset-custom': 'inset 2px 2px 5px rgba(230, 232, 222, 0.7), inset -2px -2px 5px #EFF5DEFF',
+'outer-custom': '2px 2px 3px #e6e8de, -2px 2px 3px #EFF5DEFF',
         'button-hover': '0px 0px 0px rgba(203, 209, 184, 0.60), -5px -5הpx 5px #fdfffa',
       },
       screens: {

@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 const menuItemSchema = Yup.object({
-    menuItemData: Yup.object({
         categoryId: Yup.string().required('Category ID is required'),
         categoryName: Yup.string().required('Category is required'),
         subCategoryId: Yup.string().nullable(),
@@ -21,10 +20,10 @@ const menuItemSchema = Yup.object({
                     quantity: Yup.number()
                         .required('Quantity is required')
                         .positive('Quantity must be positive'),
+                    unitType: Yup.string().oneOf(['g', 'kg', 'ml', 'l', 'unit'])
                 })
             )
             .min(1, 'At least one ingredient is required'),
-    }).required('Menu item data is required')
 });
 export default menuItemSchema;
 

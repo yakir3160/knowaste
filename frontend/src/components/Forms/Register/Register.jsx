@@ -39,8 +39,9 @@ const Register = () => {
                         </Form>
                     )}
                 </Formik>
+                <PasswordRequirements passwordStatus={passwordStatus}/>
             </Card>
-            <PasswordRequirements passwordStatus={passwordStatus}/>
+
         </>
     );
 };

@@ -133,7 +133,7 @@ export const AuthProvider = ({ children }) => {
         provider.addScope('profile');
         provider.addScope('email');
 
-        //TODO : Add if statement to check if user is existing or new and only if new show the consent prompt
+
         provider.setCustomParameters({
             prompt: 'consent'
         });

@@ -15,7 +15,8 @@ const Menu = ({ userItems = [], categories = [] }) => {
         selectedSubCategory,
         setSelectedSubCategory,
         subCategories
-    } = useFilteredItems(userItems, categories); // משתמשים ב-hook
+    } = useFilteredItems(userItems, categories);
+    console.log(categories)// משתמשים ב-hook
     return (
         <div className="flex flex-col h-full w-full justify-center items-center">
             <div className="w-fit bg-secondary self-center rounded-t-sm">
@@ -23,7 +24,7 @@ const Menu = ({ userItems = [], categories = [] }) => {
                     {categories.map(category => (
                         <button
                             key={category.id}
-                            className={`px-4 py-4 rounded-t-sm font-semibold 
+                            className={`px-6 py-4 rounded-t-sm font-semibold 
                             ${selectedCategory === category.name ? 'bg-white text-buttons' : ''}`}
                             onClick={() => setSelectedCategory(category.name)}
                         >
@@ -36,19 +37,19 @@ const Menu = ({ userItems = [], categories = [] }) => {
             <div className={`w-full flex flex-col bg-white p-5 rounded-b-sm md:rounded-sm`}>
                 <div
                     className={`mb-6 w-full lg:w-fit  flex justify-center overflow-x-scroll self-center`}>
-                    {subCategories?.map(subCategory => (
+                    {categories?.map(subCategory => (
                         <button
                             key={subCategory.id}
                             className={`p-3 rounded-t-sm text-buttons text-light
                                 ${selectedSubCategory === subCategory.name ? 'bg-white border-b-2 border-lime text-buttons' : 'border-b-2 border-[transparent]'}`}
-                            onClick={() => setSelectedSubCategory(subCategory.name)}
+                            onClick={() => setSelectedSubCategory(subCategory.subCategoryName)}
                         >
-                            {subCategory.name}
+                            {subCategory.subCategoryName}
                         </button>
                     ))}
                 </div>
 
-                <div className="w-full gap-3 grid grid-cols-1  ">
+                <div className="w-full gap-3 grid grid-cols-1 md:grid-cols-2  ">
                     {filteredItems?.map((item) => (
                         <MenuItem
                             key={item.id}

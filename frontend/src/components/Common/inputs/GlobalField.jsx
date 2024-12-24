@@ -42,7 +42,7 @@ const GlobalField = ({
        ${fieldHeight} p-3 
         bg-white
         text-md
-        shadow-inset-custom outline-none box-border
+       outline-none box-border
         focus:border-lime focus-visible:border-2 rounded-3xl
         transition-all duration-200
         ${hasError ? 'border-2 border-errorRed' : 'border-2 border-cards'}

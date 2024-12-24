@@ -7,6 +7,7 @@
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
+
 }
 
 /* General styles for subheadings and body text */
@@ -90,7 +91,6 @@
     justify-content: flex-start;
     font-size: 24px;
     color: #2a522a;
-    font-family: inherit;
     padding-left: 30px;
 }
 
