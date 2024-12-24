@@ -6,6 +6,6 @@ const router = Router();
 // ===================== Waste Routes =====================
 router.post('/add-report',verifyToken,addWasteReport );
 router.get('/get-reports',verifyToken,getWasteReports );
-router.delete('/delete-report',verifyToken, deleteWasteReport);
+router.delete('/delete-report/:id', verifyToken, deleteWasteReport);
 
 export default router;

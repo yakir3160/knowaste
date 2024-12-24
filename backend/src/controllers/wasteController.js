@@ -1,28 +1,26 @@
-import WasteService from "../services/wasteService.js";
+//import WasteService from "../services/wasteService.js";
+import ReportService from "../services/ReportService.js";
+
 
 export const addWasteReport = async (req, res) => {
     try {
-        const  wasteReportData  = req.body;
+        const userId = req.user.id;
+        const reportData = req.body;
+        const result = await ReportService.addOrUpdateReport('waste', userId, reportData);
 
-        // הוספת הדוח דרך ה-Service
-        const result = await WasteService.addWasteReport(wasteReportData);
-
-        // בדיקת התוצאה - אם היא לא תקינה, החזר שגיאה
-        if (!result) {
+        if (!result.success) {
             return res.status(400).json({
                 success: false,
-                error: result.error || "Failed to add waste report"
+                error: result.error
             });
         }
 
-        // אם הכל תקין, החזר סטטוס 200 עם הנתונים
-        res.status(200).json({
+        res.status(201).json({
             success: true,
             data: result.data,
-            message: "Waste report added successfully"
+            message: result.message
         });
     } catch (error) {
-        // טיפול בשגיאות בלתי צפויות
         console.error("Add waste report error:", error);
         res.status(error.status || 500).json({
             success: false,
@@ -33,11 +31,13 @@ export const addWasteReport = async (req, res) => {
 
 export const getWasteReports = async (req, res) => {
     try {
-        const wasteReports = await WasteService.getWasteReports();
+        const userId = req.user.id;
+        const reports = await ReportService.getReports('waste', userId);
+
         res.status(200).json({
             success: true,
-            data: wasteReports,
-            error: "Waste reports fetched successfully"
+            data: reports,
+            message: "Waste reports fetched successfully"
         });
     } catch (error) {
         console.error("Get waste reports error:", error);
@@ -46,21 +46,24 @@ export const getWasteReports = async (req, res) => {
             error: error.message || "Error fetching waste reports"
         });
     }
-}
+};
+
 export const deleteWasteReport = async (req, res) => {
     try {
-        const { wasteReportId } = req.body;
-        const result = await WasteService.deleteWasteReport(wasteReportId);
+        const userId = req.user.id;
+        const reportId = req.params.id;
+        const result = await ReportService.deleteReport('waste', userId, reportId);
+
         res.status(200).json({
             success: true,
             data: result,
-            error: "Waste report deleted successfully"
+            message: "Waste report deleted successfully"
         });
     } catch (error) {
-        console.error("Delete waste report error:", error);
+        console.error("Delete waste error:", error);
         res.status(error.status || 500).json({
             success: false,
             error: error.message || "Error deleting waste report"
         });
     }
-}
+};

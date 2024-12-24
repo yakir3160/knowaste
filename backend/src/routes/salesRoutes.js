@@ -7,6 +7,6 @@ const router = Router();
 // ===================== Sales Routes =====================
 router.post('/add-report',verifyToken,addSalesReport );
 router.get('/get-reports',verifyToken,getSalesReports );
-router.delete('/delete-report',verifyToken, deleteSalesReport);
+router.delete('/delete-report/:id', verifyToken, deleteSalesReport);
 
 export default router;
