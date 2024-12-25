@@ -7,29 +7,16 @@ import Card from "../../../Common/Card/Card";
 import IngredientsList from './IngredientsList';
 import {useUserContext} from "../../../../contexts/UserContext";
 import * as Yup from 'yup';
-import {ingredientSchema} from "../../../../validationSchemas/ingredientSchema";
+import menuItemSchema from '../../../../schemas/firestoreSchemas/menuItemSchema';
 
 const MenuItem = ({ item, onUpdate, onRemove }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [showIngredients, setShowIngredients] = useState(false);
     const {userBaseData: user} = useUserContext();
 
-    const menuItemSchema = Yup.object().shape({
-        name: Yup.string()
-            .required('Name is required')
-            .min(2, 'Name must be at least 2 characters')
-            .max(50, 'Name must be less than 50 characters'),
-        price: Yup.number()
-            .required('Price is required')
-            .min(0, 'Price must be positive')
-            .max(1000000, 'Price is too high'),
-        ingredients: Yup.array().of(ingredientSchema)
-    });
-
-
-    const handleSubmit = (values) => {
+const handleSubmit = (values) => {
         if (isEditing) {
-            onUpdate(values);
+            console.log('Updating item:', values);
         }
         setIsEditing(!isEditing);
     };
@@ -44,21 +31,20 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
             >
                 {({ values, setFieldValue }) => (
                     <Form className="pt-3">
-
-                            <GlobalField
-                                label="Name"
-                                type="text"
-                                name="name"
-                                className="text-titles text-xl font-semibold"
-                                disabled={!isEditing}
-                            />
-                            <GlobalField
-                                label="Price (₪)"
-                                type="number"
-                                name="price"
-                                className="text-lg font-medium text-primary"
-                                disabled={!isEditing}
-                            />
+                        <GlobalField
+                            label="Name"
+                            type="text"
+                            name="name"
+                            className="text-titles text-xl font-semibold"
+                            disabled={!isEditing}
+                        />
+                        <GlobalField
+                            label="Price (₪)"
+                            type="number"
+                            name="price"
+                            className="text-lg font-medium text-primary"
+                            disabled={!isEditing}
+                        />
                         <div className="grid grid-cols-2 gap-5">
                             <Button
                                 type={isEditing ? "submit" : "button"}
@@ -80,24 +66,24 @@ const MenuItem = ({ item, onUpdate, onRemove }) => {
                                 <CircleX size={20} className="ml-2"/>
                             </Button>
                         </div>
-                        {user?.accountType === 'restaurant-manager' && (
-                            <div className="flex items-center justify-between mt-4">
-                                <Button
-                                    type="button"
-                                    onClick={() => setShowIngredients(!showIngredients)}
-                                    className="text-md flex flex-row"
-                                >
-                                    {showIngredients ? 'Hide Ingredients' : 'Show Ingredients'}
-                                    {showIngredients ? <ChevronUp size={20} className="mt-0.5"/> :
-                                        <ChevronDown size={20} className="mt-0.5"/>}
-                                </Button>
-                            </div>
-                        )}
-
+                        <div className="flex items-center justify-between mt-4">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    setShowIngredients(!showIngredients)
+                                    setIsEditing(false)
+                                }}
+                                className="text-md flex flex-row"
+                            >
+                                {showIngredients ? 'Hide Ingredients' : 'Show Ingredients'}
+                                {showIngredients ? <ChevronUp size={20} className="mt-0.5"/> :
+                                    <ChevronDown size={20} className="mt-0.5"/>}
+                            </Button>
+                        </div>
                         <div className={`overflow-hidden ${showIngredients ? 'max-h-fit' : 'max-h-0'}`}>
                             {showIngredients && (
                                 <IngredientsList
-                                    ingredients={values.ingredients}
+                                    ItemIngredients={item.ingredients}
                                     isEditing={isEditing}
                                     setFieldValue={setFieldValue}
                                 />

@@ -11,9 +11,9 @@ const DesktopNavbar = () => {
     return (
         <>
 
-            <div className=" w-[100%] sm:flex flex-row lg:gap-5  justify-between pr-5 lg:px-20 px-10 ">
+            <div className=" w-[100%] sm:flex flex-row lg:gap-5  justify-between pr-5 lg:px-20 px-10 p">
                 <Logo className={`text-logo-md sm:text-logo-sm md:text-logo-md lg:text-logo-lg `}/>
-                <div className="flex space-x-2 rounded-b-sm px-3 bg-secondary h-fit py-4">
+                <div className="flex space-x-2 rounded-b-sm px-3 bg-secondary h-fit pt-5  pb-5">
                     <Button className={`bg-base`} to="/contact">Contact Us</Button>
                     { loadingData ?
                         <Button className={`border-2 border-lime text-titles flex justify-center`}><CircleUserRound className={`animate-spin`}/></Button>

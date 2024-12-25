@@ -1,69 +1,67 @@
 import React from 'react';
 import { FieldArray, useFormikContext } from 'formik';
 import Button from '../../../Common/Button/Button';
-import { CircleX, Plus } from 'lucide-react';
-import IngredientForm from './IngredientForm';
+import { CircleX } from 'lucide-react';
+import GlobalField from "../../../Common/inputs/GlobalField";
+import { useItemsContext } from "../../../../contexts/ItemsContext";
 
-const IngredientsList = ({ isEditing }) => {
+const IngredientsList = ({ isEditing, ItemIngredients }) => {
     const { values, setFieldValue } = useFormikContext();
+    const { inventoryItems } = useItemsContext();
 
-    const initialIngredient = {
-        id: Date.now(),
-        name: '',
-        amountPerDish: 0,
-        unit: '',
-        storageType: '',
-        pricePerUnit: 0,
-        category: '',
-        kosherStatus: '',
-        allergens: [],
-        minStockLevel: 0,
+    const getIngredientDetails = (ingredientId) => {
+        return inventoryItems?.find(item => item.id === ingredientId);
+    };
+
+    const handleQuantityChange = (ingredientId, newValue) => {
+        const ingredients = values.ingredients.map(ing => {
+            if (ing.ingredientId === ingredientId) {
+                return { ...ing, quantity: newValue };
+            }
+            console.log(ing)
+            return ing;
+        });
+        setFieldValue('ingredients', ingredients);
     };
 
     return (
         <FieldArray name="ingredients">
-            {({ remove, push }) => (
-                <div className="mt-4 space-y-4 h-fit">
-                    <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
-                    {values.ingredients?.map((ingredient, index) => (
-                        <div
-                            key={ingredient.id || index}
-                            className="relative"
-                            style={{ opacity: ingredient.removed ? 0 : 1 }}
-                        >
-                            <IngredientForm
-                                initialValues={ingredient}
-                                onSubmit={(updatedValues) => {
-                                    setFieldValue(`ingredients.${index}`, updatedValues);
-                                }}
-                                isEditing={isEditing}
-                                fieldPrefix="ingredients"
-                                index={index}
-                            />
-                            {isEditing && (
-                                <Button
-                                    type="button"
-                                    className="absolute top-2 right-2 text-errorRed"
-                                    onClick={() => {
-                                        setFieldValue(`ingredients.${index}.removed`, true);
-                                        setTimeout(() => remove(index), 300);
-                                    }}
-                                >
-                                    <CircleX size={20} />
-                                </Button>
-                            )}
-                        </div>
-                    ))}
-                    {isEditing && (
-                        <Button
-                            type="button"
-                            onClick={() => push(initialIngredient)}
-                            className="border border-lime flex items-center justify-center w-full p-2"
-                        >
-                            Add Ingredient
-                            <Plus size={20} className="ml-2" />
-                        </Button>
-                    )}
+            {({ remove }) => (
+                <div className="mt-4 space-y-4 border-2 border-secondary p-2 rounded-sm">
+                    <h2 className="text-xl text-titles font-semibold mb-4 px-2">Ingredients</h2>
+                    {values.ingredients.map((ingredient, index) => {
+                        const ingredientDetails = getIngredientDetails(ingredient.ingredientId);
+                        return (
+                            <div key={ingredient.ingredientId} className="relative flex items-center gap-4 p-3 border-2 border-secondary rounded-sm">
+                                <div className="flex-1">
+                                    <p className="font-medium">{ingredientDetails?.name}</p>
+                                </div>
+
+                                <div className="w-32">
+                                    <GlobalField
+                                        label="Amount"
+                                        type="number"
+                                        name={`ingredients.${index}.quantity`}
+                                        disabled={!isEditing}
+                                        className="text-sm"
+                                        onChange={(e) => handleQuantityChange(ingredient.ingredientId, e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="w-24">
+                                    <p className="text-sm text-gray-600">{ingredientDetails?.unit}</p>
+                                </div>
+                                    <Button
+                                        type="button"
+                                        className="text-errorRed p-1"
+                                        onClick={() => remove(index)}
+                                        disabled={!isEditing}
+                                    >
+                                        <CircleX size={20} />
+                                    </Button>
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </FieldArray>

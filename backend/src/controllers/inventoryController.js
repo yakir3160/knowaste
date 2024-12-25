@@ -27,10 +27,11 @@ export const addOrUpdateInventoryItem = async (req, res) => {
 export const getInventoryItems = async (req, res) => {
     try {
         const userId = req.user.id;
-        const inventoryItems = await InventoryService.getInventoryItems(userId);
+        const result = await InventoryService.getInventoryItems(userId);
         res.status(200).json({
             success: true,
-            data : inventoryItems.data,
+            data : result.data,
+            categories: result.categories,
         });
     } catch (error) {
         console.error("Get inventory items error:", error);

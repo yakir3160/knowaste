@@ -1,214 +1,193 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
 import GlobalField from "../../../Common/inputs/GlobalField";
-import { useItemsContext } from "../../../../contexts/ItemsContext";
 import Button from "../../../Common/Button/Button";
+import {ingredientStorageTypes, measurementUnits, allergenTypes,ingredientCategories} from "../../../../constants/Constants";
+import {ingredientSchema} from "../../../../schemas/firestoreSchemas/ingredientsSchema";
+import { v4 as generateUniqueID } from 'uuid';
+import {CircleX} from "lucide-react";
+import Card from "../../../Common/Card/Card";
 
-const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    category: Yup.string().when('isNewProduct', {
-        is: true,
-        then: Yup.string().required('Category is required')
-    }),
-    storageType: Yup.string().when('isNewProduct', {
-        is: true,
-        then: Yup.string().required('Storage type is required')
-    }),
-    pricePerUnit: Yup.number().when('isNewProduct', {
-        is: true,
-        then: Yup.number().min(0, 'Must be positive').required('Price is required')
-    }),
-    minStockLevel: Yup.number().when('isNewProduct', {
-        is: true,
-        then: Yup.number().min(0, 'Must be positive').required('Minimum stock is required')
-    }),
-    amountPerDish: Yup.number().min(0, 'Must be positive').required('Amount is required'),
-    unit: Yup.string().required('Unit is required'),
-    allergens: Yup.array()
-});
-
-const IngredientForm = ({ initialValues, onSubmit, isEditing = true, fieldPrefix = "", index }) => {
-    const { ingredients, ingredientCategories, ingredientStorageTypes, measurementUnits } = useItemsContext();
-    const [isNewProduct, setIsNewProduct] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-
-    const defaultInitialValues = {
+const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, initialValues = null, isEditing = false }) => {
+    const defaultValues = {
+        id: generateUniqueID(),
         name: '',
         category: '',
         storageType: '',
         pricePerUnit: '',
         minStockLevel: '',
-        amountPerDish: '',
+        stock: 0,
         unit: '',
         allergens: [],
-        isNewProduct: false
+        quantityForItemMenu: isFromMenuItem ? 0 : '',
+
     };
 
-    const getFieldName = (field) => `${fieldPrefix}${index}.${field}`;
+    const actualInitialValues = initialValues || defaultValues;
 
-    const handleProductSelection = (productName, setFieldValue) => {
-        const product = ingredients.find(ing => ing.name === productName);
-        if (product) {
-            setSelectedProduct(product);
-            Object.entries(product).forEach(([key, value]) => {
-                setFieldValue(getFieldName(key), value);
-            });
+    const handleSubmit = (values, { resetForm }) => {
+        if (isFromMenuItem) {
+            const menuItemIngredient = {
+                ingredientId: values.id,
+                quantity: values.quantityForItemMenu,
+                unit: values.unit
+            };
+            console.log('New ingredient for menu item:', menuItemIngredient);
+            onSubmit(menuItemIngredient);
+        } else {
+            console.log(isEditing ? 'Updating ingredient:' : 'New ingredient created:', values);
+            onSubmit(values);
         }
+        resetForm();
+        onCancel();
     };
 
     return (
-        <Formik
-            initialValues={initialValues || defaultInitialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values) => onSubmit(values)}
-        >
-            {({ setFieldValue, values }) => (
-                <Form className="space-y-6 p-6 bg-white rounded-lg shadow-lg">
-                    <Button
-                        type="button"
-                        onClick={() => {
-                            setIsNewProduct(!isNewProduct);
-                            setSelectedProduct(null);
-                            Object.keys(defaultInitialValues).forEach(key => {
-                                setFieldValue(getFieldName(key), defaultInitialValues[key]);
-                            });
-                        }}
-                        className={`w-full ${isNewProduct ? 'bg-lime' : 'bg-white'} border border-lime`}
-                        disabled={!isEditing}
-                    >
-                        {isNewProduct ? 'Set as Existing Product' : 'Set as New Product'}
-                    </Button>
+        <Card className={`border-2 border-secondary`}>
+            <button
+                type="button"
+                onClick={onCancel}
+                className="flex justify-center items-center shadow-outer-custom text-sm font-medium rounded-md col-span-full"
+            >
+                <CircleX size={22}/>
+            </button>
+            <Formik
+                initialValues={actualInitialValues}
+                validationSchema={ingredientSchema}
+                onSubmit={(values, actions) => handleSubmit(values, actions)}
+            >
+                {({values, setFieldValue}) => (
+                    <Form lassName="space-y-4 p-6">
+                        <h2 className="text-xl font-semibold mb-6 text-titles">
+                            {isEditing ? 'Edit Ingredient' : 'Add New Ingredient'}
+                        </h2>
 
-                    <GlobalField
-                        label="Name"
-                        type={isNewProduct ? "text" : "select"}
-                        name={getFieldName('name')}
-                        className="text-buttons text-sm w-full"
-                        disabled={!isEditing}
-                        options={isNewProduct ? [] : [
-                            {value: '', label: 'Select or type new ingredient'},
-                            ...ingredients.map(ing => ({
-                                value: ing.name,
-                                label: ing.name
-                            }))
-                        ]}
-                        onChange={(e) => {
-                            setFieldValue(getFieldName('name'), e.target.value);
-                            if (!isNewProduct) {
-                                handleProductSelection(e.target.value, setFieldValue);
-                            }
-                        }}
-                    />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <GlobalField
+                                label="Name"
+                                type="text"
+                                name="name"
+                                className="text-buttons text-sm"
+                            />
 
-                    {isNewProduct && (
-                        <>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <GlobalField
-                                    label="Category"
-                                    type="select"
-                                    name={getFieldName('category')}
-                                    className="text-buttons text-sm"
-                                    disabled={!isEditing}
-                                    options={ingredientCategories}
-                                />
-                                <GlobalField
-                                    label="Storage Type"
-                                    type="select"
-                                    name={getFieldName('storageType')}
-                                    className="text-buttons text-sm"
-                                    disabled={!isEditing}
-                                    options={ingredientStorageTypes}
-                                />
-                            </div>
+                            <GlobalField
+                                label="Category"
+                                type="select"
+                                name="category"
+                                className="text-buttons text-sm"
+                                options={[
+                                    { value: '', label: 'Select category' },
+                                    ...ingredientCategories.map(category => ({
+                                        value: category.name,
+                                        label: category.name,
+                                    }))
+                                ]}
+                            />
+                            <GlobalField
+                                label="Storage Type"
+                                type="select"
+                                name="storageType"
+                                className="text-buttons text-sm"
+                                options={[
+                                    { value: '', label: 'Select storage type' },
+                                    ...ingredientStorageTypes.map(type => ({
+                                        value: type,
+                                        label: type
+                                    }))
+                                ]}
+                            />
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <GlobalField
-                                    label="Price per Unit"
-                                    type="number"
-                                    name={getFieldName('pricePerUnit')}
-                                    className="text-buttons text-sm"
-                                    disabled={!isEditing}
-                                    min="0"
-                                    step="0.01"
-                                />
-                                <GlobalField
-                                    label="Minimum Stock Level"
-                                    type="number"
-                                    name={getFieldName('minStockLevel')}
-                                    className="text-buttons text-sm"
-                                    disabled={!isEditing}
-                                    min="0"
-                                />
-                            </div>
 
-                            <div className="space-y-2 border-2 border-lime rounded-sm p-4">
-                                <label className="block text-sm font-medium text-gray">Allergens</label>
-                                <div className="grid grid-cols-4 gap-2">
-                                    {[
-                                        {value: 'nuts', label: 'Nuts'},
-                                        {value: 'dairy', label: 'Dairy'},
-                                        {value: 'eggs', label: 'Eggs'},
-                                        {value: 'soy', label: 'Soy'},
-                                        {value: 'wheat', label: 'Wheat'},
-                                        {value: 'fish', label: 'Fish'},
-                                        {value: 'shellfish', label: 'Shellfish'}
-                                    ].map((allergen) => (
-                                        <label key={allergen.value} className="flex items-center space-x-2">
-                                            <Field
-                                                type="checkbox"
-                                                name={getFieldName('allergens')}
-                                                value={allergen.value}
-                                                disabled={!isEditing}
-                                                className="form-checkbox h-4 w-4 bg-lime rounded border-lime focus:ring-lime"
-                                            />
-                                            <span className="text-sm">{allergen.label}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-                        </>
-                    )}
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <GlobalField
-                            label="Amount"
-                            type="number"
-                            name={getFieldName('amountPerDish')}
-                            className="text-buttons text-sm"
-                            disabled={!isEditing}
-                            min="0"
-                        />
-                        <GlobalField
-                            label="Unit"
-                            type="select"
-                            name={getFieldName('unit')}
-                            className="text-buttons text-sm"
-                            disabled={!isEditing || (!isNewProduct && !selectedProduct)}
-                            options={measurementUnits}
-                        />
-                    </div>
+                            <GlobalField
+                                label="Price per Unit"
+                                type="number"
+                                name="pricePerUnit"
+                                className="text-buttons text-sm"
+                            />
 
-                    {selectedProduct && !isNewProduct && (
-                        <div className="mt-4 p-4 rounded-lg">
-                            <h3 className="text-sm font-semibold mb-2">Product Details</h3>
-                            <p className="text-sm">Category: {selectedProduct.category}</p>
-                            <p className="text-sm">Storage Type: {selectedProduct.storageType}</p>
-                            <p className="text-sm">Price per Unit: {selectedProduct.pricePerUnit}</p>
-                            <p className="text-sm">Minimum Stock Level: {selectedProduct.minStockLevel}</p>
+                            <GlobalField
+                                label="Minimum Stock Level"
+                                type="number"
+                                name="minStockLevel"
+                                className="text-buttons text-sm"
+                            />
+
+                            <GlobalField
+                                label="Current Stock"
+                                type="number"
+                                name="stock"
+                                className="text-buttons text-sm"
+                            />
+
+                            {isFromMenuItem && (
+                                <>
+                                    <GlobalField
+                                        label="Quantity for Menu Item"
+                                        type="number"
+                                        name="quantityForItemMenu"
+                                        className="text-buttons text-sm"
+                                        onFocus={() => setFieldValue('quantityForItemMenu', '')}
+                                    />
+                                    <GlobalField
+                                        label="Unit for Menu Item"
+                                        type="select"
+                                        name="unit"
+                                        className="text-buttons text-sm"
+                                        options={[
+                                            { value: '', label: 'Select unit' },
+                                            ...measurementUnits.map(unit => ({
+                                                value: unit,
+                                                label: unit
+                                            }))
+                                        ]}
+                                    />
+                                </>
+                            )}
+                            <GlobalField
+                                label="Unit"
+                                type="select"
+                                name="unit"
+                                className="text-buttons text-sm"
+                                options={[
+                                    { value: '', label: 'Select unit' },
+                                    ...measurementUnits.map(unit => ({
+                                        value: unit,
+                                        label: unit
+                                    }))
+                                ]}
+                            />
                         </div>
-                    )}
 
-                    <Button
-                        type="submit"
-                        className="w-full bg-lime"
-                        disabled={!isEditing}
-                    >
-                        {isNewProduct ? 'Add New Ingredient' : 'Save Changes'}
-                    </Button>
-                </Form>
-            )}
-        </Formik>
+                        <div className="mt-4">
+                            <h3 className="text-lg font-medium mb-2">Allergens</h3>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                {allergenTypes.map(allergen => (
+                                    <label key={allergen} className="flex items-center space-x-2">
+                                        <Field
+                                            type="checkbox"
+                                            name="allergens"
+                                            value={allergen}
+                                            className="form-checkbox h-4 w-4 text-lime rounded border-gray-300"
+                                        />
+                                        <span className="text-sm">{allergen}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="flex gap-2 justify-end mt-6">
+                            <Button
+                                type="submit"
+                                className="bg-lime"
+                            >
+                                {isEditing ? 'Update Ingredient' : (isFromMenuItem ? 'Add to Menu Item' : 'Add Ingredient')}
+                            </Button>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        </Card>
     );
 };
 

@@ -14,9 +14,12 @@ export const ItemsProvider = ({ children }) => {
     const token = localStorage.getItem('authToken');
 
     const [loadingItems, setLoadingItems] = useState(true);
-    const [userItems, setUserItems] = useState([]);
+    const [menuItems, setMenuItems] = useState([]);
     const [categories, setCategories] = useState([]);
     const [inventoryItems,setInventoryItems] = useState([]);
+    const [inventoryCategories,setInventoryCategories] = useState([]);
+    console.log("inventoryCategories",inventoryCategories )
+
 
     // Add report function
     const addReport = (report, reportType) => {
@@ -54,7 +57,7 @@ export const ItemsProvider = ({ children }) => {
                 },
             });
             const data = await response.json();
-            setUserItems(data.data);
+            setMenuItems(data.data);
             setCategories(data.categories);
             console.log('Menu items:', data.data);
             console.log('Categories:', data.categories);
@@ -72,7 +75,7 @@ export const ItemsProvider = ({ children }) => {
                 },
             });
             const data = await response.json();
-            setUserItems(data);
+            setMenuItems(data);
             console.log('Menu items by category:', data.data);
         } catch (error) {
             console.error('Error fetching menu items by category:', error.message);
@@ -102,9 +105,8 @@ export const ItemsProvider = ({ children }) => {
                 },
             });
             const data = await response.json();
-            console.log('Inventory items:', data.data);
             setInventoryItems(data.data);
-            console.log('Ingredients:', data.data);
+            setInventoryCategories(data.categories);
         } catch (error) {
             console.error('Error fetching ingredients:', error.message);
         }
@@ -116,17 +118,19 @@ export const ItemsProvider = ({ children }) => {
         getMenuItems();
         getInventoryItems();
         return () => {
-            setUserItems([]);;
+            setMenuItems([]);;
             setInventoryItems([]);
         };
     }, [user]);
 
     return (
         <ItemsContext.Provider value={{
-            userItems,
+            userItems: menuItems,
             categories,
             inventoryItems,
             setInventoryItems,
+            inventoryCategories,
+            setInventoryCategories,
             loadingItems,
             addReport,
             getMenuItems,

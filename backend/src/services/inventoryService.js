@@ -41,8 +41,10 @@ class InventoryService {
             console.log('Fetching inventory items...');
             const inventoryDocs = await db.collection('inventory').doc(userId).collection('inventoryItems').get();
             const inventoryItems = inventoryDocs.docs.map(doc => doc.data());
+            const uniqueCategories = [...new Set(inventoryItems.map(item => item.category))];
             console.log('Inventory items fetched successfully');
-            return {success: true, data: inventoryItems};
+
+            return {success: true, data: inventoryItems, categories: uniqueCategories};
         } catch (error) {
             console.error('Error fetching inventory items:', error);
             return [];

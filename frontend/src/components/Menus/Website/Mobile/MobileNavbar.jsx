@@ -25,7 +25,7 @@ const MobileNavbar = ({ isMenuOpen, toggleMenu }) => {
                 >
                     <button
                         onClick={toggleMenu}
-                        className="absolute top-1 left-[-60px] z-[60] flex items-center bg-secondary  rounded-l-2xl justify-center px-4 py-4 transition-all duration-[100ms]"
+                        className="absolute top-0 left-[-60px] z-[60] flex items-center bg-secondary  rounded-l-2xl justify-center px-4 py-6 transition-all duration-[100ms]"
                     >
                         <div className={classNames('tham tham-e-squeeze tham-w-7', {'tham-active': isMenuOpen})}>
                             <div className="tham-box">

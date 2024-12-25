@@ -1,47 +1,36 @@
 import * as Yup from "yup";
 
-// Schema for waste history
-const wasteHistorySchema = Yup.object({
-    date: Yup.string()
-        .required('Date is required')
-        .matches(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format (YYYY-MM-DD)'),
-    quantity: Yup.number()
-        .required('Quantity is required')
-        .min(0, 'Quantity cannot be negative'),
-    reason: Yup.string()
-        .required('Waste reason is required')
-        .oneOf(['EXPIRED', 'DAMAGED', 'SPOILED', 'OTHER']),
-    cost: Yup.number()
-        .required('Cost is required')
-        .min(0, 'Cost cannot be negative')
-});
-
-// Schema for usage statistics
-const usageStatsSchema = Yup.object({
-    averageDailyUsage: Yup.number()
-        .required('Average daily usage is required')
-        .min(0, 'Average daily usage cannot be negative'),
-    wastePercentage: Yup.number()
-        .required('Waste percentage is required')
-        .min(0, 'Waste percentage cannot be negative')
-        .max(100, 'Waste percentage cannot exceed 100')
-});
-
-// Updated ingredient schema focusing on waste and usage analysis
 const ingredientSchema = Yup.object({
-
-        id: Yup.string()
-            .required('ID is required'),
-        name: Yup.string()
-            .required('Name is required'),
-        usageStats: usageStatsSchema
-            .required('Usage statistics are required'),
-        wasteHistory: Yup.array()
-            .of(wasteHistorySchema)
-            .default([]).required('Ingredient data is required'),
+    id: Yup.string()
+        .required('ID is required'),
+    name: Yup.string()
+        .required('Name is required')
+        .min(2, 'Name must be at least 2 characters'),
+    category: Yup.string()
+        .required('Category is required'),
+    unit: Yup.string()
+        .required('Unit is required'),
+    stock: Yup.number()
+        .required('Stock is required')
+        .min(0, 'Stock cannot be negative'),
+    minStockLevel: Yup.number()
+        .required('Minimum stock level is required')
+        .min(0, 'Minimum stock level cannot be negative'),
+    pricePerUnit: Yup.number()
+        .required('Price per unit is required')
+        .min(0, 'Price cannot be negative'),
+    storageType: Yup.string()
+        .required('Storage type is required'),
+    allergens: Yup.array()
+        .of(Yup.string())
+        .default([])
+        .required('Allergens field is required'),
+    // Optional analytics fields
+    usageStats: Yup.object({
+        averageDailyUsage: Yup.number().min(0),
+        wastePercentage: Yup.number().min(0).max(100)
+    }).optional(),
+    wasteHistory: Yup.array().optional()
 });
-export {
-    ingredientSchema,
-    wasteHistorySchema,
-    usageStatsSchema
-};
+
+export { ingredientSchema };
