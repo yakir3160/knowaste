@@ -32,7 +32,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className={`navigation ${isScrolling ? 'glassy scrolling' : ''} flex justify-center animate-fadeInDown pb-3`}>
+        <nav className={`navigation ${isScrolling ? 'glassy scrolling' : ''} flex justify-center animate-fadeInDown `}>
             {isMobile ? (
                 <MobileNavbar isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
             ) : (

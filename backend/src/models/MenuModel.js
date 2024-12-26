@@ -14,9 +14,9 @@ const menuItemSchema = Yup.object({
         ingredients: Yup.array()
             .of(
                 Yup.object({
-                    ingredientId: Yup.number()
-                        .required('Ingredient ID is required')
-                        .positive('Ingredient ID must be positive'),
+                    ingredientId: Yup.string()
+                        .required('Ingredient ID is required'),
+                    name: Yup.string().required('Name is required'),
                     quantity: Yup.number()
                         .required('Quantity is required')
                         .positive('Quantity must be positive'),

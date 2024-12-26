@@ -2,84 +2,104 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import GlobalField from "../../../Common/inputs/GlobalField";
 import Button from "../../../Common/Button/Button";
-import {ingredientStorageTypes, measurementUnits, allergenTypes,ingredientCategories} from "../../../../constants/Constants";
-import {ingredientSchema} from "../../../../schemas/firestoreSchemas/ingredientsSchema";
+import { ingredientStorageTypes, measurementUnits, allergenTypes, ingredientCategories } from "../../../../constants/Constants";
+import { ingredientSchema } from "../../../../schemas/firestoreSchemas/ingredientsSchema";
 import { v4 as generateUniqueID } from 'uuid';
-import {CircleX} from "lucide-react";
+import { CircleX } from "lucide-react";
 import Card from "../../../Common/Card/Card";
+import { useItemsContext } from "../../../../contexts/ItemsContext";
 
-const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, initialValues = null, isEditing = false }) => {
+const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrder = false, initialValues = null, isEditing = false }) => {
+    const { addInventoryItem } = useItemsContext();
+
     const defaultValues = {
-        id: generateUniqueID(),
+        ingredientId: generateUniqueID(),
         name: '',
-        category: '',
+        categoryName: '',
         storageType: '',
         pricePerUnit: '',
-        minStockLevel: '',
-        stock: 0,
+        quantityPerUnit: '',
         unit: '',
         allergens: [],
-        quantityForItemMenu: isFromMenuItem ? 0 : '',
-
+        ...(isFromMenuItem && { quantityForItemMenu: '' }),
+        ...(isFromOrder && {
+            receivedQuantity: '',
+            expirationDate: new Date().toISOString().split('T')[0],
+            receivedDate: new Date().toISOString().split('T')[0]
+        }),
     };
 
     const actualInitialValues = initialValues || defaultValues;
 
     const handleSubmit = (values, { resetForm }) => {
+        console.log('Form submitted:', values);
         if (isFromMenuItem) {
             const menuItemIngredient = {
                 ingredientId: values.id,
+                name: values.name,
                 quantity: values.quantityForItemMenu,
                 unit: values.unit
             };
-            console.log('New ingredient for menu item:', menuItemIngredient);
             onSubmit(menuItemIngredient);
-        } else {
-            console.log(isEditing ? 'Updating ingredient:' : 'New ingredient created:', values);
-            onSubmit(values);
+        } else if (isFromOrder) {
+            const orderIngredient = {
+                ...values,
+                receivedQuantity: values.receivedQuantity,
+                expirationDate: values.expirationDate,
+                receivedDate: values.receivedDate
+            };
+            onSubmit(orderIngredient);
         }
+        addInventoryItem(values);
         resetForm();
         onCancel();
     };
 
     return (
-        <Card className={`border-2 border-secondary`}>
+        <Card className="border-2 border-secondary p-6">
             <button
                 type="button"
                 onClick={onCancel}
-                className="flex justify-center items-center shadow-outer-custom text-sm font-medium rounded-md col-span-full"
+                className="flex justify-center items-center shadow-outer-custom text-sm font-medium rounded-md mb-4"
             >
-                <CircleX size={22}/>
+                <CircleX size={22} />
             </button>
             <Formik
                 initialValues={actualInitialValues}
                 validationSchema={ingredientSchema}
-                onSubmit={(values, actions) => handleSubmit(values, actions)}
+                onSubmit={handleSubmit}
+                enableReinitialize
             >
-                {({values, setFieldValue}) => (
-                    <Form lassName="space-y-4 p-6">
-                        <h2 className="text-xl font-semibold mb-6 text-titles">
+                {({ values, setFieldValue, errors, touched }) => (
+                    <Form className="space-y-4">
+                        <h2 className="text-xl font-semibold text-titles">
                             {isEditing ? 'Edit Ingredient' : 'Add New Ingredient'}
                         </h2>
+                        {isFromOrder && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-2 border-lime p-3 rounded-sm">
+                                <GlobalField label="Received Quantity" type="number" name="receivedQuantity" />
+                                <GlobalField
+                                    label="Expiration Date"
+                                    type="date"
+                                    name="expirationDate"
+                                    min={new Date().toISOString().split('T')[0]}
+                                />
+                                <GlobalField label="Received Date" type="date" name="receivedDate" />
+                            </div>
+                        )}
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <GlobalField
-                                label="Name"
-                                type="text"
-                                name="name"
-                                className="text-buttons text-sm"
-                            />
-
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <GlobalField label="Name" type="text" name="name" className="text-buttons text-sm" />
                             <GlobalField
                                 label="Category"
                                 type="select"
-                                name="category"
+                                name="categoryName"
                                 className="text-buttons text-sm"
                                 options={[
                                     { value: '', label: 'Select category' },
                                     ...ingredientCategories.map(category => ({
                                         value: category.name,
-                                        label: category.name,
+                                        label: category.name
                                     }))
                                 ]}
                             />
@@ -96,44 +116,35 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, initialVal
                                     }))
                                 ]}
                             />
-
-
-
+                            <GlobalField label="Quantity per Unit" type="number" name="quantityPerUnit" />
+                            <GlobalField
+                                label="Unit"
+                                type="select"
+                                name="unit"
+                                options={[
+                                    { value: '', label: 'Select unit' },
+                                    ...measurementUnits.map(unit => ({
+                                        value: unit,
+                                        label: unit
+                                    }))
+                                ]}
+                            />
                             <GlobalField
                                 label="Price per Unit"
                                 type="number"
-                                name="pricePerUnit"
-                                className="text-buttons text-sm"
-                            />
-
-                            <GlobalField
-                                label="Minimum Stock Level"
-                                type="number"
-                                name="minStockLevel"
-                                className="text-buttons text-sm"
-                            />
-
-                            <GlobalField
-                                label="Current Stock"
-                                type="number"
-                                name="stock"
-                                className="text-buttons text-sm"
-                            />
-
+                                name="pricePerUnit" />
                             {isFromMenuItem && (
                                 <>
                                     <GlobalField
                                         label="Quantity for Menu Item"
                                         type="number"
                                         name="quantityForItemMenu"
-                                        className="text-buttons text-sm"
                                         onFocus={() => setFieldValue('quantityForItemMenu', '')}
                                     />
                                     <GlobalField
                                         label="Unit for Menu Item"
                                         type="select"
                                         name="unit"
-                                        className="text-buttons text-sm"
                                         options={[
                                             { value: '', label: 'Select unit' },
                                             ...measurementUnits.map(unit => ({
@@ -144,19 +155,6 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, initialVal
                                     />
                                 </>
                             )}
-                            <GlobalField
-                                label="Unit"
-                                type="select"
-                                name="unit"
-                                className="text-buttons text-sm"
-                                options={[
-                                    { value: '', label: 'Select unit' },
-                                    ...measurementUnits.map(unit => ({
-                                        value: unit,
-                                        label: unit
-                                    }))
-                                ]}
-                            />
                         </div>
 
                         <div className="mt-4">
@@ -177,11 +175,8 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, initialVal
                         </div>
 
                         <div className="flex gap-2 justify-end mt-6">
-                            <Button
-                                type="submit"
-                                className="bg-lime"
-                            >
-                                {isEditing ? 'Update Ingredient' : (isFromMenuItem ? 'Add to Menu Item' : 'Add Ingredient')}
+                            <Button type="submit" className="bg-lime">
+                                {isEditing ? 'Update Ingredient' : isFromMenuItem ? 'Add to Menu Item' : 'Add Ingredient'}
                             </Button>
                         </div>
                     </Form>

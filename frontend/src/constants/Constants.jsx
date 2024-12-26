@@ -26,6 +26,7 @@ export const allergenTypes = [
     'SOYBEANS',
     'SESAME'
 ];
+allergenTypes.sort((a,b ) => a.localeCompare(b));
 export const menuCategories = [
     { id: "starters", name: "Starters" }, // מנות פתיחה, כמו סלטים קלים, מרקים, פריכיות
     { id: "salads", name: "Salads" }, // סלטים טריים ומגוון תוספות
@@ -53,6 +54,7 @@ export const menuCategories = [
     { id: "house_specials", name: "House Specials" }, // מנות מומלצות של המסעדה
     { id: "general", name: "General" } // קטגוריה כללית לכל מנות נוספות או מנות שונות
 ];
+menuCategories.sort((a, b) => a.name.localeCompare(b.name));
 
 export const ingredientCategories = [
     { id: "proteins", name: "Proteins" }, // בשר, עוף, דגים
@@ -80,4 +82,5 @@ export const ingredientCategories = [
     { id: "alcohol", name: "Alcohol" }, // אלכוהול, יינות
     { id: "general", name: "General" }
 ];
+ingredientCategories.sort((a, b) => a.name.localeCompare(b.name));
 

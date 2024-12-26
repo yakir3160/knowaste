@@ -8,8 +8,10 @@ import { useItemsContext } from "../../../../contexts/ItemsContext";
 const IngredientsList = ({ isEditing, ItemIngredients }) => {
     const { values, setFieldValue } = useFormikContext();
     const { inventoryItems } = useItemsContext();
+    console.log('inventoryItems:', inventoryItems);
+ const  getIngredientDetails = async (ingredientId) => {
+        console.log('ingredientId:', ingredientId);
 
-    const getIngredientDetails = (ingredientId) => {
         return inventoryItems?.find(item => item.id === ingredientId);
     };
 
@@ -30,11 +32,11 @@ const IngredientsList = ({ isEditing, ItemIngredients }) => {
                 <div className="mt-4 space-y-4 border-2 border-secondary p-2 rounded-sm">
                     <h2 className="text-xl text-titles font-semibold mb-4 px-2">Ingredients</h2>
                     {values.ingredients.map((ingredient, index) => {
-                        const ingredientDetails = getIngredientDetails(ingredient.ingredientId);
+                        const  ingredientDetails =  getIngredientDetails(ingredient.ingredientId);
                         return (
                             <div key={ingredient.ingredientId} className="relative flex items-center gap-4 p-3 border-2 border-secondary rounded-sm">
                                 <div className="flex-1">
-                                    <p className="font-medium">{ingredientDetails?.name}</p>
+                                    <p className="font-medium">{ingredient.name}</p>
                                 </div>
 
                                 <div className="w-32">
@@ -49,7 +51,7 @@ const IngredientsList = ({ isEditing, ItemIngredients }) => {
                                 </div>
 
                                 <div className="w-24">
-                                    <p className="text-sm text-gray-600">{ingredientDetails?.unit}</p>
+                                    <p className="text-sm text-gray-600">{ingredient?.unit}</p>
                                 </div>
                                     <Button
                                         type="button"

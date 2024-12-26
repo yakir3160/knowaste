@@ -1,144 +1,175 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useUserContext } from "./UserContext";
-import MenuItems from "../MockData/MenuItems.json";
-import Ingredients from "../MockData/Ingredeints.json";
-import SupplierProducts from "../MockData/SupplierProducts.json";
-import IngredientCategories from '../MockData/ingredientCategories.json';
 
-// Create the context
 const ItemsContext = createContext();
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5002';
 
 export const ItemsProvider = ({ children }) => {
     const { userBaseData: user } = useUserContext();
     const token = localStorage.getItem('authToken');
-
     const [loadingItems, setLoadingItems] = useState(true);
+    const [itemsError, setItemsError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [inventoryItems,setInventoryItems] = useState([]);
-    const [inventoryCategories,setInventoryCategories] = useState([]);
-    console.log("inventoryCategories",inventoryCategories )
+    const [inventoryItems, setInventoryItems] = useState([]);
+    const [inventoryCategories, setInventoryCategories] = useState([]);
 
 
-    // Add report function
-    const addReport = (report, reportType) => {
-        console.log(`${API_BASE_URL}/api/${reportType}/add-report`);
-        console.log('Authorization:', `Bearer ${token}`);
-        console.log('report type:', reportType);
-        console.log('report:', report);
-    };
-
-    // Add menu item
-    const addMenuItem = async (itemData) => {
+    const clearMessages = () => {
+        setItemsError(null);
+        setSuccessMessage(null);
+    }
+    // API calls with error handling
+    const apiCall = async (endpoint, method = 'GET', body = null) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/menu`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(itemData),
-            });
+            const headers = {
+                Authorization: `Bearer ${token}`,
+                ...(body && { 'Content-Type': 'application/json' })
+            };
+
+            const config = {
+                method,
+                headers,
+                ...(body && { body: JSON.stringify(body) })
+            };
+
+            const response = await fetch(`${API_BASE_URL}/api/${endpoint}`, config);
+            if (!response.ok) {
+                setItemsError(response.statusText);
+            }
             const data = await response.json();
-            console.log('Add menu item:', data);
+            setSuccessMessage(data.message);
+            return data;
         } catch (error) {
-            console.error('Error adding menu item:', error.message);
+            console.error(`API Error (${endpoint}):`, error.message);
+            setItemsError(error.message);
         }
     };
-    // Get menu items
+
+    // Reports
+    const addReport = async (report, reportType) => {
+        return await apiCall(`${reportType}/add-report`, 'POST', report);
+    };
+
+    // Menu Items
+    const addMenuItem = async (itemData) => {
+        const data = await apiCall('menu', 'POST', itemData);
+        await getMenuItems(); // Refresh the list
+        return data;
+    };
+
     const getMenuItems = async () => {
         try {
             setLoadingItems(true);
-            const response = await fetch(`${API_BASE_URL}/api/menu`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const data = await response.json();
+            const data = await apiCall('menu');
             setMenuItems(data.data);
             setCategories(data.categories);
-            console.log('Menu items:', data.data);
-            console.log('Categories:', data.categories);
-            setLoadingItems(false);
         } catch (error) {
-            console.error('Error fetching menu items:', error.message);
+            // Handle error appropriately
+            setMenuItems([]);
+            setCategories([]);
+        } finally {
+            setLoadingItems(false);
         }
-    }
+    };
+
     const getMenuByCategory = async (categoryId) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/menu//items-by-category/?category=${categoryId}`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const data = await response.json();
+            const data = await apiCall(`menu/items-by-category/?category=${categoryId}`);
             setMenuItems(data);
-            console.log('Menu items by category:', data.data);
+            return data;
         } catch (error) {
-            console.error('Error fetching menu items by category:', error.message);
+            setMenuItems([]);
+            throw error;
         }
-    }
+    };
+
     const deleteMenuItem = async (itemId) => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/menu/${itemId}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const data = await response.json();
-            console.log('Delete menu item:', data);
-        } catch (error) {
-            console.error('Error deleting menu item:', error.message);
-        }
-    }
+        await apiCall(`menu/${itemId}`, 'DELETE');
+        await getMenuItems(); // Refresh the list
+    };
+
+    // Inventory Items
+    const addInventoryItem = async (itemData) => {
+        const data = await apiCall('inventory', 'POST', itemData);
+        await getInventoryItems(); // Refresh the list
+        return data;
+    };
 
     const getInventoryItems = async () => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/inventory`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const data = await response.json();
+            const data = await apiCall('inventory');
             setInventoryItems(data.data);
             setInventoryCategories(data.categories);
         } catch (error) {
-            console.error('Error fetching ingredients:', error.message);
+            setInventoryItems([]);
+            setInventoryCategories([]);
+            throw error;
         }
-    }
+    };
 
+    const deleteInventoryItem = async (itemId) => {
+        await apiCall(`inventory/${itemId}`, 'DELETE');
+        await getInventoryItems(); // Refresh the list
+    };
 
-    // useEffect to initialize data
+    // Initialize data
     useEffect(() => {
-        getMenuItems();
-        getInventoryItems();
+        const initializeData = async () => {
+            try {
+                await Promise.all([
+                    getMenuItems(),
+                    getInventoryItems()
+                ]);
+            } catch (error) {
+                console.error('Error initializing data:', error);
+            }
+        };
+
+        if (user && token) {
+            initializeData();
+        }
+        setItemsError(null);
         return () => {
-            setMenuItems([]);;
+            setMenuItems([]);
             setInventoryItems([]);
         };
-    }, [user]);
+
+    }, [user, token]);
+
+    const contextValue = {
+        userItems: menuItems,
+        categories,
+        inventoryItems,
+        setInventoryItems,
+        inventoryCategories,
+        setInventoryCategories,
+        loadingItems,
+        itemsError,
+        successMessage,
+        clearMessages,
+        addMenuItem,
+        deleteMenuItem,
+        getMenuByCategory,
+        addReport,
+        getMenuItems,
+        addInventoryItem,
+        deleteInventoryItem,
+        getInventoryItems,
+    };
 
     return (
-        <ItemsContext.Provider value={{
-            userItems: menuItems,
-            categories,
-            inventoryItems,
-            setInventoryItems,
-            inventoryCategories,
-            setInventoryCategories,
-            loadingItems,
-            addReport,
-            getMenuItems,
-        }}>
+        <ItemsContext.Provider value={contextValue}>
             {children}
         </ItemsContext.Provider>
     );
 };
 
-// Hook to use the context
-export const useItemsContext = () => useContext(ItemsContext);
+export const useItemsContext = () => {
+    const context = useContext(ItemsContext);
+    if (!context) {
+        throw new Error('useItemsContext must be used within an ItemsProvider');
+    }
+    return context;
+};

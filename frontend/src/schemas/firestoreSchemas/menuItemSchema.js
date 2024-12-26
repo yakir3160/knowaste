@@ -11,8 +11,9 @@ const menuItemSchema = Yup.object().shape({
             .max(1000000, 'Price is too high'),
         ingredients: Yup.array().of(
             Yup.object().shape({
-                    id: Yup.string().required('ID is required'),
-                    amount: Yup.number().required('Amount is required').min(0, 'Amount must be positive'),
+                    ingredientId: Yup.string().required('ID is required'),
+                    name: Yup.string().required('Name is required'),
+                    quantity: Yup.number().required('Quantity is required').min(0, 'Amount must be positive'),
                     unit: Yup.string().required('Unit is required'),
             })
         )
