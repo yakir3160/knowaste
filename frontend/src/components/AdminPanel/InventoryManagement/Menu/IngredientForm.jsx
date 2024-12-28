@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Formik, Form, Field } from 'formik';
 import GlobalField from "../../../Common/inputs/GlobalField";
 import Button from "../../../Common/Button/Button";
@@ -10,7 +10,8 @@ import Card from "../../../Common/Card/Card";
 import { useItemsContext } from "../../../../contexts/ItemsContext";
 
 const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrder = false, initialValues = null, isEditing = false }) => {
-    const { addInventoryItem } = useItemsContext();
+    const { addInventoryItem, itemsError } = useItemsContext();
+    const [successMsg, setSuccessMsg] = useState('');
 
     const defaultValues = {
         ingredientId: generateUniqueID(),
@@ -29,9 +30,7 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
         }),
     };
 
-    const actualInitialValues = initialValues || defaultValues;
-
-    const handleSubmit = (values, { resetForm }) => {
+    const handleSubmit = async (values, { resetForm }) => {
         console.log('Form submitted:', values);
         if (isFromMenuItem) {
             const menuItemIngredient = {
@@ -50,9 +49,22 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
             };
             onSubmit(orderIngredient);
         }
-        addInventoryItem(values);
-        resetForm();
-        onCancel();
+        try {
+            const response =  addInventoryItem(values);
+            if (response) {
+                setSuccessMsg('Item added successfully');
+                setTimeout(
+                    () => {
+                        resetForm();
+                        onCancel();
+                    },
+                    3000
+                );
+            }
+        }
+        catch (error) {
+            console.error('Error adding item:', error);
+        }
     };
 
     return (
@@ -65,7 +77,7 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
                 <CircleX size={22} />
             </button>
             <Formik
-                initialValues={actualInitialValues}
+                initialValues={initialValues || defaultValues}
                 validationSchema={ingredientSchema}
                 onSubmit={handleSubmit}
                 enableReinitialize
@@ -173,7 +185,17 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
                                 ))}
                             </div>
                         </div>
+                        {successMsg && (
+                            <Card className="text-green text-center mb-4">
+                                {successMsg}
+                            </Card>
+                        )}
 
+                        {itemsError && (
+                            <Card className="text-errorRed text-center">
+                                {itemsError}
+                            </Card>
+                        )}
                         <div className="flex gap-2 justify-end mt-6">
                             <Button type="submit" className="bg-lime">
                                 {isEditing ? 'Update Ingredient' : isFromMenuItem ? 'Add to Menu Item' : 'Add Ingredient'}

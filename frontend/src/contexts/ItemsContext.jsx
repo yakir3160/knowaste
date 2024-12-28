@@ -9,17 +9,11 @@ export const ItemsProvider = ({ children }) => {
     const token = localStorage.getItem('authToken');
     const [loadingItems, setLoadingItems] = useState(true);
     const [itemsError, setItemsError] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
     const [categories, setCategories] = useState([]);
     const [inventoryItems, setInventoryItems] = useState([]);
     const [inventoryCategories, setInventoryCategories] = useState([]);
 
-
-    const clearMessages = () => {
-        setItemsError(null);
-        setSuccessMessage(null);
-    }
     // API calls with error handling
     const apiCall = async (endpoint, method = 'GET', body = null) => {
         try {
@@ -35,17 +29,35 @@ export const ItemsProvider = ({ children }) => {
             };
 
             const response = await fetch(`${API_BASE_URL}/api/${endpoint}`, config);
-            if (!response.ok) {
-                setItemsError(response.statusText);
-            }
             const data = await response.json();
-            setSuccessMessage(data.message);
+
+            if (!response.ok) {
+                const error = {
+                    status: response.status,
+                    message: data.message || 'Operation failed',
+                    data: data
+                };
+
+                setItemsError(error.message);
+                setTimeout(() => setItemsError(null), 3000);
+                throw error;
+            }
+
             return data;
+
         } catch (error) {
-            console.error(`API Error (${endpoint}):`, error.message);
-            setItemsError(error.message);
+            const errorMessage = error.message || 'Failed to complete operation';
+            setItemsError(errorMessage);
+            setTimeout(() => setItemsError(null), 3000);
+
+            throw {
+                status: error.status || 500,
+                message: errorMessage,
+                originalError: error
+            };
         }
     };
+
 
     // Reports
     const addReport = async (report, reportType) => {
@@ -55,7 +67,8 @@ export const ItemsProvider = ({ children }) => {
     // Menu Items
     const addMenuItem = async (itemData) => {
         const data = await apiCall('menu', 'POST', itemData);
-        await getMenuItems(); // Refresh the list
+        setMenuItems([...menuItems, data]);
+        getMenuItems(); // Refresh the list
         return data;
     };
 
@@ -130,7 +143,6 @@ export const ItemsProvider = ({ children }) => {
         if (user && token) {
             initializeData();
         }
-        setItemsError(null);
         return () => {
             setMenuItems([]);
             setInventoryItems([]);
@@ -147,8 +159,6 @@ export const ItemsProvider = ({ children }) => {
         setInventoryCategories,
         loadingItems,
         itemsError,
-        successMessage,
-        clearMessages,
         addMenuItem,
         deleteMenuItem,
         getMenuByCategory,

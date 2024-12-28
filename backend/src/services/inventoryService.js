@@ -27,7 +27,7 @@ class InventoryService {
             const inventoryDocRef = db.collection('inventory')
                 .doc(userId)
                 .collection('inventoryItems')
-                .doc(fullData.id.toString());
+                .doc(fullData.ingredientId);
             const inventoryDoc = await inventoryDocRef.get();
             if (inventoryDoc.exists) {
                 await inventoryDocRef.update(fullData);

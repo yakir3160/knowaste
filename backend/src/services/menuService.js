@@ -38,7 +38,7 @@ class MenuService {
             }
         } catch (error) {
             console.error('Error adding/updating menu item:', error);
-            return { success: false, error: error.message };
+            return { success: false, message: error.message };
         }
     }
     async getMenuItems(userId) {

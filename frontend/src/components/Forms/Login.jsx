@@ -94,7 +94,7 @@ const Login = () => {
                                         {getDisplayError()}
                                     </div>
 
-                                    <div className="flex flex-col items-center justify-center p-2 my-2 h-fit">
+                                    <div className="flex flex-col items-center justify-center p-2  h-fit">
                                         <button
                                             type="button"
                                             onClick={() => handlePasswordReset(values)}

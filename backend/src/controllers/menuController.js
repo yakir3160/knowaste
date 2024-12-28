@@ -9,7 +9,7 @@ export const addOrUpdateMenuItem = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 error: result.error,
-                message: "Failed to add menu item"
+                message: result.message || "Failed to add menu item"
             });
         }
 

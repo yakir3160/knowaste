@@ -1,99 +1,93 @@
-import React, {useEffect, useState} from 'react';
-import { Formik, Form } from 'formik';
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp, CircleX, Pencil } from 'lucide-react';
 import Button from '../../../Common/Button/Button';
-import { ChevronDown, ChevronUp, CircleX, Pencil, Save } from 'lucide-react';
-import GlobalField from "../../../Common/inputs/GlobalField";
 import Card from "../../../Common/Card/Card";
-import IngredientsList from './IngredientsList';
-import {useUserContext} from "../../../../contexts/UserContext";
-import * as Yup from 'yup';
-import menuItemSchema from '../../../../schemas/firestoreSchemas/menuItemSchema';
+import { useItemsContext } from "../../../../contexts/ItemsContext";
+import ConfirmDelete from "../../../Common/ConfirmDelete/ConfirmDelete";
 
-const MenuItem = ({ item, onUpdate, onRemove }) => {
-    const [isEditing, setIsEditing] = useState(false);
+const MenuItem = ({ item, onEdit }) => {
     const [showIngredients, setShowIngredients] = useState(false);
-    const {userBaseData: user} = useUserContext();
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const { deleteMenuItem, itemsError } = useItemsContext();
 
-const handleSubmit = (values) => {
-        if (isEditing) {
-            console.log('Updating item:', values);
-        }
-        setIsEditing(!isEditing);
+    const handleDeleteClick = () => {
+        setShowDeleteConfirm(true);
     };
 
+    const handleConfirmDelete = () => {
+        deleteMenuItem(item.id);
+        setShowDeleteConfirm(false);
+    };
+
+    const handleCancelDelete = () => {
+        setShowDeleteConfirm(false);
+    };
 
     return (
-        <Card className="rounded-lg h-fit p-3 mb-4 border-2 border-secondary">
-            <Formik
-                initialValues={item}
-                onSubmit={handleSubmit}
-                validationSchema={menuItemSchema}
-                enableReinitialize={true}
+        <Card className="rounded-lg h-fit p-3 mb-4 border-2 border-secondary ">
+            <button
+                type="button"
+                onClick={handleDeleteClick}
+                className=" text-errorRed "
             >
-                {({ values, setFieldValue }) => (
-                    <Form className="pt-3">
-                        <GlobalField
-                            label="Name"
-                            type="text"
-                            name="name"
-                            className="text-titles text-xl font-semibold"
-                            disabled={!isEditing}
-                        />
-                        <GlobalField
-                            label="Price (₪)"
-                            type="number"
-                            name="price"
-                            className="text-lg font-medium text-primary"
-                            disabled={!isEditing}
-                        />
-                        <div className="grid grid-cols-2 gap-5">
-                            <Button
-                                type={isEditing ? "submit" : "button"}
-                                onClick={() => {
-                                    !isEditing && setIsEditing(true)
-                                    setShowIngredients(true)
-                                }}
-                                className="flex flex-row justify-center px-4 py-2 text-sm font-medium border border-lime rounded-md"
-                            >
-                                {isEditing ? 'Save' : 'Edit'}
-                                {isEditing ? <Save size={20} className="ml-2"/> : <Pencil size={20} className="ml-2"/>}
-                            </Button>
-                            <Button
-                                type="button"
-                                onClick={() => onRemove(item.id)}
-                                className="flex flex-row justify-center px-4 py-2 text-sm font-medium text-errorRed border rounded-md hover:bg-errorLightRed hover:text-errorRed transition-colors"
-                            >
-                                Remove
-                                <CircleX size={20} className="ml-2"/>
-                            </Button>
-                        </div>
-                        <div className="flex items-center justify-between mt-4">
-                            <Button
-                                type="button"
-                                onClick={() => {
-                                    setShowIngredients(!showIngredients)
-                                    setIsEditing(false)
-                                }}
-                                className="text-md flex flex-row"
-                            >
-                                {showIngredients ? 'Hide Ingredients' : 'Show Ingredients'}
-                                {showIngredients ? <ChevronUp size={20} className="mt-0.5"/> :
-                                    <ChevronDown size={20} className="mt-0.5"/>}
-                            </Button>
-                        </div>
-                        <div className={`overflow-hidden ${showIngredients ? 'max-h-fit' : 'max-h-0'}`}>
-                            {showIngredients && (
-                                <IngredientsList
-                                    ItemIngredients={item.ingredients}
-                                    isEditing={isEditing}
-                                    setFieldValue={setFieldValue}
-                                />
-                            )}
-                        </div>
-                    </Form>
+                <CircleX size={22}/>
+            </button>
+            <div className="gap-5 grid grid-cols-1 md:grid-cols-4 items-center">
+                <h2 className="text-titles text-xl font-semibold">{item.name}</h2>
+                <p className="text-lg font-medium text-primary">₪{item.price}</p>
+
+                {itemsError && (
+                    <div className="text-errorRed text-sm font-semibold">
+                        {itemsError}
+                    </div>
                 )}
-            </Formik>
+
+                <Button
+                    type="button"
+                    onClick={() => setShowIngredients(!showIngredients)}
+                    className="text-md flex flex-row w-fit"
+                >
+                    {showIngredients ? 'Hide Ingredients' : 'Show Ingredients'}
+                    {showIngredients ? <ChevronUp size={20} className="mt-0.5"/> :
+                        <ChevronDown size={20} className="mt-0.5"/>}
+                </Button>
+
+                <div className="space-x-2 flex justify-center">
+                    <Button
+                        type="button"
+                        onClick={() => onEdit({item})}
+                        className="w-fit border border-transparent"
+                    >
+                        <Pencil size={20}/>
+                    </Button>
+
+                </div>
+
+                <div className={`overflow-hidden ${showIngredients ? 'max-h-fit' : 'max-h-0'}`}>
+                    {showIngredients && (
+                        <div className="mt-4 text-titles">
+                            <h3 className="font-semibold mb-2">Ingredients:</h3>
+                            <ul className="list-none pl-4">
+                                {item.ingredients?.map((ingredient, index) => (
+                                    <li key={index} className="mb-1">
+                                        {index + 1}. {ingredient.name} - {ingredient.quantity} {ingredient.unit}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            </div>
+            {showDeleteConfirm && (
+                <ConfirmDelete
+                    isOpen={showDeleteConfirm}
+                    onClose={handleCancelDelete}
+                    onConfirm={handleConfirmDelete}
+                    name={item.name}
+                />
+            )}
         </Card>
+
     );
 };
 

@@ -37,9 +37,7 @@ const Inventory = ({isEmpty}) => {
         setShowDelete(false);
         setProductToDelete(null);
     };
-    useEffect(() => {
-        clearMessages();
-    }, []);
+
 
     return (
         <>
@@ -67,20 +65,19 @@ const Inventory = ({isEmpty}) => {
                 )}
             </div>
             <div className="flex flex-col h-full w-full justify-center items-center">
-                <div className="w-fit bg-secondary self-center rounded-t-sm mt-5 ">
-                    <div className="w-full">
+
+                    <div className="bg-secondary self-center  rounded-t-sm w-full md:w-fit flex flex-row overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
                         {inventoryCategories.map(category => (
                             <button
                                 key={category}
-                                className={`px-6 py-4 rounded-t-sm font-semibold 
-                            ${selectedCategory === category ? 'bg-white text-buttons' : ''}`}
+                                className={`px-6 py-4 rounded-t-sm font-semibold  ${selectedCategory === category ? 'bg-white text-buttons' : ''}`}
                                 onClick={() => setSelectedCategory(category)}
                             >
                                 {category}
                             </button>
                         ))}
                     </div>
-                </div>
+
 
                 <div className="w-full flex flex-col bg-white p-5 rounded-b-sm">
                     <div className="w-full gap-3 grid grid-cols-1">

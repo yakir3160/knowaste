@@ -5,15 +5,8 @@ import { CircleX } from 'lucide-react';
 import GlobalField from "../../../Common/inputs/GlobalField";
 import { useItemsContext } from "../../../../contexts/ItemsContext";
 
-const IngredientsList = ({ isEditing, ItemIngredients }) => {
+const IngredientsList = ({ isEditing }) => {
     const { values, setFieldValue } = useFormikContext();
-    const { inventoryItems } = useItemsContext();
-    console.log('inventoryItems:', inventoryItems);
- const  getIngredientDetails = async (ingredientId) => {
-        console.log('ingredientId:', ingredientId);
-
-        return inventoryItems?.find(item => item.id === ingredientId);
-    };
 
     const handleQuantityChange = (ingredientId, newValue) => {
         const ingredients = values.ingredients.map(ing => {
@@ -32,7 +25,6 @@ const IngredientsList = ({ isEditing, ItemIngredients }) => {
                 <div className="mt-4 space-y-4 border-2 border-secondary p-2 rounded-sm">
                     <h2 className="text-xl text-titles font-semibold mb-4 px-2">Ingredients</h2>
                     {values.ingredients.map((ingredient, index) => {
-                        const  ingredientDetails =  getIngredientDetails(ingredient.ingredientId);
                         return (
                             <div key={ingredient.ingredientId} className="relative flex items-center gap-4 p-3 border-2 border-secondary rounded-sm">
                                 <div className="flex-1">
@@ -53,14 +45,14 @@ const IngredientsList = ({ isEditing, ItemIngredients }) => {
                                 <div className="w-24">
                                     <p className="text-sm text-gray-600">{ingredient?.unit}</p>
                                 </div>
-                                    <Button
-                                        type="button"
-                                        className="text-errorRed p-1"
-                                        onClick={() => remove(index)}
-                                        disabled={!isEditing}
-                                    >
-                                        <CircleX size={20} />
-                                    </Button>
+                                <Button
+                                    type="button"
+                                    className="text-errorRed p-1"
+                                    onClick={() => remove(index)}
+                                    disabled={!isEditing}
+                                >
+                                    <CircleX size={20} />
+                                </Button>
                             </div>
                         );
                     })}
