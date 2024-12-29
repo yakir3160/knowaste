@@ -18,13 +18,13 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
         name: '',
         categoryName: '',
         storageType: '',
-        pricePerUnit: '',
-        quantityPerUnit: '',
+        pricePerUnit: null,
+        quantityPerUnit: null,
         unit: '',
         allergens: [],
         ...(isFromMenuItem && { quantityForItemMenu: '' }),
         ...(isFromOrder && {
-            receivedQuantity: '',
+            receivedQuantity: null,
             expirationDate: new Date().toISOString().split('T')[0],
             receivedDate: new Date().toISOString().split('T')[0]
         }),

@@ -21,7 +21,7 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
         categoryName: '',
         subCategoryName: '',
         name: '',
-        price: 0,
+        price: null,
         ingredients: [],
     };
     console.log(initialValues)
@@ -64,7 +64,7 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
             {
                 ingredientId: '',
                 name: '',
-                quantity: 0,
+                quantity: null,
                 unit: ''
             }
         ]);
@@ -169,7 +169,7 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                     </Button>
                                 </div>
                                 {values.ingredients?.map((ingredient, index) => (
-                                    <div key={index} className="grid grid-cols-4 gap-4 mb-4 ">
+                                    <div key={index} className="grid grid-cols-1 md:grid-cols-4gap-4 mb-4 ">
                                         <GlobalField
                                             label="Ingredient"
                                             type="select"

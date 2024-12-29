@@ -42,7 +42,7 @@ const Menu = ({isEmpty}) => {
             </Button>
             {showAddMenuItem && (
                 <AddMenuItem
-                    initialValues={selectedItem.item}
+                    initialValues={selectedItem?.item}
                     isFromMenuItem={fromMenuItem}
                     onAdd={() => {
                         handleAddItem();

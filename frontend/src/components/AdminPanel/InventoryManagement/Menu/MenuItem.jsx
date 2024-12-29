@@ -32,7 +32,7 @@ const MenuItem = ({ item, onEdit }) => {
             >
                 <CircleX size={22}/>
             </button>
-            <div className="gap-5 grid grid-cols-1 md:grid-cols-4 items-center">
+            <div className="gap-5 grid grid-cols-2 md:grid-cols-4 items-center">
                 <h2 className="text-titles text-xl font-semibold">{item.name}</h2>
                 <p className="text-lg font-medium text-primary">₪{item.price}</p>
 

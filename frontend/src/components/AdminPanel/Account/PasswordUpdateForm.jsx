@@ -45,7 +45,7 @@ const PasswordUpdateForm = () => {
                     onSubmit={(values,{setSubmitting,resetForm}) => { updatePasswordWithVerification(values.currentPassword, values.password,{ setSubmitting, resetForm });}}
                 >
                     {({ handleChange, handleSubmit, values, isSubmitting }) => (
-                        <Form className="grid grid-cols-1 gap-4 h-fit relative" onSubmit={handleSubmit}>
+                        <Form className="grid grid-cols-1 h-fit relative" onSubmit={handleSubmit}>
                             <div className="space-y-4">
                                 <GlobalField
                                     name="currentPassword"
