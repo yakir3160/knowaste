@@ -4,7 +4,6 @@ import Button from '../../../Common/Button/Button';
 import Card from "../../../Common/Card/Card";
 import { useItemsContext } from "../../../../contexts/ItemsContext";
 import ConfirmDelete from "../../../Common/ConfirmDelete/ConfirmDelete";
-
 const MenuItem = ({ item, onEdit }) => {
     const [showIngredients, setShowIngredients] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -55,7 +54,10 @@ const MenuItem = ({ item, onEdit }) => {
                 <div className="space-x-2 flex justify-center">
                     <Button
                         type="button"
-                        onClick={() => onEdit({item})}
+                        onClick={() => {
+                            onEdit({item})
+                            window.scrollTo(0, 0);
+                        }}
                         className="w-fit border border-transparent"
                     >
                         <Pencil size={20}/>

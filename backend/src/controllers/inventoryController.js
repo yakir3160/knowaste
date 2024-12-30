@@ -24,6 +24,31 @@ export const addOrUpdateInventoryItem = async (req, res) => {
         });
     }
 }
+export const addNewOrder = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const  ingredientId  = req.params.id;
+        const  orderData  = req.body;
+        const result = await InventoryService.addNewOrder(userId,ingredientId,orderData);
+        if (!result.success) {
+            throw {
+                status: 500,
+                message: result.error
+            };
+        }
+        res.status(200).json({
+            success: true,
+            data: result,
+            error: "Order added successfully"
+        });
+    } catch (error) {
+        console.error("Add order error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            error: error.message || "Error adding order"
+        });
+    }
+}
 export const getInventoryItems = async (req, res) => {
     try {
         const userId = req.user.id;

@@ -16,21 +16,10 @@ const ingredientSchema = Yup.object({
         is: true,
         then: Yup.number().required('Quantity for menu item is required').min(0)
     }),
-
-    // Order specific fields
-    orderDetails: Yup.object({
-        receivedQuantity: Yup.number(),
-        expirationDate: Yup.date(),
-        batchNumber: Yup.string(),
-        receivedDate: Yup.date()
-    }).when('$isFromOrder', {
+    unitForItemMenu: Yup.string().when('$isFromMenuItem', {
         is: true,
-        then: Yup.object({
-            receivedQuantity: Yup.number().required('Received quantity is required').min(0),
-            expirationDate: Yup.date().required('Expiration date is required'),
-            receivedDate: Yup.date().required('Received date is required')
-        })
-    })
+        then: Yup.string().required('Unit for menu item is required')
+    }),
 }).test('contextValidation', null, function(value) {
     return true;
 });

@@ -6,14 +6,15 @@ import { Plus, Pencil, CircleX } from 'lucide-react';
 import { useItemsContext } from "../../../contexts/ItemsContext";
 import useFilteredItems from "../../../Hooks/Items/useFilteredItems";
 import ConfirmDelete from "../../Common/ConfirmDelete/ConfirmDelete";
+import InventoryOrderForm from "./InventoryOrderForm";
 
 const Inventory = ({isEmpty}) => {
     const { inventoryItems ,inventoryCategories,itemsError,successMessage,clearMessages,deleteInventoryItem} = useItemsContext();
     const { filteredItems, selectedCategory, setSelectedCategory } = useFilteredItems(inventoryItems, inventoryCategories);
-    console.log(inventoryCategories)
     const [showIngredientForm, setShowIngredientForm] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showDelete, setShowDelete] = useState(false);
+    const [fromOrder, setFromOrder] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
 
     const handleEditClick = (product) => {
@@ -63,20 +64,21 @@ const Inventory = ({isEmpty}) => {
                         }}
                     />
                 )}
+
             </div>
             <div className="flex flex-col h-full w-full justify-center items-center">
-
-                    <div className="bg-secondary self-center  rounded-t-sm w-full md:w-fit flex flex-row overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
-                        {inventoryCategories.map(category => (
-                            <button
-                                key={category}
-                                className={`px-6 py-4 rounded-t-sm font-semibold  ${selectedCategory === category ? 'bg-white text-buttons' : ''}`}
-                                onClick={() => setSelectedCategory(category)}
-                            >
-                                {category}
-                            </button>
-                        ))}
-                    </div>
+                <div
+                    className="bg-secondary self-center rounded-t-sm w-full md:w-fit  flex flex-row overflow-x-hidden scrollbar-thin scrollbar-thumb-gray scrollbar-track-transparent">
+                    {inventoryCategories.map(category => (
+                        <button
+                            key={category}
+                            className={`px-6 py-3 rounded-t-sm font-semibold ${selectedCategory === category ? 'bg-white text-buttons' : ''} w-full`}
+                            onClick={() => setSelectedCategory(category)}
+                        >
+                            {category}
+                        </button>
+                    ))}
+                </div>
 
 
                 <div className="w-full flex flex-col bg-white p-5 rounded-b-sm">
@@ -99,7 +101,7 @@ const Inventory = ({isEmpty}) => {
                                 <ConfirmDelete
                                     isOpen={showDelete}
                                     onClose={() => setShowDelete(false)}
-                                    onConfirm={() => confirmDelete(product.id)}
+                                    onConfirm={() => confirmDelete(product.ingredientId)}
                                     name={product.name}
                                 />
                                 <div className="flex justify-between items-center">
@@ -116,7 +118,10 @@ const Inventory = ({isEmpty}) => {
                                     </span>
                                     <div className="grid grid-cols-1 md:grid-cols-3 text-nowrap gap-2 ">
                                         <Button
-                                            onClick={() => handleEditClick(product)}
+                                            onClick={() => {
+                                                handleEditClick(product)
+                                                window.scrollTo(0, 0);
+                                            }}
                                             className="bg-secondary  py-2 px-4  rounded-lg hover:bg-secondary-dark transition duration-300 flex flex-row"
                                         >
                                             Edit
@@ -124,12 +129,24 @@ const Inventory = ({isEmpty}) => {
                                         </Button>
                                         <Button
                                             className="bg-lime py-2 px-4 rounded-lg hover:bg-lime-dark transition duration-300"
+                                            onClick={() => {
+                                                setFromOrder(true);
+                                                setSelectedProduct(product);
+                                                window.scrollTo(0, 0);
+                                            }}
                                         >
                                             Add Stock
                                         </Button>
                                     </div>
                                 </div>
+                                {fromOrder && (
+                                    <InventoryOrderForm
+                                        onCancel={() => setFromOrder(false)}
+                                        ingredient={selectedProduct}
+                                    />
+                                )}
                             </Card>
+
                         ))}
                     </div>
 

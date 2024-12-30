@@ -17,6 +17,14 @@ class MenuService {
             console.log('Menu item data is valid');
 
             console.log('Adding/updating menu item to database...');
+            for (const ingredient of menuItemData.ingredients) {
+                const inventoryDocRef = db.collection('inventory')
+                    .doc(userId)
+                    .collection('inventoryItems')
+                    .doc(ingredient.ingredientId);
+                const inventoryDoc = await inventoryDocRef.get();
+
+            }
 
             // Reference to the menu items collection
             const menuItemsRef = db.collection('menus').doc(userId).collection('menuItems');
@@ -36,6 +44,7 @@ class MenuService {
                 console.log('Added new menu item');
                 return { success: true, message: 'New item added successfully' };
             }
+
         } catch (error) {
             console.error('Error adding/updating menu item:', error);
             return { success: false, message: error.message };

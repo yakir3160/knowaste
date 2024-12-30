@@ -8,6 +8,7 @@ export const ItemsProvider = ({ children }) => {
     const { userBaseData: user } = useUserContext();
     const token = localStorage.getItem('authToken');
     const [loadingItems, setLoadingItems] = useState(true);
+    const [success, setSuccess] = useState(null);
     const [itemsError, setItemsError] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -42,8 +43,9 @@ export const ItemsProvider = ({ children }) => {
                 setTimeout(() => setItemsError(null), 3000);
                 throw error;
             }
-
+            setSuccess(true);
             return data;
+
 
         } catch (error) {
             const errorMessage = error.message || 'Failed to complete operation';
@@ -79,7 +81,6 @@ export const ItemsProvider = ({ children }) => {
             setMenuItems(data.data);
             setCategories(data.categories);
         } catch (error) {
-            // Handle error appropriately
             setMenuItems([]);
             setCategories([]);
         } finally {
@@ -126,6 +127,9 @@ export const ItemsProvider = ({ children }) => {
         await apiCall(`inventory/${itemId}`, 'DELETE');
         await getInventoryItems(); // Refresh the list
     };
+    const addIngredientOrder = async (ingredientId,ingredientData) => {
+        return await apiCall(`inventory/add_order/${ingredientId}`, 'POST', ingredientData);
+    }
 
     // Initialize data
     useEffect(() => {
@@ -167,6 +171,7 @@ export const ItemsProvider = ({ children }) => {
         addInventoryItem,
         deleteInventoryItem,
         getInventoryItems,
+        addIngredientOrder,
     };
 
     return (

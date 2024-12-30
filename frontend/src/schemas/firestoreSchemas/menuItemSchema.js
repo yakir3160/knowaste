@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
 const menuItemSchema = Yup.object().shape({
+        categoryName: Yup.string().required('Category is required'),
         name: Yup.string()
             .required('Name is required')
             .min(2, 'Name must be at least 2 characters')

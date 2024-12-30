@@ -45,14 +45,6 @@ const IngredientsList = ({ isEditing }) => {
                                 <div className="w-24">
                                     <p className="text-sm text-gray-600">{ingredient?.unit}</p>
                                 </div>
-                                <Button
-                                    type="button"
-                                    className="text-errorRed p-1"
-                                    onClick={() => remove(index)}
-                                    disabled={!isEditing}
-                                >
-                                    <CircleX size={20} />
-                                </Button>
                             </div>
                         );
                     })}

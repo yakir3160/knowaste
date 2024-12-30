@@ -8,7 +8,7 @@ const Layout = ({ children, pageType }) => {
     const [isOpen, setIsOpen] = useState(true);
     const isAdminPanel = pageType === 'admin-panel';
 
-    const mainContentClass = isAdminPanel ? '' : 'pt-[100px] md:pt-[150px] pb-5 px-4 sm:px-6 md:px-8';
+    const mainContentClass = isAdminPanel ? '' : 'pt-[100px] md:pt-[150px] pb-10';
 
     const sidebarPadding = isOpen ? 'pl-0 md:pl-[300px] lg:pr-10' : 'pl-0 md:pl-[100px] lg:pr-10';
 
@@ -19,7 +19,7 @@ const Layout = ({ children, pageType }) => {
             ) : (
                 <Navbar />
             )}
-            <main className={`flex-1 flex flex-col  h-[100svh] items-center w-full ${mainContentClass} ${isAdminPanel ? `${sidebarPadding} mb-10` : ''}`}>
+            <main className={`flex-1 flex flex-col  h-[100vh] items-center w-full ${mainContentClass} ${isAdminPanel ? `${sidebarPadding} mb-10` : ''}`}>
                 {children}
                 <Outlet />
             </main>

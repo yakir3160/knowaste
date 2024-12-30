@@ -59,7 +59,7 @@ const GlobalField = ({
         ${type === 'textarea' ? 'resize-none' : ''}
         ${type === 'password' && 'font-semibold'}
         ${disabled ? 'cursor-not-allowed opacity-50' : ''}
-        ${type === 'select' && 'appearance-none'}
+        ${type === 'select' && 'appearance-none'}   
     `;
 
     const labelClasses = `
@@ -68,7 +68,7 @@ const GlobalField = ({
         duration-200 
         text-md
         pointer-events-none
-        ${(isFocused || hasValue || type === 'select')
+        ${(isFocused || hasValue || type === 'select' || type === 'date')
         ? '-top-6 left-2 text-titles'
         : 'top-4 left-4 text-gray'}
         ${disabled ? 'opacity-75' : ''}

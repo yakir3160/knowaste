@@ -9,57 +9,28 @@ import { CircleX } from "lucide-react";
 import Card from "../../../Common/Card/Card";
 import { useItemsContext } from "../../../../contexts/ItemsContext";
 
-const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrder = false, initialValues = null, isEditing = false }) => {
-    const { addInventoryItem, itemsError } = useItemsContext();
-    const [successMsg, setSuccessMsg] = useState('');
+const IngredientForm = ({ onCancel, initialValues = null, isEditing = false }) => {
+    const { addInventoryItem, itemsError} = useItemsContext();
+
 
     const defaultValues = {
         ingredientId: generateUniqueID(),
         name: '',
         categoryName: '',
         storageType: '',
-        pricePerUnit: null,
-        quantityPerUnit: null,
+        pricePerUnit: '',
+        quantityPerUnit: 'null',
         unit: '',
         allergens: [],
-        ...(isFromMenuItem && { quantityForItemMenu: '' }),
-        ...(isFromOrder && {
-            receivedQuantity: null,
-            expirationDate: new Date().toISOString().split('T')[0],
-            receivedDate: new Date().toISOString().split('T')[0]
-        }),
     };
 
-    const handleSubmit = async (values, { resetForm }) => {
+    const handleSubmit = async(values, resetForm ) => {
         console.log('Form submitted:', values);
-        if (isFromMenuItem) {
-            const menuItemIngredient = {
-                ingredientId: values.id,
-                name: values.name,
-                quantity: values.quantityForItemMenu,
-                unit: values.unit
-            };
-            onSubmit(menuItemIngredient);
-        } else if (isFromOrder) {
-            const orderIngredient = {
-                ...values,
-                receivedQuantity: values.receivedQuantity,
-                expirationDate: values.expirationDate,
-                receivedDate: values.receivedDate
-            };
-            onSubmit(orderIngredient);
-        }
         try {
-            const response =  addInventoryItem(values);
+            const response = await addInventoryItem(values);
             if (response) {
-                setSuccessMsg('Item added successfully');
-                setTimeout(
-                    () => {
-                        resetForm();
-                        onCancel();
-                    },
-                    3000
-                );
+                onCancel();
+                resetForm();
             }
         }
         catch (error) {
@@ -68,6 +39,7 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
     };
 
     return (
+
         <Card className="border-2 border-secondary p-6">
             <button
                 type="button"
@@ -79,29 +51,23 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
             <Formik
                 initialValues={initialValues || defaultValues}
                 validationSchema={ingredientSchema}
-                onSubmit={handleSubmit}
+                onSubmit={(values, { resetForm }) => handleSubmit(values, resetForm)}
                 enableReinitialize
             >
-                {({ values, setFieldValue, errors, touched }) => (
+                {({ values, setFieldValue}) => (
                     <Form className="space-y-4">
                         <h2 className="text-xl font-semibold text-titles">
                             {isEditing ? 'Edit Ingredient' : 'Add New Ingredient'}
                         </h2>
-                        {isFromOrder && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-2 border-lime p-3 rounded-sm">
-                                <GlobalField label="Received Quantity" type="number" name="receivedQuantity" />
-                                <GlobalField
-                                    label="Expiration Date"
-                                    type="date"
-                                    name="expirationDate"
-                                    min={new Date().toISOString().split('T')[0]}
-                                />
-                                <GlobalField label="Received Date" type="date" name="receivedDate" />
-                            </div>
-                        )}
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <GlobalField label="Name" type="text" name="name" className="text-buttons text-sm" />
+                            <GlobalField
+                                label="Name"
+                                type="text"
+                                name="name"
+                                className="text-buttons text-sm"
+                                value={values.name}
+                            />
                             <GlobalField
                                 label="Category"
                                 type="select"
@@ -145,28 +111,7 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
                                 label="Price per Unit"
                                 type="number"
                                 name="pricePerUnit" />
-                            {isFromMenuItem && (
-                                <>
-                                    <GlobalField
-                                        label="Quantity for Menu Item"
-                                        type="number"
-                                        name="quantityForItemMenu"
-                                        onFocus={() => setFieldValue('quantityForItemMenu', '')}
-                                    />
-                                    <GlobalField
-                                        label="Unit for Menu Item"
-                                        type="select"
-                                        name="unit"
-                                        options={[
-                                            { value: '', label: 'Select unit' },
-                                            ...measurementUnits.map(unit => ({
-                                                value: unit,
-                                                label: unit
-                                            }))
-                                        ]}
-                                    />
-                                </>
-                            )}
+
                         </div>
 
                         <div className="mt-4">
@@ -185,11 +130,6 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
                                 ))}
                             </div>
                         </div>
-                        {successMsg && (
-                            <Card className="text-green text-center mb-4">
-                                {successMsg}
-                            </Card>
-                        )}
 
                         {itemsError && (
                             <Card className="text-errorRed text-center">
@@ -198,7 +138,7 @@ const IngredientForm = ({ onSubmit, onCancel, isFromMenuItem = false, isFromOrde
                         )}
                         <div className="flex gap-2 justify-end mt-6">
                             <Button type="submit" className="bg-lime">
-                                {isEditing ? 'Update Ingredient' : isFromMenuItem ? 'Add to Menu Item' : 'Add Ingredient'}
+                                {isEditing ? 'Update Ingredient'  : 'Add Ingredient'}
                             </Button>
                         </div>
                     </Form>

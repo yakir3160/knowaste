@@ -144,7 +144,8 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                     type="text"
                                     name="name"
                                     className="text-titles text-xl font-semibold"
-                                    autoFocus={true}
+                                    value={values.name}
+
                                 />
                                 <GlobalField
                                     label="Price (₪)"
@@ -156,28 +157,40 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                 />
                             </div>
 
-                            <div className="mt-6">
-                                <div className="flex justify-between items-center ">
-                                    <h3 className="text-lg font-semibold">Ingredients</h3>
+                            <div className="mt-6 bg-white p-3 rounded-sm space-y-4">
+                                <div className="flex justify-between items-center py-3 ">
+                                    <h3 className="text-xl text-center text-titles font-semibold">Ingredients</h3>
 
                                     <Button
                                         type="button"
                                         onClick={() => setShowIngredientForm(true)}
-                                        className="text-sm flex flex-row"
+                                        className="text-sm flex flex-row border-2 border-lime"
                                     >
-                                        New Ingredient <Plus size={16} className="ml-2" />
+                                       Add New Ingredient <Plus size={16} className="ml-2" />
                                     </Button>
                                 </div>
+
                                 {values.ingredients?.map((ingredient, index) => (
-                                    <div key={index} className="grid grid-cols-1 md:grid-cols-4gap-4 mb-4 ">
-                                        <GlobalField
-                                            label="Ingredient"
-                                            type="select"
-                                            name={`ingredients.${index}.name`}
-                                            options={[
-                                                { value: '', label: 'Select Ingredient' },
-                                                ...inventoryItems.map(item => ({
-                                                    value: item.name,
+                                    <div className={`p-2 border-2 border-secondary rounded-sm`}>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const updatedIngredients = values.ingredients.filter((_, i) => i !== index);
+                                            setFieldValue('ingredients', updatedIngredients);
+                                        }}
+                                        className=" text-errorRed  w-fit px-2 "
+                                    >
+                                        <CircleX size={20}/>
+                                    </button>
+                                    <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 ">
+                                <GlobalField
+                                    label="Ingredient"
+                                    type="select"
+                                    name={`ingredients.${index}.name`}
+                                    options={[
+                                        {value: '', label: 'Select Ingredient'},
+                                        ...inventoryItems.map(item => ({
+                                            value: item.name,
                                                     label: item.name
                                                 }))
                                             ]}
@@ -211,16 +224,8 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                             value={ingredient.ingredientId}
 
                                         />
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                const updatedIngredients = values.ingredients.filter((_, i) => i !== index);
-                                                setFieldValue('ingredients', updatedIngredients);
-                                            }}
-                                            className=" text-errorRed  w-fit "
-                                        >
-                                            <CircleX size={20} />
-                                        </button>
+
+                                    </div>
                                     </div>
                                 ))}
                                 <Button
@@ -231,17 +236,6 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                     Add Ingredient
                                 </Button>
                             </div>
-                            {successMsg && (
-                                <Card className="text-green text-center mb-4">
-                                    {successMsg}
-                                </Card>
-                            )}
-
-                            {itemsError && (
-                                <Card className="text-errorRed text-center">
-                                    {itemsError}
-                                </Card>
-                            )}
 
                             <div className="flex mt-4">
                                 <Button
@@ -256,18 +250,18 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                     </Form>
                 )}
             </Formik>
+
             {showIngredientForm && (
-                <div className=" pt-3 flex items-center justify-center">
+                <div className=" p-4 flex items-center justify-center">
                     <div className="bg-white p-4 rounded-lg w-full max-w-2xl">
                         <IngredientForm
                             isFromMenuItem={true}
-                            onSubmit={handleIngredientSubmit}
+                            onSubmit={(ingredientValues) => handleIngredientSubmit( ingredientValues)}
                             onCancel={() => setShowIngredientForm(false)}
                         />
                     </div>
                 </div>
             )}
-
 
         </Card>
     );

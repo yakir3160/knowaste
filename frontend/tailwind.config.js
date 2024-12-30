@@ -56,12 +56,16 @@ module.exports = {
           '100%': { opacity: '1', transform: 'translateY(0)' }
         },
         slideIn: {
-          '0%': { transform: 'translateX(100%)', opacity: '0' },
-          '100%': { transform: 'translateX(0)', opacity: '1' }
+          '0%': { transform: 'translateX(-100px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
         },
         slideOut: {
           '0%': { transform: 'translateX(0)', opacity: '1' },
           '100%': { transform: 'translateX(100%)', opacity: '0' }
+        },
+        slideFromBottom: {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
         },
         borderRotate: {
           '0%, 100%': { backgroundPosition: '0% 50%' },
@@ -71,8 +75,9 @@ module.exports = {
       animation: {
         fadeIn: 'fadeIn 0.5s ease-in-out forwards',
         fadeInDown: 'fadeInDown 0.8s',
-        slideIn: 'slideIn 0.5s forwards',
+        slideIn: 'slideIn 0.8s ease-out forwards',
         slideOut: ' slideOut 0.5s forwards',
+        slideFromBottom: 'slideFromBottom 0.8s ease-out forwards',
         borderRotate: 'borderRotate 3s linear infinite',
       },
       animationDelay: {
@@ -97,6 +102,8 @@ module.exports = {
       transparent: 'transparent',
       half_transparent: 'rgba(248,251,239,0.64)',
     },
+
   },
+
   plugins: [tailwindHamburgers],
 };
