@@ -23,6 +23,7 @@ class MenuService {
                     .collection('inventoryItems')
                     .doc(ingredient.ingredientId);
                 const inventoryDoc = await inventoryDocRef.get();
+               // TODO: INCREMENT THE QUANTITY OF THE quantityForMenu according to the quantity of the ingredient used in the menu items and the minStockLevel (quantityForMenu times 5)
 
             }
 
