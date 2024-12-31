@@ -98,12 +98,7 @@ const Inventory = ({isEmpty}) => {
                                 >
                                     <CircleX/>
                                 </button>
-                                <ConfirmDelete
-                                    isOpen={showDelete}
-                                    onClose={() => setShowDelete(false)}
-                                    onConfirm={() => confirmDelete(product.ingredientId)}
-                                    name={product.name}
-                                />
+
                                 <div className="flex justify-between items-center">
                                     <strong className="text-titles text-2xl font-semibold">{product.name}</strong>
                                     <span className="text-lg">{product.category}</span>
@@ -138,7 +133,14 @@ const Inventory = ({isEmpty}) => {
                                             Add Stock
                                         </Button>
                                     </div>
+
                                 </div>
+                                <ConfirmDelete
+                                    isOpen={showDelete}
+                                    onClose={() => setShowDelete(false)}
+                                    onConfirm={() => confirmDelete(product.ingredientId)}
+                                    name={product.name}
+                                />
                                 {fromOrder && (
                                     <InventoryOrderForm
                                         onCancel={() => setFromOrder(false)}
