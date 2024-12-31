@@ -14,7 +14,11 @@ export const ItemsProvider = ({ children }) => {
     const [categories, setCategories] = useState([]);
     const [inventoryItems, setInventoryItems] = useState([]);
     const [inventoryCategories, setInventoryCategories] = useState([]);
+    const [salesReports, setSalesReports] = useState([]);
+    const [wasteReports, setWasteReports] = useState([]);
 
+    console.log('wasteReports:', wasteReports);
+    console.log('salesReports:', salesReports);
     // API calls with error handling
     const apiCall = async (endpoint, method = 'GET', body = null) => {
         try {
@@ -63,8 +67,29 @@ export const ItemsProvider = ({ children }) => {
 
     // Reports
     const addReport = async (report, reportType) => {
-        return await apiCall(`${reportType}/add-report`, 'POST', report);
+        const response = await apiCall(`reports/${reportType}/add`, 'POST', report);
+        if (reportType === 'waste') {
+            setWasteReports([...wasteReports, response.data]);
+        } else if (reportType === 'sales') {
+            setSalesReports([...salesReports, response.data]);
+        }
     };
+    const getReports = async (reportType) => {
+        const response = await apiCall(`reports/${reportType}/list`);
+        if (reportType === 'waste') {
+            setWasteReports(response.data.data);
+        } else if (reportType === 'sales') {
+            setSalesReports(response.data.data);
+        }
+    }
+    const deleteReport = async (reportType,reportId) => {
+         await apiCall(`reports/${reportType}/${reportId}`, 'DELETE');
+        if (reportType === 'waste') {
+            setWasteReports(wasteReports.filter(report => report.reportId !== reportId));
+        } else if (reportType === 'sales') {
+            setSalesReports(salesReports.filter(report => report.reportId !== reportId));
+        }
+    }
 
     // Menu Items
     const addMenuItem = async (itemData) => {
@@ -137,7 +162,9 @@ export const ItemsProvider = ({ children }) => {
             try {
                 await Promise.all([
                     getMenuItems(),
-                    getInventoryItems()
+                    getInventoryItems(),
+                    getReports('waste'),
+                    getReports('sales')
                 ]);
             } catch (error) {
                 console.error('Error initializing data:', error);
@@ -150,6 +177,8 @@ export const ItemsProvider = ({ children }) => {
         return () => {
             setMenuItems([]);
             setInventoryItems([]);
+            setWasteReports([]);
+            setSalesReports([]);
         };
 
     }, [user, token]);
@@ -163,10 +192,13 @@ export const ItemsProvider = ({ children }) => {
         setInventoryCategories,
         loadingItems,
         itemsError,
+        wasteReports,
+        salesReports,
         addMenuItem,
         deleteMenuItem,
         getMenuByCategory,
         addReport,
+        deleteReport,
         getMenuItems,
         addInventoryItem,
         deleteInventoryItem,

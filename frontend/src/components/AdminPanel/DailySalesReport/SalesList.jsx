@@ -1,7 +1,7 @@
 import Card from "../../Common/Card/Card";
 import { tableStyles } from '../../../css/tableStyles';
 
-const SalesList = ({ sales }) => {
+const SalesList = ({ salesReports }) => {
     return (
         <Card>
             <div className="overflow-x-auto">
@@ -17,21 +17,21 @@ const SalesList = ({ sales }) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {sales.map((sale, index) => (
-                        <tr key={index} className="bg-white border-b">
+                    {salesReports.map((sale) => (
+                        <tr key={sale.id} className="bg-white border-b">
                             <td className={tableStyles.tableCellClass}>{sale.date}</td>
                             <td className={tableStyles.tableCellClass}>{sale.totalSalesPreTax}</td>
                             <td className={tableStyles.tableCellClass}>{sale.totalSales}</td>
 
                             {/* שדות עבור המנות והכמויות */}
                             <td className={tableStyles.tableCellClass}>
-                                {sale.items.map((dish, dishIndex) => (
-                                    <div key={dishIndex}>{dish.menuItem}</div>
+                                {sale.items.map((dish,index) => (
+                                    <div className={`border-b-2 border-gray py-2`} key={dish.id}>{index+1}. {dish.menuItem}</div>
                                 ))}
                             </td>
                             <td className={tableStyles.tableCellClass}>
                                 {sale.items.map((dish, dishIndex) => (
-                                    <div key={dishIndex}>{dish.quantity}</div>
+                                    <div className={`border-b-2 border-gray py-2`}  key={dishIndex}>{dish.quantity}</div>
                                 ))}
                             </td>
                         </tr>

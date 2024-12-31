@@ -6,21 +6,16 @@ import { wasteReportSchema } from "./WasteReportModel.js";
 import { REPORT_TYPES, REPORT_STATUSES } from "./ReportModel.js";
 export { calculateSalesSummary, calculateWasteSummary } from './helpers/reportCalculations.js';
 
-const REPORT_SCHEMAS = {
-    [REPORT_TYPES.SALES]: salesReportSchema,
-    [REPORT_TYPES.WASTE]: wasteReportSchema
-};
-
 const getSchema = type => {
-    if (type.endsWith('Report')) {
-        const reportType = type.replace('Report', '').toLowerCase();
-        return REPORT_SCHEMAS[reportType];
-    }
     switch (type) {
         case 'menu':
             return menuItemSchema;
         case 'ingredient':
             return ingredientSchema;
+        case 'salesReport':
+            return salesReportSchema;
+        case 'wasteReport':
+            return wasteReportSchema;
         default:
             return null;
     }
@@ -28,6 +23,7 @@ const getSchema = type => {
 
 export const validateSchema = async (type, data) => {
     try {
+        console.log('Validating schema:', type);
         const schemaToValidate = getSchema(type);
         if (!schemaToValidate) {
             return {
@@ -40,6 +36,11 @@ export const validateSchema = async (type, data) => {
             abortEarly: false,
             stripUnknown: true
         });
+        console.log('Schema validation successful');
+        return {
+            success: true
+        };
+
 
     } catch (error) {
         console.error('Schema validation error:', error);
@@ -62,6 +63,5 @@ export const validateSchema = async (type, data) => {
 
 export {
     REPORT_TYPES,
-    REPORT_STATUSES,
-    REPORT_SCHEMAS
+    REPORT_STATUSES
 };

@@ -17,6 +17,10 @@ class ReportService {
     async addOrUpdateReport(type, userId, reportData) {
         try {
             console.log(`Starting add/update ${type} report process`);
+            console.log('reportData:', reportData);
+            console.log('userId:', userId);
+            console.log('type:', type);
+
 
             // Validate based on report type
             const validation = await validateSchema(`${type}Report`, reportData);
@@ -24,16 +28,15 @@ class ReportService {
                 throw new Error(validation.error);
             }
 
-            // Calculate summary based on report type
-            const calculateSummary = this.getCalculationFunction(type);
-            const summary = calculateSummary(reportData.items);
+            // // Calculate summary based on report type
+            // const calculateSummary = this.getCalculationFunction(type);
+            // const summary = calculateSummary(reportData.items);
 
             const now = new Date();
             const enrichedReportData = {
                 ...reportData,
                 updatedAt: now,
                 status: reportData.status || 'draft',
-                summary
             };
 
             const reportRef = db
@@ -44,8 +47,11 @@ class ReportService {
 
             const existingReport = await reportRef.get();
 
+
+
             if (existingReport.exists) {
                 await reportRef.update(enrichedReportData);
+                console.log(`${type} report updated successfully`)
                 return {
                     success: true,
                     message: `${type} report updated successfully`,
@@ -53,6 +59,7 @@ class ReportService {
                 };
             } else {
                 await reportRef.set(enrichedReportData);
+                console.log(`New ${type} report added successfully`)
                 return {
                     success: true,
                     message: `New ${type} report created successfully`,
@@ -108,6 +115,12 @@ class ReportService {
     }
 
     async deleteReport(type, userId, reportId) {
+        console.log(`Attempting to delete ${type} report...`, {
+            userId,
+            reportId,
+            timestamp: new Date().toISOString()
+        });
+
         try {
             await db
                 .collection('users').doc(userId)
@@ -116,16 +129,27 @@ class ReportService {
                 .doc(reportId)
                 .delete();
 
+            console.log(`Successfully deleted ${type} report`, {
+                userId,
+                reportId,
+                timestamp: new Date().toISOString()
+            });
+
             return {
                 success: true,
                 message: `${type} report deleted successfully`
             };
         } catch (error) {
-            console.error(`Error deleting ${type} report:`, error);
+            console.error(`Error deleting ${type} report:`, {
+                userId,
+                reportId,
+                error,
+                timestamp: new Date().toISOString()
+            });
+
             return { success: false, error: error.message };
         }
     }
-
     async updateReportStatus(type, userId, reportId, newStatus) {
         try {
             await db

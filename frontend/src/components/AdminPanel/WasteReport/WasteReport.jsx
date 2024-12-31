@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
 import { Plus, Send, CircleX } from 'lucide-react';
 import AdminPanelContainer from "../AdminPanelContainer";
 import GlobalField from "../../Common/inputs/GlobalField";
@@ -8,82 +7,76 @@ import Card from '../../Common/Card/Card';
 import Button from '../../Common/Button/Button';
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { v4 as generateUniqueID } from 'uuid';
-
-
 import { tableStyles } from '../../../css/tableStyles';
 import TabNavigation from "../../Common/TabNavigation/TabNavigation";
-import {useItemsContext} from "../../../contexts/ItemsContext";
+import { useItemsContext } from "../../../contexts/ItemsContext";
 import {measurementUnits} from "../../../constants/Constants";
+import { wasteReportSchema } from '../../../schemas/firestoreSchemas/wasteReportSchema';
+import WasteReportsHistory from "./WasteReportsHistory";
 
-
-const validationSchema = Yup.object().shape({
-    items: Yup.array().of(
-        Yup.object().shape({
-            ingredientName: Yup.string().required("Ingredient is required"),
-            quantity: Yup.number()
-                .required("Quantity is required")
-                .positive("Must be positive"),
-            reason: Yup.string().required("Reason is required"),
-            cost: Yup.number().required("Cost is required").min(0, "Cost must be positive"),
-        })
-    ).min(1, 'At least one item is required')
-});
+const WASTE_REASONS = [
+    { value: 'expired', label: 'Expired' },
+    { value: 'damaged', label: 'Damaged' },
+    { value: 'quality', label: 'Quality Issues' },
+    { value: 'overproduction', label: 'Overproduction' },
+    { value: 'storage', label: 'Storage Error' },
+    { value: 'other', label: 'Other' }
+];
 
 const initialValues = {
+    date: new Date().toISOString().split('T')[0],
     items: [
         {
-            id: 0,
-            ingredientName: "",
-            quantity: 1,
-            unit: "",
-            reason: "",
+            ingredientId: '',
+            ingredientName: '',
+            quantity: 0,
+            unit: '',
+            reason: '',
             cost: 0
         }
     ]
 };
 
 const WasteReport = () => {
-    const { inventoryItems } = useItemsContext();
-    const { user } = useAuthContext();
-    const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0]);
+    const { inventoryItems ,wasteReports} = useItemsContext();
     const [activeTab, setActiveTab] = useState('Items');
     const [saving, setSaving] = useState(false);
-    const {addReport} = useItemsContext();
+    const { addReport } = useItemsContext();
 
-    const reasons = [
-        "Expired",
-        "Damaged",
-        "Quality Issues",
-        "Overproduction",
-        "Storage Error",
-        "Other"
-    ];
+
 
     const handleSubmitReport = async (values, { resetForm }) => {
         try {
             setSaving(true);
             const reportData = {
-                date: reportDate,
+                reportType: 'waste',
+                reportId: generateUniqueID(),
+                date: values.date,
                 items: values.items,
-                userId: user.id
+                summary: {
+                    totalItems: values.items.length,
+                    totalCost: values.items.reduce((acc, item) => acc + (Number(item.cost) || 0), 0)
+                },
             };
+            console.log('Submitting report:', reportData);
             await addReport(reportData, 'waste');
-            resetForm({ values: initialValues });
+
         } catch (error) {
             console.error('Failed to submit report:', error);
         } finally {
             setSaving(false);
+            resetForm();
         }
     };
 
     return (
-        <AdminPanelContainer pageTitle={"Waste Report"} layout=" p-2 flex flex-col">
+        <AdminPanelContainer pageTitle="Waste Report" layout="p-2 flex flex-col">
             <TabNavigation tabs={['Items', 'History']} onTabChange={(tab) => setActiveTab(tab)} />
             {activeTab === 'Items' && (
-                <Card className="bg-white border-none h-full ">
+                <Card className="bg-white border-none h-full">
                     <Formik
                         initialValues={initialValues}
-                        validationSchema={validationSchema}
+                        validationSchema={wasteReportSchema}
                         onSubmit={handleSubmitReport}
                     >
                         {({ values, setFieldValue }) => (
@@ -92,16 +85,15 @@ const WasteReport = () => {
                                     <div className="flex justify-between items-center">
                                         <GlobalField
                                             type="date"
-                                            name="reportDate"
+                                            name="date"
                                             label="Report Date"
-                                            value={reportDate}
+                                            value={values.date}
                                             max={new Date().toISOString().split('T')[0]}
-                                            onChange={(e) => setReportDate(e.target.value)}
+                                            onChange={(e) => setFieldValue('date', e.target.value)}
                                         />
                                         <div className="text-xl font-bold text-center">
                                             <span className="text-titles">
-                                                    Total Cost:
-                                            ₪{values.items.reduce((acc, item) => acc + (item.cost || 0), 0).toFixed(2)}
+                                                Total Cost: ₪ {values.items.reduce((acc, item) => acc + (Number(item.cost) || 0), 0).toFixed(2)}
                                             </span>
                                         </div>
                                     </div>
@@ -109,7 +101,7 @@ const WasteReport = () => {
                                         <table className="w-full">
                                             <thead>
                                             <tr className="bg-secondary">
-                                            <th className={tableStyles.thClass}>Ingredient</th>
+                                                <th className={tableStyles.thClass}>Ingredient</th>
                                                 <th className={tableStyles.thClass}>Quantity</th>
                                                 <th className={tableStyles.thClass}>Unit</th>
                                                 <th className={tableStyles.thClass}>Reason</th>
@@ -119,13 +111,13 @@ const WasteReport = () => {
                                             </thead>
                                             <tbody>
                                             {values.items.map((item, index) => (
-                                                <tr key={item.ingredientId}>
+                                                <tr key={item.ingredientId || index}>
                                                     <td className={tableStyles.tableCellClass}>
                                                         <GlobalField
                                                             name={`items.${index}.ingredientName`}
                                                             type="select"
                                                             options={[
-                                                                { value: '', label: 'Select Ingredient' },
+                                                                {value: '', label: 'Select Ingredient'},
                                                                 ...inventoryItems?.map(ing => ({
                                                                     value: ing.name,
                                                                     label: ing.name
@@ -134,46 +126,50 @@ const WasteReport = () => {
                                                             onChange={(e) => {
                                                                 const selectedIngredient = inventoryItems.find(ing => ing.name === e.target.value);
                                                                 setFieldValue(`items.${index}.ingredientName`, e.target.value);
+                                                                setFieldValue(`items.${index}.ingredientId`, selectedIngredient?.ingredientId || '');
                                                                 setFieldValue(`items.${index}.unit`, selectedIngredient?.unit || '');
                                                             }}
                                                         />
                                                     </td>
+
                                                     <td className={tableStyles.tableCellClass}>
                                                         <GlobalField
                                                             name={`items.${index}.quantity`}
                                                             type="number"
                                                             min="0"
-                                                            step="0.01"
+                                                            step="0.1"
                                                         />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
-                                                       <GlobalField
-                                                           type={'select'}
-                                                              name={`items.${index}.unit`}
-                                                           options={[
-                                                               { value: '', label: 'Select unit' },
-                                                               ...measurementUnits.map(unit => ({
-                                                                   value: unit,
-                                                                   label: unit
-                                                               }))
-                                                           ]}
-                                                       />
+                                                        <GlobalField
+                                                            type="select"
+                                                            name={`items.${index}.unit`}
+                                                            options={[
+                                                                {value: '', label: 'Select unit'},
+                                                                ...measurementUnits.map(unit => ({
+                                                                    value: unit,
+                                                                    label: unit
+                                                                }))
+                                                            ]}
+                                                        />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
                                                         <GlobalField
                                                             name={`items.${index}.reason`}
                                                             type="select"
                                                             options={[
-                                                                { value: '', label: 'Select Reason' },
-                                                                ...reasons.map(reason => ({
-                                                                    value: reason,
-                                                                    label: reason
-                                                                }))
+                                                                {value: '', label: 'Select Reason'},
+                                                                ...WASTE_REASONS
                                                             ]}
                                                         />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
-
+                                                        <GlobalField
+                                                            name={`items.${index}.cost`}
+                                                            type="number"
+                                                            min="0"
+                                                            step="0.01"
+                                                        />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
                                                         <button
@@ -194,15 +190,21 @@ const WasteReport = () => {
                                         </table>
                                     </div>
 
-                                    <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 p-5 rounded-b-sm border-2 border-secondary border-t-2 border-t-transparent">
+                                    <div
+                                        className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 p-5 rounded-b-sm border-2 border-secondary border-t-2 border-t-transparent">
                                         <Button
                                             type="button"
                                             onClick={() => {
                                                 const newItem = {
-                                                    ...initialValues.items[0],
-                                                    id: generateUniqueID(),
+                                                    ingredientId: '',
+                                                    ingredientName: '',
+                                                    quantity: 0,
+                                                    unit: '',
+                                                    reason: '',
+                                                    cost: 0
                                                 };
-                                                setFieldValue('items', [...values.items, newItem]);
+                                                const newItems = [...values.items, newItem];
+                                                setFieldValue('items', newItems);
                                             }}
                                             className="flex items-center w-fit"
                                             disabled={saving}
@@ -211,14 +213,13 @@ const WasteReport = () => {
                                             <Plus size={20} className="ml-2" />
                                         </Button>
 
-                                        <div
-                                            className=" w-fit rounded-sm grid grid-cols-2 md:grid-cols-4  space-x-2 bg-white border border-secondary">
+                                        <div className="w-fit rounded-sm grid grid-cols-2 md:grid-cols-4 space-x-2 bg-white border border-secondary">
                                             <span className="text-lg text-titles font-semibold self-center pl-5">Export to:</span>
                                             <Button type="button" className="shadow-none" disabled={saving}>CSV</Button>
-                                            <Button type="button" className="shadow-none"
-                                                    disabled={saving}>Excel</Button>
+                                            <Button type="button" className="shadow-none" disabled={saving}>Excel</Button>
                                             <Button type="button" className="shadow-none" disabled={saving}>PDF</Button>
                                         </div>
+
                                         <div className="flex gap-4 justify-center md:justify-end">
                                             <Button
                                                 type="submit"
@@ -229,7 +230,6 @@ const WasteReport = () => {
                                                 <Send size={20} className="ml-2"/>
                                             </Button>
                                         </div>
-
                                     </div>
                                 </div>
                             </Form>
@@ -237,8 +237,11 @@ const WasteReport = () => {
                     </Formik>
                 </Card>
             )}
-
-            {/*{activeTab === 'History' && <LeftoversList leftovers={leftovers}/>}*/}
+            {activeTab === 'History' && (
+                <WasteReportsHistory
+                    wasteReports={wasteReports}
+                />
+            )}
         </AdminPanelContainer>
     );
 };
