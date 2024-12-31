@@ -3,6 +3,7 @@
     background-clip: text;
     -webkit-background-clip: text;
     transition: color  0.9s ease-in-out;
+    text-shadow: var(--lime-color) 1px 1px 0;
 }
 .w {
     text-shadow: var(--titles-color) 1px 1px 0;

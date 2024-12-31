@@ -12,7 +12,6 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
     const combinedClassName = useMemo(() => {
         // בודקים האם קיימים צבע טקסט, צל, צבע רקע וריפוד מתוך className או style
         const hasTextColor = className.includes('text-') || style.color;
-        const hasShadow = className.includes('shadow-') || style.boxShadow;
         const hasHover = className.includes('hover:') || style.hover;
         const hasBgColor = className.includes('bg-') || style.backgroundColor;
         const hasPadding = className.includes('p-') || style.Padding;
@@ -27,9 +26,8 @@ const Button = ({children, className = '', style = {}, disabled, to, state, onCl
           hover:text-buttons 
         
           ${!hasBgColor ? 'bg-secondary' : ''} 
-          ${!hasHover ? 'hover:text-buttons hover:shadow-button-hover  transition-hover duration-500' : ''}
+          ${!hasHover ? 'hover:text-buttons hover:scale-95 transition-hover duration-500' : ''}
           ${!hasTextColor ? 'text-titles' : ''} 
-          ${!hasShadow ? 'shadow-outer-custom' : ''} 
           ${!hasPadding ? 'px-[17px] py-[13px]' : ''} 
           ${!hasBorderRadius ? 'rounded-sm' : ''}
         `.trim();

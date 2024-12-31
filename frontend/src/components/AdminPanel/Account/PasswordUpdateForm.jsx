@@ -22,7 +22,7 @@ const PasswordUpdateForm = () => {
 
 
     return (
-        <div className={`flex flex-col  rounded-sm  w-fit`}>
+        <div className={`flex flex-col rounded-sm h-full bg-cards space-y-2 w-full`}>
             <Card className="w-full">
                 <h3 className="text-titles text-3xl p-3 text-center">Update Password</h3>
                 <Formik
@@ -45,7 +45,7 @@ const PasswordUpdateForm = () => {
                     onSubmit={(values,{setSubmitting,resetForm}) => { updatePasswordWithVerification(values.currentPassword, values.password,{ setSubmitting, resetForm });}}
                 >
                     {({ handleChange, handleSubmit, values, isSubmitting }) => (
-                        <Form className="grid grid-cols-1 gap-4 h-fit relative" onSubmit={handleSubmit}>
+                        <Form className="grid grid-cols-1 h-fit relative" onSubmit={handleSubmit}>
                             <div className="space-y-4">
                                 <GlobalField
                                     name="currentPassword"

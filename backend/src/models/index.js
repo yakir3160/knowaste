@@ -41,8 +41,6 @@ export const validateSchema = async (type, data) => {
             stripUnknown: true
         });
 
-        console.log('Schema validation successful');
-        return { success: true };
     } catch (error) {
         console.error('Schema validation error:', error);
         if (error.inner && error.inner.length > 0) {

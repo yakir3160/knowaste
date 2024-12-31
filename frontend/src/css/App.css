@@ -1,5 +1,4 @@
-/* Font imports */
-@import url("https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Inter:wght@500&family=Jost:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Jost:wght@300;400;500;600;700&display=swap");
 
 /* Tailwind directives */
 @tailwind base;
@@ -9,10 +8,10 @@
 /* Custom styles */
 :root {
   --base-color: #fefff6;
-  --bs-card-bg: #f8fcf0;
+  --bs-card-bg: #f7faf1;
   --buttons-color: #3B763B;
   --titles-color: #2A522A;
-  --secondary-color: #eff5de;
+  --secondary-color: #EFF5DEFF;
   --lime-color: #b5f517;
   --errorRed: #e30b0b;
   --errorLightRed: #fde8e8;
@@ -22,12 +21,11 @@
   --bs-white: white;
 }
 
-
 .dark {
   --base-color: #2A522A;
   --buttons-color: #E4EBCF;
   --titles-color: #F0F6E1;
-  --secondary-color: #E4EBCF;
+  --secondary-color: rgb(228, 235, 207);
   --lime-color: #aae800;
 }
 
@@ -37,25 +35,26 @@ html, body, #root {
   height: 100vh;
   margin: 0;
   padding: 0;
+  font-family: 'Jost', sans-serif; /* Keep Jost as default font */
 }
 
 body {
   background-color: var(--base-color);
-  font-family: Jost, sans-serif;
+
   scroll-behavior: smooth;
   position: relative;
   width: 100%;
   min-height: 100vh;
-
 }
 
-h1, h2, h3, h4, h5, h6, p, button {
+
+p, button {
   color: var(--titles-color);
 }
-
 
 @media (prefers-color-scheme: dark) {
   body {
     background-color: var(--base-color);
   }
 }
+

@@ -8,7 +8,7 @@ const GoogleSignInBtn = ({ isSubmitting }) => {
     return (
         <Button
             className="relative bg-gradient-to-r from-[#4285F4] via-[#DB4437] to-[#F4B400] p-0.5 rounded-md
-                       animate-borderRotate transition-all duration-300 hover:p-3"
+                       animate-borderRotate transition-all duration-300 hover:p-3 w-full"
             type="button"
             onClick={signInWithGoogle}
             disabled={isSubmitting}

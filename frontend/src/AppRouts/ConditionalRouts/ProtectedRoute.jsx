@@ -8,7 +8,7 @@ import {useItemsContext} from "../../contexts/ItemsContext";
 
 const ProtectedRoute = ({ element }) => {
     const { user,loading } = useAuthContext();
-    if(loading )
+    if(loading)
         return <Loading />;
 
     if (!user)

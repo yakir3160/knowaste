@@ -11,7 +11,6 @@ const RegisterForm = ({ handleChange, isSubmitting, validatePassword }) => {
                 name="businessName"
                 label="Business Name"
                 type="text"
-                autoFocus={true}
             />
             <GlobalField
                 name="contactName"

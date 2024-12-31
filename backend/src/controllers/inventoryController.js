@@ -24,13 +24,39 @@ export const addOrUpdateInventoryItem = async (req, res) => {
         });
     }
 }
-export const getInventoryItems = async (req, res) => {
+export const addNewOrder = async (req, res) => {
     try {
-        const inventoryItems = await InventoryService.getInventoryItems();
+        const userId = req.user.id;
+        const  ingredientId  = req.params.id;
+        const  orderData  = req.body;
+        const result = await InventoryService.addNewOrder(userId,ingredientId,orderData);
+        if (!result.success) {
+            throw {
+                status: 500,
+                message: result.error
+            };
+        }
         res.status(200).json({
             success: true,
-            data: inventoryItems,
-            error: "Inventory items fetched successfully"
+            data: result,
+            error: "Order added successfully"
+        });
+    } catch (error) {
+        console.error("Add order error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            error: error.message || "Error adding order"
+        });
+    }
+}
+export const getInventoryItems = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const result = await InventoryService.getInventoryItems(userId);
+        res.status(200).json({
+            success: true,
+            data : result.data,
+            categories: result.categories,
         });
     } catch (error) {
         console.error("Get inventory items error:", error);
@@ -42,8 +68,15 @@ export const getInventoryItems = async (req, res) => {
 }
 export const deleteInventoryItem = async (req, res) => {
     try {
-        const { itemId } = req.body;
-        const result = await InventoryService.deleteInventoryItem(itemId);
+        const userId = req.user.id;
+        const inventoryItemId  = req.params.id;
+        const result = await InventoryService.deleteInventoryItem(userId,inventoryItemId);
+        if (!result) {
+            throw {
+                status: 500,
+                message: "Failed to delete inventory item"
+            };
+        }
         res.status(200).json({
             success: true,
             data: result,
@@ -54,23 +87,6 @@ export const deleteInventoryItem = async (req, res) => {
         res.status(error.status || 500).json({
             success: false,
             error: error.message || "Error deleting inventory item"
-        });
-    }
-}
-export const updateInventoryItem = async (req, res) => {
-    try {
-        const { itemId, newDetails } = req.body;
-        const result = await InventoryService.updateInventoryItem(itemId, newDetails);
-        res.status(200).json({
-            success: true,
-            data: result,
-            error: "Inventory item updated successfully"
-        });
-    } catch (error) {
-        console.error("Update inventory item error:", error);
-        res.status(error.status || 500).json({
-            success: false,
-            error: error.message || "Error updating inventory item"
         });
     }
 }

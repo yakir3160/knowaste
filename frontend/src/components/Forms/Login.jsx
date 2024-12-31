@@ -94,7 +94,7 @@ const Login = () => {
                                         {getDisplayError()}
                                     </div>
 
-                                    <div className="flex flex-col items-center justify-center p-2 my-2 h-fit">
+                                    <div className="flex flex-col items-center justify-center p-2  h-fit">
                                         <button
                                             type="button"
                                             onClick={() => handlePasswordReset(values)}
@@ -126,13 +126,18 @@ const Login = () => {
                                                         loop
                                                         src={loadingAnimation}
                                                         className="size-6"
-                                                        />
+                                                    />
                                                 </>
                                             ) : (
                                                 'Login'
                                             )}
                                         </Button>
-                                        <GoogleSignInBtn isSubmitting={isSubmitting} />
+                                        <div className="flex items-center">
+                                            <div className="flex-1 border-t border-gray"></div>
+                                            <span className="px-4 text-gray">or</span>
+                                            <div className="flex-1 border-t border-gray"></div>
+                                        </div>
+                                        <GoogleSignInBtn isSubmitting={isSubmitting}/>
                                     </div>
                                     <div className="flex flex-row items-center p-2 m-2 mt-2 gap-2 h-fit">
                                         <p className="text-center my-4">Don't have an account?</p>

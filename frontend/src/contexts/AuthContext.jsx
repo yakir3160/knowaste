@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import {GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
-
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from "../firebaseConfig";
-import {useUserData} from "../Hooks/User/useUserData";
+
 const AuthContext = createContext();
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||  'http://localhost:5002';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5002';
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -17,72 +16,87 @@ export const AuthProvider = ({ children }) => {
     const [emailSent, setEmailSent] = useState(false);
 
     const navigate = useNavigate();
+
+    // Centralized API call handler
+    const apiCall = async (endpoint, method = 'GET', body = null, customHeaders = {}) => {
+        try {
+            const headers = {
+                ...(body && { 'Content-Type': 'application/json' }),
+                ...customHeaders
+            };
+
+            const config = {
+                method,
+                headers,
+                ...(body && { body: JSON.stringify(body) })
+            };
+
+            const response = await fetch(`${API_BASE_URL}/api/auth/${endpoint}`, config);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'An unexpected error occurred');
+            }
+
+            return data;
+        } catch (error) {
+            console.error(`API Error (${endpoint}):`, error);
+            throw error;
+        }
+    };
+
+    // Initialize authentication state
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if(token) {
-            fetch(`${API_BASE_URL}/api/auth/me`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Not authorized');
-                    }
-                    return response.json();
-                })
-                .then(userData => {
-                    setUser(userData.user);
-                    setToken(token);
-                })
-                .catch(error => {
-                    console.error('Error fetching user data:', error.message);
-                    setUser(null);
-                    localStorage.removeItem('authToken');
-                    setFirebaseToken(null);
-                })
-                .finally(() => setLoading(false));
-        }
-        else {
-            setLoading(false);
-        }
+        const initializeAuth = async () => {
+            const storedToken = localStorage.getItem('authToken');
+
+            if (!storedToken) {
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const userData = await apiCall('me', 'GET', null, {
+                    Authorization: `Bearer ${storedToken}`
+                });
+
+                setUser(userData.user);
+                setToken(storedToken);
+            } catch (error) {
+                setUser(null);
+                setFirebaseToken(null);
+                localStorage.removeItem('authToken');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        initializeAuth();
     }, []);
 
     const clearAuthError = () => setAuthError(null);
 
+    // Authentication actions
     const register = async (values, { setSubmitting, resetForm }) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(values),
-            });
+            clearAuthError();
+            const userData = await apiCall('register', 'POST', values);
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                if (response.status === 409) {
-                    setAuthError('This email is already registered. Please login to continue.');
-                    navigate('/auth', {
-                        state: {
-                            showRegister: false,
-                            email: values.email,
-                        },
-                    });
-                } else {
-                    setAuthError(errorData.error || 'An unexpected error occurred.');
-                }
-                throw new Error(response.statusText);
-            }
-
-            const userData = await response.json();
             setUser(userData.user);
             resetForm();
             navigate('/admin-panel');
         } catch (error) {
-            console.error('Error during registration:', error.message);
-            setAuthError(error.message || 'An error occurred during registration. Please try again.');
+            if (error.message.includes('409')) {
+                setAuthError('This email is already registered. Please login to continue.');
+                navigate('/auth', {
+                    state: {
+                        showRegister: false,
+                        email: values.email,
+                    },
+                });
+            } else {
+                setAuthError(error.message);
+            }
         } finally {
             setSubmitting(false);
         }
@@ -91,32 +105,21 @@ export const AuthProvider = ({ children }) => {
     const login = async (values, { setSubmitting, resetForm }) => {
         try {
             clearAuthError();
-            const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: values.email,
-                    password: values.password
-                }),
+            const userData = await apiCall('login', 'POST', {
+                email: values.email,
+                password: values.password
             });
-            const userData = await response.json();
-            console.log('Response data:', userData);
-            if (!response.ok) {
-                    setAuthError(userData.error || 'An unexpected error occurred.');
-                    return;
-            }
+
             if (userData.token) {
                 localStorage.setItem('authToken', userData.token);
                 setToken(userData.token);
             }
+
             setFirebaseToken(userData.firebaseToken);
             setUser(userData.user);
             resetForm();
             navigate('/admin-panel');
         } catch (error) {
-            console.error('Login error:', error.message);
             const errorMessages = {
                 'auth/invalid-credential': 'Invalid email or password.',
                 'auth/user-disabled': 'This account has been disabled.',
@@ -129,31 +132,35 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signInWithGoogle = async () => {
-
-        const provider = new GoogleAuthProvider();
         try {
+            const provider = new GoogleAuthProvider();
+            provider.addScope('profile');
+            provider.addScope('email');
+            provider.setCustomParameters({ prompt: 'consent' });
+
             const result = await signInWithPopup(auth, provider);
             const token = await result.user.getIdToken();
-            const response = await fetch(`${API_BASE_URL}/api/auth/google`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({token}),
+
+            const userData = await apiCall('google', 'POST', {
+                token,
+                isSignUp: true,
+                email: result.user.email,
+                displayName: result.user.displayName,
+                photoURL: result.user.photoURL
             });
-            const userData = await response.json();
+
             localStorage.setItem('authToken', userData.token);
             setUser(userData.user);
             setToken(userData.token);
-            setLoading(false);
             navigate('/admin-panel');
         } catch (error) {
-            console.error('Error during Google sign-in:', error.message);
             setAuthError('Error during Google sign-in.');
+        } finally {
+            setLoading(false);
         }
     };
 
-    const logout = async () => {
+    const logout = () => {
         try {
             setUser(null);
             setToken(null);
@@ -172,87 +179,63 @@ export const AuthProvider = ({ children }) => {
 
         setLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: values.email }),
+            await apiCall('reset-password', 'POST', {
+                email: values.email
             });
-            console.log('Response:', response);
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                setAuthError(errorData.error || 'An unexpected error occurred.');
-                throw new Error(response.statusText);
-            }
+            setEmailSent(true);
         } catch (error) {
             const errorMessages = {
                 'auth/too-many-requests': 'Too many attempts. Please try again later',
                 'default': 'An error occurred. Please try again'
             };
             setAuthError(errorMessages[error.code] || errorMessages.default);
-            console.log('Error sending password reset email:', error);
         } finally {
             setLoading(false);
-            setEmailSent(true);
-
         }
     };
+
     const updateEmail = async (newEmail) => {
         try {
-            console.log('New email:', newEmail);
-            console.log('Firebase token:', firebaseToken);
-            const response = await fetch(`${API_BASE_URL}/api/auth/update-email`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-
-                },
-                body: JSON.stringify( {
-                    firebaseToken:`${firebaseToken}`,
-                    newEmail: newEmail,
-                }),
+            await apiCall('update-email', 'POST', {
+                firebaseToken,
+                newEmail
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                setAuthError(errorData.error || 'An unexpected error occurred.');
-                throw new Error(response.statusText);
-            }
             return true;
-
-            // logout();
-            // navigate('/auth');
         } catch (error) {
-            console.error('Error updating email:', error.message);
             setAuthError('An error occurred. Please try again.');
             return false;
         }
-    }
+    };
+
+    const contextValue = {
+        user,
+        setUser,
+        login,
+        register,
+        logout,
+        signInWithGoogle,
+        passwordResetEmail,
+        updateEmail,
+        loading,
+        success,
+        setSuccess,
+        authError,
+        setAuthError,
+        clearAuthError,
+        emailSent,
+    };
 
     return (
-        <AuthContext.Provider value={{
-            user,
-            setUser,
-            login,
-            register,
-            logout,
-            signInWithGoogle,
-            passwordResetEmail,
-            updateEmail,
-            loading,
-            success,
-            setSuccess,
-            authError,
-            setAuthError,
-            clearAuthError,
-            emailSent,
-        }}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
     );
-
 };
 
-export const useAuthContext = () => useContext(AuthContext);
+export const useAuthContext = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuthContext must be used within an AuthProvider');
+    }
+    return context;
+};
