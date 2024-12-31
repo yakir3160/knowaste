@@ -18,9 +18,13 @@ export const validateSchema = async (type, data) => {
         if (!schemaToValidate) {
             return {error: 'Invalid schema type'};
         }
-        console.log(data);
+
+        await schemaToValidate.validate(data, {
+            abortEarly: false,
+            stripUnknown: true
+        });
+             console.log(data);
         await schemaToValidate.validate(data);
-        console.log('Schema validation successful');
         return {success: true};
     } catch (error) {
         console.error('Schema validation error:', error);
