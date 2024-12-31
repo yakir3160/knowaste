@@ -18,7 +18,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     const sideBarTransition = "transition-all duration-200 ease-in-out";
     const sidebarClasses = {
         container: "fixed",
-        aside: `flex flex-col rounded-r-lg h-[95vh] mb-6 mt-6 bg-secondary shadow-outer-custom ${sideBarTransition} ${isOpen ? "w-64" : "w-14"} animate-fadeIn`,
+        aside: `flex flex-col rounded-r-lg h-[100vh]  bg-secondary  ${sideBarTransition} ${isOpen ? "w-64" : "w-14"} animate-fadeIn`,
         logoContainer: `overflow-hidden ${sideBarTransition} ${isOpen ? 'w-auto' : 'w-0'}`,
         button: "z-10",
         menuList: "flex-grow list-inside text-titles py-5 flex flex-col gap-5 mt-10",
@@ -34,9 +34,9 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     return (
         <div className={sidebarClasses.container}>
             <aside className={sidebarClasses.aside}>
-                <div className="flex justify-between items-center p-2">
+                <div className="flex justify-between items-center mt-5 px-1">
                     <div className={sidebarClasses.logoContainer}>
-                        <Logo className="text-logo-sm font-semibold text-titles p-5" to="/" />
+                        <Logo className="text-4xl text-titles " to="/" />
                     </div>
                     <button
                         onClick={toggleSidebar}

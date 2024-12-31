@@ -1,110 +1,190 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useUserContext } from "./UserContext";
-import MenuItems from "../MockData/MenuItems.json";
-import Ingredients from "../MockData/Ingredeints.json";
-import SupplierProducts from "../MockData/SupplierProducts.json";
-import IngredientCategories from '../MockData/ingredientCategories.json';
 
-// Create the context
 const ItemsContext = createContext();
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5002';
 
 export const ItemsProvider = ({ children }) => {
     const { userBaseData: user } = useUserContext();
     const token = localStorage.getItem('authToken');
-
     const [loadingItems, setLoadingItems] = useState(true);
-    const [userItems, setUserItems] = useState([]);
+    const [success, setSuccess] = useState(null);
+    const [itemsError, setItemsError] = useState(null);
+    const [menuItems, setMenuItems] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [ingredients, setIngredients] = useState([]);
-    const ingredientCategories = IngredientCategories.categories;
+    const [inventoryItems, setInventoryItems] = useState([]);
+    const [inventoryCategories, setInventoryCategories] = useState([]);
 
-    // Helper function to extract ingredients
-    const extractIngredients = (menuData) => {
-        if (!menuData) return [];
+    // API calls with error handling
+    const apiCall = async (endpoint, method = 'GET', body = null) => {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+                ...(body && { 'Content-Type': 'application/json' })
+            };
 
-        const menuItems = menuData.categories?.flatMap(category =>
-            category.items?.length > 0
-                ? category.items
-                : category.subCategories?.flatMap(sub => sub.items) || []
-        ) || [];
+            const config = {
+                method,
+                headers,
+                ...(body && { body: JSON.stringify(body) })
+            };
 
-        const ingredientsList = menuItems.flatMap(item => item.ingredients);
+            const response = await fetch(`${API_BASE_URL}/api/${endpoint}`, config);
+            const data = await response.json();
 
-        const groupedIngredients = ingredientsList.reduce((acc, ingredient) => {
-            const existingIngredient = acc.find(i => i.id === ingredient.ingredientId);
-            if (existingIngredient) {
-                existingIngredient.baseQuantity += ingredient.amountInGrams;
-            } else {
-                acc.push({
-                    id: ingredient.ingredientId,
-                    name: ingredient.name,
-                    baseQuantity: ingredient.amountInGrams,
-                    stockQuantity: 0,
-                    unitType: 'grams'
-                });
+            if (!response.ok) {
+                const error = {
+                    status: response.status,
+                    message: data.message || 'Operation failed',
+                    data: data
+                };
+
+                setItemsError(error.message);
+                setTimeout(() => setItemsError(null), 3000);
+                throw error;
             }
-            return acc;
-        }, []);
+            setSuccess(true);
+            return data;
 
-        return groupedIngredients;
+
+        } catch (error) {
+            const errorMessage = error.message || 'Failed to complete operation';
+            setItemsError(errorMessage);
+            setTimeout(() => setItemsError(null), 3000);
+
+            throw {
+                status: error.status || 500,
+                message: errorMessage,
+                originalError: error
+            };
+        }
     };
 
-    // Add report function
-    const addReport = (report, reportType) => {
-        console.log(`${API_BASE_URL}/api/${reportType}/add-report`);
-        console.log('Authorization:', `Bearer ${token}`);
-        console.log('report type:', reportType);
-        console.log('report:', report);
+
+    // Reports
+    const addReport = async (report, reportType) => {
+        return await apiCall(`${reportType}/add-report`, 'POST', report);
     };
 
-    // useEffect to initialize data
-    useEffect(() => {
-        setLoadingItems(true);
+    // Menu Items
+    const addMenuItem = async (itemData) => {
+        const data = await apiCall('menu', 'POST', itemData);
+        setMenuItems([...menuItems, data]);
+        getMenuItems(); // Refresh the list
+        return data;
+    };
 
-        const isSupplier = user?.accountType === 'supplier';
-
-        setUserItems(isSupplier ? SupplierProducts : MenuItems.categories || []);
-        setCategories(
-            isSupplier
-                ? []
-                : MenuItems.categories?.map(category => ({
-                name: category.name,
-                subCategories: category.subCategories?.map(sub => ({
-                    id: sub.id,
-                    name: sub.name
-                })) || []
-            })) || []
-        );
-        setIngredients(
-            isSupplier
-                ? []
-                : Ingredients.ingredients || []
-        );
-
-        setLoadingItems(false);
-
-        return () => {
-            setUserItems([]);
+    const getMenuItems = async () => {
+        try {
+            setLoadingItems(true);
+            const data = await apiCall('menu');
+            setMenuItems(data.data);
+            setCategories(data.categories);
+        } catch (error) {
+            setMenuItems([]);
             setCategories([]);
-            setIngredients([]);
+        } finally {
+            setLoadingItems(false);
+        }
+    };
+
+    const getMenuByCategory = async (categoryId) => {
+        try {
+            const data = await apiCall(`menu/items-by-category/?category=${categoryId}`);
+            setMenuItems(data);
+            return data;
+        } catch (error) {
+            setMenuItems([]);
+            throw error;
+        }
+    };
+
+    const deleteMenuItem = async (itemId) => {
+        await apiCall(`menu/${itemId}`, 'DELETE');
+        await getMenuItems(); // Refresh the list
+    };
+
+    // Inventory Items
+    const addInventoryItem = async (itemData) => {
+        const data = await apiCall('inventory', 'POST', itemData);
+        await getInventoryItems(); // Refresh the list
+        return data;
+    };
+
+    const getInventoryItems = async () => {
+        try {
+            const data = await apiCall('inventory');
+            setInventoryItems(data.data);
+            setInventoryCategories(data.categories);
+        } catch (error) {
+            setInventoryItems([]);
+            setInventoryCategories([]);
+            throw error;
+        }
+    };
+
+    const deleteInventoryItem = async (itemId) => {
+        await apiCall(`inventory/${itemId}`, 'DELETE');
+        await getInventoryItems(); // Refresh the list
+    };
+    const addIngredientOrder = async (ingredientId,ingredientData) => {
+        return await apiCall(`inventory/add_order/${ingredientId}`, 'POST', ingredientData);
+    }
+
+    // Initialize data
+    useEffect(() => {
+        const initializeData = async () => {
+            try {
+                await Promise.all([
+                    getMenuItems(),
+                    getInventoryItems()
+                ]);
+            } catch (error) {
+                console.error('Error initializing data:', error);
+            }
         };
-    }, [user]);
+
+        if (user && token) {
+            initializeData();
+        }
+        return () => {
+            setMenuItems([]);
+            setInventoryItems([]);
+        };
+
+    }, [user, token]);
+
+    const contextValue = {
+        userItems: menuItems,
+        categories,
+        inventoryItems,
+        setInventoryItems,
+        inventoryCategories,
+        setInventoryCategories,
+        loadingItems,
+        itemsError,
+        addMenuItem,
+        deleteMenuItem,
+        getMenuByCategory,
+        addReport,
+        getMenuItems,
+        addInventoryItem,
+        deleteInventoryItem,
+        getInventoryItems,
+        addIngredientOrder,
+    };
 
     return (
-        <ItemsContext.Provider value={{
-            userItems,
-            categories,
-            ingredients,
-            setIngredients,
-            loadingItems,
-            ingredientCategories,
-            addReport
-        }}>
+        <ItemsContext.Provider value={contextValue}>
             {children}
         </ItemsContext.Provider>
     );
 };
 
-// Hook to use the context
-export const useItemsContext = () => useContext(ItemsContext);
+export const useItemsContext = () => {
+    const context = useContext(ItemsContext);
+    if (!context) {
+        throw new Error('useItemsContext must be used within an ItemsProvider');
+    }
+    return context;
+};

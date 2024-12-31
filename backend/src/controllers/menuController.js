@@ -3,13 +3,13 @@ import MenuService from "../services/menuService.js";
 export const addOrUpdateMenuItem = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { menuItemData } = req.body;
+        const  menuItemData  = req.body;
         const result = await MenuService.addOrUpdateMenuItem(userId,menuItemData);
         if (!result.success) {
             return res.status(400).json({
                 success: false,
                 error: result.error,
-                message: "Failed to add menu item"
+                message: result.message || "Failed to add menu item"
             });
         }
 
@@ -35,7 +35,8 @@ export const getMenuItems = async (req, res) => {
         const menuItems = await MenuService.getMenuItems(userId);
         res.status(200).json({
             success: true,
-            data: menuItems,
+            data: menuItems.data,
+            categories: menuItems.categories,
             error: "Menu items fetched successfully"
         });
     } catch (error) {

@@ -1,120 +1,159 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, {useEffect, useState} from "react";
 import Card from "../../Common/Card/Card";
 import Button from "../../Common/Button/Button";
-import { Plus } from 'lucide-react';
+import IngredientForm from "./Menu/IngredientForm";
+import { Plus, Pencil, CircleX } from 'lucide-react';
 import { useItemsContext } from "../../../contexts/ItemsContext";
+import useFilteredItems from "../../../Hooks/Items/useFilteredItems";
+import ConfirmDelete from "../../Common/ConfirmDelete/ConfirmDelete";
+import InventoryOrderForm from "./InventoryOrderForm";
 
-const Inventory = ({ userItems, categories }) => {
-    const { ingredients } = useItemsContext();
-    const [sortedProducts, setSortedProducts] = useState(ingredients);
-    const [sortChoice, setSortChoice] = useState('name');
-    console.log('Inventory:', ingredients);
+const Inventory = ({isEmpty}) => {
+    const { inventoryItems ,inventoryCategories,itemsError,successMessage,clearMessages,deleteInventoryItem} = useItemsContext();
+    const { filteredItems, selectedCategory, setSelectedCategory } = useFilteredItems(inventoryItems, inventoryCategories);
+    const [showIngredientForm, setShowIngredientForm] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [showDelete, setShowDelete] = useState(false);
+    const [fromOrder, setFromOrder] = useState(false);
+    const [productToDelete, setProductToDelete] = useState(null);
 
-    // פונקציה למיון המוצרים
-    const handleSort = useCallback((sortBy) => {
-        setSortChoice(sortBy);
-        console.log('Sorting by:', sortBy);
-        const sortedProducts = [...ingredients].sort((a, b) => {
-            switch (sortBy) {
-                case 'name':
-                    return a.name.localeCompare(b.name);
-                case 'quantity':
-                    return a.stock - b.stock;
-                default:
-                    return 0;
-            }
-        });
-        setSortedProducts(sortedProducts);
-    }, [ingredients]);
-
-    useEffect(() => {
-        handleSort(sortChoice);
-    }, [sortChoice, ingredients]);
-
-    // פונקציה לחישוב הכמות הכוללת במונחי יחידות אספקה
-    const calculateStockInUnits = (product) => {
-        return product.supply?.unitsPerPackage
-            ? product.stock * product.supply.unitsPerPackage
-            : product.stock;
+    const handleEditClick = (product) => {
+        setSelectedProduct(product);
+        setShowIngredientForm(true);
     };
 
-    // פונקציה להמרת כמות לגרם לק"ג אם יחידת המדידה היא גרם
-    const formatStock = (stockInUnits, product) => {
-        return product.unit === 'g' && stockInUnits >= 1000
-            ? `${(stockInUnits / 1000).toFixed(2)} kg`
-            : `${stockInUnits} ${product.unit}`;
+    const handleFormClose = () => {
+        setShowIngredientForm(false);
+        setSelectedProduct(null);
     };
 
-    // פונקציה לבדוק אם כמות המלאי מתחת למינימום
-    const checkStockLow = (product) => {
-        return product.stock < product.minStockLevel;
+    const handleDeleteClick = (product) => {
+        setProductToDelete(product); // Save the product to be deleted
+        setShowDelete(true);
     };
+
+    const confirmDelete = (productId) => {
+        console.log("Deleted product:", productId);
+        deleteInventoryItem(productId);
+        setShowDelete(false);
+        setProductToDelete(null);
+    };
+
 
     return (
-        <Card className={`col-span-full`}>
-            <h3 className="text-titles text-3xl p-3 text-center">Inventory</h3>
-            <div className="flex justify-center items-center">
-                <Button
-                    className="w-fit p-4 m-6 border-2 border-lime flex flex-row justify-center items-center font-semibold text-lg"
-                >
-                    Add New Order
-                    <Plus size={22} />
-                </Button>
-            </div>
-            <ul className="w-full">
-                <div className="flex justify-between items-center p-3">
-                    <h3 className="text-titles text-2xl">Products</h3>
-                    <div className="flex justify-center items-center ">
-                        <span className="text-titles text-lg p-2 mb-2">Sort by:</span>
-                        <select
-                            name={"sortBy"}
-                            value={sortChoice}
-                            className={`w-fit  p-2 border-2 border-secondary rounded-sm mb-2 focus:outline-none focus:border-lime`}
-                            onChange={(e) => setSortChoice(e.target.value)}
-                        >
-                            <option value="name">Name</option>
-                            <option value="quantity">Quantity</option>
-                        </select>
-                    </div>
+        <>
+            <div className="w-full h-fit">
+                <div className="flex justify-center">
+                    <Button
+                        onClick={() => setShowIngredientForm(true)}
+                        className="w-fit m-6 border-2 border-lime flex flex-row justify-center items-center font-semibold text-lg"
+                    >
+                        Add New Item
+                        <Plus size={24} />
+                    </Button>
                 </div>
 
-                <ul className={`space-y-2`}>
-                    {sortedProducts?.map((product) => {
-                        const stockInUnits = calculateStockInUnits(product);
-                        const formattedStock = formatStock(stockInUnits, product);
-                        const isStockLow = checkStockLow(product);
+                {showIngredientForm && (
+                    <IngredientForm
+                        initialValues={selectedProduct}
+                        onCancel={handleFormClose}
+                        isEditing={!!selectedProduct}
+                        onSubmit={(values) => {
+                            console.log('Form submitted:', values);
+                            handleFormClose();
+                        }}
+                    />
+                )}
 
-                        return (
-                            <Card key={product.id} className="bg-white rounded-lg p-5 flex flex-col space-y-3">
+            </div>
+            <div className="flex flex-col h-full w-full justify-center items-center">
+                <div
+                    className="bg-secondary self-center rounded-t-sm w-full md:w-fit  flex flex-row overflow-x-hidden scrollbar-thin scrollbar-thumb-gray scrollbar-track-transparent">
+                    {inventoryCategories.map(category => (
+                        <button
+                            key={category}
+                            className={`px-6 py-3 rounded-t-sm font-semibold ${selectedCategory === category ? 'bg-white text-buttons' : ''} w-full`}
+                            onClick={() => setSelectedCategory(category)}
+                        >
+                            {category}
+                        </button>
+                    ))}
+                </div>
+
+
+                <div className="w-full flex flex-col bg-white p-5 rounded-b-sm">
+                    <div className="w-full gap-3 grid grid-cols-1">
+                        {isEmpty && (
+                            <div className="text-titles text-xl text-center">
+                                <p>Your inventory is currently empty.</p>
+                                <p>Start by adding some items.</p>
+                            </div>
+                        )}
+                        {filteredItems.map((product) => (
+                            <Card key={product.id} className="bg-white rounded-lg p-5 space-y-3 ">
+
+                                <button
+                                    onClick={() => handleDeleteClick(product)}
+                                    className="text-errorRed hover:text-errorRed-dark px-2"
+                                >
+                                    <CircleX/>
+                                </button>
+                                <ConfirmDelete
+                                    isOpen={showDelete}
+                                    onClose={() => setShowDelete(false)}
+                                    onConfirm={() => confirmDelete(product.ingredientId)}
+                                    name={product.name}
+                                />
                                 <div className="flex justify-between items-center">
                                     <strong className="text-titles text-2xl font-semibold">{product.name}</strong>
-                                    <span className="text-lg text-secondary">{product.category}</span>
+                                    <span className="text-lg">{product.category}</span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-lg">Stock: <span className="font-semibold">{formattedStock}</span> ({product.stock} {product.supply?.supplierUnit || 'units'})</span>
-                                    <span className="text-lg">Price: <span className="font-semibold">${product.pricePerUnit}</span></span>
+                                    <span className="text-lg">
+                                        Stock: <span className="font-semibold">{product.stock}</span>
+                                        ({product.unit})
+                                    </span>
+                                    <span className="text-lg">
+                                        Price: <span className="font-semibold">₪{product.pricePerUnit}</span>
+                                    </span>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 text-nowrap gap-2 ">
+                                        <Button
+                                            onClick={() => {
+                                                handleEditClick(product)
+                                                window.scrollTo(0, 0);
+                                            }}
+                                            className="bg-secondary  py-2 px-4  rounded-lg hover:bg-secondary-dark transition duration-300 flex flex-row"
+                                        >
+                                            Edit
+                                            <Pencil size={18} className="ml-3"/>
+                                        </Button>
+                                        <Button
+                                            className="bg-lime py-2 px-4 rounded-lg hover:bg-lime-dark transition duration-300"
+                                            onClick={() => {
+                                                setFromOrder(true);
+                                                setSelectedProduct(product);
+                                                window.scrollTo(0, 0);
+                                            }}
+                                        >
+                                            Add Stock
+                                        </Button>
+                                    </div>
                                 </div>
-
-                                {/* הצגת הודעה אם המלאי נמוך מהמינימום */}
-                                <div className="mt-3">
-                                    {isStockLow ? (
-                                        <span className="text-errorRed font-semibold animate-pulse">Order Needed</span>
-                                    ) : (
-                                        <span className="text-green font-semibold">In Stock</span>
-                                    )}
-                                </div>
-
-                                {/* כפתור נוסף להוספת הזמנה */}
-                                <div className="flex justify-end mt-4">
-                                    <Button className="bg-lime text-white py-2 px-4 rounded-lg hover:bg-lime-dark transition duration-300">Order Now</Button>
-                                </div>
+                                {fromOrder && (
+                                    <InventoryOrderForm
+                                        onCancel={() => setFromOrder(false)}
+                                        ingredient={selectedProduct}
+                                    />
+                                )}
                             </Card>
-                        );
-                    })}
-                </ul>
-            </ul>
-        </Card>
+
+                        ))}
+                    </div>
+
+                </div>
+            </div>
+        </>
     );
-}
+};
 
 export default Inventory;
