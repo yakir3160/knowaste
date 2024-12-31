@@ -8,7 +8,7 @@ const Layout = ({ children, pageType }) => {
     const [isOpen, setIsOpen] = useState(true);
     const isAdminPanel = pageType === 'admin-panel';
 
-    const mainContentClass = isAdminPanel ? '' : 'pt-[100px] md:pt-[150px] pb-10';
+    const mainContentClass = isAdminPanel ? '' : 'pt-[100px] justify-center pb-10';
 
     const sidebarPadding = isOpen ? 'pl-0 md:pl-[300px] lg:pr-10' : 'pl-0 md:pl-[100px] lg:pr-10';
 
