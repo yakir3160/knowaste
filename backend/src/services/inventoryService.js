@@ -33,11 +33,11 @@ class InventoryService {
                 .doc(fullData.ingredientId);
             const inventoryDoc = await inventoryDocRef.get();
             if (inventoryDoc.exists) {
-                await inventoryDocRef.update(fullData);
+                await inventoryDocRef.update(ingredientData);
                 console.log('Inventory item updated successfully');
                 return {success: true, message: 'Inventory item updated successfully'};
             } else {
-                await inventoryDocRef.set(ingredientData);
+                await inventoryDocRef.set(fullData);
                 console.log('Inventory item added successfully');
                 return {success: true, message: 'Inventory item added successfully'};
             }
