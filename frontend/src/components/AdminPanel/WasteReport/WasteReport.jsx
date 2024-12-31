@@ -13,6 +13,7 @@ import { v4 as generateUniqueID } from 'uuid';
 import { tableStyles } from '../../../css/tableStyles';
 import TabNavigation from "../../Common/TabNavigation/TabNavigation";
 import {useItemsContext} from "../../../contexts/ItemsContext";
+import {measurementUnits} from "../../../constants/Constants";
 
 
 const validationSchema = Yup.object().shape({
@@ -42,7 +43,7 @@ const initialValues = {
 };
 
 const WasteReport = () => {
-    const { ingredients } = useItemsContext();
+    const { inventoryItems } = useItemsContext();
     const { user } = useAuthContext();
     const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0]);
     const [activeTab, setActiveTab] = useState('Items');
@@ -118,20 +119,20 @@ const WasteReport = () => {
                                             </thead>
                                             <tbody>
                                             {values.items.map((item, index) => (
-                                                <tr key={item.id}>
+                                                <tr key={item.ingredientId}>
                                                     <td className={tableStyles.tableCellClass}>
                                                         <GlobalField
                                                             name={`items.${index}.ingredientName`}
                                                             type="select"
                                                             options={[
                                                                 { value: '', label: 'Select Ingredient' },
-                                                                ...ingredients?.map(ing => ({
+                                                                ...inventoryItems?.map(ing => ({
                                                                     value: ing.name,
                                                                     label: ing.name
                                                                 }))
                                                             ]}
                                                             onChange={(e) => {
-                                                                const selectedIngredient = ingredients.find(ing => ing.name === e.target.value);
+                                                                const selectedIngredient = inventoryItems.find(ing => ing.name === e.target.value);
                                                                 setFieldValue(`items.${index}.ingredientName`, e.target.value);
                                                                 setFieldValue(`items.${index}.unit`, selectedIngredient?.unit || '');
                                                             }}
@@ -146,7 +147,17 @@ const WasteReport = () => {
                                                         />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
-                                                        {'kg'}
+                                                       <GlobalField
+                                                           type={'select'}
+                                                              name={`items.${index}.unit`}
+                                                           options={[
+                                                               { value: '', label: 'Select unit' },
+                                                               ...measurementUnits.map(unit => ({
+                                                                   value: unit,
+                                                                   label: unit
+                                                               }))
+                                                           ]}
+                                                       />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
                                                         <GlobalField
@@ -162,7 +173,7 @@ const WasteReport = () => {
                                                         />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
-                                                        {'₪'}
+
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
                                                         <button

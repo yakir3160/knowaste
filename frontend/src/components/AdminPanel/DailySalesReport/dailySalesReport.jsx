@@ -21,9 +21,7 @@ const DailySalesReport = () => {
         filteredItems,
         subCategories,
         selectedCategory,
-        selectedSubCategory,
         setSelectedCategory,
-        setSelectedSubCategory,
     } = useFilteredItems(userItems, categories);
 
     const [reportItems, setReportItems] = useState([]);
@@ -112,7 +110,7 @@ const DailySalesReport = () => {
                         >
                             {({values, setFieldValue}) => (
                                 <Form className="gap-5 w-full" noValidate>
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex flex-col justify-between items-center md:flex-row py-4 gap-2">
                                         <GlobalField
                                             type="date"
                                             name="reportDate"
@@ -154,20 +152,22 @@ const DailySalesReport = () => {
                                                 label: dish.name
                                             }))]}
                                         />
-                                        <div className="grid grid-cols-2">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 space-y-4 ">
                                             <GlobalField
                                                 type="number"
                                                 name="quantity"
                                                 label="Quantity"
                                                 min="1"
                                             />
-                                            <GlobalField
-                                                type="number"
-                                                name="totalItemSales"
-                                                label="Total Item Sales (₪)"
-                                                value={values.quantity * filteredItems.find(item => item.name === values.menuItem)?.price}
-                                                setFieldValue={values.totalPrice}
-                                            />
+                                            <div className=" flex flex-col justify-center items-center font-semibold ">
+                                            <span className=" text-titles text-md text-center">
+                                                Total Item Sales (₪)
+                                            </span>
+                                            <span className=" text-md text-center">
+                                                {values.quantity * filteredItems.find(item => item.name === values.menuItem)?.price || 0} ₪
+                                            </span>
+                                            </div>
+
                                         </div>
                                         <Button
                                             type="submit"

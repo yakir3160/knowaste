@@ -99,6 +99,9 @@ const GlobalField = ({
 
     return (
         <div className={`relative flex flex-col min-w-[100px] ${disabled ? 'opacity-95' : ''}`}>
+            <div className="text-errorRed text-center text-sm w-full  absolute  ">
+                {hasError && <div>{meta.error || REQUIRED_MSG}</div>}
+            </div>
             <div className="relative pt-6">
                 {(() => {
                     switch (type) {
@@ -117,13 +120,16 @@ const GlobalField = ({
                                         {...props}
                                         className={fieldClasses}
                                     >
-                                        {options.map(({ value, label }, index) => (
+                                        {options.map(({value, label}, index) => (
                                             <option key={index} value={value}>{label}</option>
                                         ))}
                                     </Field>
-                                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                                    <div
+                                        className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="2"
+                                                  strokeLinecap="round"/>
                                         </svg>
                                     </div>
                                 </div>
@@ -171,7 +177,7 @@ const GlobalField = ({
                                             onClick={togglePasswordVisibility}
                                             className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md hover:shadow-lg transition-shadow duration-200"
                                         >
-                                            {showPassword ? <Eye size={24} /> : <EyeOff size={24} />}
+                                            {showPassword ? <Eye size={24}/> : <EyeOff size={24}/>}
                                         </span>
                                     )}
                                 </div>
@@ -180,9 +186,7 @@ const GlobalField = ({
                 })()}
             </div>
 
-            <div className="text-errorRed text-center min-h-[10px] text-sm w-full">
-                {hasError && <div>{meta.error || REQUIRED_MSG}</div>}
-            </div>
+
         </div>
     );
 };
