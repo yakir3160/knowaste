@@ -1,6 +1,10 @@
 import { db } from '../../config/firebase-admin.js';
 import { validateSchema } from '../models/index.js';
-import { calculateSalesSummary, calculateWasteSummary } from '../models/helpers/reportCalculations.js';
+import {
+    calculateSalesSummary,
+    calculateWasteSummary
+} from '../models/helpers/reportCalculations.js';
+import inventoryService from "./inventoryService.js";
 
 class ReportService {
     getCalculationFunction(type) {
@@ -46,6 +50,10 @@ class ReportService {
 
             if (existingReport.exists) {
                 await reportRef.update(enrichedReportData);
+                //only update inventory if its a sales report being submitted
+                if (type === 'sales' && reportData.status === 'submitted') {
+                    await inventoryService.updateInventoryFromSales(userId, reportData);
+                    }
                 return {
                     success: true,
                     message: `${type} report updated successfully`,
@@ -53,6 +61,9 @@ class ReportService {
                 };
             } else {
                 await reportRef.set(enrichedReportData);
+                if (type === 'sales' && reportData.status === 'submitted') {
+                    await inventoryService.updateInventoryFromSales(userId, reportData);
+                }
                 return {
                     success: true,
                     message: `New ${type} report created successfully`,

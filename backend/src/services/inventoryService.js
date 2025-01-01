@@ -49,6 +49,70 @@ class InventoryService {
             };
         }
     }
+
+    async updateInventoryFromSales(userId, salesReport) {
+        try{
+            const batch = db.batch();
+
+            // get menu items from ingredients mapping
+            const menuItemsSnapshot = await db.collection('menus')
+                .doc(userId)
+                .collection('menuItems')
+                .get();
+
+            const menuItemsMap  = {};
+            menuItemsSnapshot.docs.forEach(doc => {
+                menuItemsMap [doc.id] = doc.data();
+            });
+
+            const ingredientUsage = {};
+
+            // calculate ingredient usage
+            for (const sale of salesReport.items){
+                const menuItem = menuItemsMap[sale.id];
+                if (!menuItem?.ingredients) continue;
+
+                for (const ingredient of menuItem.ingredients){
+                    const totalUsage = ingredient.quantity * sale.quantity;
+                    ingredientUsage[ingredient.ingredientId] = (ingredientUsage[ingredient.ingredientId] || 0) + totalUsage;
+                }
+            }
+
+            // update inventory quantities
+            for (const [ingredientId, usage] of Object.entries(ingredientUsage)){
+                const inventoryDocRef = db.collection('inventory')
+                    .doc(userId)
+                    .collection('inventoryItems')
+                    .doc(ingredientId);
+
+                const inventoryDoc = await inventoryDocRef.get();
+                if (!inventoryDoc.exists) continue;
+
+                const currentData  = inventoryDoc.data();
+                const newStock = Math.max(0, currentData.currentStock - usage);
+
+                batch.update(inventoryDocRef, {
+                    currentStock: newStock,
+                    'usageStats.averageDailyUsage': (currentData.usageStats?.averageDailyUsage || 0) * 0.7 + (usage * 0.3),
+                    lastUpdated: new Date()
+                })
+            }
+
+            await batch.commit();
+            return {
+                success: true,
+                message: 'Inventory updated from sales successfully',
+                updates: ingredientUsage
+            }
+        } catch (error) {
+            console.error('Error updating inventory from sales:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
     async addNewOrder(userId, ingredientId, orderData) {
         try {
             console.log('Starting add new order process');
