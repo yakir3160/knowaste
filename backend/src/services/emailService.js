@@ -31,7 +31,7 @@ class EmailService {
             </h2>
             
             <div style="color: #2A522A; font-size: 16px; font-weight: 400;">
-                <p>A new message has been received from <span style="color: #3B763B; font-weight: 500;">${contactData.name}</span></p>
+                <p>A new message has been received from <span style="color: #3B763B; font-weight: 500;">${contactData.firstName} ${contactData.lastName}}</span></p>
             </div>
             
             <div style="background-color: #f8f9fa;
