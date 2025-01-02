@@ -3,15 +3,6 @@ import {OAuth2Client} from 'google-auth-library';
 import admin, {auth, db} from '../../config/firebase-admin.js';
 import nodemailer from 'nodemailer';
 
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-const emailTransporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-    }
-});
-
 class AuthService {
     async register(userData) {
         try {

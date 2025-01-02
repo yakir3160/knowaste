@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,14 +7,37 @@ import Card from "../Common/Card/Card";
 import Button from "../Common/Button/Button";
 import GlobalField from "../Common/inputs/GlobalField";
 import {REQUIRED_MSG} from "../../constants/Constants";
-import {SendHorizontal} from "lucide-react";
+import {MailCheck, SendHorizontal} from "lucide-react";
 import {Player} from "@lottiefiles/react-lottie-player";
 import loadingAnimation from "../../animations/AnimationLoading.json";
-
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5002';
 const ContactForm = () => {
     const [submitted, setSubmitted] = useState(false);
 
-
+const sendContactEmail = async (values,resetForm) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/email/contact`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        });
+        const data = await response.json();
+        if (response.ok) {
+            {
+                setSubmitted(true);
+                resetForm();
+                toast.success(data.message);
+            }
+        } else {
+            toast.error(data.error);
+        }
+    } catch (error) {
+        console.error('Error sending email:', error);
+        toast.error('Error sending email');
+    }
+}
     const validationSchema = Yup.object().shape({
         firstName: Yup.string()
             .matches(/^[\u0590-\u05FFa-zA-Z\s]+$/, 'First name should contain only English or Hebrew characters and spaces')
@@ -28,6 +51,14 @@ const ContactForm = () => {
         message: Yup.string()
             .required(REQUIRED_MSG),
     });
+    useEffect(() => {
+        setTimeout(
+            () => {
+                setSubmitted(false);
+            },
+            7000
+        )
+    }, [submitted]);
 
     return (
             <>
@@ -38,10 +69,7 @@ const ContactForm = () => {
                             initialValues={{ firstName: '', lastName: '', email: '', message: '' }}
                             validationSchema={validationSchema}
                             onSubmit={(values, { resetForm }) => {
-                                const userInfo = `First Name: ${values.firstName}\nLast Name: ${values.lastName}\nEmail: ${values.email}\nMessage: ${values.message}`;
-                                toast.success(userInfo);
-                                setSubmitted(true);
-                                resetForm();
+                                sendContactEmail(values, resetForm);
                             }}
                         >
                             {({isSubmitting, values}) => (
@@ -98,10 +126,15 @@ const ContactForm = () => {
                             )}
                         </Formik>
                     ) : (
-                        <div className="animate-fadeIn">
-                            <h2 className="title">Thank you!</h2>
-                            <p className="title" style={{fontSize: "26px" }}>We appreciate you contacting us. We will get back to you soon!</p>
-                        </div>
+                        <Card className="p-6 text-center text-green">
+                            <MailCheck className="h-12 w-12 mx-auto animate-fadeIn"/>
+                            <h2 className="text-3xl font-bold  mb-4">Thank you!</h2>
+                            <div className="text-center text-green text-xl font-semibold">
+                            <h3>We appreciate you contacting us.</h3>
+                            <h3>One of our colleagues will get back in touch with you soon!</h3>
+                            </div>
+                        </Card>
+
                     )}
                 </Card>
                 <ToastContainer/>
