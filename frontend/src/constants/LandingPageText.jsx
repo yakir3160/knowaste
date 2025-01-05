@@ -38,7 +38,7 @@ const LandingPageText = () => {
                 OUR VISION
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 gap-8 w-fit">
                 <div className="card-animate opacity-0 translate-x-[-100px] h-full">
                     <TextCard
                         className="h-full flex flex-col"

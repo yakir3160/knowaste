@@ -9,7 +9,7 @@ import Inventory from './Inventory';
 
 const InventoryManagement = () => {
     const { inventoryItems ,userItems,successMessage,clearMessages} = useItemsContext();
-    const [activeTab, setActiveTab] = useState('Menu');
+    const [activeTab, setActiveTab] = useState(  'Menu');
     return (
         <AdminPanelContainer
             pageTitle="Inventory Management"

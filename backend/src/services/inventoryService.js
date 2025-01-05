@@ -27,7 +27,7 @@ class InventoryService {
                 throw new Error(validation.error);
             }
             console.log('Adding or updating inventory item in database...');
-            const inventoryDocRef = db.collection('inventory')
+            const inventoryDocRef = db.collection('users')
                 .doc(userId)
                 .collection('inventoryItems')
                 .doc(fullData.ingredientId);
@@ -52,7 +52,7 @@ class InventoryService {
     async addNewOrder(userId, ingredientId, orderData) {
         try {
             console.log('Starting add new order process');
-            const inventoryDocRef = db.collection('inventory')
+            const inventoryDocRef = db.collection('users')
                 .doc(userId)
                 .collection('inventoryItems')
                 .doc(ingredientId);
@@ -101,7 +101,7 @@ class InventoryService {
     async updateCurrentStock(userId, ingredientId, quantityChange) {
         console.log('Updating current stock...');
         try {
-            const inventoryDocRef = db.collection('inventory')
+            const inventoryDocRef = db.collection('users')
                 .doc(userId)
                 .collection('inventoryItems')
                 .doc(ingredientId);
@@ -137,7 +137,7 @@ class InventoryService {
             console.log('Starting get inventory items process');
 
             console.log('Fetching inventory items...');
-            const inventoryDocs = await db.collection('inventory').doc(userId).collection('inventoryItems').get();
+            const inventoryDocs = await db.collection('users').doc(userId).collection('inventoryItems').get();
             const inventoryItems = inventoryDocs.docs.map(doc => doc.data());
             const uniqueCategories = [...new Set(inventoryItems.map(item => item.categoryName))];
             uniqueCategories.sort();

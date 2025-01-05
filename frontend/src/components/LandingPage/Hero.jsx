@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Button from "../Common/Button/Button";
 import { ChevronDown } from "lucide-react";
+import featuredImage2 from "../../img/featured34-1@2x.png";
 
 const Hero = () => {
     useEffect(() => {
@@ -22,8 +23,24 @@ const Hero = () => {
     }, []);
 
     return (
-        <div
-            className="flex flex-col justify-center py-3 h-screen w-full  text-left relative overflow-hidden">
+        <div className="flex flex-col justify-start md:justify-center py-3 h-screen w-full text-left relative overflow-hidden">
+            <div
+                className="absolute top-0 left-0 w-full h-full animate-fadeInDown"
+                style={{
+                    backgroundImage: `
+                        linear-gradient(
+                            to top,
+                            rgba(0, 0, 0, 0) 0%,
+                             #fefff6 75%
+                        ),
+                        url(${featuredImage2})
+                    `,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+
+                }}
+            />
+
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-lime/10 rounded-full blur-[100px] -z-10"/>
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-lime/5 rounded-full blur-[120px] -z-10"/>
 
@@ -58,7 +75,7 @@ const Hero = () => {
 
             <Button
                 to={"/auth"}
-                state={{ showRegister: true }}
+                state={{showRegister: true}}
                 className="self-center bg-lime border-2 border-transparent hover:border-buttons text-buttons p-4 rounded-full text-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 "
             >
                 Start Saving Now

@@ -18,7 +18,7 @@ class MenuService {
 
             console.log('Adding/updating menu item to database...');
             for (const ingredient of menuItemData.ingredients) {
-                const inventoryDocRef = db.collection('inventory')
+                const inventoryDocRef = db.collection('users')
                     .doc(userId)
                     .collection('inventoryItems')
                     .doc(ingredient.ingredientId);
@@ -32,7 +32,7 @@ class MenuService {
             }
 
             // Reference to the menu items collection
-            const menuItemsRef = db.collection('menus').doc(userId).collection('menuItems');
+            const menuItemsRef = db.collection('users').doc(userId).collection('menuItems');
 
             console.log('Checking if the item already exists...');
             console.log('Item ID:', menuItemData.id);
@@ -58,7 +58,7 @@ class MenuService {
     async getMenuItems(userId) {
         try {
             console.log('Fetching all menu items');
-            const menuItemsSnapshot = await db.collection('menus').doc(userId).collection('menuItems').get();
+            const menuItemsSnapshot = await db.collection('users').doc(userId).collection('menuItems').get();
             const menuItems = menuItemsSnapshot.docs.map(doc => doc.data());
             const uniqueCategories = [...new Set(menuItems.map(item => item.categoryId))].map(categoryId => ({
                 id: categoryId,
@@ -82,7 +82,7 @@ class MenuService {
             console.log(`Fetching menu items for userId: ${userId} and categoryId: ${categoryId}`);
 
             const menuItemsSnapshot = await db
-                .collection('menus')
+                .collection('users')
                 .doc(userId)
                 .collection('menuItems')
                 .where('categoryId', '==', categoryId)
@@ -114,7 +114,7 @@ class MenuService {
     async deleteMenuItem(userId, menuItemId) {
         try {
             console.log(`Deleting menu item: ${menuItemId}`);
-            await db.collection('menus').doc(userId).collection('menuItems').doc(menuItemId).delete();
+            await db.collection('users').doc(userId).collection('menuItems').doc(menuItemId).delete();
             return true;
         } catch (error) {
             console.error('Error deleting menu item:', error);

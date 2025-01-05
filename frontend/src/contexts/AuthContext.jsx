@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from "../firebaseConfig";
 
 const AuthContext = createContext();
@@ -8,7 +8,6 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:500
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
     const [firebaseToken, setFirebaseToken] = useState(null);
     const [authError, setAuthError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -61,7 +60,6 @@ export const AuthProvider = ({ children }) => {
                 });
 
                 setUser(userData.user);
-                setToken(storedToken);
             } catch (error) {
                 setUser(null);
                 setFirebaseToken(null);
@@ -112,7 +110,6 @@ export const AuthProvider = ({ children }) => {
 
             if (userData.token) {
                 localStorage.setItem('authToken', userData.token);
-                setToken(userData.token);
             }
 
             setFirebaseToken(userData.firebaseToken);
@@ -151,7 +148,6 @@ export const AuthProvider = ({ children }) => {
 
             localStorage.setItem('authToken', userData.token);
             setUser(userData.user);
-            setToken(userData.token);
             navigate('/admin-panel');
         } catch (error) {
             setAuthError('Error during Google sign-in.');
@@ -163,7 +159,6 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         try {
             setUser(null);
-            setToken(null);
             localStorage.removeItem('authToken');
             navigate('/');
         } catch (error) {
