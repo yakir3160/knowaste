@@ -33,7 +33,7 @@ export const menuCategories = [
     { id: "soups", name: "Soups" }, // מרקים חמים, קרמיים או צחיים
     { id: "main_courses", name: "Main Courses" }, // מנות עיקריות כמו סטייקים, דגים, עוף
     { id: "grill", name: "Grill" }, // מנות בגריל, בשר על הגריל, שיפודים, קבבים
-    { id: "fish", name: "Fish" }, // דגים טריים או קפואים, צלויים, מטוגנים או אפויים
+    { id: "fish&seafood", name: "Fish & Seafood " }, // דגים טריים או קפואים, צלויים, מטוגנים או אפויים
     { id: "pasta", name: "Pasta" }, // פסטה במגוון רטבים, פסטה עם בשר, פסטה צמחונית
     { id: "pizza", name: "Pizza" }, // פיצות עם תוספות שונות, מבצק דק או עבה
     { id: "sandwiches", name: "Sandwiches" }, // סנדוויצ'ים, כריכים עם מגוון ממרחים
@@ -57,7 +57,10 @@ export const menuCategories = [
 menuCategories.sort((a, b) => a.name.localeCompare(b.name));
 
 export const ingredientCategories = [
+    { id: "base", name: "Base" },
     { id: "proteins", name: "Proteins" }, // בשר, עוף, דגים
+    {id: "fish" , name: 'Fish'},
+    {id: "chicken" , name: 'Chicken'},
     { id: "dairy", name: "Dairy" }, // גבינות, חלב
     { id: "produce", name: "Produce" }, // ירקות ופירות
     { id: "grains", name: "Grains" }, // אורז, קמח

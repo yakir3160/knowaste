@@ -11,14 +11,12 @@ export const ItemsProvider = ({ children }) => {
     const [success, setSuccess] = useState(null);
     const [itemsError, setItemsError] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
-    const [categories, setCategories] = useState([]);
+    const [menuCategories, setMenuCategories] = useState([]);
     const [inventoryItems, setInventoryItems] = useState([]);
     const [inventoryCategories, setInventoryCategories] = useState([]);
     const [salesReports, setSalesReports] = useState([]);
     const [wasteReports, setWasteReports] = useState([]);
 
-    console.log('wasteReports:', wasteReports);
-    console.log('salesReports:', salesReports);
     // API calls with error handling
     const apiCall = async (endpoint, method = 'GET', body = null) => {
         try {
@@ -73,6 +71,7 @@ export const ItemsProvider = ({ children }) => {
         } else if (reportType === 'sales') {
             setSalesReports([...salesReports, response.data]);
         }
+        getReports(reportType);
     };
     const getReports = async (reportType) => {
         const response = await apiCall(`reports/${reportType}/list`);
@@ -104,10 +103,10 @@ export const ItemsProvider = ({ children }) => {
             setLoadingItems(true);
             const data = await apiCall('menu');
             setMenuItems(data.data);
-            setCategories(data.categories);
+            setMenuCategories(data.categories);
         } catch (error) {
             setMenuItems([]);
-            setCategories([]);
+            setMenuCategories([]);
         } finally {
             setLoadingItems(false);
         }
@@ -184,8 +183,8 @@ export const ItemsProvider = ({ children }) => {
     }, [user, token]);
 
     const contextValue = {
-        userItems: menuItems,
-        categories,
+        menuItems,
+        menuCategories,
         inventoryItems,
         setInventoryItems,
         inventoryCategories,

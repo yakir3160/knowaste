@@ -4,11 +4,10 @@ import AdminPanelContainer from '../AdminPanelContainer';
 import TabNavigation from '../../Common/TabNavigation/TabNavigation';
 import Card from '../../Common/Card/Card';
 import Menu from './Menu/Menu';
-import Inventory from './Inventory';
-
+import Inventory from './Inventory/Inventory';
 
 const InventoryManagement = () => {
-    const { inventoryItems ,userItems,successMessage,clearMessages} = useItemsContext();
+    const { inventoryItems ,menuItems,successMessage,clearMessages} = useItemsContext();
     const [activeTab, setActiveTab] = useState(  'Menu');
     return (
         <AdminPanelContainer
@@ -23,7 +22,7 @@ const InventoryManagement = () => {
             {activeTab === 'Menu' && (
                 <Card className="col-span-full flex justify-center h-fit">
                     <h3 className="text-titles text-3xl p-3 text-center">Menu</h3>
-                    <Menu isEmpty={!userItems?.length}/>
+                    <Menu isEmpty={!menuItems?.length}/>
                 </Card>
             )}
 

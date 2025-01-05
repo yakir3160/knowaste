@@ -35,17 +35,17 @@ class MenuService {
             const menuItemsRef = db.collection('users').doc(userId).collection('menuItems');
 
             console.log('Checking if the item already exists...');
-            console.log('Item ID:', menuItemData.id);
+            console.log('Item ID:', menuItemData.menuItemId);
             // Check if the item already exists
-            const existingItemSnapshot = await menuItemsRef.doc(menuItemData.id).get();
+            const existingItemSnapshot = await menuItemsRef.doc(menuItemData.menuItemId).get();
             if (existingItemSnapshot.exists) {
                 // Update existing item
-                await menuItemsRef.doc(menuItemData.id).update(menuItemData);
+                await menuItemsRef.doc(menuItemData.menuItemId).update(menuItemData);
                 console.log('Updated existing menu item');
                 return { success: true, message: 'Item updated successfully' };
             } else {
                 // Add new item
-                await menuItemsRef.doc(menuItemData.id).set(menuItemData);
+                await menuItemsRef.doc(menuItemData.menuItemId).set(menuItemData);
                 console.log('Added new menu item');
                 return { success: true, message: 'New item added successfully' };
             }

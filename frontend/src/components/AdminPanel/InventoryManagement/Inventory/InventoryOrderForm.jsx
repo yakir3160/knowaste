@@ -1,10 +1,10 @@
 import {Form, Formik} from "formik";
-import GlobalField from "../../Common/inputs/GlobalField";
+import GlobalField from "../../../Common/inputs/GlobalField";
 import React from "react";
-import Button from "../../Common/Button/Button";
+import Button from "../../../Common/Button/Button";
 import {CircleX} from "lucide-react";
-import Card from "../../Common/Card/Card";
-import {useItemsContext} from "../../../contexts/ItemsContext";
+import Card from "../../../Common/Card/Card";
+import {useItemsContext} from "../../../../contexts/ItemsContext";
 
 const InventoryOrderForm = ({ingredient,onCancel}) => {
  const {addIngredientOrder} = useItemsContext();

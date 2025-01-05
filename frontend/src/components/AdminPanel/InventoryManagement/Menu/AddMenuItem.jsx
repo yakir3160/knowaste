@@ -29,7 +29,7 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
     const handleSubmit = async (values, { resetForm }) => {
         const itemToSubmit = isFromMenuItem
             ? {
-            ...values,
+                ...values,
                 id:initialValues.id,
             }
             : {
@@ -166,66 +166,66 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                         onClick={() => setShowIngredientForm(true)}
                                         className="text-sm flex flex-row border-2 border-lime"
                                     >
-                                       Add New Ingredient <Plus size={16} className="ml-2" />
+                                        Add New Ingredient <Plus size={16} className="ml-2" />
                                     </Button>
                                 </div>
 
                                 {values.ingredients?.map((ingredient, index) => (
                                     <div className={`p-2 border-2 border-secondary rounded-sm`}>
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            const updatedIngredients = values.ingredients.filter((_, i) => i !== index);
-                                            setFieldValue('ingredients', updatedIngredients);
-                                        }}
-                                        className=" text-errorRed  w-fit px-2 "
-                                    >
-                                        <CircleX size={20}/>
-                                    </button>
-                                    <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 ">
-                                <GlobalField
-                                    label="Ingredient"
-                                    type="select"
-                                    name={`ingredients.${index}.name`}
-                                    options={[
-                                        {value: '', label: 'Select Ingredient'},
-                                        ...inventoryItems.map(item => ({
-                                            value: item.name,
-                                                    label: item.name
-                                                }))
-                                            ]}
-                                            onChange={(e) => {
-                                                setFieldValue(`ingredients.${index}.name`, e.target.value);
-                                                const selectedItem = inventoryItems.find(item => item.name === e.target.value);
-                                                console.log(selectedItem);
-                                                setFieldValue(`ingredients.${index}.ingredientId`, selectedItem?.ingredientId);
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const updatedIngredients = values.ingredients.filter((_, i) => i !== index);
+                                                setFieldValue('ingredients', updatedIngredients);
                                             }}
-                                        />
-                                        <GlobalField
-                                            label="Quantity"
-                                            type="number"
-                                            name={`ingredients.${index}.quantity`}
-                                        />
-                                        <GlobalField
-                                            label="Unit"
-                                            type="select"
-                                            name={`ingredients.${index}.unit`}
-                                            options={[
-                                                { value: '', label: 'Select unit' },
-                                                ...measurementUnits.map(unit => ({
-                                                    value: unit,
-                                                    label: unit
-                                                }))
-                                            ]}
-                                        />
-                                        <input
-                                            type="hidden"
-                                            name={`ingredients.${index}.ingredientId`}
-                                            value={ingredient.ingredientId}
+                                            className=" text-errorRed  w-fit px-2 "
+                                        >
+                                            <CircleX size={20}/>
+                                        </button>
+                                        <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 ">
+                                            <GlobalField
+                                                label="Ingredient"
+                                                type="select"
+                                                name={`ingredients.${index}.name`}
+                                                options={[
+                                                    {value: '', label: 'Select Ingredient'},
+                                                    ...inventoryItems.map(item => ({
+                                                        value: item.name,
+                                                        label: item.name
+                                                    }))
+                                                ]}
+                                                onChange={(e) => {
+                                                    setFieldValue(`ingredients.${index}.name`, e.target.value);
+                                                    const selectedItem = inventoryItems.find(item => item.name === e.target.value);
+                                                    console.log(selectedItem);
+                                                    setFieldValue(`ingredients.${index}.ingredientId`, selectedItem?.ingredientId);
+                                                }}
+                                            />
+                                            <GlobalField
+                                                label="Quantity"
+                                                type="number"
+                                                name={`ingredients.${index}.quantity`}
+                                            />
+                                            <GlobalField
+                                                label="Unit"
+                                                type="select"
+                                                name={`ingredients.${index}.unitType`}
+                                                options={[
+                                                    { value: '', label: 'Select unit' },
+                                                    ...measurementUnits.map(unit => ({
+                                                        value: unit,
+                                                        label: unit
+                                                    }))
+                                                ]}
+                                            />
+                                            <input
+                                                type="hidden"
+                                                name={`ingredients.${index}.ingredientId`}
+                                                value={ingredient.ingredientId}
 
-                                        />
+                                            />
 
-                                    </div>
+                                        </div>
                                     </div>
                                 ))}
                                 <Button

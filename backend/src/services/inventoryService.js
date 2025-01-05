@@ -115,6 +115,7 @@ class InventoryService {
             const existingData = inventoryDoc.data();
             existingData.currentStock =(existingData.currentStock || 0) + quantityChange;
             await inventoryDocRef.set(existingData);
+            console.log( 'Current stock updated successfully');
 
             return {
                 success: true,
@@ -141,6 +142,7 @@ class InventoryService {
             const inventoryItems = inventoryDocs.docs.map(doc => doc.data());
             const uniqueCategories = [...new Set(inventoryItems.map(item => item.categoryName))];
             uniqueCategories.sort();
+            inventoryItems.sort((a, b) => a.name.localeCompare(b.name));
             console.log('Inventory items fetched successfully');
 
             return {success: true, data: inventoryItems, categories: uniqueCategories};
@@ -157,7 +159,7 @@ class InventoryService {
             console.log('Deleting inventory item from database...');
             console.log('Inventory item ID:', inventoryItemId);
             console.log('User ID:', userId);
-            await db.collection('inventory').doc(userId).collection('inventoryItems').doc(inventoryItemId).delete();
+            await db.collection('users').doc(userId).collection('inventoryItems').doc(inventoryItemId).delete();
             console.log('Inventory item deleted successfully');
             return true;
         } catch (error) {

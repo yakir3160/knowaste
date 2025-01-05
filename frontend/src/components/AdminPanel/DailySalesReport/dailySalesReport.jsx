@@ -13,7 +13,7 @@ import TabNavigation from "../../Common/TabNavigation/TabNavigation";
 import { tableStyles } from '../../../css/tableStyles';
 
 const DailySalesReport = () => {
-    const { userItems, categories, salesReports, addReport } = useItemsContext();
+    const { userItems, menuCategories, salesReports, addReport } = useItemsContext();
     const [reportItems, setReportItems] = useState([]);
     const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0]);
     const [totalReportPrice, setTotalReportPrice] = useState(0);
@@ -24,7 +24,7 @@ const DailySalesReport = () => {
         filteredItems,
         selectedCategory,
         setSelectedCategory,
-    } = useFilteredItems(userItems, categories);
+    } = useFilteredItems(userItems, menuCategories);
 
     const validationSchema = Yup.object({
         category: Yup.string().required("Category is required"),
@@ -111,7 +111,7 @@ const DailySalesReport = () => {
                     label="Category"
                     options={[
                         { value: '', label: 'Select a category' },
-                        ...categories.map(category => ({
+                        ...menuCategories.map(category => ({
                             value: category.name,
                             label: category.name
                         }))

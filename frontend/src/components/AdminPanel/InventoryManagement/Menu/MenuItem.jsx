@@ -14,7 +14,7 @@ const MenuItem = ({ item, onEdit }) => {
     };
 
     const handleConfirmDelete = () => {
-        deleteMenuItem(item.id);
+        deleteMenuItem(item.menuItemId);
         setShowDeleteConfirm(false);
     };
 
@@ -72,7 +72,7 @@ const MenuItem = ({ item, onEdit }) => {
                             <ul className="list-none pl-4">
                                 {item.ingredients?.map((ingredient, index) => (
                                     <li key={index} className="mb-1">
-                                        {index + 1}. {ingredient.name} - {ingredient.quantity} {ingredient.unit}
+                                        {index + 1}. {ingredient.name} - {ingredient.quantity} {ingredient.unitType}
                                     </li>
                                 ))}
                             </ul>

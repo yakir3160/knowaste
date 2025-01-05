@@ -6,15 +6,17 @@ import Button from "../../../Common/Button/Button";
 import {Plus} from "lucide-react";
 import AddMenuItem from "./AddMenuItem";
 import {useItemsContext} from "../../../../contexts/ItemsContext";
+import BulkAddMenuItems from "../../../BulkAddMenuItems";
+import CategoryDropdown from "../../../Common/CategoryDropdown";
 
 
 const Menu = ({isEmpty}) => {
-    const { userItems, categories,itemsError, successMessage,clearMessages} = useItemsContext();
+    const { menuItems, menuCategories,itemsError, successMessage,clearMessages} = useItemsContext();
     const {
         filteredItems,
         selectedCategory,
         setSelectedCategory,
-    } = useFilteredItems(userItems, categories);
+    } = useFilteredItems(menuItems, menuCategories);
     const [showAddMenuItem, setShowAddMenuItem] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [fromMenuItem, setFromMenuItem] = useState(false);
@@ -24,7 +26,16 @@ const Menu = ({isEmpty}) => {
         setShowAddMenuItem(false);
     };
 
+// menuItems.map(item => {
+//     console.log(`item:{
+//         id: ${item.menuItemId},
+//         name: ${item.name},
+//         price: ${item.price},
+//         category: ${item.categoryName},
+//    }`);
+// })
 
+    
     const handleFormClose = () => {
         setShowAddMenuItem(false);
         setSelectedItem(null);
@@ -33,6 +44,7 @@ const Menu = ({isEmpty}) => {
 
     return (
         <div className="flex flex-col h-full w-full justify-center items-center">
+           {/* <BulkAddMenuItems />*/}
             <Button
                 className="w-fit m-6 border-2 border-lime flex flex-row justify-center items-center font-semibold text-lg"
                 onClick={() => setShowAddMenuItem(true)}
@@ -48,25 +60,15 @@ const Menu = ({isEmpty}) => {
                         handleAddItem();
                         handleFormClose();
                     }}
-                    categories={categories}
+                    categories={menuCategories}
                     onCancel={handleFormClose}
                 />
             )}
-
-                <div
-                    className="  bg-secondary self-center  rounded-t-sm w-full md:w-fit flex flex-row overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
-                    {categories.map(category => (
-                        <button
-                            key={category.id}
-                            className={`px-6 py-4 rounded-t-sm font-semibold 
-                ${selectedCategory === category.name ? 'bg-white text-buttons' : ''}`}
-                            onClick={() => setSelectedCategory(category.name)}
-                        >
-                            {category.name}
-                        </button>
-                    ))}
-                </div>
-
+            <CategoryDropdown
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                inventoryCategories={menuCategories.map((category) => category.name)}
+            />
 
             <div className={`w-full flex flex-col bg-white p-5 rounded-b-sm md:rounded-sm`}>
 

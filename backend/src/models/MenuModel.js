@@ -4,7 +4,7 @@ const menuItemSchema = Yup.object({
     categoryName: Yup.string().required('Category is required'),
     subCategoryId: Yup.string().nullable(),
     subCategoryName: Yup.string().nullable(),
-    id: Yup.string().required('Item ID is required'),
+    menuItemId: Yup.string().required('Item ID is required'),
     name: Yup.string().required('Item name is required'),
     price: Yup.number()
         .required('Price is required')

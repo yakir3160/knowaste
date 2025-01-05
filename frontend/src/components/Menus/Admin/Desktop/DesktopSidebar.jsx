@@ -43,7 +43,8 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                         aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
                         className={sidebarClasses.button}
                     >
-                        {isOpen ? <ChevronLeft className="h-6 w-6" /> : <ChevronRight className="h-6 w-6" />}
+                     <ChevronRight  size={24} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                        
                     </button>
                 </div>
                 <ul className={sidebarClasses.menuList}>

@@ -41,8 +41,35 @@ const WasteReport = () => {
     const { inventoryItems ,wasteReports} = useItemsContext();
     const [activeTab, setActiveTab] = useState('Items');
     const [saving, setSaving] = useState(false);
+    const [totalCost, setTotalCost] = useState(0);
     const { addReport } = useItemsContext();
 
+    const UNIT_MULTIPLIERS = {
+        'kg': { 'g': 1000 },
+        'g': { 'kg': 0.001 },
+        'l': { 'ml': 1000 },
+        'ml': { 'l': 0.001 }
+    };
+    const updateTotalCost = (items) => {
+        const total = items.reduce((acc, item) => acc + (Number(item.cost) || 0), 0);
+        setTotalCost(total);
+    };
+
+
+    const ingredientPriceProfile = (ingredientId) => {
+        const ingredient = inventoryItems.find(item => item.ingredientId === ingredientId);
+        return {
+            price: ingredient?.pricePerUnit ?? 0,
+            unit: ingredient?.unit ?? '',
+        };
+    };
+
+    const calculateCost = (ingredientId, quantity, unit) => {
+        const profile = ingredientPriceProfile(ingredientId);
+
+        const multiplier = UNIT_MULTIPLIERS[unit]?.[profile.unit] ?? 1;
+        return profile.price * quantity * multiplier;
+    };
 
 
     const handleSubmitReport = async (values, { resetForm }) => {
@@ -93,7 +120,7 @@ const WasteReport = () => {
                                         />
                                         <div className="text-xl font-bold text-center">
                                             <span className="text-titles">
-                                                Total Cost: ₪ {values.items.reduce((acc, item) => acc + (Number(item.cost) || 0), 0).toFixed(2)}
+                                                Total Cost: ₪ {values.items.reduce((acc, item) => acc + (Number(item.cost) || 0), 0)}
                                             </span>
                                         </div>
                                     </div>
@@ -138,6 +165,13 @@ const WasteReport = () => {
                                                             type="number"
                                                             min="0"
                                                             step="0.1"
+                                                            value={item.quantity}
+                                                            onChange={(e) => {
+                                                                setFieldValue(`items.${index}.quantity`, e.target.value);
+                                                                const newCost = calculateCost(item.ingredientId, e.target.value, item.unit);
+                                                                setFieldValue(`items.${index}.cost`, newCost);
+                                                                updateTotalCost(values.items);
+                                                            }}
                                                         />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>
@@ -167,8 +201,11 @@ const WasteReport = () => {
                                                         <GlobalField
                                                             name={`items.${index}.cost`}
                                                             type="number"
-                                                            min="0"
-                                                            step="0.01"
+                                                            value={calculateCost(item.ingredientId, item.quantity, item.unit)}
+                                                            disabled
+                                                            onChange={(e) => {
+                                                                setFieldValue(`items.${index}.cost`, e.target.value);
+                                                            }}
                                                         />
                                                     </td>
                                                     <td className={tableStyles.tableCellClass}>

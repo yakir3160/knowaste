@@ -40,7 +40,7 @@ const IngredientForm = ({ onCancel, initialValues = null, isEditing = false }) =
 
     return (
 
-        <Card className="border-2 border-secondary p-6">
+        <Card className="border-2 border-secondary p-6 mb-3">
             <button
                 type="button"
                 onClick={onCancel}
