@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 
 // Define validation schema for each waste item
 const wasteItemSchema = Yup.object().shape({
+    CategoryName: Yup.string()
+        .required('Category name is required'),
     ingredientId: Yup.string()
         .required('Ingredient ID is required'),
     ingredientName: Yup.string()

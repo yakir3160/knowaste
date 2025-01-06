@@ -11,6 +11,8 @@ const validateUnitForIngredient = (value, context) => {
 
 
 const wasteItemSchema = Yup.object({
+    CategoryName: Yup.string()
+        .required( 'Category name is required'),
     ingredientId: Yup.string()
         .required('Ingredient ID is required'),
     ingredientName: Yup.string()

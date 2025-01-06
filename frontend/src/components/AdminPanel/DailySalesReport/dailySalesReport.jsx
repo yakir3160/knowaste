@@ -11,6 +11,7 @@ import { v4 as generateUniqueID } from 'uuid';
 import SalesList from "./SalesList";
 import TabNavigation from "../../Common/TabNavigation/TabNavigation";
 import { tableStyles } from '../../../css/tableStyles';
+import {CircleX} from "lucide-react";
 
 const TAX_PERCENTAGE = 0.17;
 const DailySalesReport = () => {
@@ -43,6 +44,14 @@ const DailySalesReport = () => {
         menuItem: "",
         quantity: "",
         totalPrice: 0,
+    };
+    const handleDeleteItem = (indexToDelete) => {
+        setReportItems(prev => {
+            const updatedItems = prev.filter((_, index) => index !== indexToDelete);
+            const newTotalPrice = updatedItems.reduce((sum, item) => sum + item.totalPrice, 0);
+            setTotalReportPrice(newTotalPrice);
+            return updatedItems;
+        });
     };
 
     const handleAddDish = (values, { resetForm }) => {
@@ -142,7 +151,7 @@ const DailySalesReport = () => {
                         min="1"
                     />
                     <div className="flex flex-col justify-center items-center font-semibold">
-                        <span className="text-titles text-md text-center">
+                        <span className="text-titles  font-semibold text-md text-center">
                             Total Item Sales (₪)
                         </span>
                         <span className="text-md text-center">
@@ -184,7 +193,7 @@ const DailySalesReport = () => {
                             <table className="min-w-full border-collapse">
                                 <thead className="bg-secondary">
                                 <tr>
-                                    {['Category', 'SubCategory', 'Dish', 'Quantity', 'Total Item Sales (₪)'].map(header => (
+                                    {['Category', 'SubCategory', 'Dish', 'Quantity', 'Total Item Sales (₪)','Actions'].map(header => (
                                         <th key={header} className={tableStyles.thClass}>{header}</th>
                                     ))}
                                 </tr>
@@ -197,6 +206,9 @@ const DailySalesReport = () => {
                                         <td className={tableStyles.tableCellClass}>{item.menuItem}</td>
                                         <td className={tableStyles.tableCellClass}>{item.quantity}</td>
                                         <td className={tableStyles.tableCellClass}>{item.totalPrice} ₪</td>
+                                        <td className={tableStyles.tableCellClass}>
+                                            <CircleX className={`text-errorRed`} onClick={() => handleDeleteItem(index)}/>
+                                        </td>
                                     </tr>
                                 ))}
                                 </tbody>
