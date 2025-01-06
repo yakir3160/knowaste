@@ -1,5 +1,5 @@
 //import SalesService from "../services/salesService.js";
-import ReportService from "../services/ReportService.js";
+import ReportService from "../services/reportService.js";
 
 
 export const addSalesReport = async (req, res) => {

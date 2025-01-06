@@ -1,4 +1,5 @@
 import InventoryService from "../services/inventoryService.js";
+import AnalyticsService from "../services/analyticsService.js";
 
 export const addOrUpdateInventoryItem = async (req, res) => {
     try {
@@ -90,3 +91,81 @@ export const deleteInventoryItem = async (req, res) => {
         });
     }
 }
+
+export const getInventoryAnalytics = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { timeRange } = req.params;
+        const result = await AnalyticsService.calculateSalesAnalytics(userId,timeRange);
+
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Get inventory analytics error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            error: error.message || "Error fetching inventory analytics"
+        });
+    }
+}
+
+export const getWasteAnalytics = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const timeRange = req.query.timeRange || 'monthly';
+        const result = await AnalyticsService.analyzeWaste(userId,timeRange);
+
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Get waste analytics error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            error: error.message || "Error fetching waste analytics"
+        });
+    }
+}
+
+export const getOrderRecommendations = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const result = await AnalyticsService.generateOrderRecommendations(userId);
+
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Get order recommendations error:", error);
+        res.status(error.status || 500).json({
+            success: false,
+            error: error.message || "Error fetching order recommendations"
+        });
+    }
+}
+
+export const generateRecommendations = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { averageDailyUsage, daysToOrder, safetyStock, address, city } = req.query;
+
+        if (!averageDailyUsage || !daysToOrder || !safetyStock || !address || !city) {
+            return res.status(400).json({
+                success: false,
+                error: "Missing required query parameters: averageDailyUsage, daysToOrder, safetyStock, address, and city are required."
+            });
+        }
+
+        const result = await AnalyticsService.generateRecommendations(
+            userId,
+            parseFloat(averageDailyUsage),
+            parseInt(daysToOrder),
+            parseFloat(safetyStock),
+            address,
+            city
+        );
+
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Generate recommendations error:", error.message);
+        res.status(error.status || 500).json({
+            success: false,
+            error: error.message || "Error generating recommendations"
+        });
+    }
+};

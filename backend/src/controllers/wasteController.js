@@ -1,5 +1,5 @@
 //import WasteService from "../services/wasteService.js";
-import ReportService from "../services/ReportService.js";
+import ReportService from "../services/reportService.js";
 
 
 export const addWasteReport = async (req, res) => {

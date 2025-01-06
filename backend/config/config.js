@@ -12,5 +12,10 @@ export const config = {
     },
     server: {
         port: process.env.PORT || 5002
+    },
+    keys: {
+        jwt: process.env.JWT_SECRET,
+        openWaether: process.env.OPENWEATHER_API_KEY
     }
+
 };

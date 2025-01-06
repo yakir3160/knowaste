@@ -5,8 +5,7 @@ import inventoryRoutes from './inventoryRoutes.js';
 import menuRoutes from './menuRoutes.js';
 import reportRoutes from "./reportRoutes.js";
 import emailRoutes from './emailRoutes.js';
-
-
+import analyticsRoutes from './analyticsRoutes.js';
 
 const router = Router();
 router.use('/auth', authRoutes);
@@ -15,6 +14,7 @@ router.use('/inventory', inventoryRoutes);
 router.use('/menu', menuRoutes);
 router.use('/reports', reportRoutes);
 router.use('/email', emailRoutes);
+router.use('/analytics', analyticsRoutes);
 
 
 export default router;
