@@ -2,6 +2,7 @@ import Card from "../../Common/Card/Card";
 import { tableStyles } from '../../../css/tableStyles';
 
 const SalesList = ({ salesReports }) => {
+    console.log('Sales Reports:', salesReports);
     return (
         <Card>
             <div className="overflow-x-auto">
@@ -20,8 +21,8 @@ const SalesList = ({ salesReports }) => {
                     {salesReports.map((sale) => (
                         <tr key={sale.id} className="bg-white border-b">
                             <td className={tableStyles.tableCellClass}>{sale.date}</td>
-                            <td className={tableStyles.tableCellClass}>{sale.totalSalesPreTax}</td>
-                            <td className={tableStyles.tableCellClass}>{sale.totalSales}</td>
+                            <td className={tableStyles.tableCellClass}>{sale.summary.totalSalesPreTax}</td>
+                            <td className={tableStyles.tableCellClass}>{sale.summary.totalSales}</td>
 
                             {/* שדות עבור המנות והכמויות */}
                             <td className={tableStyles.tableCellClass}>

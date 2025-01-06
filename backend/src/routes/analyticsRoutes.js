@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import AnalyticsService from '../services/analyticsService.js';
+import {verifyToken} from "../middleware/authMiddleware.js";
 
 const router = Router();
 
@@ -27,7 +28,7 @@ router.get('/recommendations', async (req, res) => {
     }
 });
 
-router.get('/order-recommendations', async (req, res) => {
+router.get('/order-recommendations',verifyToken, async (req, res) => {
     try {
         const result = await AnalyticsService.generateOrderRecommendations(req.user.id);
         res.status(200).json(result);

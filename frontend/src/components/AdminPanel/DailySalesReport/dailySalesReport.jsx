@@ -12,8 +12,9 @@ import SalesList from "./SalesList";
 import TabNavigation from "../../Common/TabNavigation/TabNavigation";
 import { tableStyles } from '../../../css/tableStyles';
 
+const TAX_PERCENTAGE = 0.17;
 const DailySalesReport = () => {
-    const { userItems, menuCategories, salesReports, addReport } = useItemsContext();
+    const { menuItems, menuCategories, salesReports, addReport } = useItemsContext();
     const [reportItems, setReportItems] = useState([]);
     const [reportDate, setReportDate] = useState(new Date().toISOString().split('T')[0]);
     const [totalReportPrice, setTotalReportPrice] = useState(0);
@@ -24,7 +25,7 @@ const DailySalesReport = () => {
         filteredItems,
         selectedCategory,
         setSelectedCategory,
-    } = useFilteredItems(userItems, menuCategories);
+    } = useFilteredItems(menuItems, menuCategories);
 
     const validationSchema = Yup.object({
         category: Yup.string().required("Category is required"),
@@ -46,10 +47,11 @@ const DailySalesReport = () => {
 
     const handleAddDish = (values, { resetForm }) => {
         const selectedDish = filteredItems.find(item => item.name === values.menuItem);
+        console.log('Selected Dish:', selectedDish);
         if (selectedDish) {
             const newItem = {
                 ...values,
-                id: selectedDish.id,
+                id: selectedDish.menuItemId,
                 totalPrice: values.quantity * selectedDish.price
             };
             setReportItems(prev => [...prev, newItem]);
@@ -62,9 +64,9 @@ const DailySalesReport = () => {
         try {
             setSaving(true);
             const reportData = {
+                reportType: 'sales',
                 id: generateUniqueID(),
                 date: reportDate,
-                totalSales: totalReportPrice,
                 items: reportItems.map(item => ({
                     id: item.id,
                     category: item.category,
@@ -76,8 +78,7 @@ const DailySalesReport = () => {
                 summary: {
                     totalItems: reportItems.length,
                     totalSales: totalReportPrice,
-                    totalSalesPreTax: totalReportPrice,
-                    tax: 17
+                    totalSalesPreTax: totalReportPrice * (1 - TAX_PERCENTAGE),
                 }
             };
 

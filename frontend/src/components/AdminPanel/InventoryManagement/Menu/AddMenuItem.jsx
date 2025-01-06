@@ -21,7 +21,7 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
         categoryName: '',
         subCategoryName: '',
         name: '',
-        price: null,
+        price: '',
         ingredients: [],
     };
     console.log(initialValues)
@@ -34,7 +34,7 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
             }
             : {
                 ...values,
-                id: generateUniqueID(),
+                menuItemId: generateUniqueID(),
                 categoryId: newCategory
                     ? menuCategories.find(category => category.name === values.categoryName)?.id
                     : categories.find(category => category.name === values.categoryName)?.id
@@ -65,7 +65,7 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                 ingredientId: '',
                 name: '',
                 quantity: null,
-                unit: ''
+                unitType: ''
             }
         ]);
     };
@@ -197,7 +197,6 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                                 onChange={(e) => {
                                                     setFieldValue(`ingredients.${index}.name`, e.target.value);
                                                     const selectedItem = inventoryItems.find(item => item.name === e.target.value);
-                                                    console.log(selectedItem);
                                                     setFieldValue(`ingredients.${index}.ingredientId`, selectedItem?.ingredientId);
                                                 }}
                                             />

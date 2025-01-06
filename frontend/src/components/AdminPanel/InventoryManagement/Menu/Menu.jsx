@@ -11,7 +11,7 @@ import CategoryDropdown from "../../../Common/CategoryDropdown";
 
 
 const Menu = ({isEmpty}) => {
-    const { menuItems, menuCategories,itemsError, successMessage,clearMessages} = useItemsContext();
+    const { menuItems, menuCategories ,} = useItemsContext();
     const {
         filteredItems,
         selectedCategory,

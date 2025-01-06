@@ -7,7 +7,7 @@ import Menu from './Menu/Menu';
 import Inventory from './Inventory/Inventory';
 
 const InventoryManagement = () => {
-    const { inventoryItems ,menuItems,successMessage,clearMessages} = useItemsContext();
+    const { inventoryItems ,menuItems,success,menuLoading, inventoryLoading,} = useItemsContext();
     const [activeTab, setActiveTab] = useState(  'Menu');
     return (
         <AdminPanelContainer

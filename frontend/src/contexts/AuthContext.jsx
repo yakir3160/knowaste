@@ -7,16 +7,21 @@ const AuthContext = createContext();
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5002';
 
 export const AuthProvider = ({ children }) => {
+    const navigate = useNavigate();
+
+    // Loading states
+    const [loading, setLoading] = useState(true);
+
+    // Authentication states
     const [user, setUser] = useState(null);
     const [firebaseToken, setFirebaseToken] = useState(null);
+
+    // Error and success states
     const [authError, setAuthError] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [success, setSuccess] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
 
-    const navigate = useNavigate();
-
-    // Centralized API call handler
+    // API calls with error handling
     const apiCall = async (endpoint, method = 'GET', body = null, customHeaders = {}) => {
         try {
             const headers = {
@@ -38,43 +43,21 @@ export const AuthProvider = ({ children }) => {
             }
 
             return data;
+
         } catch (error) {
-            console.error(`API Error (${endpoint}):`, error);
-            throw error;
+            const errorMessage = error.message || 'Failed to complete operation';
+            setAuthError(errorMessage);
+            throw {
+                status: error.status || 500,
+                message: errorMessage,
+                originalError: error
+            };
         }
     };
 
-    // Initialize authentication state
-    useEffect(() => {
-        const initializeAuth = async () => {
-            const storedToken = localStorage.getItem('authToken');
-
-            if (!storedToken) {
-                setLoading(false);
-                return;
-            }
-
-            try {
-                const userData = await apiCall('me', 'GET', null, {
-                    Authorization: `Bearer ${storedToken}`
-                });
-
-                setUser(userData.user);
-            } catch (error) {
-                setUser(null);
-                setFirebaseToken(null);
-                localStorage.removeItem('authToken');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        initializeAuth();
-    }, []);
-
     const clearAuthError = () => setAuthError(null);
 
-    // Authentication actions
+    // Authentication Methods
     const register = async (values, { setSubmitting, resetForm }) => {
         try {
             clearAuthError();
@@ -191,10 +174,7 @@ export const AuthProvider = ({ children }) => {
 
     const updateEmail = async (newEmail) => {
         try {
-            await apiCall('update-email', 'POST', {
-                firebaseToken,
-                newEmail
-            });
+            await apiCall('update-email', 'POST', { firebaseToken, newEmail });
             return true;
         } catch (error) {
             setAuthError('An error occurred. Please try again.');
@@ -202,22 +182,58 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    // Initialize authentication state
+    useEffect(() => {
+        const initializeAuth = async () => {
+            const storedToken = localStorage.getItem('authToken');
+
+            if (!storedToken) {
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const userData = await apiCall('me', 'GET', null, {
+                    Authorization: `Bearer ${storedToken}`
+                });
+                setUser(userData.user);
+            } catch (error) {
+                setUser(null);
+                setFirebaseToken(null);
+                localStorage.removeItem('authToken');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        initializeAuth();
+    }, []);
+
     const contextValue = {
+        // Loading state
+        loading,
+
+        // Authentication state
         user,
         setUser,
+
+        // Status flags
+        success,
+        emailSent,
+        authError,
+
+        // Authentication methods
         login,
         register,
         logout,
         signInWithGoogle,
         passwordResetEmail,
         updateEmail,
-        loading,
-        success,
-        setSuccess,
-        authError,
+
+        // Utility functions
         setAuthError,
         clearAuthError,
-        emailSent,
+        setSuccess,
     };
 
     return (
