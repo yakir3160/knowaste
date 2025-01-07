@@ -87,3 +87,12 @@ export const ingredientCategories = [
 ];
 ingredientCategories.sort((a, b) => a.name.localeCompare(b.name));
 
+export
+const WASTE_REASONS = [
+    { value: 'expired', label: 'Expired' },
+    { value: 'damaged', label: 'Damaged' },
+    { value: 'quality', label: 'Quality Issues' },
+    { value: 'overproduction', label: 'Overproduction' },
+    { value: 'storage', label: 'Storage Error' },
+    { value: 'other', label: 'Other' }
+];

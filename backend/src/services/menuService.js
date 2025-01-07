@@ -28,6 +28,7 @@ class MenuService {
                 }
                 await inventoryDocRef.update({
                     quantityForMenu: FieldValue.increment(ingredient.quantity),
+                    unitForMenu: ingredient.unitForMenu,
                 });
             }
 

@@ -15,7 +15,7 @@ const menuItemSchema = Yup.object().shape({
                     ingredientId: Yup.string().required('ID is required'),
                     name: Yup.string().required('Name is required'),
                     quantity: Yup.number().required('Quantity is required').min(0, 'Amount must be positive'),
-                    unitType: Yup.string().required('Unit is required'),
+                    unitForMenu: Yup.string().required('Unit is required'),
             })
         )
 });

@@ -34,12 +34,17 @@ const Menu = ({isEmpty}) => {
 //         category: ${item.categoryName},
 //    }`);
 // })
-
+    useEffect(() => {
+        if (menuCategories.length > 0 && !selectedCategory) {
+            setSelectedCategory(menuCategories[0].name);
+        }
+    }, [menuCategories]);
     
     const handleFormClose = () => {
         setShowAddMenuItem(false);
         setSelectedItem(null);
     };
+
 
 
     return (

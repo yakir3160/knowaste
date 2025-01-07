@@ -1,22 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form } from 'formik';
 import Button from '../../../Common/Button/Button';
 import { Save, CircleX, Plus } from 'lucide-react';
 import GlobalField from "../../../Common/inputs/GlobalField";
 import Card from "../../../Common/Card/Card";
 import menuItemSchema from '../../../../schemas/firestoreSchemas/menuItemSchema';
-import { v4 as generateUniqueID } from 'uuid';
+import {v4 as generateUniqueID, validate} from 'uuid';
 import IngredientForm from './IngredientForm';
 import { useItemsContext } from "../../../../contexts/ItemsContext";
-import {measurementUnits, menuCategories} from "../../../../constants/Constants";
+import { measurementUnits, menuCategories } from "../../../../constants/Constants";
+import useFilteredItems from "../../../../Hooks/Items/useFilteredItems";
 
-const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = null}) => {
+const AddMenuItem = ({ onAdd, categories, initialValues = null, isFromMenuItem = null }) => {
     const [newCategory, setNewCategory] = useState(false);
     const [showIngredientForm, setShowIngredientForm] = useState(false);
-    const [successMsg, setSuccessMsg] = useState('');
-    const { inventoryItems ,addMenuItem,itemsError,setItemsError,clearMessages} = useItemsContext();
+    const [itemIngredients, setItemIngredients] = useState([]);
+    const { inventoryItems, inventoryCategories, addMenuItem } = useItemsContext();
+    const {setSelectedCategory,filteredItems} = useFilteredItems(inventoryItems, inventoryCategories);
 
-
+    console.log(inventoryCategories);
     const defaultValues = {
         categoryName: '',
         subCategoryName: '',
@@ -24,50 +26,60 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
         price: '',
         ingredients: [],
     };
-    console.log(initialValues)
+    console.log(initialValues);
 
     const handleSubmit = async (values, { resetForm }) => {
+        const fullItem = {
+            ...values,
+            ingredients: itemIngredients,
+        }
         const itemToSubmit = isFromMenuItem
             ? {
-                ...values,
-                id:initialValues.id,
+                fullItem,
+                id: initialValues.id,
             }
             : {
-                ...values,
+                ...fullItem,
                 menuItemId: generateUniqueID(),
                 categoryId: newCategory
                     ? menuCategories.find(category => category.name === values.categoryName)?.id
-                    : categories.find(category => category.name === values.categoryName)?.id
+                    : categories.find(category => category.name === values.categoryName)?.id,
             };
 
         console.log('Form submitted:', itemToSubmit);
-
-        try {
-            const response = await addMenuItem(itemToSubmit);
-            if (response) {
-                setSuccessMsg('Item added successfully!');
-                setTimeout(() => {
-                    onAdd(itemToSubmit);
-                    resetForm();
-                }, 3000);
-            }
-        } catch (error) {
-            setItemsError(error.message);
-        }
+        await addMenuItem(itemToSubmit);
+        resetForm();
     };
 
-
     const handleAddIngredient = (values, setFieldValue) => {
-        const currentIngredients = values.ingredients || [];
-        setFieldValue('ingredients', [
-            ...currentIngredients,
+        // Validation checks
+        if (!values.ingredientName || !values.ingredientQuantity || !values.unitForMenu) {
+            alert('Please fill all ingredient fields');
+            return;
+        }
+
+        // Validate quantity is positive
+        if (values.ingredientQuantity <= 0) {
+            alert('Quantity must be greater than 0');
+            return;
+        }
+
+        // If all validations pass, add the ingredient
+        setItemIngredients([
+            ...itemIngredients,
             {
-                ingredientId: '',
-                name: '',
-                quantity: null,
-                unitType: ''
-            }
+                ingredientId: values.ingredientId,
+                name: values.ingredientName,
+                quantity: values.ingredientQuantity,
+                unitForMenu: values.unitForMenu,
+            },
         ]);
+
+        // Reset fields
+        setFieldValue('category', '');
+        setFieldValue('ingredientName', '');
+        setFieldValue('ingredientQuantity', '');
+        setFieldValue('unitForMenu', '');
     };
 
     const handleIngredientSubmit = (ingredientValues, { resetForm }) => {
@@ -77,7 +89,6 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
 
     return (
         <Card className="w-full md:w-3/4 rounded-lg p-3 mb-4 border-2 border-secondary">
-
             <button
                 type="button"
                 onClick={() => onAdd()}
@@ -94,11 +105,7 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                 {({ values, setFieldValue }) => (
                     <Form className="pt-3">
                         <div className="space-y-4">
-
-                            <Button
-                                type="button"
-                                onClick={() => setNewCategory(!newCategory)}
-                            >
+                            <Button type="button" onClick={() => setNewCategory(!newCategory)}>
                                 {newCategory ? 'Existing Category' : 'New Category'}
                             </Button>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -112,8 +119,8 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                             { value: '', label: 'Select Category' },
                                             ...menuCategories.map(category => ({
                                                 value: category.name,
-                                                label: category.name
-                                            }))
+                                                label: category.name,
+                                            })),
                                         ]}
                                     />
                                 ) : (
@@ -126,8 +133,8 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                             { value: '', label: 'Select Category' },
                                             ...categories.map(category => ({
                                                 value: category.name,
-                                                label: category.name
-                                            }))
+                                                label: category.name,
+                                            })),
                                         ]}
                                     />
                                 )}
@@ -145,7 +152,6 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                     name="name"
                                     className="text-titles text-xl font-semibold"
                                     value={values.name}
-
                                 />
                                 <GlobalField
                                     label="Price (₪)"
@@ -153,7 +159,6 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                     name="price"
                                     className="text-lg font-medium text-primary"
                                     placeholder={0}
-
                                 />
                             </div>
 
@@ -170,79 +175,104 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                                     </Button>
                                 </div>
 
-                                {values.ingredients?.map((ingredient, index) => (
-                                    <div className={`p-2 border-2 border-secondary rounded-sm`}>
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                const updatedIngredients = values.ingredients.filter((_, i) => i !== index);
-                                                setFieldValue('ingredients', updatedIngredients);
+                                <div className={`p-2 border-2 border-secondary rounded-sm`}>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 ">
+                                        <GlobalField
+                                            label="category"
+                                            type="select"
+                                            name={`category`}
+                                            options={[
+                                                { value: '', label: 'Select Category' },
+                                                ...inventoryCategories.map(category => ({
+                                                    value: category,
+                                                    label: category,
+                                                })),
+                                            ]}
+                                            onChange={e => setSelectedCategory(e.target.value)}
+                                        />
+                                        <GlobalField
+                                            label="Ingredient"
+                                            type="select"
+                                            name={'ingredientName'}
+                                            options={[
+                                                { value: '', label: 'Select Ingredient' },
+                                                ...filteredItems.map(item => ({
+                                                    value: item.name,
+                                                    label: item.name,
+                                                })),
+                                            ]}
+                                            onChange={e => {
+                                                setFieldValue(`ingredientName`, e.target.value);
+                                                const selectedItem = inventoryItems.find(item => item.name === e.target.value);
+                                                setFieldValue(`ingredientId`, selectedItem?.ingredientId);
                                             }}
-                                            className=" text-errorRed  w-fit px-2 "
-                                        >
-                                            <CircleX size={20}/>
-                                        </button>
-                                        <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 ">
-                                            <GlobalField
-                                                label="Ingredient"
-                                                type="select"
-                                                name={`ingredients.${index}.name`}
-                                                options={[
-                                                    {value: '', label: 'Select Ingredient'},
-                                                    ...inventoryItems.map(item => ({
-                                                        value: item.name,
-                                                        label: item.name
-                                                    }))
-                                                ]}
-                                                onChange={(e) => {
-                                                    setFieldValue(`ingredients.${index}.name`, e.target.value);
-                                                    const selectedItem = inventoryItems.find(item => item.name === e.target.value);
-                                                    setFieldValue(`ingredients.${index}.ingredientId`, selectedItem?.ingredientId);
-                                                }}
-                                            />
-                                            <GlobalField
-                                                label="Quantity"
-                                                type="number"
-                                                name={`ingredients.${index}.quantity`}
-                                            />
-                                            <GlobalField
-                                                label="Unit"
-                                                type="select"
-                                                name={`ingredients.${index}.unitType`}
-                                                options={[
-                                                    { value: '', label: 'Select unit' },
-                                                    ...measurementUnits.map(unit => ({
-                                                        value: unit,
-                                                        label: unit
-                                                    }))
-                                                ]}
-                                            />
-                                            <input
-                                                type="hidden"
-                                                name={`ingredients.${index}.ingredientId`}
-                                                value={ingredient.ingredientId}
-
-                                            />
-
-                                        </div>
+                                        />
+                                        <GlobalField label="Quantity" type="number" name={`ingredientQuantity`} />
+                                        <GlobalField
+                                            label="Unit"
+                                            type="select"
+                                            name={`unitForMenu`}
+                                            options={[
+                                                { value: '', label: 'Select unit' },
+                                                ...measurementUnits.map(unit => ({
+                                                    value: unit,
+                                                    label: unit,
+                                                })),
+                                            ]}
+                                        />
+                                        <input type="hidden" name={`ingredientId`} />
                                     </div>
-                                ))}
-                                <Button
-                                    type="button"
-                                    onClick={() => handleAddIngredient(values, setFieldValue)}
-                                    className="w-full mt-2"
-                                >
-                                    Add Ingredient
-                                </Button>
+                                    <Button
+                                        type="button"
+                                        onClick={() => handleAddIngredient({
+                                            ingredientId: values.ingredientId,
+                                            ingredientName: values.ingredientName,
+                                            ingredientQuantity: values.ingredientQuantity,
+                                            unitForMenu: values.unitForMenu,
+                                        }, setFieldValue)}
+                                        className="w-full mt-2"
+                                    >
+                                        Add Ingredient
+                                    </Button>
+                                </div>
                             </div>
+                            <div className="flex flex-col justify-center mt-4">
+                                <h3 className="text-xl text-center text-titles font-semibold">Ingredients</h3>
+                                {itemIngredients.length > 0 ? (
+                                        <div className="p-4 rounded-sm">
+                                            <div className="grid grid-cols-1 space-y-2 ">
 
+                                                {itemIngredients.map((ingredient, index) => (
+                                                    <>
+                                                        <div key={index} className="text-lg grid grid-cols-3 border-2 border-secondary p-3 rounded-sm ">
+                                                            <p>{ingredient.name}</p>
+                                                            <p>{ingredient.quantity} {ingredient.unitForMenu}</p>
+                                                            <CircleX
+                                                                size={20}
+                                                                className="text-errorRed cursor-pointer self-center"
+                                                                onClick={() => setItemIngredients(itemIngredients.filter((_, i) => i !== index))}
+                                                            />
+                                                        </div>
+
+                                                    </>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )
+                                    :
+                                    (
+                                        <div className="p-2 self-center  rounded-sm">
+                                            <p>No ingredients added</p>
+                                        </div>
+                                    )}
+                            </div>
                             <div className="flex mt-4">
                                 <Button
                                     type="submit"
                                     className="flex justify-center items-center w-full px-4 py-2 text-sm font-medium border border-lime rounded-md col-span-full"
                                 >
                                     Save
-                                    <Save size={20} className="ml-2" />
+                                    <Save size={20} className="ml-2"/>
                                 </Button>
                             </div>
                         </div>
@@ -255,13 +285,12 @@ const AddMenuItem = ({ onAdd, categories,initialValues = null,isFromMenuItem = n
                     <div className="bg-white p-4 rounded-lg w-full max-w-2xl">
                         <IngredientForm
                             isFromMenuItem={true}
-                            onSubmit={(ingredientValues) => handleIngredientSubmit( ingredientValues)}
+                            onSubmit={ingredientValues => handleIngredientSubmit(ingredientValues)}
                             onCancel={() => setShowIngredientForm(false)}
                         />
                     </div>
                 </div>
             )}
-
         </Card>
     );
 };

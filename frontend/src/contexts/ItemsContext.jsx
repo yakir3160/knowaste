@@ -138,6 +138,7 @@ export const ItemsProvider = ({ children }) => {
         const data = await apiCall('menu', 'POST', itemData);
         console.log(data.data);
         setMenuItems(prevItems => [...prevItems, data]);
+        setMenuCategories(prevCategories => [...prevCategories, data.category]);
         setSaving(false);
         setSuccess(true);
         setLastUpdate(prev => ({...prev, menu: new Date()}));
@@ -176,7 +177,7 @@ export const ItemsProvider = ({ children }) => {
 
     const deleteMenuItem = async (itemId) => {
         await apiCall(`menu/${itemId}`, 'DELETE');
-        setMenuItems(prev => prev.filter(item => item.id !== itemId));
+        setMenuItems(prev => prev.filter(item => item.menuItemId !== itemId));
     };
 
     // Inventory Items

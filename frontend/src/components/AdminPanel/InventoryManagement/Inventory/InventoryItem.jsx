@@ -8,6 +8,7 @@ import InventoryOrderForm from "./InventoryOrderForm";
 const InventoryItem = ({product, onEdit, deleteInventoryItem}) => {
     const [showDelete, setShowDelete] = useState(false);
     const [fromOrder, setFromOrder] = useState(false);
+    console.log(product);
 
     const handleDeleteClick = () => {
         setShowDelete(true);
@@ -30,8 +31,12 @@ const InventoryItem = ({product, onEdit, deleteInventoryItem}) => {
             <div className="gap-5 grid grid-cols-2 md:grid-cols-4 items-center">
                 <h2 className="text-titles text-xl font-semibold">{product.name}</h2>
                 <p className="text-lg font-medium text-primary">₪{product.pricePerUnit}</p>
-                <div className="text-lg font-medium text-primary">
-                    Stock: <span className="font-semibold">{product.currentStock}</span> ({product.unit})
+                <div className="text-lg flex flex-col font-medium text-primary">
+                    <span className="font-semibold"> Stock: {product.currentStock}</span>
+                    <span className="text-gray">{product.quantityPerUnit * product.currentStock} {product.unit}</span>
+                </div>
+                <div className="text-lg flex flex-col font-medium text-primary">
+                    <span className="font-semibold">Quantity in menu {product.quantityForMenu } {product.unitForMenu}</span>
                 </div>
 
 

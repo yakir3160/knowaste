@@ -10,10 +10,7 @@ import Hero from "../LandingPage/Hero";
 const LandingPage = () => {
     return (
         <div className="w-full ">
-
-                {/* Hero Text */}
-                <Hero />
-
+            <Hero />
             <LandingPageText />
         </div>
     );
