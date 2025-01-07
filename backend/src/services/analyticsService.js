@@ -3,6 +3,15 @@ import Holidays from 'date-holidays';
 import axios from "axios";
 
 class AnalyticsService {
+
+    validateInput(userId, methodName, additionalChecks = {}) {
+        if (!userId) throw new Error(`${methodName}: User ID required`);
+
+        Object.entries(additionalChecks).forEach(([param, value]) => {
+            if (!value) throw new Error(`${methodName}: ${param} required`);
+        });
+    }
+
     async getRealtimeAnalytics(userId, specificDate = new Date()) {
         try {
             const [currentData, historicalData] = await Promise.all([
@@ -24,6 +33,9 @@ class AnalyticsService {
         }
     }
     async getHistoricalData(userId) {
+
+        this.validateInput(userId, 'getHistoricalData');
+
         const salesQuery = await db
             .collection('users').doc(userId)
             .collection('reports').doc('sales')
@@ -41,6 +53,9 @@ class AnalyticsService {
     }
 
     async getCurrentData(userId, date) {
+
+        this.validateInput(userId, 'getCurrentData', { date });
+
         const startOfDay = new Date(date);
         startOfDay.setHours(0, 0, 0, 0);
 
@@ -81,6 +96,10 @@ class AnalyticsService {
 
     async getWeatherData(date, address, city) {
         try {
+            if (!process.env.OPENWEATHER_API_KEY && (address || city)) {
+                throw new Error('Weather API key required for location-based forecasts');
+            }
+
             const apiKey = process.env.OPENWEATHER_API_KEY;
 
             const geoResponse = await axios.get('https://api.openweathermap.org/geo/1.0/direct', {
@@ -117,12 +136,19 @@ class AnalyticsService {
 
             return dailyForecast;
         } catch (error) {
-            console.error('Error fetching weather data:', error.message);
-            return [];
+            console.error('Weather API error:', error.message);
+            return {
+                temperature: 25,
+                humidity: 60,
+                conditions: 'unknown'
+            };
         }
     }
 
     async calculateSalesAnalytics(userId, timeRange) {
+
+        this.validateInput(userId, 'calculateSalesAnalytics', { timeRange });
+
         try {
             let salesQuery = db
                 .collection('users').doc(userId)
@@ -167,7 +193,13 @@ class AnalyticsService {
         }
     }
 
-    async analyzeWaste(userId, timeRange) {
+    async analyzeWaste(userId, timeRange, startDate, endDate) {
+
+        this.validateInput(userId, 'analyzeWaste', {
+            timeRange,
+            ...(timeRange === 'custom' ? { startDate, endDate } : {})
+        });
+
         try {
             let wasteQuery = db
                 .collection('users').doc(userId)
@@ -175,9 +207,15 @@ class AnalyticsService {
                 .collection('wasteReports')
                 .where('status', '==', 'submitted');
 
-            const startDate = this.getStartDate(timeRange);
-            if (startDate) {
-                wasteQuery = wasteQuery.where('date', '>=', startDate);
+            if (timeRange === 'custom' && startDate && endDate) {
+                wasteQuery = wasteQuery
+                    .where('date', '>=', new Date(startDate))
+                    .where('date', '<=', new Date(endDate));
+            } else {
+                const queryStartDate = this.getStartDate(timeRange);
+                if (queryStartDate) {
+                    wasteQuery = wasteQuery.where('date', '>=', queryStartDate);
+                }
             }
 
             const snapshot = await wasteQuery.get();
@@ -187,31 +225,41 @@ class AnalyticsService {
                 totalWasteCost: 0,
                 wasteByReason: {},
                 wasteByIngredient: {},
-                topWastedIngredients: []
+                topWastedIngredients: [],
+                trends: this.calculateWasteTrends(wasteReports),
+                periodAnalysis: this.analyzePeriodTrends(wasteReports)
             };
 
             wasteReports.forEach(report => {
                 report.items.forEach(item => {
                     analysis.totalWasteCost += item.cost;
                     analysis.wasteByReason[item.reason] = (analysis.wasteByReason[item.reason] || 0) + item.cost;
-                    analysis.wasteByIngredient[item.ingredientId] = (analysis.wasteByIngredient[item.ingredientId] || 0) + item.cost;
-                })
-            })
+                    analysis.wasteByIngredient[item.ingredientId] = {
+                        name: item.ingredientName,
+                        cost: (analysis.wasteByIngredient[item.ingredientId]?.cost || 0) + item.cost,
+                        quantity: (analysis.wasteByIngredient[item.ingredientId]?.quantity || 0) + item.quantity
+                    };
+                });
+            });
 
             analysis.topWastedIngredients = Object.entries(analysis.wasteByIngredient)
-                .sort(([, a], [, b]) => b - a)
-                .slice(0, 5)
+                .sort(([, a], [, b]) => b.cost - a.cost)
+                .slice(0, 10)
+                .map(([id, data]) => ({
+                    id,
+                    ...data
+                }));
 
             return {
                 success: true,
                 data: analysis,
                 message: 'Waste analysis calculated successfully'
-            }
+            };
         } catch (error) {
-            console.error('Error calculating waste analysis:', error);
-            return { success: false, error: error.message };
+            throw new Error(`Error analyzing waste: ${error.message}`);
         }
     }
+
     /*
     * Use generateRecommendations:
     * When you need a quick, specific recommendation for a single item or category.
@@ -222,7 +270,14 @@ class AnalyticsService {
     * Example: "What do I need to order for the entire restaurant?"
     * */
 
-    async generateRecommendations(userId, averageDailyUsage, daysToOrder, safetyStock, address, city) {
+    async generateRecommendations(userId, averageDailyUsage, daysToOrder, safetyStock) {
+
+        this.validateInput(userId, 'generateRecommendations', {
+            averageDailyUsage,
+            daysToOrder,
+            safetyStock
+        });
+
         try {
             // Fetch real-time analytics, including weather data
             const analytics = await this.getRealtimeAnalytics(userId);
@@ -247,6 +302,8 @@ class AnalyticsService {
     }
 
     async generateOrderRecommendations(userId) {
+        this.validateInput(userId, 'generateOrderRecommendations');
+
         try {
             // Fetch inventory data
             const inventorySnapshot = await db
@@ -272,7 +329,7 @@ class AnalyticsService {
 
                 // Calculate usage rate
                 const usageHistory = await this.getUsageHistory(userId, doc.id);
-                const seasonalFactor = this.calculateSeasonalFactor(item.categoryName);
+                const seasonalFactor = this.calculateSeasonalFactor(item.categoryName, new Date());
                 const averageDailyUsage = item.usageStats?.averageDailyUsage || 0;
 
                 const daysToOrder = 14;
@@ -346,20 +403,23 @@ class AnalyticsService {
     }
 
     async predictWeatherImpact(date, weatherPatterns) {
-        // Fetch weather data for the given date
         const weatherData = await this.getWeatherData(date);
-
-        // Find the weather forecast for the specific date
         const forecast = weatherData.find(w => new Date(w.date).toDateString() === date.toDateString());
 
-        if (!forecast) return 1.0; // Return default neutral impact if no forecast is found
+        if (!forecast) return 1.0;
 
-        // Apply weather impact logic
-        if (forecast.conditions.includes('rain')) return 0.9; // Rain reduces demand
-        if (forecast.temperature > 30) return 0.8; // Hot weather reduces demand
-        if (forecast.temperature < 10) return 1.2; // Cold weather increases demand
+        let impact = 1.0;
+        // Temperature impact
+        if (forecast.temperature > 35) impact *= 0.7;  // Very hot
+        else if (forecast.temperature > 30) impact *= 0.8;  // Hot
+        else if (forecast.temperature < 5) impact *= 1.3;   // Very cold
+        else if (forecast.temperature < 10) impact *= 1.2;  // Cold
 
-        return 1.0; // Default neutral impact
+        // Weather conditions impact
+        if (forecast.conditions.includes('rain')) impact *= 0.9;
+        if (forecast.conditions.includes('snow')) impact *= 1.2;
+
+        return impact;
     }
 
 
@@ -385,6 +445,9 @@ class AnalyticsService {
     }
 
     async getUsageHistory(userId, ingredientId) {
+
+        this.validateInput(userId, 'getUsageHistory', { ingredientId });
+
         const salesReports  = await db
             .collection('users').doc(userId)
             .collection('reports').doc('sales')
@@ -432,7 +495,7 @@ class AnalyticsService {
                 date: new Date(currentDate),
                 quantity: await this.predictQuantity(data, currentDate, holidays),
                 factors: {
-                    seasonal: this.calculateSeasonalFactor(currentDate),
+                    seasonal: this.calculateSeasonalFactor(data.categoryName, currentDate),
                     holiday: this.calculateHolidayFactor(currentDate, holidays),
                     weather: await this.predictWeatherImpact(currentDate, data.weatherPatterns)
                 }
@@ -451,7 +514,7 @@ class AnalyticsService {
 
     async predictQuantity(itemData, date, holidays) {
         const baseQuantity = this.calculateBaseQuantity(itemData.historicalUsage);
-        const seasonalFactor = this.calculateSeasonalFactor(date);
+        const seasonalFactor = this.calculateSeasonalFactor(itemData.categoryName, date);
         const holidayFactor = this.calculateHolidayFactor(date, holidays);
         const weatherFactor = await this.predictWeatherImpact(date, itemData.weatherPatterns);
 
@@ -464,12 +527,45 @@ class AnalyticsService {
             byFactor: {
                 seasonal: this.calculateTrend(predictions.map(p => p.factors.seasonal)),
                 holiday: this.calculateTrend(predictions.map(p => p.factors.holiday)),
-                weather: this.calculateTrend(predictions.map(p => p.factors.weather))
-            },
-            weatherImpact: this.calculateTrend(predictions.map(p => p.weatherData.temperature)) // Analyze temperature impact
+                weather: this.calculateTrend(predictions.map(p => p.factors?.weather || 1.0))
+            }
         };
     }
 
+    analyzePeriodTrends(data) {
+        const dailyTrends = {};
+        const weeklyTrends = {};
+        const monthlyTrends = {};
+
+        data.forEach(item => {
+            const date = new Date(item.date);
+            const dayKey = date.toISOString().split('T')[0];
+            const weekKey = `${date.getFullYear()}-W${Math.ceil(date.getDate() / 7)}`;
+            const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`;
+
+            const metrics = {
+                cost: item.cost || 0,
+                quantity: item.quantity || 0
+            };
+
+            dailyTrends[dayKey] = this.aggregateMetrics(dailyTrends[dayKey], metrics);
+            weeklyTrends[weekKey] = this.aggregateMetrics(weeklyTrends[weekKey], metrics);
+            monthlyTrends[monthKey] = this.aggregateMetrics(monthlyTrends[monthKey], metrics);
+        });
+
+        return {
+            daily: dailyTrends,
+            weekly: weeklyTrends,
+            monthly: monthlyTrends
+        };
+    }
+
+    aggregateMetrics(existing = { cost: 0, quantity: 0 }, current) {
+        return {
+            cost: existing.cost + current.cost,
+            quantity: existing.quantity + current.quantity
+        };
+    }
 
     calculateTrend(values) {
         const n = values.length;
@@ -514,31 +610,381 @@ class AnalyticsService {
         return Math.sqrt(variance) / mean;
     }
 
-    calculateSeasonalFactor(category) {
-        const currentMonth = new Date().getMonth();
+    calculateSeasonalFactor(category, date = new Date()) {
+        const currentMonth = date.getMonth();
         const holidays = this.getUpcomingHolidays();
 
-        let factor = 1.0;
-
-        if (holidays.length > 0) {
-            // Higher factor for major holidays
-            const majorHolidays = holidays.filter(h =>
-                h.name.includes('Rosh Hashana') ||
-                h.name.includes('Passover') ||
-                h.name.includes('Sukkot')
-            );
-            factor *= majorHolidays.length > 0 ? 1.5 : 1.3;
-        }
-        switch(category.toLowerCase()) {
-            case 'beverages':
-                factor *= (currentMonth >= 5 && currentMonth <= 8) ? 1.4 : 1.0;
-                break;
-            case 'desserts':
-                factor *= holidays.length > 0 ? 1.5 : 1.0;
-                break;
-        }
+        let factor = this.calculateHolidayImpact(holidays);
+        factor *= this.calculateSeasonalImpact(category, currentMonth);
 
         return factor;
+    }
+
+    calculateHolidayImpact(holidays) {
+        if (!holidays.length) return 1.0;
+        const majorHolidays = holidays.filter(h =>
+            ['Rosh Hashana', 'Passover', 'Sukkot'].some(holiday =>
+                h.name.includes(holiday))
+        );
+        return majorHolidays.length > 0 ? 1.5 : 1.3;
+    }
+
+    calculateSeasonalImpact(category, month) {
+        const seasons = {
+            beverages: month >= 5 && month <= 8 ? 1.4 : 1.0,
+            desserts: month >= 11 || month <= 1 ? 1.3 : 1.0,
+            soups: month >= 11 || month <= 2 ? 1.5 : 1.0,
+            salads: month >= 5 && month <= 8 ? 1.3 : 1.0
+        };
+        return seasons[category.toLowerCase()] || 1.0;
+    }
+
+
+    async fetchSalesByDateRange(userId, startDate, endDate) {
+        try {
+            const salesQuery = await db
+                .collection('users').doc(userId)
+                .collection('reports').doc('sales')
+                .collection('salesReports')
+                .where('date', '>=', new Date(startDate))
+                .where('date', '<=', new Date(endDate))
+                .where('status', '==', 'submitted')
+                .get();
+
+            const sales = salesQuery.docs.map(doc => doc.data());
+
+            return {
+                success: true,
+                data: sales,
+                summary: this.calculateSalesSummary(sales)
+            };
+        } catch (error) {
+            throw new Error(`Error fetching sales: ${error.message}`);
+        }
+    }
+
+    async calculateTopSellingDishes(userId) {
+        try {
+            const salesData = await this.getHistoricalData(userId);
+            const dishSales = {};
+
+            salesData.forEach(sale => {
+                sale.items.forEach(item => {
+                    dishSales[item.menuItem] = (dishSales[item.menuItem] || 0) + item.quantity;
+                });
+            });
+
+            const topDishes = Object.entries(dishSales)
+                .sort(([, a], [, b]) => b - a)
+                .slice(0, 10)
+                .map(([dish, quantity]) => ({ dish, quantity }));
+
+            return {
+                success: true,
+                data: topDishes
+            };
+        } catch (error) {
+            throw new Error(`Error calculating top dishes: ${error.message}`);
+        }
+    }
+
+    async calculateLeastSellingDishes(userId) {
+        try {
+            const salesData = await this.getHistoricalData(userId);
+            const dishSales = {};
+
+            salesData.forEach(sale => {
+                sale.items.forEach(item => {
+                    dishSales[item.menuItem] = (dishSales[item.menuItem] || 0) + item.quantity;
+                });
+            });
+
+            const leastSold = Object.entries(dishSales)
+                .sort(([, a], [, b]) => a - b)
+                .slice(0, 10)
+                .map(([dish, quantity]) => ({ dish, quantity }));
+
+            return {
+                success: true,
+                data: leastSold
+            };
+        } catch (error) {
+            throw new Error(`Error calculating least selling dishes: ${error.message}`);
+        }
+    }
+
+
+    async fetchTopWastedIngredients(userId) {
+        try {
+            const wasteData = await this.getWasteHistory(userId);
+            const ingredientWaste = {};
+
+            wasteData.forEach(report => {
+                report.items.forEach(item => {
+                    ingredientWaste[item.ingredientId] = {
+                        name: item.ingredientName,
+                        quantity: (ingredientWaste[item.ingredientId]?.quantity || 0) + item.quantity,
+                        cost: (ingredientWaste[item.ingredientId]?.cost || 0) + item.cost
+                    };
+                });
+            });
+
+            const topWasted = Object.entries(ingredientWaste)
+                .sort(([, a], [, b]) => b.cost - a.cost)
+                .slice(0, 10)
+                .map(([id, data]) => ({ id, ...data }));
+
+            return {
+                success: true,
+                data: topWasted
+            };
+        } catch (error) {
+            throw new Error(`Error fetching top wasted ingredients: ${error.message}`);
+        }
+    }
+
+    async fetchNonProfitableItems(userId) {
+        try {
+            const [salesData, costData] = await Promise.all([
+                this.getHistoricalData(userId),
+                this.getIngredientCosts(userId)
+            ]);
+
+            const itemProfitability = {};
+
+            salesData.forEach(sale => {
+                sale.items.forEach(item => {
+                    if (!itemProfitability[item.id]) {
+                        itemProfitability[item.id] = {
+                            name: item.menuItem,
+                            revenue: 0,
+                            cost: 0,
+                            sales: 0
+                        };
+                    }
+                    itemProfitability[item.id].revenue += item.totalPrice;
+                    itemProfitability[item.id].sales += item.quantity;
+                    itemProfitability[item.id].cost += this.calculateItemCost(item, costData);
+                });
+            });
+
+            const nonProfitable = Object.entries(itemProfitability)
+                .map(([id, data]) => ({
+                    id,
+                    ...data,
+                    profit: data.revenue - data.cost,
+                    margin: ((data.revenue - data.cost) / data.revenue) * 100
+                }))
+                .filter(item => item.margin < 15) // Items with less than 15% profit margin
+                .sort((a, b) => a.margin - b.margin);
+
+            return {
+                success: true,
+                data: nonProfitable
+            };
+        } catch (error) {
+            throw new Error(`Error fetching non-profitable items: ${error.message}`);
+        }
+    }
+
+    async fetchLowStockItems(userId) {
+        try {
+            const inventorySnapshot = await db
+                .collection('inventory')
+                .doc(userId)
+                .collection('inventoryItems')
+                .get();
+
+            const lowStockItems = inventorySnapshot.docs
+                .map(doc => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        name: data.name,
+                        currentStock: data.currentStock,
+                        minStockLevel: data.minStockLevel,
+                        stockDeficit: data.minStockLevel - data.currentStock
+                    };
+                })
+                .filter(item => item.currentStock < item.minStockLevel)
+                .sort((a, b) => b.stockDeficit - a.stockDeficit);
+
+            return {
+                success: true,
+                data: lowStockItems
+            };
+        } catch (error) {
+            throw new Error(`Error fetching low stock items: ${error.message}`);
+        }
+    }
+
+    async calculateRevenueVsWaste(userId, period) {
+
+        this.validateInput(userId, 'calculateRevenueVsWaste', { period });
+
+        try {
+            const [salesData, wasteData] = await Promise.all([
+                this.calculateSalesAnalytics(userId, period),
+                this.analyzeWaste(userId, period)
+            ]);
+
+            const analysis = {
+                totalRevenue: salesData.data.totalRevenue,
+                totalWaste: wasteData.data.totalWasteCost,
+                wastePercentage: (wasteData.data.totalWasteCost / salesData.data.totalRevenue) * 100,
+                periodSummary: {
+                    sales: salesData.data,
+                    waste: wasteData.data
+                }
+            };
+
+            return {
+                success: true,
+                data: analysis
+            };
+        } catch (error) {
+            throw new Error(`Error calculating revenue vs waste: ${error.message}`);
+        }
+    }
+
+    async forecastDemand(userId) {
+        try {
+            const historicalData = await this.getHistoricalData(userId);
+            const itemDemand = {};
+
+            // Group sales by item and calculate trends
+            historicalData.forEach(sale => {
+                sale.items.forEach(item => {
+                    if (!itemDemand[item.id]) {
+                        itemDemand[item.id] = {
+                            name: item.menuItem,
+                            dailySales: [],
+                            seasonalFactors: {},
+                            forecast: {}
+                        };
+                    }
+                    itemDemand[item.id].dailySales.push({
+                        date: sale.date,
+                        quantity: item.quantity
+                    });
+                });
+            });
+
+            // Calculate forecast for each item
+            for (const [itemId, data] of Object.entries(itemDemand)) {
+                const forecast = await this.predictQuantity({
+                    historicalUsage: data.dailySales,
+                    itemId: itemId
+                }, new Date(), new Holidays('IL'));
+
+                itemDemand[itemId].forecast = forecast;
+            }
+
+            return {
+                success: true,
+                data: itemDemand
+            };
+        } catch (error) {
+            throw new Error(`Error forecasting demand: ${error.message}`);
+        }
+    }
+
+    async calculateItemCost(item, costData) {
+        // Helper method for fetchNonProfitableItems
+        try {
+            return item.ingredients.reduce((total, ingredient) => {
+                const cost = costData[ingredient.id]?.pricePerUnit || 0;
+                return total + (cost * ingredient.quantity);
+            }, 0);
+        } catch (error) {
+            throw new Error(`Error calculating item cost: ${error.message}`);
+        }
+    }
+
+    async getIngredientCosts(userId) {
+        // Helper method for fetchNonProfitableItems
+        try {
+            const ingredientsSnapshot = await db
+                .collection('inventory')
+                .doc(userId)
+                .collection('inventoryItems')
+                .get();
+
+            const costs = {};
+            ingredientsSnapshot.docs.forEach(doc => {
+                const data = doc.data();
+                costs[doc.id] = {
+                    pricePerUnit: data.pricePerUnit,
+                    unit: data.unit
+                };
+            });
+
+            return costs;
+        } catch (error) {
+            throw new Error(`Error getting ingredient costs: ${error.message}`);
+        }
+    }
+
+    async getWasteHistory(userId) {
+        // Helper method for fetchTopWastedIngredients
+        try {
+            const wasteSnapshot = await db
+                .collection('users').doc(userId)
+                .collection('reports').doc('waste')
+                .collection('wasteReports')
+                .where('status', '==', 'submitted')
+                .orderBy('date', 'desc')
+                .limit(90) // Last 3 months
+                .get();
+
+            return wasteSnapshot.docs.map(doc => doc.data());
+        } catch (error) {
+            throw new Error(`Error getting waste history: ${error.message}`);
+        }
+    }
+
+    calculateWasteTrends(wasteData) {
+        // Helper method for analyzeWaste
+        try {
+            const trends = {
+                daily: {},
+                weekly: {},
+                monthly: {}
+            };
+
+            wasteData.forEach(report => {
+                const date = new Date(report.date);
+                const dayKey = date.toISOString().split('T')[0];
+                const weekKey = `${date.getFullYear()}-W${Math.ceil(date.getDate() / 7)}`;
+                const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`;
+
+                trends.daily[dayKey] = (trends.daily[dayKey] || 0) + report.summary.totalCost;
+                trends.weekly[weekKey] = (trends.weekly[weekKey] || 0) + report.summary.totalCost;
+                trends.monthly[monthKey] = (trends.monthly[monthKey] || 0) + report.summary.totalCost;
+            });
+
+            return trends;
+        } catch (error) {
+            throw new Error(`Error calculating waste trends: ${error.message}`);
+        }
+    }
+
+    calculateSalesSummary(sales) {
+        const summary = {
+            totalSales: 0,
+            totalItems: 0,
+            avgOrderValue: 0
+        };
+
+        sales.forEach(sale => {
+            sale.items.forEach(item => {
+                summary.totalSales += item.totalPrice;
+                summary.totalItems += item.quantity;
+            });
+        });
+
+        summary.avgOrderValue = sales.length ? summary.totalSales / sales.length : 0;
+        return summary;
     }
 }
 
