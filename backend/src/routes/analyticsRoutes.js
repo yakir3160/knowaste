@@ -1,59 +1,29 @@
 import { Router } from 'express';
-import AnalyticsService from '../services/analyticsService.js';
-import {verifyToken} from "../middleware/authMiddleware.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
+import {
+    getSalesByDateRange,
+    getTopSellingDishes,
+    getLeastSellingDishes,
+    getWasteAnalysis,
+    getTopWastedIngredients,
+    getNonProfitableItems,
+    getLowStockItems,
+    getRevenueVsWaste,
+    getForecastDemand
+} from '../controllers/analyticsController.js';
 
 const router = Router();
 
-router.get('/recommendations', async (req, res) => {
-    try {
-        const { averageDailyUsage, daysToOrder, safetyStock, address, city } = req.query;
+router.use(verifyToken);
 
-        if (!averageDailyUsage || !daysToOrder || !safetyStock || !address || !city) {
-            return res.status(400).json({ message: 'Missing required query parameters.' });
-        }
-
-        const result = await AnalyticsService.generateRecommendations(
-            req.user.id,
-            parseFloat(averageDailyUsage),
-            parseInt(daysToOrder),
-            parseFloat(safetyStock),
-            address,
-            city
-        );
-
-        res.status(200).json(result);
-    } catch (error) {
-        console.error('Error generating recommendations:', error.message);
-        res.status(500).json({ error: 'Failed to generate recommendations.' });
-    }
-});
-
-router.get('/order-recommendations',verifyToken, async (req, res) => {
-    try {
-        const result = await AnalyticsService.generateOrderRecommendations(req.user.id);
-        res.status(200).json(result);
-    } catch (error) {
-        console.error('Error generating order recommendations:', error.message);
-        res.status(500).json({ error: 'Failed to generate order recommendations.' });
-    }
-});
-
-
-// Route to test weather data
-router.get('/test-weather', async (req, res) => {
-    try {
-        const { address, city } = req.query;
-
-        if (!address || !city) {
-            return res.status(400).json({ message: 'Address and city are required' });
-        }
-
-        const weatherData = await AnalyticsService.testGetWeatherData(address, city);
-        res.status(200).json(weatherData);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ error: 'Failed to fetch weather data' });
-    }
-});
+router.get('/sales', getSalesByDateRange);
+router.get('/top-dishes', getTopSellingDishes);
+router.get('/least-selling-dishes', getLeastSellingDishes);
+router.get('/waste', getWasteAnalysis);
+router.get('/top-wasted-ingredients', getTopWastedIngredients);
+router.get('/non-profitable-items', getNonProfitableItems);
+router.get('/low-stock-items', getLowStockItems);
+router.get('/revenue-vs-waste', getRevenueVsWaste);
+router.get('/forecast-demand', getForecastDemand);
 
 export default router;
