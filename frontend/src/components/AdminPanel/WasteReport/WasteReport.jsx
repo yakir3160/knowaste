@@ -84,6 +84,7 @@ const WasteReport = () => {
         if (selectedIngredient) {
             setReportItems(prev => [...prev, {
                 ...values,
+                quantity: Number(values.quantity),
                 ingredientId: selectedIngredient.ingredientId,
                 cost: itemCost,
             }]);

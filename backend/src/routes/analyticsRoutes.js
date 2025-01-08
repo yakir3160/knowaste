@@ -16,14 +16,14 @@ const router = Router();
 
 router.use(verifyToken);
 
-router.get('/sales', getSalesByDateRange);
-router.get('/top-dishes', getTopSellingDishes);
-router.get('/least-selling-dishes', getLeastSellingDishes);
-router.get('/waste', getWasteAnalysis);
-router.get('/top-wasted-ingredients', getTopWastedIngredients);
-router.get('/non-profitable-items', getNonProfitableItems);
-router.get('/low-stock-items', getLowStockItems);
-router.get('/revenue-vs-waste', getRevenueVsWaste);
-router.get('/forecast-demand', getForecastDemand);
+router.get('/sales', getSalesByDateRange);//done
+router.get('/top-dishes', getTopSellingDishes);// done
+router.get('/least-selling-dishes', getLeastSellingDishes);//done
+router.get('/waste', getWasteAnalysis);//time range
+router.get('/top-wasted-ingredients', getTopWastedIngredients);//done
+router.get('/low-stock-items', getLowStockItems);//done
+router.get('/revenue-vs-waste', getRevenueVsWaste);//timeframe
+router.get('/forecast-demand', getForecastDemand);// TODO : FIX THIS FUNCTION
+
 
 export default router;

@@ -35,20 +35,20 @@ class AnalyticsService {
     async getHistoricalData(userId) {
 
         this.validateInput(userId, 'getHistoricalData');
+        console.log('Fetching historical data...');
 
         const salesQuery = await db
             .collection('users').doc(userId)
             .collection('reports').doc('sales')
             .collection('salesReports')
-            .where('status', '==', 'submitted')
             .orderBy('date', 'desc')
             .limit(365)
             .get();
-
+        console.log('Sales data fetched:', salesQuery.docs.length);
         return salesQuery.docs.map(doc => ({
             id: doc.id,
             ...doc.data(),
-            date: doc.data().date.toDate()
+             date: doc.data().date
         }));
     }
 
@@ -205,7 +205,6 @@ class AnalyticsService {
                 .collection('users').doc(userId)
                 .collection('reports').doc('waste')
                 .collection('wasteReports')
-                .where('status', '==', 'submitted');
 
             if (timeRange === 'custom' && startDate && endDate) {
                 wasteQuery = wasteQuery
@@ -642,16 +641,19 @@ class AnalyticsService {
 
     async fetchSalesByDateRange(userId, startDate, endDate) {
         try {
+            console.log('Fetching sales data...');
+            console.log('startDate:', startDate);
+            console.log('endDate:', endDate);
             const salesQuery = await db
                 .collection('users').doc(userId)
                 .collection('reports').doc('sales')
                 .collection('salesReports')
                 .where('date', '>=', new Date(startDate))
                 .where('date', '<=', new Date(endDate))
-                .where('status', '==', 'submitted')
                 .get();
 
             const sales = salesQuery.docs.map(doc => doc.data());
+            console.log('Sales fetched:', sales.length);
 
             return {
                 success: true,
@@ -662,42 +664,80 @@ class AnalyticsService {
             throw new Error(`Error fetching sales: ${error.message}`);
         }
     }
-
-    async calculateTopSellingDishes(userId) {
+    async calculateTopSellingDishes(userId, timeframe) {
         try {
-            const salesData = await this.getHistoricalData(userId);
-            const dishSales = {};
+            console.log('Calculating top dishes...');
 
-            salesData.forEach(sale => {
+            // Fetch sales data
+            const salesData = await this.getHistoricalData(userId);
+
+            // Filter sales data by the specified timeframe
+            const filteredSales = this.filterByTimeframe(salesData, timeframe);
+            console.log('Filtered sales:', filteredSales);
+            // Aggregate sales data by dish
+            const dishSales = {};
+            filteredSales.forEach(sale => {
                 sale.items.forEach(item => {
-                    dishSales[item.menuItem] = (dishSales[item.menuItem] || 0) + item.quantity;
+                    const menuItem = item.menuItem || item.name; // Handle potential alternate field names
+                    dishSales[menuItem] = (dishSales[menuItem] || 0) + (item.quantity || 1);
                 });
             });
 
+            // Sort and retrieve top 10 dishes
             const topDishes = Object.entries(dishSales)
                 .sort(([, a], [, b]) => b - a)
                 .slice(0, 10)
                 .map(([dish, quantity]) => ({ dish, quantity }));
+            // console.log('Top Dishes:', topDishes);
 
             return {
                 success: true,
-                data: topDishes
+                data: topDishes,
+                timeframe: timeframe
             };
         } catch (error) {
+            console.error('Error calculating top dishes:', error.message);
             throw new Error(`Error calculating top dishes: ${error.message}`);
         }
     }
 
-    async calculateLeastSellingDishes(userId) {
+    filterByTimeframe(salesData, timeframe) {
+        const now = new Date();
+        const cutoffDate = new Date();
+
+        // Adjust cutoff date based on the timeframe
+        switch (timeframe.toLowerCase()) {
+            case 'week':
+                cutoffDate.setDate(now.getDate() - 7);
+                break;
+            case 'month':
+                cutoffDate.setMonth(now.getMonth() - 1);
+                break;
+            case 'year':
+                cutoffDate.setFullYear(now.getFullYear() - 1);
+                break;
+            default:
+                throw new Error('Invalid timeframe. Please use "week", "month", or "year".');
+        }
+
+        // Filter sales data based on cutoff date
+        return salesData.filter(sale => {
+            const saleDate = new Date(sale.date);
+            return saleDate >= cutoffDate && saleDate <= now;
+        });
+    }
+
+    async calculateLeastSellingDishes(userId, timeframe) {
         try {
             const salesData = await this.getHistoricalData(userId);
             const dishSales = {};
-
-            salesData.forEach(sale => {
+            const filteredItems = this.filterByTimeframe(salesData, timeframe)
+            filteredItems.forEach(sale => {
                 sale.items.forEach(item => {
                     dishSales[item.menuItem] = (dishSales[item.menuItem] || 0) + item.quantity;
                 });
             });
+
 
             const leastSold = Object.entries(dishSales)
                 .sort(([, a], [, b]) => a - b)
@@ -790,23 +830,23 @@ class AnalyticsService {
     async fetchLowStockItems(userId) {
         try {
             const inventorySnapshot = await db
-                .collection('inventory')
-                .doc(userId)
+                .collection('users').doc(userId)
                 .collection('inventoryItems')
                 .get();
 
             const lowStockItems = inventorySnapshot.docs
                 .map(doc => {
                     const data = doc.data();
+                    console.log('Inventory item:', data);
                     return {
-                        id: doc.id,
+                        id: data.ingredientId,
                         name: data.name,
                         currentStock: data.currentStock,
                         minStockLevel: data.minStockLevel,
                         stockDeficit: data.minStockLevel - data.currentStock
                     };
                 })
-                .filter(item => item.currentStock < item.minStockLevel)
+                .filter(item => item.currentStock <= item.minStockLevel)
                 .sort((a, b) => b.stockDeficit - a.stockDeficit);
 
             return {
@@ -869,6 +909,7 @@ class AnalyticsService {
                     });
                 });
             });
+            console.log('Item demand:', itemDemand);
 
             // Calculate forecast for each item
             for (const [itemId, data] of Object.entries(itemDemand)) {
@@ -932,7 +973,6 @@ class AnalyticsService {
                 .collection('users').doc(userId)
                 .collection('reports').doc('waste')
                 .collection('wasteReports')
-                .where('status', '==', 'submitted')
                 .orderBy('date', 'desc')
                 .limit(90) // Last 3 months
                 .get();

@@ -14,7 +14,8 @@ export const getSalesByDateRange = async (req, res) => {
 export const getTopSellingDishes = async (req, res) => {
     try {
         const userId = req.user.id;
-        const result = await AnalyticsService.calculateTopSellingDishes(userId);
+        const { timeframe } = req.query;
+        const result = await AnalyticsService.calculateTopSellingDishes(userId,timeframe);
         res.json(result);
     } catch (e) {
         res.status(500).json({ success: false, error: e.message });
@@ -24,7 +25,8 @@ export const getTopSellingDishes = async (req, res) => {
 export const getLeastSellingDishes = async (req, res) => {
     try {
         const userId = req.user.id;
-        const result = await AnalyticsService.calculateLeastSellingDishes(userId);
+        const { timeframe } = req.query;
+        const result = await AnalyticsService.calculateLeastSellingDishes(userId,timeframe);
         res.json(result);
     } catch (e) {
         res.status(500).json({ success: false, error: e.message });

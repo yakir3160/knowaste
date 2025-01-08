@@ -21,6 +21,7 @@
     "express": "^4.21.2",
     "firebase": "^10.14.1",
     "firebase-admin": "^13.0.1",
+    "formik": "^2.4.6",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.16",
     "yup": "^1.6.1"

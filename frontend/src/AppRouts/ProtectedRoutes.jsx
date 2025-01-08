@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Layout from "../components/Layouts/Layout";
 import { ItemsProvider } from "../contexts/ItemsContext"
+import {AnalyticsProvider} from "../contexts/AnalyticsContext";
 import Dashboard from "../components/AdminPanel/Dashboard/Dashboard";
 import DailySalesReport from "../components/AdminPanel/DailySalesReport/dailySalesReport";
 import InventoryManagement from "../components/AdminPanel/InventoryManagement/InventoryManagement";
@@ -17,12 +18,15 @@ export const ProtectedRoutes = (
                 allowGuest={false}
                 element={
                     <ItemsProvider>
-                        <Layout pageType="admin-panel" />
+                        <AnalyticsProvider>
+                            <Layout pageType="admin-panel" />
+                        </AnalyticsProvider>
                     </ItemsProvider>
                 }
             />
         }
     >
+
         <Route index element={<Dashboard />} />
         <Route path="sales-report" element={<DailySalesReport />} />
         <Route path="waste-report" element={<WasteReport/>} />
