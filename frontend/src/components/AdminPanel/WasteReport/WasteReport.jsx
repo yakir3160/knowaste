@@ -100,7 +100,7 @@ const WasteReport = () => {
             await addReport({
                 reportType: 'waste',
                 reportId: generateUniqueID(),
-                date: reportDate,
+                date: new Date(reportDate),
                 items: reportItems,
                 summary: {
                     totalItems: reportItems.length,

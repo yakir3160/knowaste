@@ -639,40 +639,43 @@ class AnalyticsService {
         return seasons[category.toLowerCase()] || 1.0;
     }
 
-
     async fetchSalesByDateRange(userId, startDate, endDate) {
         try {
-            console.log('Fetching sales data...');
-            console.log('startDate:', startDate);
-            console.log('endDate:', endDate);
+            console.log('Input dates:', { startDate, endDate });
+
+            // Convert to consistent ISO format for DB comparison
+            const startDateISO = new Date(startDate).toISOString();
+            const endDateISO = new Date(endDate).toISOString();
+
+            console.log('Converted ISO dates:', { startDateISO, endDateISO });
+
             const salesQuery = await db
                 .collection('users').doc(userId)
                 .collection('reports').doc('sales')
                 .collection('salesReports')
-                .where('date', '>=', new Date(startDate))
-                .where('date', '<=', new Date(endDate))
+                .where('date', '>=', startDateISO)
+                .where('date', '<=', endDateISO)
                 .get();
 
             const sales = salesQuery.docs.map(doc => doc.data());
             console.log('Sales fetched:', sales.length);
-
             return {
                 success: true,
                 data: sales,
                 summary: this.calculateSalesSummary(sales)
             };
         } catch (error) {
+            console.log('Error details:', error);
             throw new Error(`Error fetching sales: ${error.message}`);
         }
     }
+
     async calculateTopSellingDishes(userId, startDate, endDate) {
         try {
             console.log('Calculating top dishes...');
 
             // Fetch sales data
             const salesData = await this.getHistoricalData(userId);
-            console.log('sales data',salesData)
-
             // Filter sales data by the specified timeframe
             const filteredSales = this.filterByTimeframe(salesData, startDate, endDate);
             // Aggregate sales data by dish
@@ -689,7 +692,7 @@ class AnalyticsService {
                 .sort(([, a], [, b]) => b - a)
                 .slice(0, 10)
                 .map(([dish, quantity]) => ({ dish, quantity }));
-            console.log('Top Dishes:', topDishes);
+            // console.log('Top Dishes:', topDishes);
 
             return {
                 success: true,
@@ -998,6 +1001,7 @@ class AnalyticsService {
     }
 
     calculateSalesSummary(sales) {
+        console.log('Calculating sales summary...');
         const summary = {
             totalSales: 0,
             totalItems: 0,
@@ -1006,6 +1010,7 @@ class AnalyticsService {
 
         sales.forEach(sale => {
             sale.items.forEach(item => {
+                console.log('Item:', item);
                 summary.totalSales += item.totalPrice;
                 summary.totalItems += item.quantity;
             });

@@ -16,16 +16,20 @@ const Dashboard = () => {
     } = useAnalytics();
 // Get today's date at current time
     const today = new Date();
-
 // Get start of current week (Sunday)
     const thisWeek = new Date(today);
     thisWeek.setDate(today.getDate() - today.getDay());
     thisWeek.setHours(0, 0, 0, 0);
+    const [currentDateRange, setCurrentDateRange] = useState({
+        startDate: '',
+        endDate: '',
+        timeframe: 'week'
+    });
 
     const initialValues = {
-        startDate: thisWeek.toISOString().split('T')[0],
-        endDate: today.toISOString().split('T')[0],
-        timeframe: 'week'
+        startDate: currentDateRange.startDate || thisWeek.toISOString().split('T')[0],
+        endDate: currentDateRange.endDate || today.toISOString().split('T')[0],
+        timeframe: currentDateRange.timeframe
     };
     const validationSchema = Yup.object({
         startDate: Yup.date().required("Start date is required"),
@@ -71,7 +75,12 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        getAnalyticsData(thisWeek,today);
+        // getAnalyticsData(thisWeek,today);
+        setCurrentDateRange({
+            startDate: thisWeek.toISOString().split('T')[0],
+            endDate: today.toISOString().split('T')[0],
+            timeframe: 'week'
+        });
     }, []);
 
     if (analyticsLoading) {
@@ -88,9 +97,10 @@ const Dashboard = () => {
         <AdminPanelContainer
             pageTitle="Dashboard"
             layout=""
-            className=""
+            className=" "
         >
 
+            <div className={`flex flex-col justify-center items-center`}>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
@@ -100,11 +110,16 @@ const Dashboard = () => {
                         console.log(startDate);
                         console.log(endDate);
                     getAnalyticsData(startDate, endDate);
+                        setCurrentDateRange({
+                            startDate: values.startDate,
+                            endDate: values.endDate,
+                            timeframe: values.timeframe
+                        });
                     }}
                 >
                     {({values, setFieldValue}) => (
-                        <Form className="grid grid-cols-1 gap-4 p-4 w-fit">
-                            <div className="grid grid-cols-4 gap-4">
+                        <Form className=" gap-4 p-4 w-fit">
+                            <div className="grid     grid-cols-4 gap-2">
                                 <GlobalField
                                     type="select"
                                     name="timeframe"
@@ -129,15 +144,13 @@ const Dashboard = () => {
                                         }
                                     }}
                                 />
-
-                                {values.timeframe === 'custom' && (
-                                    <>
                                         <GlobalField
                                             type="date"
                                             name="startDate"
                                             label="Start Date"
                                             value={values.startDate}
                                             max={values.endDate}
+                                            disabled={values.timeframe !== 'custom'}
                                             onChange={(e) => {
                                                 const date = new Date(e.target.value);
                                                 date.setHours(0, 0, 0, 0);
@@ -148,16 +161,18 @@ const Dashboard = () => {
                                             type="date"
                                             name="endDate"
                                             label="End Date"
+                                            className={`w-full`}
                                             value={values.endDate}
                                             max={today.toISOString().split('T')[0]}
+                                            disabled={values.timeframe !== 'custom'}
                                             onChange={(e) => {
                                                 const date = new Date(e.target.value);
                                                 date.setHours(0, 0, 0, 0);
                                                 setFieldValue("endDate", e.target.value);
                                             }}
                                         />
-                                    </>
-                                )}
+
+
                                 <Button type="submit" className="w-full h-fit self-end border-2 border-lime">
                                     Update Data
                                 </Button>
@@ -169,6 +184,7 @@ const Dashboard = () => {
                 {analyticsError && (
                     <span className="text-errorRed">Error fetching data</span>
                 )}
+            </div>
             </div>
             <Top10
                 data={analyticsData.popularDishesData}

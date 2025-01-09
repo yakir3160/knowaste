@@ -24,11 +24,13 @@ export const AnalyticsProvider = ({ children }) => {
             revenueTrend: 0
         }
     });
+    console.log('salesData', analyticsData.salesData);
     const apiCall = async (endpoint, params = {}) => {
         try {
             setLoading(true);
             const queryString = new URLSearchParams(params).toString();
             const url = `${API_BASE_URL}/api/analytics/${endpoint}${queryString ? `?${queryString}` : ''}`;
+            console.log(url);
             const response = await fetch(url, {
                 headers: {
                     Authorization: `Bearer ${token}`

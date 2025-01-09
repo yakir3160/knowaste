@@ -75,7 +75,7 @@ const DailySalesReport = () => {
             const reportData = {
                 reportType: 'sales',
                 id: generateUniqueID(),
-                date: reportDate,
+                date: new Date(reportDate),
                 items: reportItems.map(item => ({
                     id: item.id,
                     category: item.category,
