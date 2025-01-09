@@ -145,21 +145,18 @@ class AnalyticsService {
         }
     }
 
-    async calculateSalesAnalytics(userId, timeRange) {
-
-        this.validateInput(userId, 'calculateSalesAnalytics', { timeRange });
+    async calculateSalesAnalytics(userId, startDate, endDate) {
+        this.validateInput(userId, 'calculateSalesAnalytics', { startDate, endDate });
 
         try {
+            // Create the base query
             let salesQuery = db
                 .collection('users').doc(userId)
                 .collection('reports').doc('sales')
                 .collection('salesReports')
-                .where('status', '==', 'submitted');
-
-            const startDate = this.getStartDate(timeRange);
-            if (startDate) {
-                salesQuery = salesQuery.where('date', '>=', startDate);
-            }
+                // Add date range filters
+                .where('date', '>=', new Date(startDate))
+                .where('date', '<=', new Date(endDate));
 
             const snapshot = await salesQuery.get();
             const sales = snapshot.docs.map(doc => doc.data());
@@ -169,24 +166,28 @@ class AnalyticsService {
                 itemsSold: {},
                 topItems: [],
                 averageOrderValue: 0,
+                startDate: startDate,
+                endDate: endDate
             };
+
             sales.forEach(sale => {
                 sale.items.forEach(item => {
                     analytics.totalRevenue += item.totalPrice;
                     analytics.itemsSold[item.menuItem] = (analytics.itemsSold[item.menuItem] || 0) + item.quantity;
                 })
-            })
+            });
 
             analytics.topItems = Object.entries(analytics.itemsSold)
                 .sort(([, a], [, b]) => b - a)
-                .slice(0, 5)
+                .slice(0, 5);
             analytics.averageOrderValue = analytics.totalRevenue / sales.length || 0;
 
             return {
                 success: true,
                 data: analytics,
                 message: 'Sales analytics calculated successfully'
-            }
+            };
+
         } catch (error) {
             console.error('Error calculating sales analytics:', error);
             return { success: false, error: error.message };
@@ -664,16 +665,16 @@ class AnalyticsService {
             throw new Error(`Error fetching sales: ${error.message}`);
         }
     }
-    async calculateTopSellingDishes(userId, timeframe) {
+    async calculateTopSellingDishes(userId, startDate, endDate) {
         try {
             console.log('Calculating top dishes...');
 
             // Fetch sales data
             const salesData = await this.getHistoricalData(userId);
+            console.log('sales data',salesData)
 
             // Filter sales data by the specified timeframe
-            const filteredSales = this.filterByTimeframe(salesData, timeframe);
-            console.log('Filtered sales:', filteredSales);
+            const filteredSales = this.filterByTimeframe(salesData, startDate, endDate);
             // Aggregate sales data by dish
             const dishSales = {};
             filteredSales.forEach(sale => {
@@ -688,50 +689,37 @@ class AnalyticsService {
                 .sort(([, a], [, b]) => b - a)
                 .slice(0, 10)
                 .map(([dish, quantity]) => ({ dish, quantity }));
-            // console.log('Top Dishes:', topDishes);
+            console.log('Top Dishes:', topDishes);
 
             return {
                 success: true,
                 data: topDishes,
-                timeframe: timeframe
+                timeframe: startDate, endDate
             };
         } catch (error) {
             console.error('Error calculating top dishes:', error.message);
             throw new Error(`Error calculating top dishes: ${error.message}`);
         }
     }
+     filterByTimeframe(salesData, startDate, endDate) {
+        console.log('Filtering sales data...');
+        const startDateTime = new Date(startDate);
+        const endDateTime = new Date(endDate);
+        console.log('startDateTime:', startDateTime);
+        console.log('endDateTime:', endDateTime);
 
-    filterByTimeframe(salesData, timeframe) {
-        const now = new Date();
-        const cutoffDate = new Date();
-
-        // Adjust cutoff date based on the timeframe
-        switch (timeframe.toLowerCase()) {
-            case 'week':
-                cutoffDate.setDate(now.getDate() - 7);
-                break;
-            case 'month':
-                cutoffDate.setMonth(now.getMonth() - 1);
-                break;
-            case 'year':
-                cutoffDate.setFullYear(now.getFullYear() - 1);
-                break;
-            default:
-                throw new Error('Invalid timeframe. Please use "week", "month", or "year".');
-        }
-
-        // Filter sales data based on cutoff date
         return salesData.filter(sale => {
             const saleDate = new Date(sale.date);
-            return saleDate >= cutoffDate && saleDate <= now;
+            return saleDate >= startDateTime && saleDate <= endDateTime;
         });
     }
 
-    async calculateLeastSellingDishes(userId, timeframe) {
+
+    async calculateLeastSellingDishes(userId, startDate, endDate) {
         try {
             const salesData = await this.getHistoricalData(userId);
             const dishSales = {};
-            const filteredItems = this.filterByTimeframe(salesData, timeframe)
+            const filteredItems = this.filterByTimeframe(salesData, startDate, endDate)
             filteredItems.forEach(sale => {
                 sale.items.forEach(item => {
                     dishSales[item.menuItem] = (dishSales[item.menuItem] || 0) + item.quantity;
@@ -837,7 +825,6 @@ class AnalyticsService {
             const lowStockItems = inventorySnapshot.docs
                 .map(doc => {
                     const data = doc.data();
-                    console.log('Inventory item:', data);
                     return {
                         id: data.ingredientId,
                         name: data.name,
@@ -858,14 +845,15 @@ class AnalyticsService {
         }
     }
 
-    async calculateRevenueVsWaste(userId, period) {
+    async calculateRevenueVsWaste(userId, startDate, endDate) {
 
-        this.validateInput(userId, 'calculateRevenueVsWaste', { period });
+
+        this.validateInput(userId, 'calculateRevenueVsWaste', { startDate, endDate });
 
         try {
             const [salesData, wasteData] = await Promise.all([
-                this.calculateSalesAnalytics(userId, period),
-                this.analyzeWaste(userId, period)
+                this.calculateSalesAnalytics(userId, startDate, endDate),
+                this.analyzeWaste(userId, startDate, endDate)
             ]);
 
             const analysis = {

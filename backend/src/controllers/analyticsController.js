@@ -14,8 +14,8 @@ export const getSalesByDateRange = async (req, res) => {
 export const getTopSellingDishes = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { timeframe } = req.query;
-        const result = await AnalyticsService.calculateTopSellingDishes(userId,timeframe);
+        const { startDate, endDate } = req.query;
+        const result = await AnalyticsService.calculateTopSellingDishes(userId,startDate, endDate);
         res.json(result);
     } catch (e) {
         res.status(500).json({ success: false, error: e.message });
@@ -25,8 +25,8 @@ export const getTopSellingDishes = async (req, res) => {
 export const getLeastSellingDishes = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { timeframe } = req.query;
-        const result = await AnalyticsService.calculateLeastSellingDishes(userId,timeframe);
+        const { startDate, endDate } = req.query;
+        const result = await AnalyticsService.calculateLeastSellingDishes(userId, startDate, endDate);
         res.json(result);
     } catch (e) {
         res.status(500).json({ success: false, error: e.message });
@@ -77,8 +77,8 @@ export const getLowStockItems = async (req, res) => {
 export const getRevenueVsWaste = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { period } = req.query;
-        const result = await AnalyticsService.calculateRevenueVsWaste(userId, period);
+        const { startDate, endDate } = req.query;
+        const result = await AnalyticsService.calculateRevenueVsWaste(userId, startDate, endDate);
         res.json(result);
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });

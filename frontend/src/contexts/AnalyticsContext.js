@@ -9,12 +9,33 @@ export const AnalyticsProvider = ({ children }) => {
     const token = localStorage.getItem('authToken');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [analyticsData, setAnalyticsData] = useState({
+        salesData: [],
+        popularDishesData: [],
+        lowStockItems: [],
+        wasteData: [],
+        leastSellingDishesData: [],
+        summaryData: {
+            monthlySales: 0,
+            monthlyWaste: 0,
+            totalRevenue: 0,
+            salesTrend: 0,
+            wasteTrend: 0,
+            revenueTrend: 0
+        }
+    });
+    console.log('Sales data:', analyticsData.salesData);
+    console.log('Popular dishes:', analyticsData.popularDishesData);
+    console.log('Least selling dishes:', analyticsData.leastSellingDishesData);
+    console.log('Low stock items:', analyticsData.lowStockItems);
+    console.log('Waste data:', analyticsData.wasteData);
 
     const apiCall = async (endpoint, params = {}) => {
         try {
             setLoading(true);
             const queryString = new URLSearchParams(params).toString();
             const url = `${API_BASE_URL}/api/analytics/${endpoint}${queryString ? `?${queryString}` : ''}`;
+            console.log(url)
 
             const response = await fetch(url, {
                 headers: {
@@ -37,24 +58,61 @@ export const AnalyticsProvider = ({ children }) => {
         }
     };
 
+    const getAnalyticsData = async (startDate, endDate ) => {
+        try {
+            setLoading(true);
+
+
+            const [salesData, popularDishesData, leastSellingDishesData, lowStockItems, wasteData] =
+                await Promise.allSettled([
+                    getSalesByDateRange(startDate, endDate ),
+                    getTopSellingDishes(startDate, endDate ),
+                    getLeastSellingDishes(startDate, endDate ),
+                    getLowStockItems(startDate, endDate ),
+                    getWasteAnalysis(startDate, endDate ),
+                ]);
+
+
+            // const salesTrend = salesData.length > 1 ?
+            //     (salesData[0].total - salesData[1].total) / salesData[1].total * 100 : 0;
+            // const wasteTrend = wasteData.length > 1 ?
+            //     (wasteData[0].total - wasteData[1].total) / wasteData[1].total * 100 : 0;
+            // const revenueTrend = salesTrend > 0 ?
+            //     (salesData - salesData[1].total) / salesData[1].total * 100 : 0;
+
+            setAnalyticsData({
+                salesData : salesData.value.data,
+                popularDishesData : popularDishesData.value.data,
+                leastSellingDishesData: leastSellingDishesData.value.data ,
+                lowStockItems: lowStockItems.value.data,
+                wasteData: wasteData.value.data,
+            });
+        } catch (error) {
+            setError('Error fetching analytics data');
+            console.error('Error getting analytics data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const getSalesByDateRange = async (startDate, endDate) => {
         return await apiCall('sales', { startDate, endDate });
     };
 
-    const getTopSellingDishes = async (limit = 10) => {
-        return await apiCall('top-dishes', { limit });
+    const getTopSellingDishes = async (startDate, endDate ) => {
+        return await apiCall('top-dishes' , { startDate, endDate  });
     };
 
-    const getLeastSellingDishes = async (limit = 10) => {
-        return await apiCall('least-selling-dishes', { limit });
+    const getLeastSellingDishes = async (startDate, endDate ) => {
+        return await apiCall('least-selling-dishes', { startDate, endDate  });
     };
 
     const getWasteAnalysis = async (startDate, endDate) => {
         return await apiCall('waste', { startDate, endDate });
     };
 
-    const getTopWastedIngredients = async (limit = 10) => {
-        return await apiCall('top-wasted-ingredients', { limit });
+    const getTopWastedIngredients = async (startDate, endDate ) => {
+        return await apiCall('top-wasted-ingredients', { startDate, endDate  });
     };
 
     const getLowStockItems = async (threshold) => {
@@ -72,6 +130,8 @@ export const AnalyticsProvider = ({ children }) => {
     const value = {
         loading,
         error,
+        popularDishesData: analyticsData.popularDishesData,
+        getAnalyticsData,
         getSalesByDateRange,
         getTopSellingDishes,
         getLeastSellingDishes,
