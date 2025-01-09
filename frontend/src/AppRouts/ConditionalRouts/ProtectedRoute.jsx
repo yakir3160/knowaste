@@ -11,7 +11,7 @@ const ProtectedRoute = ({ element }) => {
     if(loading)
         return <Loading />;
 
-    if (user)
+    if (!user)
         return <Navigate to="/auth" />;
 
     return element;
