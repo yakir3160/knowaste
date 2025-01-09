@@ -8,7 +8,7 @@ export const AnalyticsProvider = ({ children }) => {
     const { userBaseData: user } = useUserContext();
     const token = localStorage.getItem('authToken');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
     const [analyticsData, setAnalyticsData] = useState({
         salesData: [],
         popularDishesData: [],
@@ -24,19 +24,11 @@ export const AnalyticsProvider = ({ children }) => {
             revenueTrend: 0
         }
     });
-    console.log('Sales data:', analyticsData.salesData);
-    console.log('Popular dishes:', analyticsData.popularDishesData);
-    console.log('Least selling dishes:', analyticsData.leastSellingDishesData);
-    console.log('Low stock items:', analyticsData.lowStockItems);
-    console.log('Waste data:', analyticsData.wasteData);
-
     const apiCall = async (endpoint, params = {}) => {
         try {
             setLoading(true);
             const queryString = new URLSearchParams(params).toString();
             const url = `${API_BASE_URL}/api/analytics/${endpoint}${queryString ? `?${queryString}` : ''}`;
-            console.log(url)
-
             const response = await fetch(url, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -44,7 +36,6 @@ export const AnalyticsProvider = ({ children }) => {
             });
 
             const data = await response.json();
-
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to fetch analytics data');
             }
@@ -65,13 +56,12 @@ export const AnalyticsProvider = ({ children }) => {
 
             const [salesData, popularDishesData, leastSellingDishesData, lowStockItems, wasteData] =
                 await Promise.allSettled([
-                    getSalesByDateRange(startDate, endDate ),
-                    getTopSellingDishes(startDate, endDate ),
-                    getLeastSellingDishes(startDate, endDate ),
-                    getLowStockItems(startDate, endDate ),
-                    getWasteAnalysis(startDate, endDate ),
+                    getSalesByDateRange(startDate, endDate),
+                    getTopSellingDishes(startDate, endDate),
+                    getLeastSellingDishes(startDate, endDate),
+                    getLowStockItems(startDate, endDate),
+                    getWasteAnalysis(startDate, endDate),
                 ]);
-
 
             // const salesTrend = salesData.length > 1 ?
             //     (salesData[0].total - salesData[1].total) / salesData[1].total * 100 : 0;
@@ -81,11 +71,11 @@ export const AnalyticsProvider = ({ children }) => {
             //     (salesData - salesData[1].total) / salesData[1].total * 100 : 0;
 
             setAnalyticsData({
-                salesData : salesData.value.data,
-                popularDishesData : popularDishesData.value.data,
-                leastSellingDishesData: leastSellingDishesData.value.data ,
-                lowStockItems: lowStockItems.value.data,
-                wasteData: wasteData.value.data,
+                salesData : salesData?.value.data,
+                popularDishesData : popularDishesData?.value.data,
+                leastSellingDishesData: leastSellingDishesData?.value.data ,
+                lowStockItems: lowStockItems?.value.data,
+                wasteData: wasteData?.value.data,
             });
         } catch (error) {
             setError('Error fetching analytics data');
@@ -130,7 +120,7 @@ export const AnalyticsProvider = ({ children }) => {
     const value = {
         loading,
         error,
-        popularDishesData: analyticsData.popularDishesData,
+        analyticsData,
         getAnalyticsData,
         getSalesByDateRange,
         getTopSellingDishes,

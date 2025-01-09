@@ -137,6 +137,7 @@ const Dashboard = () => {
                                             name="startDate"
                                             label="Start Date"
                                             value={values.startDate}
+                                            max={values.endDate}
                                             onChange={(e) => {
                                                 const date = new Date(e.target.value);
                                                 date.setHours(0, 0, 0, 0);
@@ -148,6 +149,7 @@ const Dashboard = () => {
                                             name="endDate"
                                             label="End Date"
                                             value={values.endDate}
+                                            max={today.toISOString().split('T')[0]}
                                             onChange={(e) => {
                                                 const date = new Date(e.target.value);
                                                 date.setHours(0, 0, 0, 0);
@@ -168,6 +170,14 @@ const Dashboard = () => {
                     <span className="text-errorRed">Error fetching data</span>
                 )}
             </div>
+            <Top10
+                data={analyticsData.popularDishesData}
+                title="Selling Dishes"
+            />
+            <Top10
+                data={analyticsData.leastSellingDishesData}
+                title="Least Selling Dishes"
+            />
         </AdminPanelContainer>
     );
 };
