@@ -11,9 +11,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import { MailCheck } from "lucide-react";
 import { Player } from '@lottiefiles/react-lottie-player';
 
-// Example Lottie animation files (you can change this URL to your Lottie file URL or local file)
-import loadingAnimation from '../../animations/AnimationLoading.json'; // Add a Lottie file in the assets folder
-
+import loadingAnimation from '../../animations/AnimationLoading.json';
 const Login = () => {
     const { login, authError, clearAuthError, passwordResetEmail, emailSent, loading } = useAuthContext();
     const location = useLocation();

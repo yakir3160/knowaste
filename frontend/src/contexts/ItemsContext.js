@@ -218,7 +218,7 @@ export const ItemsProvider = ({ children }) => {
 
     const addIngredientOrder = async (ingredientId, ingredientData) => {
         const response = await apiCall(`inventory/add_order/${ingredientId}`, 'POST', ingredientData);
-        await getInventoryItems(true);
+        await getInventoryItems(true); // Force refresh inventory after adding order
         return response;
     };
 
