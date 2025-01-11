@@ -15,15 +15,18 @@ export const AnalyticsProvider = ({ children }) => {
         lowStockItems: [],
         wasteData: [],
         leastSellingDishesData: [],
-        summaryData: {
-            monthlySales: 0,
-            monthlyWaste: 0,
-            totalRevenue: 0,
-            salesTrend: 0,
-            wasteTrend: 0,
-            revenueTrend: 0
+        salesSummary: {
+            totalSales: 0,
+            totalItems: 0,
+            avgOrderValue: 0
         }
     });
+    const [dateRange, setDateRange] = useState({
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: new Date().toISOString().split('T')[0],
+        timeframe: 'week'
+    });
+    console.log('analyticsData', analyticsData);
     console.log('salesData', analyticsData.salesData);
     const apiCall = async (endpoint, params = {}) => {
         try {
@@ -65,20 +68,26 @@ export const AnalyticsProvider = ({ children }) => {
                     getWasteAnalysis(startDate, endDate),
                 ]);
 
-            // const salesTrend = salesData.length > 1 ?
-            //     (salesData[0].total - salesData[1].total) / salesData[1].total * 100 : 0;
-            // const wasteTrend = wasteData.length > 1 ?
-            //     (wasteData[0].total - wasteData[1].total) / wasteData[1].total * 100 : 0;
-            // const revenueTrend = salesTrend > 0 ?
-            //     (salesData - salesData[1].total) / salesData[1].total * 100 : 0;
-
+            const salesTrend = salesData.length > 1 ?
+                (salesData[0].total - salesData[1].total) / salesData[1].total * 100 : 0;
+            const wasteTrend = wasteData.length > 1 ?
+                (wasteData[0].total - wasteData[1].total) / wasteData[1].total * 100 : 0;
+            const revenueTrend = salesTrend > 0 ?
+                (salesData - salesData[1].total) / salesData[1].total * 100 : 0;
             setAnalyticsData({
                 salesData : salesData?.value.data,
                 popularDishesData : popularDishesData?.value.data,
                 leastSellingDishesData: leastSellingDishesData?.value.data ,
                 lowStockItems: lowStockItems?.value.data,
                 wasteData: wasteData?.value.data,
+                salesSummary: {
+                    totalSales: salesData?.value.summary.totalSales,
+                    totalItems: salesData?.value.summary.totalItems,
+                    avgOrderValue: salesData?.value.summary.avgOrderValue
+                },
+             
             });
+
         } catch (error) {
             setError('Error fetching analytics data');
             console.error('Error getting analytics data:', error);
@@ -123,6 +132,8 @@ export const AnalyticsProvider = ({ children }) => {
         loading,
         error,
         analyticsData,
+        dateRange,
+        setDateRange,
         getAnalyticsData,
         getSalesByDateRange,
         getTopSellingDishes,

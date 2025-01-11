@@ -1010,13 +1010,13 @@ class AnalyticsService {
 
         sales.forEach(sale => {
             sale.items.forEach(item => {
-                console.log('Item:', item);
                 summary.totalSales += item.totalPrice;
                 summary.totalItems += item.quantity;
             });
         });
 
         summary.avgOrderValue = sales.length ? summary.totalSales / sales.length : 0;
+        console.log('Sales summary:', summary);
         return summary;
     }
 }

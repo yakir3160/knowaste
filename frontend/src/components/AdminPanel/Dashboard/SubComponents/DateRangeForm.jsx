@@ -1,29 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useAnalytics } from '../../../contexts/AnalyticsContext';
-import Button from "../../Common/Button/Button";
-import GlobalField from "../../Common/inputs/GlobalField";
-import { getDateRange } from '../../../utils/dateUtils';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import Button from "../../../Common/Button/Button";
+import GlobalField from "../../../Common/inputs/GlobalField";
+import { getDateRange } from '../../../../utils/dateUtils';
 
 const DateRangeForm = () => {
-    const { getAnalyticsData } = useAnalytics();
-
-    const today = new Date();
-    const thisWeek = new Date(today);
-    thisWeek.setDate(today.getDate() - today.getDay());
-    thisWeek.setHours(0, 0, 0, 0);
-
-    const [lastSubmittedValues, setLastSubmittedValues] = useState({
-        startDate: thisWeek.toISOString().split('T')[0],
-        endDate: today.toISOString().split('T')[0],
-        timeframe: 'week'
-    });
+    const { dateRange, setDateRange, getAnalyticsData } = useAnalytics();
 
     const initialValues = {
-        startDate: lastSubmittedValues.startDate,
-        endDate: lastSubmittedValues.endDate,
-        timeframe: lastSubmittedValues.timeframe
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+        timeframe: dateRange.timeframe
     };
 
     const validationSchema = Yup.object({
@@ -41,10 +30,10 @@ const DateRangeForm = () => {
                     const startDate = new Date(values.startDate);
                     const endDate = new Date(values.endDate);
                     getAnalyticsData(startDate, endDate);
-                    setLastSubmittedValues(values);
+                    setDateRange(values); 
                 }}
             >
-                {({values, setFieldValue}) => (
+                {({ values, setFieldValue }) => (
                     <Form className="gap-4 p-4 w-fit">
                         <div className="grid grid-cols-4 gap-2">
                             <GlobalField
@@ -53,10 +42,10 @@ const DateRangeForm = () => {
                                 label="Time Period"
                                 value={values.timeframe}
                                 options={[
-                                    {value: 'week', label: 'This Week'},
-                                    {value: 'month', label: 'This Month'},
-                                    {value: 'year', label: 'This Year'},
-                                    {value: 'custom', label: 'Custom Range'}
+                                    { value: 'week', label: 'This Week' },
+                                    { value: 'month', label: 'This Month' },
+                                    { value: 'year', label: 'This Year' },
+                                    { value: 'custom', label: 'Custom Range' }
                                 ]}
                                 onChange={(e) => {
                                     const newTimeframe = e.target.value;
@@ -79,8 +68,6 @@ const DateRangeForm = () => {
                                 max={values.endDate}
                                 disabled={values.timeframe !== 'custom'}
                                 onChange={(e) => {
-                                    const date = new Date(e.target.value);
-                                    date.setHours(0, 0, 0, 0);
                                     setFieldValue("startDate", e.target.value);
                                 }}
                             />
@@ -90,11 +77,9 @@ const DateRangeForm = () => {
                                 label="End Date"
                                 className="w-full"
                                 value={values.endDate}
-                                max={today.toISOString().split('T')[0]}
+                                max={new Date().toISOString().split('T')[0]}
                                 disabled={values.timeframe !== 'custom'}
                                 onChange={(e) => {
-                                    const date = new Date(e.target.value);
-                                    date.setHours(0, 0, 0, 0);
                                     setFieldValue("endDate", e.target.value);
                                 }}
                             />
