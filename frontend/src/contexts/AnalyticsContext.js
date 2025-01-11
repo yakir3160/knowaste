@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import { useUserContext } from "./UserContext";
 
 const AnalyticsContext = createContext();
@@ -22,7 +22,12 @@ export const AnalyticsProvider = ({ children }) => {
         }
     });
     const [dateRange, setDateRange] = useState({
-        startDate: new Date().toISOString().split('T')[0],
+        startDate: (() => {
+            const today = new Date();
+            today.setDate(today.getDate() - today.getDay());
+            today.setHours(0, 0, 0, 0);
+            return today.toISOString().split('T')[0];
+        })(),
         endDate: new Date().toISOString().split('T')[0],
         timeframe: 'week'
     });
@@ -127,6 +132,10 @@ export const AnalyticsProvider = ({ children }) => {
     const getForecastDemand = async (itemId, days = 30) => {
         return await apiCall('forecast-demand', { itemId, days });
     };
+    useEffect(() => {
+        getAnalyticsData(dateRange.startDate, dateRange.endDate);
+
+    }, []);
 
     const value = {
         loading,
