@@ -9,7 +9,8 @@ import {
     getNonProfitableItems,
     getLowStockItems,
     getRevenueVsWaste,
-    getForecastDemand
+    getForecastDemand,
+    getBatchAnalytics
 } from '../controllers/analyticsController.js';
 
 const router = Router();
@@ -23,7 +24,9 @@ router.get('/waste', getWasteAnalysis);//time range
 router.get('/top-wasted-ingredients', getTopWastedIngredients);//done
 router.get('/low-stock-items', getLowStockItems);//done
 router.get('/revenue-vs-waste', getRevenueVsWaste);//timeframe
-router.get('/forecast-demand', getForecastDemand);// TODO : FIX THIS FUNCTION
+router.get('/forecast-demand', getForecastDemand);//
+router.get('/non-profitable-items', getNonProfitableItems);
+router.get('/batch', getBatchAnalytics);
 
 
 export default router;
