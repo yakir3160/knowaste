@@ -14,7 +14,7 @@ import useFilteredItems from "../../../../Hooks/Items/useFilteredItems";
 const AddMenuItem = ({ onAdd, categories, initialValues = null, isFromMenuItem = null }) => {
     const [newCategory, setNewCategory] = useState(false);
     const [showIngredientForm, setShowIngredientForm] = useState(false);
-    const [itemIngredients, setItemIngredients] = useState(initialValues.ingredients || []);
+    const [itemIngredients, setItemIngredients] = useState(initialValues?.ingredients || []);
     const { inventoryItems, inventoryCategories, addMenuItem } = useItemsContext();
     const {setSelectedCategory,filteredItems} = useFilteredItems(inventoryItems, inventoryCategories);
 
