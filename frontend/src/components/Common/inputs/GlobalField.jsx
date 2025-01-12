@@ -99,9 +99,7 @@ const GlobalField = ({
 
     return (
         <div className={`relative flex flex-col min-w-[100px] ${disabled ? 'opacity-95' : ''}`}>
-            <div className="text-errorRed text-center text-sm w-full ml-4 absolute  ">
-                {hasError && <div>{meta.error || REQUIRED_MSG}</div>}
-            </div>
+
             <div className="relative pt-6">
                 {(() => {
                     switch (type) {
@@ -185,8 +183,9 @@ const GlobalField = ({
                     }
                 })()}
             </div>
-
-
+            <div className="text-errorRed text-center text-sm w-full   ">
+                {hasError && <div>{meta.error || REQUIRED_MSG}</div>}
+            </div>
         </div>
     );
 };

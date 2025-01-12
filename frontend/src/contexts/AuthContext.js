@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }) => {
 
         } catch (error) {
             const errorMessage = error.message || 'Failed to complete operation';
+            console.log('API Error:', errorMessage);
             setAuthError(errorMessage);
             throw {
                 status: error.status || 500,
@@ -100,12 +101,7 @@ export const AuthProvider = ({ children }) => {
             resetForm();
             navigate('/admin-panel');
         } catch (error) {
-            const errorMessages = {
-                'auth/invalid-credential': 'Invalid email or password.',
-                'auth/user-disabled': 'This account has been disabled.',
-                'default': 'An error occurred. Please try again.'
-            };
-            setAuthError(errorMessages[error.code] || errorMessages.default);
+            setAuthError('Invalid email or password');
         } finally {
             setSubmitting(false);
         }

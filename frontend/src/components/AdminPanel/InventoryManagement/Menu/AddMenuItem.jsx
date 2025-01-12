@@ -14,7 +14,7 @@ import useFilteredItems from "../../../../Hooks/Items/useFilteredItems";
 const AddMenuItem = ({ onAdd, categories, initialValues = null, isFromMenuItem = null }) => {
     const [newCategory, setNewCategory] = useState(false);
     const [showIngredientForm, setShowIngredientForm] = useState(false);
-    const [itemIngredients, setItemIngredients] = useState([]);
+    const [itemIngredients, setItemIngredients] = useState(initialValues.ingredients || []);
     const { inventoryItems, inventoryCategories, addMenuItem } = useItemsContext();
     const {setSelectedCategory,filteredItems} = useFilteredItems(inventoryItems, inventoryCategories);
 
@@ -244,9 +244,9 @@ const AddMenuItem = ({ onAdd, categories, initialValues = null, isFromMenuItem =
 
                                                 {itemIngredients.map((ingredient, index) => (
                                                     <>
-                                                        <div key={index} className="text-lg grid grid-cols-3 border-2 border-secondary p-3 rounded-sm ">
+                                                        <div key={ingredient.ingredientId} className="text-lg grid grid-cols-3 border-2 border-secondary p-3 rounded-sm ">
                                                             <p>{ingredient.name}</p>
-                                                            <p>{ingredient.quantity} {ingredient.unitForMenu}</p>
+                                                            <p>{ingredient.quantity} {ingredient.unitType}</p>
                                                             <CircleX
                                                                 size={20}
                                                                 className="text-errorRed cursor-pointer self-center"

@@ -30,7 +30,7 @@ const DateRangeForm = () => {
                     const startDate = new Date(values.startDate);
                     const endDate = new Date(values.endDate);
                     getAnalyticsData(startDate, endDate);
-                    setDateRange(values); 
+                    setDateRange(values);
                 }}
             >
                 {({ values, setFieldValue }) => (

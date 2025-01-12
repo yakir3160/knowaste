@@ -19,8 +19,8 @@ export const login = async (req, res) => {
         const result = await authService.login(email, password);
         res.json(result);
     } catch (error) {
-        if (error.message === 'Invalid email or password') {
-            return res.status(401).json({ error: error.message });
+        if (error.message === 'INVALID_LOGIN_CREDENTIALS') {
+            return res.status(400).json({ error: 'Invalid email or password' });
         }
         if (error.message === 'TOO_MANY_ATTEMPTS_TRY_LATER') {
             return res.status(400).json({ error: 'Too many attempts. Try again later' });

@@ -10,9 +10,9 @@ const Top10 = ({data,title}) => {
                  data ? (
                     <>
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold  text-titles">Top {title}</h3>
+                            <h3 className="text-lg font-semibold  text-titles">{title}</h3>
                         </div>
-                        <div className="w-full ">
+                        <div className="w-full max-h-[300px] overflow-y-auto ">
                             {
                                 data.map((dish,index) => (
                                     <div key={dish.id} className="flex justify-between items-center border-b border-secondary  bg-white p-2 rounded-[10px]">

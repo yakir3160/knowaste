@@ -26,14 +26,6 @@ const Menu = ({isEmpty}) => {
         setShowAddMenuItem(false);
     };
 
-// menuItems.map(item => {
-//     console.log(`item:{
-//         id: ${item.menuItemId},
-//         name: ${item.name},
-//         price: ${item.price},
-//         category: ${item.categoryName},
-//    }`);
-// })
     useEffect(() => {
         if (menuCategories.length > 0 && !selectedCategory) {
             setSelectedCategory(menuCategories[0].name);
@@ -49,7 +41,6 @@ const Menu = ({isEmpty}) => {
 
     return (
         <div className="flex flex-col h-full w-full justify-center items-center">
-           {/* <BulkAddMenuItems />*/}
             <Button
                 className="w-fit m-6 border-2 border-lime flex flex-row justify-center items-center font-semibold text-lg"
                 onClick={() => setShowAddMenuItem(true)}
