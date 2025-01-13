@@ -27,7 +27,7 @@ const Menu = ({ isEmpty }) => {
 
     useEffect(() => {
         if (menuCategories.length > 0 && !selectedCategory) {
-            setSelectedCategory(menuCategories[0].name);
+            setSelectedCategory(menuCategories[0]?.name);
         }
     }, [menuCategories]);
 

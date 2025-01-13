@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import {OAuth2Client} from 'google-auth-library';
 import admin, {auth, db} from '../../config/firebase-admin.js';
-import nodemailer from 'nodemailer';
+
 
 class AuthService {
     async register(userData) {

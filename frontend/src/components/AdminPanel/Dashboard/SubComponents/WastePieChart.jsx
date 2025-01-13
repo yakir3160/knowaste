@@ -2,7 +2,7 @@ import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import Card from "../../../Common/Card/Card";
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8661C1'];
 
 const renderCustomizedLabel = ({ name, value, percent }) => {
     return `${name}: ${value} ₪ (${(percent * 100).toFixed(0)}%)`;
@@ -14,6 +14,7 @@ const WastePieChart = ({ wasteByReason }) => {
         { name: 'Quality', value: wasteByReason?.quality || 0},
         { name: 'Expired', value: wasteByReason?.expired || 0},
         { name: 'Storage', value: wasteByReason?.storage || 0},
+        { name: 'Over Production' , value: wasteByReason?.overproduction || 0},
     ];
 
     return (

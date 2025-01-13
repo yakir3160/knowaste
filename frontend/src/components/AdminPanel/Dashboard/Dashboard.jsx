@@ -28,9 +28,10 @@ const Dashboard = () => {
                         <h1 className="text-2xl font-semibold text-titles self-center">Summary for
                             This {dateRange.timeframe} </h1>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 p-2">
-                            <Summary data={analyticsData.salesSummary.totalSales} numOfItems={analyticsData.salesSummary.totalItems} title="Sales"/>
-                            <Summary data={analyticsData.wasteData.totalWasteCost} title="Waste Cost"/>
-                            <Summary data={analyticsData.salesSummary.totalItems - analyticsData.wasteData.totalWasteCost} title="Net Value"/>
+                            <Summary data={analyticsData.salesSummary.totalSales} numOfItems={analyticsData.salesSummary.totalItems} avgOrder={analyticsData.salesSummary.avgOrderValue
+                            } title="Sales"/>
+                            <Summary data={analyticsData.wasteData.totalWasteCost}  title="Waste Cost"/>
+                            <Summary data={analyticsData.salesSummary.totalSales - analyticsData.wasteData.totalWasteCost} title="Net Value"/>
                         </div>
                     </div>
                     <div className="">

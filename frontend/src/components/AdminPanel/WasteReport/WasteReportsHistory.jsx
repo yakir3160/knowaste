@@ -10,11 +10,11 @@ const WasteReportsHistory = ({ wasteReports }) => {
     const [reportToDelete, setReportToDelete] = useState(null); // State for selected report
 
     const handleDeleteClick = (reportId) => {
-        setReportToDelete(reportId); // Set the report ID to delete
+        setReportToDelete(reportId);
     };
 
     const handleCancelDelete = () => {
-        setReportToDelete(null); // Reset the report to delete
+        setReportToDelete(null);
     };
 
     return (
@@ -35,7 +35,9 @@ const WasteReportsHistory = ({ wasteReports }) => {
                     {wasteReports.map((report) => (
                         <>
                             <tr key={report.reportId} className="bg-white border-b">
-                                <td className={tableStyles.tableCellClass}>{report.date}</td>
+                                <td className={tableStyles.tableCellClass}>
+                                    {new Date(report.date).toLocaleDateString('en-GB')}
+                                </td>
                                 <td className={tableStyles.tableCellClass}>
                                     {report.items.map((item, index) => (
                                         <div className={`border-b-2 border-gray py-2`}  key={item.ingredientId}>

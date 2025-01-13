@@ -17,6 +17,7 @@ const Top10 = ({data,title}) => {
                                 data.map((dish,index) => (
                                     <div key={dish.id} className="flex justify-between items-center border-b border-secondary  bg-white p-2 rounded-[10px]">
                                         <span className="text-lg font-semibold">{index+1} - {dish.dish || dish.name}</span>
+                                        <span></span>
                                         <span className="text-md text-successGreen">{dish.quantity}</span>
                                     </div>
                                 ))

@@ -39,6 +39,7 @@ const DailySalesReport = () => {
     });
 
     const initialValues = {
+        id: "",
         category: "",
         subCategory: "",
         menuItem: "",
@@ -74,7 +75,7 @@ const DailySalesReport = () => {
             setSaving(true);
             const reportData = {
                 reportType: 'sales',
-                id: generateUniqueID(),
+                reportId: generateUniqueID(),
                 date: new Date(reportDate),
                 items: reportItems.map(item => ({
                     id: item.id,
