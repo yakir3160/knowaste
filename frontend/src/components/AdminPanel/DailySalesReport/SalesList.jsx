@@ -38,8 +38,8 @@ const SalesList = ({ salesReports = [] }) => {
                                 <td className={tableStyles.tableCellClass}>
                                     {new Date(sale.date).toLocaleDateString('en-GB')}
                                 </td>
-                                <td className={tableStyles.tableCellClass}>{sale.summary.totalSalesPreTax}</td>
-                                <td className={tableStyles.tableCellClass}>{sale.summary.totalSales}</td>
+                              <td className={tableStyles.tableCellClass}>{sale.summary.totalSalesPreTax.toFixed(2)}  ₪</td>
+                         <td className={tableStyles.tableCellClass}>{sale.summary.totalSales} ₪</td>
                                 <td className={tableStyles.tableCellClass}>
                                     {sale.items.map((dish, index) => (
                                         <div className="border-b-2 border-gray py-2" key={dish.id}>
