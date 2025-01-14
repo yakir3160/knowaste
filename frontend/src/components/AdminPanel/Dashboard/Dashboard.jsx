@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useAnalytics } from '../../../contexts/AnalyticsContext';
 import AdminPanelContainer from "../AdminPanelContainer";
 import DateRangeForm from "./SubComponents/DateRangeForm";
@@ -9,56 +9,85 @@ import Summary from './SubComponents/Summary';
 import Loading from '../../Common/Loading/Loading';
 import WastePieChart from "./SubComponents/WastePieChart";
 
-
 const Dashboard = () => {
     const {
         dateRange,
         analyticsData,
         loading: analyticsLoading,
-        error: analyticsError
+        error: analyticsError,
+        getForecastDemand
     } = useAnalytics();
+
+
+    const salesSummary = analyticsData?.salesSummary || {};
+    const wasteData = analyticsData?.wasteData || {};
+    const salesData = analyticsData?.salesData || [];
+    const popularDishesData = analyticsData?.popularDishesData || [];
+    const leastSellingDishesData = analyticsData?.leastSellingDishesData || [];
+    const lowStockItems = analyticsData?.lowStockItems || [];
+    const wasteByReason = wasteData?.wasteByReason || [];
+    const topWastedIngredients = wasteData?.topWastedIngredients || [];
+
+
     return (
         <AdminPanelContainer pageTitle="Dashboard" layout="" className="">
             {analyticsLoading ? (
                 <Loading />
             ) : (
                 <>
+                    {/* טופס בחירת טווח תאריכים */}
                     <DateRangeForm/>
-                    <div className="flex  flex-col justify-center ">
-                        <h1 className="text-2xl font-semibold text-titles self-center">Summary for
-                            This {dateRange.timeframe} </h1>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 p-2">
-                            <Summary data={analyticsData.salesSummary.totalSales} numOfItems={analyticsData.salesSummary.totalItems} avgOrder={analyticsData.salesSummary.avgOrderValue
-                            } title="Sales"/>
-                            <Summary data={analyticsData.wasteData.totalWasteCost}  title="Waste Cost"/>
-                            <Summary data={analyticsData.salesSummary.totalSales - analyticsData.wasteData.totalWasteCost} title="Net Value"/>
+
+                    {/* סיכום נתונים */}
+                    <div className="flex flex-col justify-center">
+                        <h1 className="text-2xl font-semibold text-titles self-center">
+                            Summary for This {dateRange?.timeframe || 'Period'}
+                        </h1>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 px-2">
+                            <Summary
+                                data={salesSummary.totalSales || 0}
+                                numOfItems={salesSummary.totalItems || 0}
+                                avgOrder={salesSummary.avgOrderValue || 0}
+                                title="Sales"
+                            />
+                            <Summary
+                                data={wasteData.totalWasteCost || 0}
+                                title="Waste Cost"
+                            />
+                            <Summary
+                                data={(salesSummary.totalSales || 0) - (wasteData.totalWasteCost || 0)}
+                                title="Net Value"
+                            />
                         </div>
                     </div>
-                    <div className="">
-                        {analyticsError && (
-                            <span className="text-errorRed">Error fetching data</span>
-                        )}
-                    </div>
 
-                    <div className={`grid grid-cols-1 md:grid-cols-3 gap-2 p-2`}>
-                        <div className="col-span-2">
-                            <SalesAreaChart salesData={analyticsData.salesData}/>
+                    {/* הודעת שגיאה */}
+                    {analyticsError && (
+                        <div className="text-errorRed text-center p-2">
+                            Error fetching data
                         </div>
-                        <Top10 data={analyticsData.popularDishesData} title="Top Selling Dishes"/>
-                        <Top10 data={analyticsData.leastSellingDishesData} title="Least Selling Dishes"/>
-                        <div className="col-span-2">
-                            <WastePieChart wasteByReason={analyticsData.wasteData.wasteByReason}/>
-                        </div>
-                            <Top10 data={analyticsData.wasteData.topWastedIngredients} title=" Top Wasted Ingredients"/>
-                            <LowStockItems data={analyticsData.lowStockItems}/>
-
-                        </div>
-
-
-                    </>
                     )}
 
-                </AdminPanelContainer>
+                    {/* תרשימים ונתונים */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2  p-2 ">
+                        <div className="col-span-1 lg:col-span-2">
+                            <SalesAreaChart salesData={salesData} wasteData={wasteData.wasteReports}/>
+                        </div>
+                        <Top10 data={topWastedIngredients} title="Top Wasted Ingredients"/>
+                        <div className="col-span-1 lg:col-span-2">
+                            <WastePieChart wasteByReason={wasteByReason}/>
+                        </div>
+                        <Top10 data={popularDishesData} title="Top Selling Dishes"/>
+                        <Top10 data={leastSellingDishesData} title="Least Selling Dishes"/>
+                        <div className="col-span-1 lg:col-span-2">
+                            <LowStockItems data={lowStockItems}/>
+                        </div>
+                    </div>
+
+
+                </>
+            )}
+        </AdminPanelContainer>
     );
 };
 

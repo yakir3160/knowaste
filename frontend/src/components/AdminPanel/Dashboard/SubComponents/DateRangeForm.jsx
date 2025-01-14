@@ -35,7 +35,7 @@ const DateRangeForm = () => {
             >
                 {({ values, setFieldValue }) => (
                     <Form className="gap-4 p-4 w-fit">
-                        <div className="grid grid-cols-4 gap-2">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                             <GlobalField
                                 type="select"
                                 name="timeframe"

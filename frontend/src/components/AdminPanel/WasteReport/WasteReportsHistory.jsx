@@ -9,6 +9,10 @@ const WasteReportsHistory = ({ wasteReports }) => {
     const { deleteReport } = useItemsContext();
     const [reportToDelete, setReportToDelete] = useState(null); // State for selected report
 
+
+    const sortedWasteReports = [...wasteReports].sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+    });
     const handleDeleteClick = (reportId) => {
         setReportToDelete(reportId);
     };
@@ -32,7 +36,7 @@ const WasteReportsHistory = ({ wasteReports }) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {wasteReports.map((report) => (
+                    {sortedWasteReports.map((report) => (
                         <>
                             <tr key={report.reportId} className="bg-white border-b">
                                 <td className={tableStyles.tableCellClass}>

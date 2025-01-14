@@ -134,7 +134,7 @@ export const AnalyticsProvider = ({ children }) => {
     };
     useEffect(() => {
         getAnalyticsData(dateRange.startDate, dateRange.endDate);
-
+        setError('');
     }, []);
 
     const value = {

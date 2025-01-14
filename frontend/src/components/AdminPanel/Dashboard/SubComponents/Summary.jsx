@@ -1,12 +1,10 @@
 import React from 'react';
 import Card from '../../../Common/Card/Card';
 import { TrendingUp } from 'lucide-react';
+import useFormatNumberWithCommas from "../../../../Hooks/Items/useFormatNumberWithCommas";
 
 const Summary = ({ data, title, numOfItems, avgOrder, trend }) => {
-    const formatNumberWithCommas = (number) => {
-        return number.toLocaleString('en-US'); // פורמט עם פסיקים
-    };
-
+    const formatNumberWithCommas = useFormatNumberWithCommas();
     return (
         <Card className="p-4 bg-white shadow-sm">
             <div className="flex justify-between items-start">

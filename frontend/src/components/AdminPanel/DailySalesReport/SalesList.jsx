@@ -9,6 +9,11 @@ const SalesList = ({ salesReports = [] }) => {
     const { deleteReport } = useItemsContext();
     const [reportToDelete, setReportToDelete] = useState(null);
 
+    // Sort salesReports by date (newest first)
+    const sortedSalesReports = [...salesReports].sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+    });
+
     const handleDeleteClick = (reportId) => {
         setReportToDelete(reportId);
     };
@@ -32,19 +37,19 @@ const SalesList = ({ salesReports = [] }) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {salesReports?.map((sale) => (
+                    {sortedSalesReports?.map((sale) => (
                         <React.Fragment key={sale.id}>
                             <tr className="bg-white border-b">
                                 <td className={tableStyles.tableCellClass}>
                                     {new Date(sale.date).toLocaleDateString('en-GB')}
                                 </td>
-                              <td className={tableStyles.tableCellClass}>{sale.summary.totalSalesPreTax.toFixed(2)}  ₪</td>
-                         <td className={tableStyles.tableCellClass}>{sale.summary.totalSales} ₪</td>
+                                <td className={tableStyles.tableCellClass}>{sale.summary.totalSalesPreTax.toFixed(2)} ₪</td>
+                                <td className={tableStyles.tableCellClass}>{sale.summary.totalSales} ₪</td>
                                 <td className={tableStyles.tableCellClass}>
                                     {sale.items.map((dish, index) => (
                                         <div className="border-b-2 border-gray py-2" key={dish.id}>
-                                            {index + 1}. {dish.menuItem} - {dish.quantity}
-
+                                            {index + 1}. {dish.menuItem} -
+                                            {dish.quantity} {dish.quantity > 1 ? 'dishes' : 'dish'}
                                         </div>
                                     ))}
                                 </td>

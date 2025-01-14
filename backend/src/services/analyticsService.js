@@ -174,7 +174,6 @@ class AnalyticsService {
             date: doc.data().date
         }));
 
-        console.log('Sales data:', salesData);
 
         return salesData;
     }
@@ -527,8 +526,10 @@ class AnalyticsService {
             const wasteReports = snapshot.docs.map(doc => doc.data());
 
             console.log(`Fetched ${wasteReports.length} waste reports`);
+            console.log('Waste data:', wasteReports);
 
             const analysis = {
+                wasteReports,
                 totalWasteCost: 0,
                 wasteByReason: {},
                 wasteByIngredient: {},
@@ -551,7 +552,7 @@ class AnalyticsService {
 
             console.log(`Total waste cost: $${analysis.totalWasteCost}`);
             console.log('Waste by reason:', analysis.wasteByReason);
-            console.log('Waste by ingredient:', analysis.wasteByIngredient);
+            // console.log('Waste by ingredient:', analysis.wasteByIngredient);
 
             analysis.topWastedIngredients = Object.entries(analysis.wasteByIngredient)
                 .sort(([, a], [, b]) => b.cost - a.cost)
@@ -561,7 +562,7 @@ class AnalyticsService {
                     ...data
                 }));
 
-            console.log('Top wasted ingredients:', analysis.topWastedIngredients);
+            // console.log('Top wasted ingredients:', analysis.topWastedIngredients);
 
             return {
                 success: true,
@@ -842,9 +843,9 @@ class AnalyticsService {
             monthlyTrends[monthKey] = this.aggregateMetrics(monthlyTrends[monthKey], metrics);
         });
 
-        console.log('Daily trends:', dailyTrends);
-        console.log('Weekly trends:', weeklyTrends);
-        console.log('Monthly trends:', monthlyTrends);
+        // console.log('Daily trends:', dailyTrends);
+        // console.log('Weekly trends:', weeklyTrends);
+        // console.log('Monthly trends:', monthlyTrends);
 
         return {
             daily: dailyTrends,
@@ -854,7 +855,7 @@ class AnalyticsService {
     }
 
     aggregateMetrics(existing = { cost: 0, quantity: 0 }, current) {
-        console.log('Aggregating metrics:', { existing, current });
+        // console.log('Aggregating metrics:', { existing, current });
 
         return {
             cost: existing.cost + current.cost,
@@ -1038,10 +1039,9 @@ class AnalyticsService {
                 .get();
 
             const sales = salesQuery.docs.map(doc => doc.data());
-            console.log(`Fetched ${sales.length} sales records`);
+            console.log('sales:', sales);
 
             const summary = this.calculateSalesSummary(sales);
-            console.log('Sales summary:', summary);
 
             return {
                 success: true,
@@ -1058,37 +1058,45 @@ class AnalyticsService {
         console.log(`Calculating top selling dishes for user ${userId} from ${startDate} to ${endDate}`);
 
         try {
-            // Fetch sales data
             const salesData = await this.getHistoricalData(userId);
-            // Filter sales data by the specified timeframe
             const filteredSales = this.filterByTimeframe(salesData, startDate, endDate);
-            // Aggregate sales data by dish
             const dishSales = {};
+
             filteredSales.forEach(sale => {
                 sale.items.forEach(item => {
-                    const menuItem = item.menuItem || item.name; // Handle potential alternate field names
-                    dishSales[menuItem] = (dishSales[menuItem] || 0) + (item.quantity || 1);
+                    const menuItem = item.menuItem || item.name;
+                    if (!dishSales[menuItem]) {
+                        dishSales[menuItem] = {
+                            quantity: 0,
+                            totalSales: 0
+                        };
+                    }
+                    dishSales[menuItem].quantity += (item.quantity || 1);
+                    dishSales[menuItem].totalSales += (item.totalPrice || 0);
                 });
             });
 
-            // Sort and retrieve top 10 dishes
             const topDishes = Object.entries(dishSales)
-                .sort(([, a], [, b]) => b - a)
+                .sort(([, a], [, b]) => b.quantity - a.quantity)
                 .slice(0, 10)
-                .map(([dish, quantity]) => ({ dish, quantity }));
+                .map(([dish, data]) => ({
+                    dish,
+                    quantity: data.quantity,
+                    totalSales: data.totalSales
+                }));
 
-            console.log('Top selling dishes:', topDishes);
 
             return {
                 success: true,
                 data: topDishes,
-                timeframe: startDate, endDate
+                timeframe: { startDate, endDate }
             };
         } catch (error) {
             console.error('Error calculating top dishes:', error.message);
             throw new Error(`Error calculating top dishes: ${error.message}`);
         }
     }
+
 
     filterByTimeframe(salesData, startDate, endDate) {
         console.log(`Filtering sales data for date range ${startDate} to ${endDate}`);
@@ -1115,26 +1123,37 @@ class AnalyticsService {
 
             filteredItems.forEach(sale => {
                 sale.items.forEach(item => {
-                    dishSales[item.menuItem] = (dishSales[item.menuItem] || 0) + item.quantity;
+                    if (!dishSales[item.menuItem]) {
+                        dishSales[item.menuItem] = {
+                            quantity: 0,
+                            totalSales: 0
+                        };
+                    }
+                    dishSales[item.menuItem].quantity += (item.quantity || 1);
+                    dishSales[item.menuItem].totalSales += (item.totalPrice || 0);
                 });
             });
 
             const leastSold = Object.entries(dishSales)
-                .sort(([, a], [, b]) => a - b)
+                .sort(([, a], [, b]) => a.quantity - b.quantity)
                 .slice(0, 10)
-                .map(([dish, quantity]) => ({ dish, quantity }));
-
-            console.log('Least selling dishes:', leastSold);
+                .map(([dish, data]) => ({
+                    dish,
+                    quantity: data.quantity,
+                    totalSales: data.totalSales
+                }));
 
             return {
                 success: true,
-                data: leastSold
+                data: leastSold,
+                timeframe: { startDate, endDate }
             };
         } catch (error) {
             console.error(`Error calculating least selling dishes: ${error.message}`);
             throw new Error(`Error calculating least selling dishes: ${error.message}`);
         }
     }
+
 
     async fetchTopWastedIngredients(userId) {
         console.log(`Fetching top wasted ingredients for user ${userId}`);
@@ -1236,6 +1255,7 @@ class AnalyticsService {
                         name: data.name,
                         currentStock: data.currentStock,
                         minStockLevel: data.minStockLevel,
+                        unit: data.unit,
                         stockDeficit: data.minStockLevel - data.currentStock
                     };
                 })
@@ -1671,7 +1691,7 @@ class AnalyticsService {
             trends.monthly[monthKey] = (trends.monthly[monthKey] || 0) + report.summary.totalCost;
         });
 
-        console.log('Calculated waste trends:', trends);
+        // console.log('Calculated waste trends:', trends);
         return trends;
     }
 
