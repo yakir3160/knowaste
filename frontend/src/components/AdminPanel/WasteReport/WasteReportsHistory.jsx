@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { tableStyles } from '../../../css/tableStyles';
 import Card from "../../Common/Card/Card";
 import { CircleX } from "lucide-react";
-import { useItemsContext } from "../../../contexts/ItemsContext";
+import { useItemsContext } from "../../../context/ItemsContext";
 import ConfirmDelete from "../../Common/ConfirmDelete/ConfirmDelete";
 
 const WasteReportsHistory = ({ wasteReports }) => {
@@ -68,7 +68,7 @@ const WasteReportsHistory = ({ wasteReports }) => {
                                     <td colSpan="5" className={`p-3`}> {/* תופס את כל העמודות */}
                                         <ConfirmDelete
                                             isOpen={true}
-                                            name={`Waste Report from ${report.date}`}
+                                            name={`Waste Report from ${new Date(report.date).toLocaleDateString('en-GB')}`}
                                             onConfirm={() => {
                                                 deleteReport('waste',report.reportId);
                                                 setReportToDelete(null); // Reset state after deletion

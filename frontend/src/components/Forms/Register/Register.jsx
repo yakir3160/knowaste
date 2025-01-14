@@ -6,7 +6,7 @@ import PasswordRequirements from './PasswordRequirements';
 import { registerSchema } from './RegisterSchema';
 import Card from '../../Common/Card/Card';
 import { usePasswordStatus } from "../../../Hooks/User/usePasswordStatus";
-import { useAuthContext } from "../../../contexts/AuthContext";
+import { useAuthContext } from "../../../context/AuthContext";
 import GoogleSignInBtn from "../../Common/GoogleSignInBtn/GoogleSignInBtn";
 
 const Register = () => {

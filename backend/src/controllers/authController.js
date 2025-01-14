@@ -92,8 +92,8 @@ export const updatePasswordWithVerification = async (req, res) => {
         const result = await authService.updatePasswordWithVerification(email, currentPassword, newPassword);
         res.json(result);
     } catch (error) {
-        if (error.message === 'Invalid email or password') {
-            return res.status(400).json({ error: error.message });
+        if (error.message === 'INVALID_LOGIN_CREDENTIALS') {
+            return res.status(400).json({ error: 'Invalid Current password' });
         }
         res.status(500).json({ error: 'Error updating password' });
     }

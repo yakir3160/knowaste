@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Button from "../../../Common/Button/Button";
 import IngredientForm from "../Menu/IngredientForm";
 import { Plus } from 'lucide-react';
-import { useItemsContext } from "../../../../contexts/ItemsContext";
+import { useItemsContext } from "../../../../context/ItemsContext";
 import useFilteredItems from "../../../../Hooks/Items/useFilteredItems";
-import BulkAddIngredients from "../../../BulkAddIngredients";
 import CategoryDropdown from "../../../Common/CategoryDropdown";
 import InventoryItem from "../Inventory/InventoryItem";
 

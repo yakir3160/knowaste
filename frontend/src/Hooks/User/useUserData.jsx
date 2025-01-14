@@ -1,5 +1,5 @@
 import {useState } from 'react';
-import {useAuthContext} from "../../contexts/AuthContext";
+import {useAuthContext} from "../../context/AuthContext";
 
 export const useUserData = () => {// יצירת משתנה חדש ופונקצית עדכון שתשמש לשמירת נתוני המשתמש
     const[loading, setLoading] = useState(false);

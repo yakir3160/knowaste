@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, CircleX, Pencil } from 'lucide-react';
 import Button from '../../../Common/Button/Button';
 import Card from "../../../Common/Card/Card";
-import { useItemsContext } from "../../../../contexts/ItemsContext";
+import { useItemsContext } from "../../../../context/ItemsContext";
 import ConfirmDelete from "../../../Common/ConfirmDelete/ConfirmDelete";
 const MenuItem = ({ item, onEdit }) => {
     const [showIngredients, setShowIngredients] = useState(false);

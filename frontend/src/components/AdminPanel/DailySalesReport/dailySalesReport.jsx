@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import GlobalField from "../../Common/inputs/GlobalField";
 import Card from '../../Common/Card/Card';
 import Button from '../../Common/Button/Button';
-import { useItemsContext } from "../../../contexts/ItemsContext";
+import { useItemsContext } from "../../../context/ItemsContext";
 import useFilteredItems from "../../../Hooks/Items/useFilteredItems";
 import { v4 as generateUniqueID } from 'uuid';
 import SalesList from "./SalesList";

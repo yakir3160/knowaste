@@ -5,8 +5,8 @@ import { Pencil, Save, CircleX } from 'lucide-react';
 import Card from "../../Common/Card/Card";
 import Button from "../../Common/Button/Button";
 import GlobalField from "../../Common/inputs/GlobalField";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { useUserContext } from "../../../contexts/UserContext";
+import { useAuthContext } from "../../../context/AuthContext";
+import { useUserContext } from "../../../context/UserContext";
 
 
 

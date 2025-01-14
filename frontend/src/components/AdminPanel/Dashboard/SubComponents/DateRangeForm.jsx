@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useAnalytics } from '../../../../context/AnalyticsContext';
 import Button from "../../../Common/Button/Button";
 import GlobalField from "../../../Common/inputs/GlobalField";
 import { getDateRange } from '../../../../utils/dateUtils';

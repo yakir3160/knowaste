@@ -3,8 +3,8 @@ import AdminPanelContainer from "../AdminPanelContainer";
 import UserDetailsForm from './UserDetailsForm';
 import EmailUpdateForm from './EmailUpdateForm';
 import PasswordUpdateForm from './PasswordUpdateForm';
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { useUserContext } from "../../../contexts/UserContext";
+import { useAuthContext } from "../../../context/AuthContext";
+import { useUserContext } from "../../../context/UserContext";
 import LoadingOverlay from "../../Common/Overlays/LoadingOverlay";
 import SavingOverlay from "../../Common/Overlays/SavingOverlay";
 

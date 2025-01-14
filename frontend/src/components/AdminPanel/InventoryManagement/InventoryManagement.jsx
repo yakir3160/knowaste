@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useItemsContext } from '../../../contexts/ItemsContext';
+import { useItemsContext } from '../../../context/ItemsContext';
 import AdminPanelContainer from '../AdminPanelContainer';
 import TabNavigation from '../../Common/TabNavigation/TabNavigation';
 import Card from '../../Common/Card/Card';

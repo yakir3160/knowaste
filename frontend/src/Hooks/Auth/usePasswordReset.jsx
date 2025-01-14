@@ -1,8 +1,7 @@
-import {auth} from '../../firebaseConfig';
-import {sendPasswordResetEmail,confirmPasswordReset,updatePassword,EmailAuthProvider,reauthenticateWithCredential} from 'firebase/auth';
+
 import {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {useAuthContext} from "../../contexts/AuthContext";
+import {useAuthContext} from "../../context/AuthContext";
 
 
 export const usePasswordReset = () => {

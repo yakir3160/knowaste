@@ -2,8 +2,8 @@ import Button from "../../../Common/Button/Button";
 import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Trash2, Warehouse, DollarSign, LogOut,UserRoundCog } from "lucide-react";
 import Logo from "../../../Common/Logo/Logo";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
-import { useAuthContext } from "../../../../contexts/AuthContext";
-import { useUserContext } from "../../../../contexts/UserContext";
+import { useAuthContext } from "../../../../context/AuthContext";
+import { useUserContext } from "../../../../context/UserContext";
 
 const DesktopSidebar = ({ isOpen, setIsOpen }) => {
     const toggleSidebar = () => setIsOpen(!isOpen);
@@ -53,7 +53,7 @@ const DesktopSidebar = ({ isOpen, setIsOpen }) => {
                         className={getMenuItemClasses("/admin-panel")}
                     >
                         <LayoutDashboard className="h-5 w-5" />
-                        <span className={sidebarClasses.itemText}>Home</span>
+                        <span className={sidebarClasses.itemText}>Dashboard</span>
                     </Button>
                     <Button
                         onClick={() => navigate("/admin-panel/inventory-management")}

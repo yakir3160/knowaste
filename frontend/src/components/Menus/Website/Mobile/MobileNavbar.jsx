@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../../../Common/Button/Button';
 import classNames from 'classnames';
 import Logo from "../../../Common/Logo/Logo";
-import {useAuthContext} from "../../../../contexts/AuthContext";
+import {useAuthContext} from "../../../../context/AuthContext";
 import {CircleUserRound} from "lucide-react";
 
 const MobileNavbar = ({ isMenuOpen, toggleMenu }) => {

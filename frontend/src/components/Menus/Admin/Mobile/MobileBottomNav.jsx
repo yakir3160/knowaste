@@ -1,8 +1,8 @@
 import { LayoutDashboard, FileText, Trash2, Warehouse, DollarSign, LogOut, CircleChevronDown, CircleChevronUp ,UserRoundCog} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {useAuthContext} from "../../../../contexts/AuthContext";
-import {useUserContext} from "../../../../contexts/UserContext";
+import {useAuthContext} from "../../../../context/AuthContext";
+import {useUserContext} from "../../../../context/UserContext";
 
 
 const MobileBottomNav = () => {
@@ -53,7 +53,7 @@ const MobileBottomNav = () => {
                         className={buttonClass("/admin-panel")}
                     >
                         <LayoutDashboard className={`${iconSize} text-titles`}/>
-                        <span className="text-sm text-titles ">Home</span>
+                        <span className="text-sm text-titles ">Dashboard</span>
                     </button>
                     <button
                         onClick={() => navigate("/admin-panel/inventory-management")}

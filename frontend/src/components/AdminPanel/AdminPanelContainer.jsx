@@ -1,4 +1,4 @@
-import {useItemsContext} from "../../contexts/ItemsContext";
+import {useItemsContext} from "../../context/ItemsContext";
 import Loading from "../Common/Loading/Loading";
 import LoadingOverlay from "../Common/Overlays/LoadingOverlay";
 import SavingOverlay from "../Common/Overlays/SavingOverlay";
@@ -7,7 +7,7 @@ const AdminPanelContainer = ({pageTitle,children,layout}) => {
     return (
         <>
 
-            {menuLoading || inventoryLoading || reportsLoading && <Loading />}
+            {(menuLoading || inventoryLoading || reportsLoading) && <Loading />}
             {saving && <LoadingOverlay text={'Saving...'} />}
             {success && <SavingOverlay text={'Saved!'} />}
             <div className={`w-full  max-w-screen-xl mx-auto text-titles`}>

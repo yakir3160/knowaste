@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, {} from 'react';
 import { Formik, Form, Field } from 'formik';
 import GlobalField from "../../../Common/inputs/GlobalField";
 import Button from "../../../Common/Button/Button";
 import { ingredientStorageTypes, measurementUnits, allergenTypes, ingredientCategories } from "../../../../constants/Constants";
-import { ingredientSchema } from "../../../../schemas/firestoreSchemas/ingredientsSchema";
+import { ingredientSchema } from "../../../../schemas/ingredientsSchema";
 import { v4 as generateUniqueID } from 'uuid';
 import { CircleX } from "lucide-react";
 import Card from "../../../Common/Card/Card";
-import { useItemsContext } from "../../../../contexts/ItemsContext";
+import { useItemsContext } from "../../../../context/ItemsContext";
 
 const IngredientForm = ({ onCancel, initialValues = null, isEditing = false }) => {
     const { addInventoryItem, itemsError} = useItemsContext();

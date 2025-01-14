@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import Layout from "../components/Layouts/Layout";
-import { ItemsProvider } from "../contexts/ItemsContext"
-import {AnalyticsProvider} from "../contexts/AnalyticsContext";
+import { ItemsProvider } from "../context/ItemsContext"
+import {AnalyticsProvider} from "../context/AnalyticsContext";
 import Dashboard from "../components/AdminPanel/Dashboard/Dashboard";
 import DailySalesReport from "../components/AdminPanel/DailySalesReport/dailySalesReport";
 import InventoryManagement from "../components/AdminPanel/InventoryManagement/InventoryManagement";

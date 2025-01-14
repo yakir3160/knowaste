@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../Menus/Website/Navbar";
-import Footer from "./Footer";
+import Footer from "../LandingPage/Footer";
 import AdminMenu from "../Menus/Admin/AdminMenu";
 
 const Layout = ({ children, pageType }) => {

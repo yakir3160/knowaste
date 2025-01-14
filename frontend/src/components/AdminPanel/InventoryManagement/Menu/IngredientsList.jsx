@@ -3,7 +3,7 @@ import { FieldArray, useFormikContext } from 'formik';
 import Button from '../../../Common/Button/Button';
 import { CircleX } from 'lucide-react';
 import GlobalField from "../../../Common/inputs/GlobalField";
-import { useItemsContext } from "../../../../contexts/ItemsContext";
+import { useItemsContext } from "../../../../context/ItemsContext";
 
 const IngredientsList = ({ isEditing }) => {
     const { values, setFieldValue } = useFormikContext();

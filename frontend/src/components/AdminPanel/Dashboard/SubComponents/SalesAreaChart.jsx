@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area, ResponsiveContainer, Legend } from 'recharts';
 import Card from "../../../Common/Card/Card";
 import useFormatNumberWithCommas from "../../../../Hooks/Items/useFormatNumberWithCommas";
+import Button from "../../../Common/Button/Button";
 
 const SalesAreaChart = ({ salesData, wasteData }) => {
     const [chartType, setChartType] = useState('combined'); // 'sales', 'waste', 'combined'
@@ -18,11 +19,13 @@ const SalesAreaChart = ({ salesData, wasteData }) => {
     return (
         <Card >
             <div className="flex justify-between items-center mb-4">
+
                 <h1 className="text-lg font-semibold text-titles-color">
                     {chartType === 'combined' && 'Combined Sales & Waste'}
                     {chartType === 'sales' && 'Sales Data'}
                     {chartType === 'waste' && 'Waste Data'}
                 </h1>
+                <Button className={`border-2 border-lime`} to={'/admin-panel/sales-report'}>Add Sales Report</Button>
                 <select
                     className="p-2 border-2 border-secondary rounded-md focus:outline-none  focus:border-lime  "
                     value={chartType}

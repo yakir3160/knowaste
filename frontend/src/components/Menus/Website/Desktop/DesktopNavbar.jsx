@@ -1,10 +1,8 @@
 import React from 'react';
 import Logo from '../../../Common/Logo/Logo';
 import Button from '../../../Common/Button/Button';
-import {useAuthContext} from "../../../../contexts/AuthContext";
 import {CircleUserRound} from 'lucide-react'
-import {useUserContext} from "../../../../contexts/UserContext";
-import Loading from "../../../Common/Loading/Loading";
+import {useUserContext} from "../../../../context/UserContext";
 
 const DesktopNavbar = () => {
     const {userBaseData,loadingData} = useUserContext();

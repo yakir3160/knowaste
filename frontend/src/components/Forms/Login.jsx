@@ -7,7 +7,7 @@ import { REQUIRED_MSG } from "../../constants/Constants";
 import { useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
 import GoogleSignInBtn from "../Common/GoogleSignInBtn/GoogleSignInBtn";
-import { useAuthContext } from "../../contexts/AuthContext";
+import { useAuthContext } from "../../context/AuthContext";
 import { MailCheck } from "lucide-react";
 import { Player } from '@lottiefiles/react-lottie-player';
 

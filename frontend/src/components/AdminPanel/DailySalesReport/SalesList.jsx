@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { tableStyles } from '../../../css/tableStyles';
 import Card from "../../Common/Card/Card";
 import { CircleX } from "lucide-react";
-import { useItemsContext } from "../../../contexts/ItemsContext";
+import { useItemsContext } from "../../../context/ItemsContext";
 import ConfirmDelete from "../../Common/ConfirmDelete/ConfirmDelete";
 
 const SalesList = ({ salesReports = [] }) => {
@@ -68,7 +68,7 @@ const SalesList = ({ salesReports = [] }) => {
                                     <td colSpan="6" className="p-3">
                                         <ConfirmDelete
                                             isOpen={true}
-                                            name={`Sales Report from ${sale.date}`}
+                                            name={`Sales Report from ${new Date(sale.date).toLocaleDateString('en-GB')}`}
                                             onConfirm={() => {
                                                 deleteReport('sales', reportToDelete);
                                                 setReportToDelete(null);

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import MenuItem from "./MenuItem";
-import { useUserItems } from "../../../../Hooks/User/useUserItems";
 import useFilteredItems from "../../../../Hooks/Items/useFilteredItems";
 import Button from "../../../Common/Button/Button";
 import { Plus } from "lucide-react";
 import AddMenuItem from "./AddMenuItem";
-import { useItemsContext } from "../../../../contexts/ItemsContext";
-import BulkAddMenuItems from "../../../BulkAddMenuItems";
+import { useItemsContext } from "../../../../context/ItemsContext";
 import CategoryDropdown from "../../../Common/CategoryDropdown";
 
 const Menu = ({ isEmpty }) => {

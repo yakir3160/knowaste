@@ -42,7 +42,16 @@ const PasswordUpdateForm = () => {
                         password: '',
                         repeatPassword: '',
                     }}
-                    onSubmit={(values,{setSubmitting,resetForm}) => { updatePasswordWithVerification(values.currentPassword, values.password,{ setSubmitting, resetForm });}}
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
+                        updatePasswordWithVerification(values.currentPassword, values.password, {
+                            setSubmitting,
+                            resetForm,
+                        }).catch(() => {
+                            setSubmitting(false);
+                        }).finally(() => {
+                            setSubmitting(false);
+                        });
+                    }}
                 >
                     {({ handleChange, handleSubmit, values, isSubmitting }) => (
                         <Form className="grid grid-cols-1 h-fit relative" onSubmit={handleSubmit}>
@@ -72,7 +81,7 @@ const PasswordUpdateForm = () => {
                                     onChange={handleChange}
                                 />
                             </div>
-                            {error && <div className="text-errorRed text-center ">{error}</div>}
+                            {error  && <div className="text-errorRed text-center ">{error}</div>}
                             <div className="mt-6">
                                 {isSubmitting ? (
                                     <Button

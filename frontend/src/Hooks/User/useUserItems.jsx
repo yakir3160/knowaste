@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import {useItemsContext} from "../../contexts/ItemsContext";
+import {useItemsContext} from "../../context/ItemsContext";
 
 
 export const useUserItems = () => {
