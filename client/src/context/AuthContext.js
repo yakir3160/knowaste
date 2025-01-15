@@ -68,7 +68,8 @@ export const AuthProvider = ({ children }) => {
             resetForm();
             navigate('/admin-panel');
         } catch (error) {
-            if (error.message.includes('409')) {
+            console.log('Registration error:', error);
+            if (error.message.includes('Email already exists')) {
                 setAuthError('This email is already registered. Please login to continue.');
                 navigate('/auth', {
                     state: {
