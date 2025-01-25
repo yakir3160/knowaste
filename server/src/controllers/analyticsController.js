@@ -36,8 +36,22 @@ export const getLeastSellingDishes = async (req, res) => {
 export const getWasteAnalysis = async (req, res) => {
     try {
         const userId = req.user.id;
+        const { timeRange } = req.params;
         const { startDate, endDate } = req.query;
-        const result = await AnalyticsService.analyzeWaste(userId, startDate, endDate);
+
+        if (timeRange && !['daily', 'weekly', 'monthly', 'yearly'].includes(timeRange)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid time range. Must be daily, weekly, monthly, or yearly'
+            });
+        }
+
+        const result = await AnalyticsService.analyzeWaste(
+            userId,
+            timeRange || 'custom',
+            startDate,
+            endDate
+        );
         res.json(result);
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
