@@ -495,32 +495,15 @@ class AnalyticsService {
         }
     }
 
-    async analyzeWaste(userId, timeRange, startDate, endDate) {
-        console.log(`Analyzing waste for user ${userId} using time range: ${timeRange}`);
-
-        this.validateInput(userId, 'analyzeWaste', {
-            timeRange,
-            ...(timeRange === 'custom' ? { startDate, endDate } : {})
-        });
-
+    async analyzeWaste(userId, startDate, endDate) {
+        console.log(`Analyzing waste for user ${userId} from ${startDate} to ${endDate}`);
         try {
             let wasteQuery = db
                 .collection('users').doc(userId)
                 .collection('reports').doc('waste')
                 .collection('wasteReports')
-
-            if (timeRange === 'custom' && startDate && endDate) {
-                console.log(`Using custom time range: ${startDate} to ${endDate}`);
-                wasteQuery = wasteQuery
-                    .where('date', '>=', new Date(startDate))
-                    .where('date', '<=', new Date(endDate));
-            } else {
-                const queryStartDate = this.getStartDate(timeRange);
-                if (queryStartDate) {
-                    console.log(`Using predefined time range: ${queryStartDate.toISOString()} to present`);
-                    wasteQuery = wasteQuery.where('date', '>=', queryStartDate);
-                }
-            }
+                .where('date', '>=', new Date(startDate).toISOString())
+                .where('date', '<=', new Date(endDate).toISOString());
 
             const snapshot = await wasteQuery.get();
             const wasteReports = snapshot.docs.map(doc => doc.data());
@@ -1039,7 +1022,7 @@ class AnalyticsService {
                 .get();
 
             const sales = salesQuery.docs.map(doc => doc.data());
-            console.log('sales:', sales);
+            // console.log('sales:', sales);
 
             const summary = this.calculateSalesSummary(sales);
 

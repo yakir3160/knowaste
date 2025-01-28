@@ -85,7 +85,7 @@ const DateRangeForm = () => {
                             />
                             <Button
                                 type="submit"
-                                className="w-full h-fit self-end border-2 border-lime"
+                                className="w-full h-fit self-center border-2 border-lime"
                             >
                                 Update Data
                             </Button>

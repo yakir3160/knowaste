@@ -20,7 +20,7 @@ router.use(verifyToken);
 router.get('/sales', getSalesByDateRange);//done
 router.get('/top-dishes', getTopSellingDishes);// done
 router.get('/least-selling-dishes', getLeastSellingDishes);//done
-router.get('/waste/:timeRange?', getWasteAnalysis);
+router.get('/waste', getWasteAnalysis);
 router.get('/top-wasted-ingredients', getTopWastedIngredients);//done
 router.get('/low-stock-items', getLowStockItems);//done
 router.get('/revenue-vs-waste', getRevenueVsWaste);//timeframe

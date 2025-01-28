@@ -100,7 +100,7 @@ const GlobalField = ({
     return (
         <div className={`relative flex flex-col min-w-[100px] ${disabled ? 'opacity-95' : ''}`}>
 
-            <div className="relative pt-6">
+            <div className="relative pt-3">
                 {(() => {
                     switch (type) {
                         case 'select':
@@ -183,7 +183,7 @@ const GlobalField = ({
                     }
                 })()}
             </div>
-            <div className="text-errorRed text-center text-sm w-full   ">
+            <div className="text-errorRed text-center text-sm w-full h-4">
                 {hasError && <div>{meta.error || REQUIRED_MSG}</div>}
             </div>
         </div>
