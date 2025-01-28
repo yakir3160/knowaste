@@ -10,7 +10,7 @@ const AdminPanelContainer = ({pageTitle,children,layout}) => {
             {(menuLoading || inventoryLoading || reportsLoading) && <Loading />}
             {saving && <LoadingOverlay text={'Saving...'} />}
             {success && <SavingOverlay text={'Saved!'} />}
-            <div className={`w-full  max-w-screen-xl mx-auto text-titles`}>
+            <div className={`w-full  max-w-[1800px] mx-auto text-titles`}>
                 <div className="mb-5 p-5 bg-secondary rounded-b-sm ">
                     <h1 className="text-titles text-4xl text-center">{pageTitle}</h1>
                 </div>
