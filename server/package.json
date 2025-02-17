@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "date-holidays": "^3.23.16",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase": "^10.14.1",
+    "firebase-admin": "^13.0.1",
+    "formik": "^2.4.6",
+    "google-auth-library": "^9.15.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.16",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "nodemon": "^3.1.9",
+    "prettier": "^2.5.1"
+  }
+}
